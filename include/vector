@@ -65,7 +65,9 @@ namespace std{
 		typedef std::reverse_iterator<iterator> reverse_iterator;
 		typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		explicit vector(const Allocator& al= Allocator()): data(0), data_size(__DEFAULT_ALLOC_UNITS), elements(0), a(al){
+		explicit vector(const Allocator& al= Allocator()): data(0),
+			data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
+		{
 			data = a.allocate(data_size);
 		}
 
@@ -73,7 +75,7 @@ namespace std{
 			data(0), data_size(0), elements(0), a(al)
 		{
 			elements = n;
-			data_size = elements + __DEFAULT_ALLOC_UNITS;
+			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
@@ -82,7 +84,7 @@ namespace std{
 		}
 
 		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
-			data(0), data_size(__DEFAULT_ALLOC_UNITS), elements(a), a(al)
+			data(0), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(a), a(al)
 		{
 			data = a.allocate(data_size);
 			assign(first, last);
@@ -92,7 +94,7 @@ namespace std{
 			a = x.a;
 
 			elements  = x.elements;
-			data_size = elements + __DEFAULT_ALLOC_UNITS;
+			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
@@ -116,7 +118,7 @@ namespace std{
 			data = 0;
 
 			elements = x.elements;
-			data_size = elements + __DEFAULT_ALLOC_UNITS;
+			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
@@ -340,7 +342,7 @@ namespace std{
 	}
 
 
-#ifdef __EXPAND_VECTOR_FOR_BASIC_TYPES
+#ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 	template<> void vector<char, allocator<char> >::reserve(size_type n);
 	template<> void vector<unsigned char, allocator<unsigned char> >::reserve(size_type n);
 	template<> void vector<short int, allocator<short int> >::reserve(size_type n);

@@ -223,7 +223,7 @@ namespace std{
 	template<class T, class Allocator> deque<T, Allocator>::deque(const Allocator& al)
 		: data(0), data_size(0), elements(0), first_element(0), last_element(0), a(al)
 	{
-		data_size = __DEFAULT_ALLOC_UNITS;
+		data_size = __UCLIBCXX_STL_BUFFER_SIZE__;
 		data = a.allocate(data_size);
 		first_element = data_size /2;
 		last_element = first_element;
@@ -234,7 +234,7 @@ namespace std{
 		size_type n, const T& value, const Allocator& al)
 		: data(0), elements(n), first_element(0), last_element(0), a(al)
 	{
-		data_size = elements + __DEFAULT_ALLOC_UNITS;
+		data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 		data = a.allocate(data_size);
 		first_element = (data_size - elements) / 2;
 		last_element = first_element;
@@ -249,7 +249,7 @@ namespace std{
 		deque<T, Allocator>::deque(InputIterator first, InputIterator last, const Allocator& al)
 		: data(0), data_size(0), elements(n), first_element(0), last_element(0), a(al)
 	{
-		data_size = __DEFAULT_ALLOC_UNITS;
+		data_size = __UCLIBCXX_STL_BUFFER_SIZE__;
 		data = a.allocate(data_size);
 		first_element = data_size / 4;	//Note sure how big, but let's add a little space...
 		last_element = first_element;
@@ -263,7 +263,7 @@ namespace std{
 	template<class T, class Allocator> deque<T, Allocator>::deque(const deque<T,Allocator>& x)
 		: data(0), elements(0), first_element(0), last_element(0), a(x.a)
 	{
-		data_size = x.elements + __DEFAULT_ALLOC_UNITS;
+		data_size = x.elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 		data = a.allocate(data_size);
 		first_element = (data_size - x.elements) / 2;
 		last_element = first_element + 1;
@@ -559,7 +559,7 @@ namespace std{
 		size_type size_temp;
 		size_type first_temp;
 		T * data_temp;
-		size_temp = n + __DEFAULT_ALLOC_UNITS;		//Reserve extra 'cause we can
+		size_temp = n + __UCLIBCXX_STL_BUFFER_SIZE__;		//Reserve extra 'cause we can
 		data_temp = a.allocate(size_temp);
 	
 		first_temp = (size_temp - elements) / 2;

@@ -23,7 +23,7 @@
 
 namespace std{
 
-#ifdef __EXPAND_ISTREAM_FOR_CHAR
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
 	template <> basic_istream<char, char_traits<char> >&
 		basic_istream<char, char_traits<char> >::operator>>(short& n)

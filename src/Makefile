@@ -1,10 +1,9 @@
-CC  	=	gcc
-CXX	=	g++
-#CFLAGS	=	-O2 -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -I../include -nostdinc++ -fPIC -Weffc++ -ansi
-CFLAGS	=	-Os -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -I../include -nostdinc++ -fPIC -ansi
-C_FLAGS	=	$(CFLAGS)
-CXXFLAGS=	$(CFLAGS)
-LIBS	=	-lc -lgcc_s -lm
+#LIBS	=	-lc -lgcc_s -lm
+LIBS	=	-lc -lgcc_s
+
+TOPDIR=../
+include $(TOPDIR)Rules.mak
+
 SRCS	=\
 	new.cpp \
 	exception.cpp \
@@ -55,10 +54,14 @@ EXOBJS	=\
 	algorithm.o
 
 ALLOBJS	=	$(EXOBJS)
-ALLBIN	=	libuClibc++.so libuClibc++.a
+ALLBIN	=	libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.a
 ALLTGT	=	libuClibc++
 
-SUPOBJS	=	/usr/lib/gcc-lib/i686-pc-linux-gnu/3.3.4/libsupc++.a
+ifeq ($(IMPORT_LIBSUP),y)
+SUPOBJS	=	$(LIBSUP_PATH)
+else
+SUPOBJS =
+endif
 
 # User defines:
 
@@ -68,7 +71,10 @@ objs:	$(ALLOBJS)
 
 libuClibc++:	$(ALLOBJS)
 #	ar rcs libuClibc++.a $(EXOBJS)
-	gcc -shared -o libuClibc++.so $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS)
+	gcc -shared -o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS)
+	ln -s libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
+	ln -s libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
+	ln -s libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
 
 cleanobjs:
 	rm -f $(ALLOBJS)
@@ -77,6 +83,7 @@ cleanbin:
 	rm -f $(ALLBIN)
 
 clean:	cleanobjs cleanbin
+	rm -f libuClibc++*
 
 cleanall:	cleanobjs cleanbin
 

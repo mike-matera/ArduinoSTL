@@ -51,7 +51,7 @@ namespace std{
 		inline static void resize(vector<T, Allocator> & v, typename Allocator::size_type sz, T c){
 			if(sz > v.elements){      //Need to actually call constructor
 				typename Allocator::size_type temp_el = v.elements;
-				v.reserve(sz + __DEFAULT_ALLOC_UNITS);
+				v.reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
 
 				v.elements = sz;
 
@@ -59,7 +59,7 @@ namespace std{
 					v.data[i] = c;
 				}
 			}else{
-				v.reserve(sz + __DEFAULT_ALLOC_UNITS);
+				v.reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
 				v.elements = sz;
 			}
 		}

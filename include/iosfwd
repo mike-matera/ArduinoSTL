@@ -29,7 +29,7 @@ namespace std {
 	class ios_base;
 	template<> class char_traits<char>;
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	template<> class char_traits<wchar_t>;
 #endif
 
@@ -65,7 +65,7 @@ namespace std {
 	template <class charT, class traits = char_traits<charT> > class basic_ostreambuf_iterator;
 
 	typedef basic_ios<char>       ios;
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_ios<wchar_t>    wios;
 #endif
 
@@ -83,21 +83,21 @@ namespace std {
 	typedef basic_ifstream<char> ifstream;
 	typedef basic_ofstream<char> ofstream;
 	typedef basic_fstream<char>  fstream;
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_streambuf<wchar_t> wstreambuf;
 	typedef basic_istream<wchar_t>   wistream;
 	typedef basic_ostream<wchar_t>   wostream;
 	typedef basic_iostream<wchar_t>  wiostream;
 #endif
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_stringbuf<wchar_t>     wstringbuf;
 	typedef basic_istringstream<wchar_t> wistringstream;
 	typedef basic_ostringstream<wchar_t> wostringstream;
 	typedef basic_stringstream<wchar_t>  wstringstream;
 #endif
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_filebuf<wchar_t>  wfilebuf;
 	typedef basic_ifstream<wchar_t> wifstream;
 	typedef basic_ofstream<wchar_t> wofstream;
@@ -106,7 +106,7 @@ namespace std {
 	
 	template <class state> class fpos;
 	typedef fpos<char_traits<char>::state_type> streampos;
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef fpos<char_traits<wchar_t>::state_type> wstreampos;
 #endif
 }

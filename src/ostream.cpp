@@ -22,7 +22,7 @@
 namespace std{
 	
 
-#ifdef __EXPAND_OSTREAM_FOR_CHAR
+#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 
 template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(bool n){
 	sentry s(*this);

@@ -14,6 +14,9 @@ ALLTGT	=
 
 # User defines:
 
+TOPDIR=../
+include $(TOPDIR)Rules.mak
+
 all:
 
 objs:	$(ALLOBJS)

@@ -61,7 +61,7 @@ namespace std{
 	class ios_base {
 	public:
 		class failure;
-#ifdef __INCLUDE_CIN_COUT
+#ifdef __UCLIBCXX_SUPPORT_CDIR__
 		class Init{
 		public:
 			Init();
@@ -120,21 +120,12 @@ namespace std{
 		static const seekdir cur		= 0x02;
 		static const seekdir end		= 0x04;
 
-//		fmtflags flags() const;
 		fmtflags flags() const{
 			return mformat;
 		}
 		fmtflags flags(fmtflags fmtfl);
-//		fmtflags flags(fmtflags fmtfl){
-//			fmtflags temp = mformat;
-//			mformat = fmtfl;
-//			return temp;
-//		}
 
 		fmtflags setf(fmtflags fmtfl);
-//		fmtflags setf(fmtflags fmtfl){
-//			return flags(flags() | fmtfl);
-//		}
 		fmtflags setf(fmtflags fmtfl, fmtflags mask ){
 //			fmtflags temp = mformat;
 //			mformat = (mformat& (~mask)) | (fmtfl & mask);
@@ -194,7 +185,7 @@ namespace std{
 	protected:
 		ios_base() : mLocale(), mformat(dec | showbase | unitbuf ), mstate(goodbit), 
 			mmode(), mdir(), mprecision(6), mwidth(0)
-#ifdef __INCLUDE_CIN_COUT
+#ifdef __UCLIBCXX_SUPPORT_CDIR__
 			,mInit()
 #endif
 		{
@@ -207,7 +198,7 @@ namespace std{
 		seekdir mdir;
 		streamsize mprecision;
 		streamsize mwidth;
-#ifdef __INCLUDE_CIN_COUT
+#ifdef __UCLIBCXX_SUPPORT_CDIR__
 		Init mInit;
 #endif
 	};
@@ -323,6 +314,4 @@ namespace std{
 };
 
 #endif
-
-
 

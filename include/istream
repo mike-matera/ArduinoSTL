@@ -29,7 +29,9 @@
 namespace std{
 
 	typedef basic_istream<char> istream;
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_istream<wchar_t> wistream;
+#endif
 	template <class charT, class traits> basic_istream<charT,traits>& ws(basic_istream<charT,traits>& is);
 
 	template <class charT, class traits> class basic_istream : virtual public basic_ios<charT,traits> {
@@ -410,7 +412,7 @@ namespace std{
 		return *this;
 	}
 
-#ifdef __EXPAND_ISTREAM_FOR_CHAR
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(bool &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(short &n);
 	template <> basic_istream<char,char_traits<char> > & 

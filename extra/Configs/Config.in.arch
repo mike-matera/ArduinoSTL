@@ -1,0 +1,43 @@
+#
+# For a description of the syntax of this configuration file,
+# see extra/config/Kconfig-language.txt
+#
+
+choice
+	prompt "Target Processor Endianness"
+	help
+	  This is the endianness you wish to build use.  Choose either Big
+	  Endian, or Little Endian.
+
+config ARCH_LITTLE_ENDIAN
+	bool "Little Endian"
+
+config ARCH_BIG_ENDIAN
+	bool "Big Endian"
+
+endchoice
+
+config UCLIBCXX_HAS_FLOATS
+	bool "Enable floating point number support"
+	default y
+	help
+	  This option allows you to entirely omit all floating point number
+	  support from uClibc++.  This will cause floating point functions like
+	  strtod() to be omitted from uClibc++.  Other floating point functions, 
+	  such as printf() and scanf() will still be included in the library, 
+	  but will not contain support for floating point numbers.
+
+	  Answering N to this option can reduce the size of uClibc++.  Most people
+	  will answer Y.
+	  THIS DOESN'T DO ANYTHING YET - FIXME
+
+config WARNINGS
+	string "Compiler Warnings"
+	default "-Wall"
+	help
+	  Set this to the set of gcc warnings you wish to see while compiling.
+
+config HAVE_DOT_CONFIG
+	bool
+	default y
+

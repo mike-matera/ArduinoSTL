@@ -29,7 +29,7 @@
 namespace std{
 
 	template <class charT, class traits> class basic_filebuf : public basic_streambuf<charT,traits> {
-#ifdef __INCLUDE_CIN_COUT
+#ifdef __UCLIBCXX_SUPPORT_CDIR__
 		friend ios_base::Init::Init();	//Needed for cout/cin stuff
 #endif
 	public:
@@ -43,12 +43,13 @@ namespace std{
 		//Constructors/destructor:
 
 		basic_filebuf() : basic_streambuf<charT,traits>(), fp(0), pbuffer(0), gbuffer(0), l() {
-			pbuffer = new char_type[__DEFAULT_ALLOC_UNITS];
-			gbuffer = new char_type[__DEFAULT_ALLOC_UNITS];
+			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
+			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
-			setp(pbuffer, pbuffer + __DEFAULT_ALLOC_UNITS);
+			setp(pbuffer, pbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 			//Position get buffer so that there is no data available
-			setg(gbuffer, gbuffer + __DEFAULT_ALLOC_UNITS, gbuffer + __DEFAULT_ALLOC_UNITS);
+			setg(gbuffer, gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__,
+				gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 		}
 
 		virtual ~basic_filebuf(){

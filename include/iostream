@@ -29,15 +29,27 @@
 #include <fstream>
 
 namespace std{
+#ifdef __UCLIBCXX_SUPPORT_CIN__
 	extern istream cin;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_COUT__
 	extern ostream cout;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_CERR__
 	extern ostream cerr;
+#endif
 	extern ostream clog;
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
+#ifdef __UCLIBCXX_SUPPORT_CIN__
 	extern wistream wcin;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_COUT__
 	extern wostream wcout;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_CERR__
 	extern wostream wcerr;
+#endif
 	extern wostream wclog;
 #endif
 

@@ -25,7 +25,7 @@
 
 namespace std{
 
-#ifdef __EXPAND_BASIC_STRING_FOR_CHAR
+#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
 //Pure string functions
 	template<> basic_string<char,char_traits<char>, allocator<char> >::
 		basic_string(const char* s, const allocator<char>& al)
@@ -38,7 +38,7 @@ namespace std{
 
 
 //Functions dependent upon OSTREAM
-#ifdef __EXPAND_OSTREAM_FOR_CHAR
+#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 
 template<> basic_ostream<char, char_traits<char> >& 
 	operator<<(basic_ostream<char, char_traits<char> >& os,
@@ -51,7 +51,7 @@ template<> basic_ostream<char, char_traits<char> >&
 
 
 //Functions dependent upon ISTREAM
-#ifdef __EXPAND_ISTREAM_FOR_CHAR
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
 template<> basic_istream<char, char_traits<char> >& operator>>(
 	basic_istream<char,char_traits<char> >& is,

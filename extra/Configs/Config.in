@@ -1,0 +1,401 @@
+#
+# For a description of the syntax of this configuration file,
+# see extra/config/Kconfig-language.txt
+#
+mainmenu "uClibc++ C++ Library Configuration"
+
+
+choice
+	prompt "Target Architecture"
+	default TARGET_i386
+	help
+	  Stuff
+
+#config TARGET_alpha
+#	bool "alpha"
+
+#config TARGET_arm
+#	bool "arm"
+
+#config TARGET_cris
+#	bool "cris"
+
+#config TARGET_e1
+#	bool "e1"
+
+#config TARGET_h8300
+#	bool "h8300"
+
+config TARGET_i386
+	bool "i386"
+
+#config TARGET_i960
+#	bool "i960"
+
+#config TARGET_m68k
+#	bool "m68k"
+
+#config TARGET_microblaze
+#	bool "microblaze"
+
+#config TARGET_mips
+#	bool "mips"
+
+#config TARGET_powerpc
+#	bool "powerpc"
+
+#config TARGET_sh
+#	bool "SuperH"
+
+#config TARGET_sparc
+#	bool "sparc"
+
+#config TARGET_v850
+#	bool "v850"
+
+endchoice
+
+
+menu "Target Architecture Features and Options"
+
+if TARGET_alpha
+source "extra/Configs/Config.alpha"
+endif
+
+if TARGET_arm
+source "extra/Configs/Config.arm"
+endif
+
+if TARGET_cris
+source "extra/Configs/Config.cris"
+endif
+
+if TARGET_e1
+source "extra/Configs/Config.e1"
+endif
+
+if TARGET_h8300
+source "extra/Configs/Config.h8300"
+endif
+
+if TARGET_i386
+source "extra/Configs/Config.i386"
+endif
+
+if TARGET_i960
+source "extra/Configs/Config.i960"
+endif
+
+if TARGET_m68k
+source "extra/Configs/Config.m68k"
+endif
+
+if TARGET_microblaze
+source "extra/Configs/Config.microblaze"
+endif
+
+if TARGET_mips
+source "extra/Configs/Config.mips"
+endif
+
+if TARGET_powerpc
+source "extra/Configs/Config.powerpc"
+endif
+
+if TARGET_sh
+source "extra/Configs/Config.sh"
+endif
+
+if TARGET_sparc
+source "extra/Configs/Config.sparc"
+endif
+
+if TARGET_v850
+source "extra/Configs/Config.v850"
+endif
+
+
+
+source "extra/Configs/Config.in.arch"
+
+endmenu
+
+menu "General Library Settings"
+
+config HAVE_SHARED
+#	bool "Enable support for shared libraries"
+	bool
+#	depends on DOPIC && !HAVE_NO_SHARED
+	default y
+#	help
+#	  If you wish to build uClibc++ with support for shared libraries then
+#	  answer Y here.  If you only want to build uClibc as a static library,
+#	  then answer N.
+
+config UCLIBCXX_PROFILING
+	bool "Support gprof profiling"
+	default n
+	help
+	  If you wish to build uClibc++ with support for application profiling
+	  using the gprof tool, then you should enable this feature.  Then in
+	  addition to building uClibc++ with profiling support, you will also
+	  need to recompile all your shared libraries with the profiling
+	  enabled version of uClibc++.  To add profiling support to your
+	  applications, you must compile things using the gcc options
+	  "-fprofile-arcs  -pg".  Then when you run your applications, a
+	  gmon.out file will be generated which can then be analyzed by
+	  'gprof'.  
+
+	  These exist a number of less invasive alternatives that do not
+	  require your to specially instrument your application, and recompile
+	  and relink everything.  
+	  
+	  Many people have had good results using the combination of Valgrind 
+	  to generate profiling information and KCachegrind for analysis:
+		  http://developer.kde.org/~sewardj/
+		  http://kcachegrind.sourceforge.net/
+
+	  The OProfile system-wide profiler is another alternative:
+		  http://oprofile.sourceforge.net/
+
+	  Prospect is another alternative based on OProfile:
+		  http://prospect.sourceforge.net/
+
+	  And the Linux Trace Toolkit (LTT) is also a fine tool:
+		http://www.opersys.com/LTT/
+
+	  If none of these tools do what you need, you can of course enable
+	  this option, rebuild everything, and use 'gprof'.  There is both a
+	  size and performance penalty to profiling your applications this way,
+	  so most people should answer N.
+
+config HAS_NO_THREADS
+	bool
+	default n
+
+config UCLIBCXX_HAS_THREADS
+	bool "POSIX Threading Support"
+	depends on !HAS_NO_THREADS
+	default y
+	help
+	  If you want to compile uClibc++ with pthread support, then answer Y.  
+	  This will increase the size of uClibc++ by adding a bunch of locking
+	  to critical data structures, and adding extra code to ensure that
+	  functions are properly reentrant.
+
+	  If your applications require pthreads, answer Y.
+	  THIS DOESN'T WORK YET - FIXME
+
+config UCLIBCXX_HAS_LFS
+	bool "Large File Support"
+	default y
+	depends on !CONFIG_CRIS
+	help
+	  If you wish to build uClibc++ with support for accessing large files 
+	  (i.e. files greater then 2 GiB) then answer Y.  Do not enable this 
+	  if you are using an older Linux kernel (2.0.x) that lacks large file 
+	  support.  Enabling this option will increase the size of uClibc.
+	  THIS DOESN'T WORK YET - FIXME
+
+
+endmenu
+
+menu "String and I/O Stream Support"
+
+config UCLIBCXX_HAS_WCHAR
+	bool "Wide Character Support"
+	default n
+	help
+	  Answer Y to enable wide character support.  This will make uClibc++ 
+	  much larger.  It also requires support from the underlying C library.
+
+	  Most people will answer N.
+
+config UCLIBCXX_IOSTREAM_BUFSIZE
+	int "I/O stream buffer size"
+	default 32
+	help
+	  Please select a value for BUFSIZE.  This will be used by the
+	  iostream subsystem as the default buffer size for a file, and
+	  affects cin, cout, fstream, etc.  This is independent of the 
+	  buffering provided by the underlying C library.  This must be a
+	  multiple of 2
+
+	  NOTE: Setting this to '0' will disable buffering completely.
+	  This may break applications which extend the I/O stream
+	  subsystem, but those are few and far between.  Disabling will
+	  result in both smaller and very likely faster code.
+
+	  THIS DOESN'T WORK YET - FIXME
+
+config UCLIBCXX_SUPPORT_CDIR
+	bool "Enable support for cin, cout and cerr"
+	default y
+	help
+	  Answer Y to enable the framework for cin, cout and cerr.  Note
+	  that each of those can me manually altered at a later point.
+	  Disabling this option will result in space savings as well as 
+	  performance improvements as some startup code can be eliminated.
+	  This is a widely used feature.
+
+	  Most people will answer Y.
+
+config UCLIBCXX_SUPPORT_CIN
+	bool "Enable cin"
+	default y
+	depends on UCLIBCXX_SUPPORT_CDIR
+	help
+	  Answer y to have support for std::cin.  This is a commonly used
+	  feature, so you will probably want to say yes here.
+
+config UCLIBCXX_SUPPORT_COUT
+	bool "Enable cout"
+	default y
+	depends on UCLIBCXX_SUPPORT_CDIR
+	help
+	  Answer y to have support for std::cout.  This is a commonly used
+	  feature, so you will probably want to say yes here.
+
+config UCLIBCXX_SUPPORT_CERR
+	bool "Enable cerr"
+	default y
+	depends on UCLIBCXX_SUPPORT_CDIR
+	help
+	  Answer y to have support for std::cerr.  This is a commonly used
+	  feature, so you will probably want to say yes here.
+
+
+endmenu
+
+
+menu "STL and Code Expansion"
+
+config UCLIBCXX_STL_BUFFER_SIZE
+	int "STL buffer size"
+	default 32
+	help
+	  Much of the STL code relies on allocating memory for a number
+	  of objects.  For objects like vectors which must reallocate
+	  all of their memory when resizing, aquiring a few extra
+	  objects-worth can provide a dramatic performance improvement.
+
+	  This specifies the number of spare objects allocated.
+	  NOTE:  This number must be at least 4.  Default: 32
+
+config UCLIBCXX_CODE_EXPANSION
+	bool "Template code expansion"
+	default y
+	help
+	  Most of the code in the C++ standard library is in the form of
+	  templates which are compiled and linked into each executable
+	  on demand.  Answering 'Y' here will allow you to select a 
+	  number of templates to pre-expand for certain data types so
+	  that the code is stored in the library instead of the
+	  executable.
+
+	  Almost everybody will want to answer Y
+
+config UCLIBCXX_EXPAND_STRING_CHAR
+	bool "Expand std::basic_string for <char>"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  If you use std::string at all, you will want to answer Y here.
+	  The largest portions of the code for basic_string will be 
+	  expanded and placed into the library, shrinking executables.
+	  You should only say N if you don't use strings at all.
+
+config UCLIBCXX_EXPAND_VECTOR_BASIC
+	bool "Expand std::vector for basic data types"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  std::basic string inherits from vector, so saying Y here is
+	  always a good idea.  This will expand std::vector for all
+	  primitive data types, shrinking executables.
+
+config UCLIBCXX_EXPAND_ISTREAM_CHAR
+	bool "Expand std::istream for <char>"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  If you use istream or it's derivatives, including fstream
+	  and iostream with characters, you will want to say yes here
+	  to expand the code and place it into the library.
+
+config UCLIBCXX_EXPAND_OSTREAM_CHAR
+	bool "Expand std::ostream for <char>"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  If you use any ostream derivative, including fstream and
+	  iostream with characters, you will want to say yes here to
+	  expand the code and place it into the library.
+
+endmenu
+
+
+
+
+menu "Library Installation Options"
+
+config RUNTIME_PREFIX
+	string "uClibc++ runtime library directory"
+	default "/usr/$(TARGET_ARCH)-linux-uclibc/usr"
+	help
+	  RUNTIME_PREFIX is the directory into which the uClibc++ runtime
+	  libraries will be installed.
+
+	  For a typical target system this should be set to "/", such that
+	  'make install' will install /usr/lib/libuClibc++-<VERSION>.so
+
+config IMPORT_LIBSUP
+	bool "Import libsupc++.a"
+	default y
+	help
+	  libsupc++.a is a file which comes with the g++ compiler and provides
+	  all of the language support features required for C++ programs to 
+	  run, such as exception support, rtti support, as well as support for
+	  the C++ ABI.  This is largely compiler dependent.
+
+	  Since the library is statically compiled, this code would normally
+	  need to be compiled into each executible.  However, it can also be
+	  imported into this library and shared. GNU libc++ imports this code.
+
+	  You should say yes.
+
+config LIBSUP_PATH
+	string "Path for libsupc++"
+	default "/usr/lib/gcc-lib/$(TARGET_ARCH)/3.3.4/libsupc++.a"
+	depends on IMPORT_LIBSUP
+	help
+	  LIBSUP_PATH is the location of the gcc libsupc++.a library.
+
+endmenu
+
+menu "uClibc++ development/debugging options"
+
+config DODEBUG
+	bool "Build uClibc++ with debugging symbols"
+	default n
+	help
+	  Say Y here if you wish to compile uClibc++ with debugging symbols.
+	  This will allow you to use a debugger to examine uClibc++ internals
+	  while applications are running.  This increases the size of the
+	  library considerably and should only be used when doing development.
+	  If you are doing development and want to debug uClibc++, answer Y.
+
+	  Otherwise, answer N.
+
+config UCLIBCXX_EXCEPTION_SUPPORT
+	bool "Exception support"
+	default y
+	help
+	  This option enables exception support in the library.  You will
+	  Exception support is part of the C++ standard, and as such
+	  should almost always be enabled.  This increases the size of
+	  the library.
+
+	  Most people will answer Y.
+
+endmenu

@@ -22,7 +22,7 @@
 namespace std{
 
 
-#ifdef __EXPAND_VECTOR_FOR_BASIC_TYPES
+#ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 
 	template<> void vector<char, allocator<char> >::reserve(size_type n){
 		__vector_helper_functions<char, allocator<char> >::
