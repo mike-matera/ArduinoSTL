@@ -1,5 +1,9 @@
 0.1.9
 Peter S. Mazinger:	wchar cleanups across the board
+-	Make sure that operator= changes the number of elements in the vector.
+-	Fix to string::pop_back function scope
+-	reverse_iterator copying fixed
+
 
 
 0.1.8
