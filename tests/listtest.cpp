@@ -307,6 +307,35 @@ int main(){
 	std::cout << std::endl;
 	
 
+	std::cout << "Testing operator=()\n";
+	temp.clear();
+	temp.push_back(12.8);
+	temp.push_back(22.4);
+	temp.push_back(37.9);
+	temp.push_back(48.5);
+	temp.push_back(21.2);
+	temp.push_back(85.4);
+	temp.push_back(24.6);
+	temp.push_back(69.7);
+
+	std::cout << "The following three lines should be identical\n";
+	std::cout << "12.8 22.4 37.9 48.5 21.2 85.4 24.6 69.7 \n";
+	a = temp;	
+	i = temp.begin();
+	while(i != temp.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+	i = a.begin();
+	while(i != a.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+
 
 	std::cout << "\nTesting sorting\n";
 

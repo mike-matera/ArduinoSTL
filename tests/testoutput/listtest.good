@@ -82,6 +82,11 @@ The following two lines should be identical
 The following two lines should be identical
 1 3 4 2 
 1 3 4 2 
+Testing operator=()
+The following three lines should be identical
+12.8 22.4 37.9 48.5 21.2 85.4 24.6 69.7 
+12.8 22.4 37.9 48.5 21.2 85.4 24.6 69.7 
+12.8 22.4 37.9 48.5 21.2 85.4 24.6 69.7 
 
 Testing sorting
 The following two lines should be identical:

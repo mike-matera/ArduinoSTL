@@ -8,3 +8,5 @@ Replace the IO stream library with an unbuffered version.  This should be
 	both easier to maintain as well as result in smaller code.
 	Remember that pbackfail and similar functions must work properly
 	according to spec.
+
+Change ostream code so that it uses fill/width properly

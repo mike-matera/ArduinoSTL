@@ -61,7 +61,19 @@ namespace std{
 		list(const list<T,Allocator>& x);
 		~list();
 
-		list<T,Allocator>& operator=(const list<T,Allocator>& x);
+		list<T,Allocator>& operator=(const list<T,Allocator>& x){
+			if(&x == this){
+				return *this;
+			}
+			clear();
+			iterator i = x.begin();
+			while(i != x.end()){
+				push_back(*i);
+				++i;
+			}
+			return *this;
+		}
+
 		template <class InputIterator> void assign(InputIterator first, InputIterator last);
 		template <class Size, class U> void assign(Size n, const U& u = U());
 		allocator_type get_allocator() const;

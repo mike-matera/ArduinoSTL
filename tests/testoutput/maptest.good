@@ -13,6 +13,11 @@ a: 65
 b: 2
 c: 3
 k: 11
+Elements in reverse order:
+k: 11
+c: 3
+b: 2
+a: 65
 Number of elements: 4
 Container empty? 0
 Finding element "c"

@@ -208,7 +208,7 @@ protected:
 			: element(e), container(c) {  }
 		~__map_citer() {  }
 		
-		typename Map::value_type & operator*(){
+		typename Map::value_type operator*(){
 			return container->data[element];
 		}
 		const typename Map::value_type * operator->(){

@@ -206,7 +206,7 @@ protected:
 			: element(e), container(c) {  }
 		~__set_citer() {  }
 		
-		typename Set::value_type & operator*(){
+		typename Set::value_type operator*(){
 			return container->data[element];
 		}
 		const typename Set::value_type * operator->(){

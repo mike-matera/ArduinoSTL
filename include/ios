@@ -336,7 +336,7 @@ namespace std{
 		iostate exceptions() const;
 		void exceptions(iostate except);
 
-		explicit basic_ios(basic_streambuf<charT,traits>* sb) : mtied(0), mstreambuf(0){
+		explicit basic_ios(basic_streambuf<charT,traits>* sb) : fill_char(' '), mtied(0), mstreambuf(0){
 			init(sb);
 		}
 		virtual ~basic_ios(){
@@ -361,9 +361,13 @@ namespace std{
 		}
 		basic_ios& copyfmt(const basic_ios& rhs);
 		char_type fill() const{
-			return widen(' ');
+			return fill_char;
 		}
-		char_type fill(char_type ch);
+		char_type fill(char_type ch){
+			char_type temp = fill_char;
+			fill_char = ch;
+			return temp;
+		}
 
 
 		locale imbue(const locale& loc);
@@ -373,6 +377,7 @@ namespace std{
 			return c;
 		}
 	protected:
+		char_type fill_char;
 		basic_ostream<charT,traits>* mtied;
 		basic_streambuf<charT,traits>* mstreambuf;
 		basic_ios() : mtied(0), mstreambuf(0){  }

@@ -16,6 +16,8 @@ int main(){
 	std::map<std::string, double>::iterator i, j;
 	std::map<std::string, double>::const_iterator k;
 
+	std::map<std::string, double>::reverse_iterator ri;
+
 	std::cout << "Start of map test" << std::endl;
 
 	std::cout << "Adding a few elements..." << std::endl;
@@ -55,6 +57,16 @@ int main(){
 		i--;
 		i++;
 	}
+
+	std::cout << "Elements in reverse order:\n";
+	ri = test.rbegin();
+	while(ri != test.rend()){
+//		std::cout << ri->first << ": " << ri->second << std::endl;
+		std::cout << (*ri).first << ": " << (*ri).second << std::endl;
+		++ri;
+	}
+
+
 
 	std::cout << "Number of elements: " << test.size() << std::endl;
 	std::cout << "Container empty? " << test.empty() << std::endl;
