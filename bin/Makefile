@@ -1,52 +1,47 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-WRAPPERNAME	= g++-uc
+WRAPPER	= g++-uc
 
 INITIALOPTIONS	=
 EXTRALIBS	=
 
-ifeq ($(IMPORT_LIBSUP),y)
-
-else
+ifneq ($(IMPORT_LIBSUP),y)
 EXTRALIBS += -lsupc++
 endif
 
-ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
-
-else
+ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 INITIALOPTIONS	+= -fno-exceptions -fno-rtti
 endif
 
 # User defines:
 
-all:	wrapper
+all: $(WRAPPER)
 
 clean:
-	rm -f $(WRAPPERNAME)
+	rm -f $(WRAPPER)
 
-wrapper:
-	echo "#!/bin/bash" > $(WRAPPERNAME)
-	echo "" >> $(WRAPPERNAME)
-	echo "OPTIONS=\"$(INITIALOPTIONS)\"" >> $(WRAPPERNAME)
-	echo 'INCLIB="Y"' >> $(WRAPPERNAME)
-	echo 'while [ -n "$$1" ]' >> $(WRAPPERNAME)
-	echo 'do' >> $(WRAPPERNAME)
-	echo '	OPTIONS="$$OPTIONS $$1"' >> $(WRAPPERNAME)
-	echo '	if [ "$$1" == "-c" ]' >> $(WRAPPERNAME)
-	echo '	then' >> $(WRAPPERNAME)
-	echo '		INCLIB="N"' >> $(WRAPPERNAME)
-	echo '	fi' >> $(WRAPPERNAME)
-	echo '	shift' >> $(WRAPPERNAME)
-	echo 'done' >> $(WRAPPERNAME)
-	echo 'if [ "$$INCLIB" == "Y" ]' >> $(WRAPPERNAME)
-	echo 'then' >> $(WRAPPERNAME)
-	echo '	OPTIONS="$$OPTIONS -luClibc++ -lc $(EXTRALIBS)"' >> $(WRAPPERNAME)
-	echo 'fi' >> $(WRAPPERNAME)
-	echo -n 'g++ -fno-builtin -nostdinc++ -nodefaultlibs -I' >> $(WRAPPERNAME)
-	echo -n $(UCLIBCXX_RUNTIME_PREFIX) >> $(WRAPPERNAME)
-	echo -n '/include/ -L' >> $(WRAPPERNAME)
-	echo -n $(UCLIBCXX_RUNTIME_PREFIX) >> $(WRAPPERNAME)
-	echo '/lib/ $$OPTIONS' >> $(WRAPPERNAME)
-	chmod 755 $(WRAPPERNAME)
-
+$(WRAPPER):
+	echo "#!/bin/bash" > $(WRAPPER)
+	echo "" >> $(WRAPPER)
+	echo "OPTIONS=\"$(INITIALOPTIONS)\"" >> $(WRAPPER)
+	echo 'INCLIB="Y"' >> $(WRAPPER)
+	echo 'while [ -n "$$1" ]' >> $(WRAPPER)
+	echo 'do' >> $(WRAPPER)
+	echo '	OPTIONS="$$OPTIONS $$1"' >> $(WRAPPER)
+	echo '	if [ "$$1" == "-c" ]' >> $(WRAPPER)
+	echo '	then' >> $(WRAPPER)
+	echo '		INCLIB="N"' >> $(WRAPPER)
+	echo '	fi' >> $(WRAPPER)
+	echo '	shift' >> $(WRAPPER)
+	echo 'done' >> $(WRAPPER)
+	echo 'if [ "$$INCLIB" == "Y" ]' >> $(WRAPPER)
+	echo 'then' >> $(WRAPPER)
+	echo '	OPTIONS="$$OPTIONS -luClibc++ -lc $(EXTRALIBS)"' >> $(WRAPPER)
+	echo 'fi' >> $(WRAPPER)
+	echo -n 'g++ -fno-builtin -nostdinc++ -nodefaultlibs -I' >> $(WRAPPER)
+	echo -n $(UCLIBCXX_RUNTIME_PREFIX) >> $(WRAPPER)
+	echo -n '/include/ -L' >> $(WRAPPER)
+	echo -n $(UCLIBCXX_RUNTIME_PREFIX) >> $(WRAPPER)
+	echo '/lib/ $$OPTIONS' >> $(WRAPPER)
+	chmod 755 $(WRAPPER)
