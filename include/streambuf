@@ -195,8 +195,9 @@ namespace std{
 		virtual basic_streambuf<char_type,traits>* setbuf(char_type* , streamsize){
 			return 0;
 		}
-		virtual pos_type seekoff(off_type , ios_base::seekdir , 
-			ios_base::openmode = ios_base::in | ios_base::out){
+		virtual pos_type seekoff(off_type , ios_base::seekdir, 
+			ios_base::openmode = ios_base::in | ios_base::out)
+		{
 			return 0;
 		}
 		virtual pos_type seekpos(pos_type , ios_base::openmode = ios_base::in | ios_base::out){
