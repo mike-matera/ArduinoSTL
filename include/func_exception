@@ -25,6 +25,7 @@
 
 namespace std{
 
+	void __throw_bad_alloc();
 	void __throw_out_of_range(const char * message = 0);
 	void __throw_overflow_error(const char * message = 0);
 	void __throw_length_error(const char * message = 0);

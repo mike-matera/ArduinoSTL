@@ -1,3 +1,31 @@
+0.1.3 - 2004.09.06
+-	Compiles with gcc 3.4, thus it is far more "correct" than previously
+-	Started adding code for valarray
+
+
+0.1.2 - 2004-09-05
+-	Completed all core code for set, multiset, map and multimap.  Rewrote to use inheritence to cut code duplication
+-	Added more algorithms
+-	Now compiles the stlport 1.0 testsuite (some minor changes to not test extensions needed)
+-	Does not yet link stlport testsuite - missing implementations of a number of functions
+-	Added sort algorithm - using a bubble sort for now.
+-	sort_stable will likely remain bubble sort for some time (It is both stable and in-place)
+-	sort will likely be converted to a heap sort eventually (It is in-place, but non-stable)
+-	List sort is a bubble sort.  Might change later (insertion sort?), but it is difficult to work with list limitations
+-	Split iterator code into two sections to cut down on dependency hell
+-	Compiles ncurses c++ library and test application
+
+
+0.1.1 - 2004-09-01
+
+-	Removed semicolons on the closing of namespaces.  My compiler doesn't warn, so I may have missed one or two
+-       Fixed a problem with the istream code which caused it to fail to read in the first character of input.
+-       Changed compiler flags to not geenrate some warnings on >=GCC 3.4
+-       Changed build process to prevent mis-configuration under certain circumstances
+-       Added stringstream and all of it's incarnations
+-       Added <bitset>
+-       Added <set> - code is considered 'under development' - not finished
+
 
 0.1.0 - 2004-08-28
 -	Nearly done all algorithms

@@ -5,10 +5,10 @@
 
 int main(){
 	std::bitset<10> a;
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
 
 	a.flip();
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
 
 	a.flip(1);
 	a.flip(3);
@@ -17,18 +17,18 @@ int main(){
 	a.flip(7);
 	a.flip(8);
 	a.flip(9);
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
 
 	a.flip();
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
 
 	std::bitset<10> b(std::string("10110111011110"), 4);
-	std::cout << b.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << b.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 0111011110" << std::endl;
 
 
 	std::bitset<10> c(std::string("10110111011110"), 2, 8);
-	std::cout << c.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << c.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 0011011101" << std::endl;
 
 
@@ -42,25 +42,25 @@ int main(){
 	a.flip(6);
 	a.flip();
 
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 1010110011" << std::endl;
 
 	b = a << 3;
-	std::cout << b.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << b.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 0110011000" << std::endl;
 
 
 	c = a >> 2;
-	std::cout << c.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << c.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 0010101100" << std::endl;
 
 	a = b & c;
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 0010001000" << std::endl;
 
 
 	a = b | c;
-	std::cout << a.template to_string<char, std::char_traits<char>, std::allocator<char> >();
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >();
 	std::cout << " should read : 0110111100" << std::endl;
 
 	a = b ^ c;

@@ -18,7 +18,7 @@
 */
 
 
-#include <memory>
+#include <basic_definitions>
 
 
 #ifndef __STD_HEADER_UTILITY
@@ -28,22 +28,57 @@
 namespace std{
 
 	namespace rel_ops {
-		template<class T> bool operator!=(const T&, const T&);
-		template<class T> bool operator> (const T&, const T&);
-		template<class T> bool operator<=(const T&, const T&);
-		template<class T> bool operator>=(const T&, const T&);
-	};
+		template<class T> inline bool operator!=(const T& x, const T& y){
+			if(x < y || y < x){
+				return true;
+			}
+			return false;
+		}
+
+		template<class T> inline bool operator> (const T& x, const T& y){
+			if( y < x){
+				return true;
+			}
+			return false;
+		}
+
+		template<class T> inline bool operator<=(const T& x, const T& y){
+			if( y < x ){
+				return false;
+			}
+			return true;
+		}
+
+		template<class T> inline bool operator>=(const T& x, const T& y){
+			if(x < y){
+				return false;
+			}
+			return true;
+		}
+	}
 
 
 
 	template <class T1, class T2> struct pair;
-	template <class T1, class T2> bool operator==(const pair<T1,T2>&, const pair<T1,T2>&);
+	template <class T1, class T2> bool operator==(const pair<T1,T2>& x, const pair<T1,T2>& y){
+		if(x.first == y.first && x.second==y.second){
+			return true;
+		}
+		return false;
+	}
 	template <class T1, class T2> bool operator< (const pair<T1,T2>&, const pair<T1,T2>&);
-	template <class T1, class T2> bool operator!=(const pair<T1,T2>&, const pair<T1,T2>&);
+	template <class T1, class T2> bool operator!=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+		if(x.first != y.first || x.second != y.second){
+			return true;
+		}
+		return false;
+	}
 	template <class T1, class T2> bool operator> (const pair<T1,T2>&, const pair<T1,T2>&);
 	template <class T1, class T2> bool operator>=(const pair<T1,T2>&, const pair<T1,T2>&);
 	template <class T1, class T2> bool operator<=(const pair<T1,T2>&, const pair<T1,T2>&);
-	template <class T1, class T2> pair<T1,T2> make_pair(const T1&, const T2&);
+	template <class T1, class T2> pair<T1,T2> make_pair(const T1& x, const T2& y){
+		return pair<T1,T2>(x, y);
+	}
 
 
 	template <class T1, class T2> struct pair {

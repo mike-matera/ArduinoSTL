@@ -21,7 +21,7 @@
 #include<memory>
 #include<utility>
 #include<iterator>
-#include<deque>
+#include <deque>
 #include<functional>
 
 
@@ -30,44 +30,56 @@
 
 
 namespace std{
-	
 
-template<class Key, class Compare = less<Key>, class Allocator = allocator<Key> >
-	class set {
-		//Default value of allocator does not meet C++ standard specs, but it works for this library
-		//Deal with it
+
+template<class Key, class Compare = less<Key>, class Allocator = allocator<Key> > class __base_set;
+template<class Key, class Compare = less<Key>, class Allocator = allocator<Key> > class set;
+template<class Key, class Compare = less<Key>, class Allocator = allocator<Key> > class multiset;
+
+template<class Key, class Compare, class Allocator> class __set_iter;
+template<class Key, class Compare, class Allocator> class __set_citer;
+
+/* The code for the set containers is split up into two classes.
+ * The first class, __base_set holds all of the data and does much of the iterator-based
+ * work.  Then the classes set and multiset inherit from there.  This was done to reduce
+ * the redundancy of code (And thus errors which might crop up), as well as possibly
+ * reducing the size of binaries if both set and multiset are used, along with the same
+ * template parameters.
+ */
+
+
+
+//All base classes first (__base_set, iterators, value_compare) and it's associated code
+
+
+template<class Key, class Compare, class Allocator> class __base_set{
+
 protected:
-	class set_iter;
-	class set_citer;
-	friend class set_iter;
-	friend class set_citer;
+	friend class __set_iter<Key, Compare, Allocator>;
+	friend class __set_citer<Key, Compare, Allocator>;
 
 public:
-
-	typedef Key					key_type;
-	typedef Key					value_type;
-	typedef Compare					key_compare;
-	typedef Allocator				allocator_type;
-	typedef typename Allocator::reference		reference;
-	typedef typename Allocator::const_reference	const_reference;
-	typedef set_iter				iterator;
-	typedef set_citer				const_iterator;
-	typedef typename Allocator::size_type		size_type;
-	typedef typename Allocator::difference_type	difference_type;
-	typedef typename Allocator::pointer			pointer;
-	typedef typename Allocator::const_pointer		const_pointer;
+	typedef __base_set<Key, Compare, Allocator>			set_type;
+	typedef Key							key_type;
+	typedef Key							value_type;
+	typedef Compare							key_compare;
+	typedef Allocator						allocator_type;
+	typedef typename Allocator::reference				reference;
+	typedef typename Allocator::const_reference			const_reference;
+	typedef __set_iter<Key, Compare, Allocator>			iterator;
+	typedef __set_citer<Key, Compare, Allocator>			const_iterator;
+	typedef typename Allocator::size_type				size_type;
+	typedef typename Allocator::difference_type			difference_type;
+	typedef typename Allocator::pointer				pointer;
+	typedef typename Allocator::const_pointer			const_pointer;
 	typedef typename std::reverse_iterator<iterator>		reverse_iterator;
-	typedef typename std::reverse_iterator<const_iterator>	const_reverse_iterator;
+	typedef typename std::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 	class value_compare;
 
-	explicit set(const Compare& comp = Compare(), const Allocator& al = Allocator());
-	template <class InputIterator> set(InputIterator first, InputIterator last,
-		const Compare& comp = Compare(), const Allocator& = Allocator());
-
-	set(const set<Key,Compare,Allocator>& x);
-	~set();
-	set<Key, Compare,Allocator>& operator=(const set<Key,Compare,Allocator>& x);
+	explicit __base_set(const Compare& comp = Compare(), const Allocator& al = Allocator());
+	__base_set(const set_type& x);
+	~__base_set();
 
 	iterator               begin();
 	const_iterator         begin() const;
@@ -82,6 +94,352 @@ public:
 	size_type size() const;
 	size_type max_size() const;
 
+	void swap(set_type & x);
+	void clear();
+
+	key_compare   key_comp() const;
+
+protected:
+
+	deque<Key, allocator<Key> > data;
+	Compare c;
+
+};
+
+
+	//Implementations
+
+	template<class Key, class Compare, class Allocator> class __set_iter
+		: public std::iterator<
+			bidirectional_iterator_tag,
+			Key,
+			typename Allocator::difference_type,
+			typename Allocator::pointer,
+			typename Allocator::reference
+		>
+	{
+	protected:
+		typedef __base_set<Key, Compare, Allocator> Set;
+
+		//FIXME - Find a way to use template parameters or something.  This will do for now
+		friend class __base_set<Key, Compare, Allocator>;
+		friend class __base_set<Key, Compare, Allocator>::const_iterator;
+
+		friend class set<Key, Compare, Allocator>;
+		friend class multiset<Key, Compare, Allocator>;
+
+		typename Set::size_type element;
+		Set * container;
+	public:
+		__set_iter() : element(0), container(0) {  }
+		__set_iter(const typename Set::iterator & m) 
+			: element(m.element), container(m.container) {  }
+		__set_iter(typename Set::size_type e, Set * c) 
+			: element(e), container(c) {  }
+		~__set_iter() {  }
+		
+		typename Set::value_type operator*(){
+			return container->data[element];
+		}
+		typename Set::value_type * operator->(){
+			return &(container->data[element]);
+		}
+		__set_iter & operator=(const typename Set::iterator & m){
+			element = m.element;
+			container = m.container;
+			return *this;
+		}
+		bool operator==(const typename Set::iterator & m){
+			return (m.element == element && m.container == container);
+		}
+		bool operator!=(const typename Set::iterator & m){
+			return (m.element != element || m.container != container);
+		}
+		__set_iter & operator++(){
+			++element;
+			return *this;
+		}
+		__set_iter operator++(int){
+			__set_iter temp(*this);
+			++element;
+			return temp;
+		}
+		__set_iter & operator--(){
+			--element;
+			return *this;
+		}
+		__set_iter operator--(int){
+			__set_iter temp(*this);
+			--element;
+			return temp;
+		}
+
+	};
+
+
+	template<class Key, class Compare, class Allocator> class __set_citer
+		: public std::iterator<
+			bidirectional_iterator_tag,
+			Key,
+			typename Allocator::difference_type,
+			typename Allocator::pointer,
+			typename Allocator::reference
+		>
+	{
+	protected:
+		typedef class __base_set<Key, Compare, Allocator> Set;
+
+		friend class __base_set<Key, Compare, Allocator>;
+
+		friend class set<Key, Compare, Allocator>;
+		friend class multiset<Key, Compare, Allocator>;
+
+		typename Set::size_type element;
+		const Set * container;
+	public:
+		__set_citer() : element(0), container(0) {  }
+		__set_citer(const typename Set::const_iterator & m) 
+			: element(m.element), container(m.container) {  }
+		__set_citer(const typename Set::iterator & m) 
+			: element(m.element), container(m.container) {  }
+		__set_citer(typename Set::size_type e, const Set * const c) 
+			: element(e), container(c) {  }
+		~__set_citer() {  }
+		
+		typename Set::value_type operator*(){
+			return container->data[element];
+		}
+		const typename Set::value_type * operator->(){
+			return &(container->data[element]);
+		}
+		__set_citer & operator=(const typename Set::const_iterator & m){
+			element = m.element;
+			container = m.container;
+			return *this;
+		}
+		bool operator==(const typename Set::const_iterator & m){
+			return (m.element == element && m.container == container);
+		}
+		bool operator!=(const typename Set::const_iterator & m){
+			return (m.element != element || m.container != container);
+		}
+		__set_citer & operator++(){
+			++element;
+			return *this;
+		}
+		__set_citer operator++(int){
+			__set_citer temp(*this);
+			++element;
+			return temp;
+		}
+		__set_citer & operator--(){
+			--element;
+			return *this;
+		}
+		__set_citer operator--(int){
+			__set_citer temp(*this);
+			--element;
+			return temp;
+		}
+
+	};
+
+
+	//Compare the keys of the two items
+	template<class Key, class Compare, class Allocator> class 
+		__base_set<Key, Compare, Allocator>::value_compare : public binary_function<
+			typename set<Key, Compare, Allocator>::value_type,
+			typename set<Key, Compare, Allocator>::value_type,
+		bool>
+	{
+		friend class __base_set<Key, Compare, Allocator>;
+	protected:
+		Compare comp;
+		value_compare(Compare c) : comp(c) { }
+		~value_compare() {  }
+	public:
+		bool operator()(const value_type& x, const value_type& y) const {
+			return comp(x, y);
+		}
+	};
+
+	template <class Key, class Compare, class Allocator> 
+		__base_set<Key, Compare, Allocator>::__base_set(const Compare& comp, const Allocator&)
+		: data(), c(comp)
+	{
+		
+	}
+
+	template <class Key, class Compare, class Allocator>
+		__base_set<Key, Compare, Allocator>::__base_set(const __base_set<Key, Compare, Allocator>& x)
+		: data(x.data), c(x.c)
+	{
+
+	}
+
+	template <class Key, class Compare, class Allocator>
+		__base_set<Key, Compare, Allocator>::~__base_set()
+	{
+		
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::iterator
+		__base_set<Key, Compare, Allocator>::begin()
+	{
+		return iterator(0, this);
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::const_iterator
+		__base_set<Key, Compare, Allocator>::begin() const
+	{
+		return const_iterator(0, this);
+
+	}
+	
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::iterator
+		__base_set<Key, Compare, Allocator>::end()
+	{
+		return iterator(data.size(), this);
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::const_iterator
+		__base_set<Key, Compare, Allocator>::end() const
+	{
+		return const_iterator(data.size(), this);
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::reverse_iterator
+		__base_set<Key, Compare, Allocator>::rbegin()
+	{
+		return reverse_iterator(end());
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::const_reverse_iterator
+		__base_set<Key, Compare, Allocator>::rbegin() const
+	{
+		return const_reverse_iterator(end());
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::reverse_iterator
+		__base_set<Key, Compare, Allocator>::rend()
+	{
+		return reverse_iterator(begin());
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::const_reverse_iterator
+		__base_set<Key, Compare, Allocator>::rend() const
+	{
+		return const_reverse_iterator(begin());
+	}
+
+	template <class Key, class Compare, class Allocator>
+		bool __base_set<Key, Compare, Allocator>::empty() const
+	{
+		return (data.size() == 0);
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::size_type
+		__base_set<Key, Compare, Allocator>::size() const
+	{
+		return data.size();
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::size_type 
+		__base_set<Key, Compare, Allocator>::max_size() const
+	{
+		return data.max_size();
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		void __base_set<Key, Compare, Allocator>::swap(__base_set<Key, Compare, Allocator>& m)
+	{
+		Compare n = c;
+		c = m.c;
+		m.c = n;
+
+		data.swap(m.data);
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		void __base_set<Key, Compare, Allocator>::clear()
+	{
+		data.clear();
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename __base_set<Key, Compare, Allocator>::key_compare
+		__base_set<Key, Compare, Allocator>::key_comp() const
+	{
+		return c;
+	}
+
+//	value_compare value_comp() const;
+
+
+
+/* This is the implementation for the set container.  As noted above, it deviates
+ * from ISO spec by deriving from a base class in order to reduce code redundancy.
+ * More code could be reduced by convirting to virtual functions (thus allowing
+ * much of the erase and insert code to be duplicated), but that would deviate from
+ * the specifications too much to be worth the risk.
+ */
+
+
+
+
+
+//Implementation of set
+
+
+template<class Key, class Compare, class Allocator> class set
+	: public __base_set<Key, Compare, Allocator>
+{
+		//Default value of allocator does not meet C++ standard specs, but it works for this library
+		//Deal with it
+public:
+
+	typedef	__base_set<Key, Compare, Allocator>		base;
+	typedef typename base::key_type				key_type;
+	typedef typename base::value_type			value_type;
+	typedef typename base::key_compare			key_compare;
+	typedef typename base::allocator_type			allocator_type;
+	typedef typename base::reference			reference;
+	typedef typename base::const_reference			const_reference;
+	typedef typename base::iterator				iterator;
+	typedef typename base::const_iterator			const_iterator;
+	typedef typename base::size_type			size_type;
+	typedef typename base::difference_type			difference_type;
+	typedef typename base::pointer				pointer;
+	typedef typename base::const_pointer			const_pointer;
+	typedef typename base::reverse_iterator			reverse_iterator;
+	typedef typename base::const_reverse_iterator		const_reverse_iterator;
+
+	using base::value_compare;
+
+	explicit set(const Compare& comp = Compare(), const Allocator& al = Allocator())
+		: base(comp, al) {  }
+
+	template <class InputIterator> set(InputIterator first, InputIterator last,
+		const Compare& comp = Compare(), const Allocator& = Allocator());
+
+	set(const set<Key, Compare,Allocator>& x) : base(x) {  }
+	~set() {  }
+
+	set<Key, Compare, Allocator>& operator=(const set<Key, Compare, Allocator>& x);
+
 	pair<iterator, bool> insert(const value_type& x);
 	iterator             insert(iterator position, const value_type& x);
 
@@ -89,11 +447,15 @@ public:
 	void      erase(iterator position);
 	size_type erase(const key_type& x);
 	void      erase(iterator first, iterator last);
-	void swap(set<Key,Compare,Allocator>&);
-	void clear();
 
-	key_compare   key_comp() const;
-//	value_compare value_comp() const;
+	using base::begin;
+	using base::end;
+	using base::rbegin;
+	using base::rend;
+
+	using base::empty;
+	using base::size;
+	using base::max_size;
 
 	iterator       find(const key_type& x);
 	const_iterator find(const key_type& x) const;
@@ -106,168 +468,22 @@ public:
 	pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
 
 protected:
-	deque<Key, allocator<Key> > data;
-	Compare c;
+	friend class base::iterator;
+	friend class base::const_iterator;
+
+	iterator ifind(const key_type& x);      //Core find functionality
+	const_iterator ifind(const key_type& x) const;      //Core find functionality
+
+	using base::data;
+	using base::c;
+
 };
 
-
-	//Implementations
-
-	template<class Key, class Compare, class Allocator> class
-		set<Key, Compare, Allocator>::set_iter
-			: public std::iterator<
-				bidirectional_iterator_tag,
-				Key,
-				typename Allocator::difference_type,
-				typename Allocator::pointer,
-				typename Allocator::reference
-			>
-	{
-	protected:
-		friend class set<Key, Compare, Allocator>;
-		friend class set<Key, Compare, Allocator>::const_iterator;
-		set<Key, Compare, Allocator>::size_type element;
-		set<Key, Compare, Allocator> * container;
-	public:
-		set_iter() : element(0), container(0) {  }
-		set_iter(const set<Key, Compare, Allocator>::iterator & m) 
-			: element(m.element), container(m.container) {  }
-		set_iter(set<Key, Compare, Allocator>::size_type e, set<Key, Compare, Allocator> * c) 
-			: element(e), container(c) {  }
-		~set_iter() {  }
-		
-		typename set<Key, Compare, Allocator>::value_type operator*(){
-			return container->data[element];
-		}
-		typename set<Key, Compare, Allocator>::value_type * operator->(){
-			return &(container->data[element]);
-		}
-		set_iter & operator=(set<Key, Compare, Allocator> & m){
-			element = m.element;
-			container = m.container;
-			return *this;
-		}
-		bool operator==(const typename set<Key, Compare, Allocator>::iterator & m){
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename set<Key, Compare, Allocator>::iterator & m){
-			return (m.element != element || m.container != container);
-		}
-		set_iter & operator++(){
-			++element;
-			return *this;
-		}
-		set_iter operator++(int){
-			set_iter temp(*this);
-			++element;
-			return temp;
-		}
-		set_iter & operator--(){
-			--element;
-			return *this;
-		}
-		set_iter operator--(int){
-			set_iter temp(*this);
-			--element;
-			return temp;
-		}
-
-	};
-
-
-	template<class Key, class Compare, class Allocator> class
-		set<Key, Compare, Allocator>::set_citer
-			: public std::iterator<
-				bidirectional_iterator_tag,
-				Key,
-				typename Allocator::difference_type,
-				typename Allocator::pointer,
-				typename Allocator::reference
-			>
-	{
-	protected:
-		friend class set<Key, Compare, Allocator>;
-		set<Key, Compare, Allocator>::size_type element;
-		const set<Key, Compare, Allocator> * container;
-	public:
-		set_citer() : element(0), container(0) {  }
-		set_citer(const set<Key, Compare, Allocator>::const_iterator & m) 
-			: element(m.element), container(m.container) {  }
-		set_citer(const set<Key, Compare, Allocator>::iterator & m) 
-			: element(m.element), container(m.container) {  }
-		set_citer(set<Key, Compare, Allocator>::size_type e, const set<Key, Compare, Allocator> * const c) 
-			: element(e), container(c) {  }
-		~set_citer() {  }
-		
-		typename set<Key, Compare, Allocator>::value_type operator*(){
-			return container->data[element];
-		}
-		const typename set<Key, Compare, Allocator>::value_type * operator->(){
-			return &(container->data[element]);
-		}
-		set_citer & operator=(set<Key, Compare, Allocator> & m){
-			element = m.element;
-			container = m.container;
-			return *this;
-		}
-		bool operator==(const typename set<Key, Compare, Allocator>::const_iterator & m){
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename set<Key, Compare, Allocator>::const_iterator & m){
-			return (m.element != element || m.container != container);
-		}
-		set_citer & operator++(){
-			++element;
-			return *this;
-		}
-		set_citer operator++(int){
-			set_iter temp(*this);
-			++element;
-			return temp;
-		}
-		set_citer & operator--(){
-			--element;
-			return *this;
-		}
-		set_citer operator--(int){
-			set_iter temp(*this);
-			--element;
-			return temp;
-		}
-
-	};
-
-
-	//Compare the keys of the two items
-	template<class Key, class Compare, class Allocator> class 
-		set<Key, Compare, Allocator>::value_compare : public binary_function<
-			typename set<Key, Compare, Allocator>::value_type,
-			typename set<Key, Compare, Allocator>::value_type,
-		bool>
-	{
-		friend class set;
-	protected:
-		Compare comp;
-		value_compare(Compare c) : comp(c) { }
-		~value_compare() {  }
-	public:
-		bool operator()(const value_type& x, const value_type& y) const {
-			return comp(x, y);
-		}
-	};
-
-
-	template <class Key, class Compare, class Allocator> 
-		set<Key, Compare, Allocator>::set(const Compare& comp, const Allocator& al)
-		: data(), c(comp)
-	{
-		
-	}
 
 	template <class Key, class Compare, class Allocator> template <class InputIterator>
 		set<Key, Compare, Allocator>::
 		set(InputIterator first, InputIterator last, const Compare& comp, const Allocator& al)
-		: data(), c(comp)
+		: base(comp, al)
 	{
 		while(first !=last){
 			insert(*first);
@@ -275,17 +491,101 @@ protected:
 	}
 
 	template <class Key, class Compare, class Allocator>
-		set<Key, Compare, Allocator>::set(const set<Key, Compare, Allocator>& x)
-		:data(x.data), c(x.c)
+		typename set<Key, Compare, Allocator>::iterator
+		set<Key, Compare, Allocator>::ifind(const key_type &x)
 	{
+		/* This function is not from the standard. It is an internal
+		 * utility function which returns an iterator to either the
+		 * first matching element, or to the element before which
+		 * an insert should be performed.  Will not indicate if the
+		 *insert should be performed before the first element
+		 */
 
+		if(data.size() == 0){
+			return end();
+		}
+
+		if(data.size() == 1){
+			if(  c(data[0], x) ){
+				return end();
+			}
+			return begin();
+		}
+
+		size_type low;
+		size_type high;
+		size_type i;
+
+		low = 0;
+		high = data.size() - 1;
+
+		//This algorithm assumes no duplicates in stored information
+		while(( high - low) > 1){
+			i = low + ((high - low) /2);
+			if( c(x, data[i]) ){
+				high = i;
+			}else{
+				low = i;
+			}
+		}
+
+		if( c(data[low], x) ){         // k >=high
+			i = high;
+		}else{
+			i = low;
+		}
+
+		return iterator(i, this);
 	}
 
 	template <class Key, class Compare, class Allocator>
-		set<Key, Compare, Allocator>::~set()
+		typename set<Key, Compare, Allocator>::const_iterator
+		set<Key, Compare, Allocator>::ifind(const key_type &x) const
 	{
-		
+		/* This function is not from the standard. It is an internal
+		 * utility function which returns an iterator to either the
+		 * first matching element, or to the element before which
+		 * an insert should be performed.  Will not indicate if the
+		 *insert should be performed before the first element
+		 */
+
+		if(data.size() == 0){
+			return end();
+		}
+
+		if(data.size() == 1){
+			if( c(data[0], x) ){
+				return end();
+			}
+			return begin();
+		}
+
+		size_type low;
+		size_type high;
+		size_type i;
+
+		low = 0;
+		high = data.size() - 1;
+
+		//This algorithm assumes no duplicates in stored information
+		while(( high - low) > 1){
+			i = low + ((high - low) /2);
+			if( c(x, data[i]) ){
+				high = i;
+			}else{
+				low = i;
+			}
+		}
+
+		if( c(data[low], x) ){         // k >=high
+			i = high;
+		}else{
+			i = low;
+		}
+
+		return const_iterator(i, this);
 	}
+
 
 	template <class Key, class Compare, class Allocator>
 		set<Key, Compare, Allocator>::set<Key, Compare, Allocator>&
@@ -301,155 +601,48 @@ protected:
 
 
 	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::iterator
-		set<Key, Compare, Allocator>::begin()
-	{
-		return set_iter(0, this);
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::const_iterator
-		set<Key, Compare, Allocator>::begin() const
-	{
-		return set_citer(0, this);
-
-	}
-	
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::iterator
-		set<Key, Compare, Allocator>::end()
-	{
-		return set_iter(data.size(), this);
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::const_iterator
-		set<Key, Compare, Allocator>::end() const
-	{
-		return set_citer(data.size(), this);
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::reverse_iterator
-		set<Key, Compare, Allocator>::rbegin()
-	{
-		return set_iter(end());
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::const_reverse_iterator
-		set<Key, Compare, Allocator>::rbegin() const
-	{
-		return set_iter(end());
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::reverse_iterator
-		set<Key, Compare, Allocator>::rend()
-	{
-		return set_iter(begin());
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::const_reverse_iterator
-		set<Key, Compare, Allocator>::rend() const
-	{
-		return set_iter(begin());
-	}
-
-	template <class Key, class Compare, class Allocator>
-		bool set<Key, Compare, Allocator>::empty() const
-	{
-		return (data.size() == 0);
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::size_type
-		set<Key, Compare, Allocator>::size() const
-	{
-		return data.size();
-	}
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::size_type 
-		set<Key, Compare, Allocator>::max_size() const
-	{
-		return data.max_size();
-	}
-
-
-/*	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::reference
-		set<Key, Compare, Allocator>::operator[](const key_type & k)
-	{
-		typename deque<Key, allocator<Key> >::iterator low;
-		typename deque<Key, allocator<Key> >::iterator high;
-		typename deque<Key, allocator<Key> >::iterator i;
-
-		low = data.begin();
-		high = data.end();
-		if(low == high){	//No elements
-			i = low;
-		}else if( c(k, low->first)){
-			i = low;
-		}else if( c(data.back().first, k) ){
-			i = high;
-		}else{
-			while(( high - low) > 1){
-				i = low + ((high - low) /2);
-				if( c(k, i->first) ){
-					high = i;
-				}else{
-					low = i;
-				}
-			}
-
-			if( c(low->first, k) ){		// k >=high
-				i = high;
-			}else{
-				i = low;
-			}
-		}
-
-		if(i == data.begin()){
-			if( c(k, i->first) || data.empty() ){
-				value_type temp;
-				temp.first = k;
-				temp.second = T();
-				data.push_front(temp);
-			}
-			return data.front().second;
-		}
-		if(i == data.end()){
-			value_type temp;
-			temp.first = k;
-			temp.second = T();
-			data.push_back(temp);
-			return data.back().second;
-		}
-		if( c( (i-1)->first, k) && c(k, i->first)){
-			//need to insert the element
-			value_type temp;
-			temp.first = k;
-			temp.second = T();
-			i = data.insert(i, temp);
-			return i->second;
-		}
-		return i->second;
-	}
-*/
-	template <class Key, class Compare, class Allocator>
 		pair<typename set<Key, Compare, Allocator>::iterator, bool>
 		set<Key, Compare, Allocator>::insert(const value_type& x)
 	{
 		pair<typename set<Key, Compare, Allocator>::iterator, bool> retval;
-		retval.second = false;
-		retval.first = find(x.first);
-		if(retval.first == end()){
-//FIXME			operator[](x.first) = x.second;
+
+		//Either set is empty or element to insert goes at the begining
+		if(data.size() == 0 || c(x, data[0]) ){
+			data.push_front(x);
+			retval.first = begin();
 			retval.second = true;
-			retval.first = find(x.first);
+			return retval;
 		}
+
+		//Element to insert goes at the end
+		if( c(data[data.size() - 1], x) ){
+			data.push_back(x);
+			retval.first = end();
+			--retval.first;
+			retval.second = true;
+			return retval;
+                }
+
+		retval.first = ifind(x);
+
+		//No match - this should never happen
+		if(retval.first == end()){
+			retval.second = false;
+			return retval;
+		}
+		
+		//If we have an exact match
+		if( !c( *(retval.first), x) && !c(x, *(retval.first) ) ){
+			retval.second = false;
+			return retval;
+		}
+
+		typename deque<Key, allocator<Key > >::iterator q(&data, retval.first.element);
+		data.insert(q, x);
+
+		retval.first = ifind(x);        //Need to refind because insert can move data around
+		retval.second = true;
+
 		return retval;
 	}
 
@@ -460,7 +653,7 @@ protected:
 	{
 		//Just reusing code.  It's hard to make improvements over existing algo.
 		insert(x);
-		return find(x.first);
+		return find(x);
 	}
 
 	template <class Key, class Compare, class Allocator>
@@ -485,7 +678,7 @@ protected:
 		typename set<Key, Compare, Allocator>::size_type
 		set<Key, Compare, Allocator>::erase(const key_type& x)
 	{
-		set<Key, Compare, Allocator>::iterator i = find(x);
+		typename set<Key, Compare, Allocator>::iterator i = find(x);
 		if(i!=end()){
 			erase(i);
 			return 1;
@@ -496,37 +689,10 @@ protected:
 	template <class Key, class Compare, class Allocator>
 		void set<Key, Compare, Allocator>::erase(iterator first, iterator last)
 	{
-		while(first !=last() ){
-			set<Key, Compare, Allocator>::iterator i(&data, first.element);
-		}
+		typename deque<Key, allocator<Key> >::iterator f(&data, first.element);
+		typename deque<Key, allocator<Key> >::iterator l(&data, last.element);
+		data.erase(f, l);
 	}
-
-	template <class Key, class Compare, class Allocator>
-		void set<Key, Compare, Allocator>::swap(set<Key, Compare, Allocator>& m)
-	{
-		Compare n = c;
-		c = m.c;
-		m.c = n;
-
-		data.swap(m.data);
-	}
-
-
-	template <class Key, class Compare, class Allocator>
-		void set<Key, Compare, Allocator>::clear()
-	{
-		data.clear();
-	}
-
-
-	template <class Key, class Compare, class Allocator>
-		typename set<Key, Compare, Allocator>::key_compare
-		set<Key, Compare, Allocator>::key_comp() const
-	{
-		return c;
-	}
-
-//	value_compare value_comp() const;
 
 	template <class Key, class Compare, class Allocator>
 		typename set<Key, Compare, Allocator>::iterator
@@ -537,43 +703,18 @@ protected:
 			return end();
 		}
 
-		if(data.size() == 1){
-			if(  !c(data[0], x) && !c(x, data[0]) ){
-				return begin();
-			}
-			return end();
+		iterator retval = ifind(x);
+
+		if(retval == end()){
+			return retval;
 		}
 
-		size_type low;
-		size_type high;
-		size_type i;
+                //Make sure we have an exact match....
+                if(!c( *retval, x) && !c(x, *retval )){
+                        return retval;
+                }
+                return end();
 
-		low = 0;
-		high = data.size() - 1;
-
-		while(( high - low) > 1){
-			i = low + ((high - low) /2);
-			if( c(x, data[i]) ){
-				high = i;
-			}else{
-				low = i;
-			}
-		}
-
-		if( c(data[low], x) ){         // k >=high
-			i = high;
-		}else{
-			i = low;
-		}
-	
-
-		//Make sure we have an exact match....
-		if(!c(data[i], x) && !c(x, data[i])){
-			return set_iter(i, this);
-		}else{
-			return end();
-		}
-		return end();
 	}
 
 	template <class Key, class Compare, class Allocator>
@@ -584,43 +725,18 @@ protected:
 			return end();
 		}
 
-		if(data.size() == 1){
-			if(  !c(data[0], x) && !c(x, data[0]) ){
-				return begin();
-			}
-			return end();
+		const_iterator retval = ifind(x);
+
+		if(retval == end()){
+			return retval;
 		}
 
-		size_type low;
-		size_type high;
-		size_type i;
+                //Make sure we have an exact match....
+                if(!c( *retval, x) && !c(x, *retval )){
+                        return retval;
+                }
+                return end();
 
-		low = 0;
-		high = data.size() - 1;
-
-		while(( high - low) > 1){
-			i = low + ((high - low) /2);
-			if( c(x, data[i]) ){
-				high = i;
-			}else{
-				low = i;
-			}
-		}
-
-		if( c(data[low], x) ){         // k >=high
-			i = high;
-		}else{
-			i = low;
-		}
-	
-
-		//Make sure we have an exact match....
-		if(!c(data[i], x) && !c(x, data[i])){
-			return set_citer(i, this);
-		}else{
-			return end();
-		}
-		return end();
 	}
 
 	template <class Key, class Compare, class Allocator>
@@ -652,7 +768,9 @@ protected:
 		set<Key, Compare, Allocator>::upper_bound(const key_type& x)
 	{
 		typename set<Key, Compare, Allocator>::iterator i = find(x);
-		++i;
+		if(i != end()){
+			++i;
+		}
 		return i;
 	}
 
@@ -661,7 +779,9 @@ protected:
 		set<Key, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
 		typename set<Key, Compare, Allocator>::const_iterator i = find(x);
-		++i;
+		if(i != end()){
+			++i;
+		}
 		return i;
 	}
 
@@ -695,24 +815,488 @@ protected:
 	template <class Key, class Compare, class Allocator> bool operator==
 		(const set<Key, Compare, Allocator>& x, const set<Key, Compare, Allocator>& y)
 	{
-		if(c == y.c && data = y.data){
+		if(x.c == y.c && x.data = y.data){
 			return true;
 		}
 		return false;
 	}
 
+
+
+//Implementation of multiset
+
+
+template<class Key, class Compare, class Allocator> class multiset
+	: public __base_set<Key, Compare, Allocator>
+{
+		//Default value of allocator does not meet C++ standard specs, but it works for this library
+		//Deal with it
+public:
+
+	typedef	__base_set<Key, Compare, Allocator>		base;
+	typedef typename base::key_type				key_type;
+	typedef typename base::value_type			value_type;
+	typedef typename base::key_compare			key_compare;
+	typedef typename base::allocator_type			allocator_type;
+	typedef typename base::reference			reference;
+	typedef typename base::const_reference			const_reference;
+	typedef typename base::iterator				iterator;
+	typedef typename base::const_iterator			const_iterator;
+	typedef typename base::size_type			size_type;
+	typedef typename base::difference_type			difference_type;
+	typedef typename base::pointer				pointer;
+	typedef typename base::const_pointer			const_pointer;
+	typedef typename base::reverse_iterator			reverse_iterator;
+	typedef typename base::const_reverse_iterator		const_reverse_iterator;
+
+	explicit multiset(const Compare& comp = Compare(), const Allocator& al = Allocator())
+		: base(comp, al) {  }
+
+	template <class InputIterator> multiset(InputIterator first, InputIterator last,
+		const Compare& comp = Compare(), const Allocator& = Allocator());
+
+	multiset(const multiset<Key, Compare, Allocator>& x) : base(x) {  }
+	~multiset() {  }
+
+	multiset<Key, Compare, Allocator>& operator=(const multiset<Key, Compare, Allocator>& x);
+
+	iterator insert(const value_type& x);
+	iterator insert(iterator position, const value_type& x);
+	template <class InputIterator> void insert(InputIterator first, InputIterator last);
+
+	void      erase(iterator position);
+	size_type erase(const key_type& x);
+	void      erase(iterator first, iterator last);
+
+	using base::begin;
+	using base::end;
+	using base::rbegin;
+	using base::rend;
+
+	using base::empty;
+	using base::size;
+	using base::max_size;
+
+	iterator       find(const key_type& x);
+	const_iterator find(const key_type& x) const;
+	size_type      count(const key_type& x) const;
+	iterator       lower_bound(const key_type& x);
+	const_iterator lower_bound(const key_type& x) const;
+	iterator       upper_bound(const key_type& x);
+	const_iterator upper_bound(const key_type& x) const;
+	pair<iterator,iterator>             equal_range(const key_type& x);
+	pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+
+protected:
+	friend class base::iterator;
+	friend class base::const_iterator;
+
+	iterator ifind(const key_type& x);      //Core find functionality
+	const_iterator ifind(const key_type& x) const;      //Core find functionality
+
+	using base::data;
+	using base::c;
+
+};
+
+
+
+	template <class Key, class Compare, class Allocator> template <class InputIterator>
+		multiset<Key, Compare, Allocator>::
+		multiset(InputIterator first, InputIterator last, const Compare& comp, const Allocator& al)
+		: base(comp, al)
+	{
+		while(first !=last){
+			insert(*first);
+		}
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::iterator
+		multiset<Key, Compare, Allocator>::ifind(const key_type &x)
+	{
+		/* This function is not from the standard. It is an internal
+		 * utility function which returns an iterator to either the
+		 * first matching element, or to the element before which
+		 * an insert should be performed. end() for error.
+		 */
+
+		if(data.size() == 0){
+			return end();
+		}
+
+		//Before the first element
+		if( c(x, data[0]) ){
+			return begin();
+		}
+
+
+		//Element is larger than all known elemenst
+		if( c( data[data.size()-1], x) ){
+			return end();
+		}
+
+		//Or if it is the last element
+		if( !c(x, data[size()-1]) ){
+			return iterator(data.size()-1, this);
+		}
+
+		size_type low;
+		size_type high;
+		size_type i=0;
+
+		low = 0;
+		high = data.size() - 1;
+
+		//This algorithm will accept duplicates in keys
+
+		while( c(data[i+1], x) || c(x, data[i]) || !c(x, data[i+1]) ){
+			i = low + ((high - low) /2);
+			if( c( x, data[i]) ){
+				high = i;
+			}else{
+				low = i;
+			}
+		}
+
+		if( c(data[i], x) ){         // k >=high
+			++i;
+		}
+
+		return iterator(i, this);
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::const_iterator
+		multiset<Key, Compare, Allocator>::ifind(const key_type &x) const
+	{
+		/* This function is not from the standard. It is an internal
+		 * utility function which returns an iterator to either the
+		 * first matching element, or to the element before which
+		 * an insert should be performed. end() for error.
+		 */
+
+		if(data.size() == 0){
+			return end();
+		}
+
+		//Before the first element
+		if( c(x, data[0]) ){
+			return begin();
+		}
+
+
+		//Element is larger than all known elemenst
+		if( c( data[data.size()-1], x) ){
+			return end();
+		}
+
+		//Or if it is the last element
+		if( !c(x, data[size()-1]) ){
+			return const_iterator(data.size()-1, this);
+		}
+
+		size_type low;
+		size_type high;
+		size_type i=0;
+
+		low = 0;
+		high = data.size() - 1;
+
+		//This algorithm will accept duplicates in keys
+
+		while( c(data[i+1], x) || c(x, data[i]) || !c(x, data[i+1]) ){
+			i = low + ((high - low) /2);
+			if( c( x, data[i]) ){
+				high = i;
+			}else{
+				low = i;
+			}
+		}
+
+		if( c(data[i], x) ){         // k >=high
+			++i;
+		}
+
+		return const_iterator(i, this);
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::iterator
+		multiset<Key, Compare, Allocator>::insert(const value_type &x)
+	{
+		iterator retval;
+
+		//Either set is empty or element to insert goes at the begining
+		if(data.size() == 0 || c(x, data[0]) ){
+			data.push_front(x);
+			return begin();
+		}
+
+		//Element to insert goes at the end
+		if( c(data[data.size() - 1], x) ){
+			data.push_back(x);
+			return end();
+                }
+
+		retval = ifind(x);
+
+		//No match - this should never happen
+		if(retval == end()){
+			return retval;
+		}
+
+		if( !c(x, *retval) ){
+			++retval;
+		}
+		
+		typename deque<Key, allocator<Key> >::iterator q(&data, retval.element);
+		data.insert(q, x);
+
+		return retval;
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::iterator 
+		multiset<Key, Compare, Allocator>::insert(iterator position, const value_type& x)
+	{
+
+		//Inserting at begining
+		if(position == begin() && !c(*position, x) ){
+			data.push_front(x);
+			return position;
+		}
+		//Inserting at end
+		if(position == end() && !c(x, data[data.size() - 1]) ){
+			data.push_back(x);
+			return position;
+		}
+
+		//Inserting in middle
+		iterator temp = position;
+		--temp;
+		if( !c( *position, x) && !c(x, *temp) ){
+			typename deque<Key, allocator<Key> >::iterator q(&data, position.element);
+			data.insert(q, x);
+			return position;
+		}
+
+		return insert(x);
+	}
+
+	template <class Key, class Compare, class Allocator>
+		template <class InputIterator> void 
+		multiset<Key, Compare, Allocator>::insert(InputIterator first, InputIterator last)
+	{
+		while(first !=last){
+			insert(*first);
+		}
+	}
+
+
+	template <class Key, class Compare, class Allocator> void 
+		multiset<Key, Compare, Allocator>::erase(iterator position)
+	{
+		//Create a deque iterator from position information and then
+		//Use built in erase feature because it is handy.
+		typename deque<Key, allocator<Key> >::iterator pos(&data, position.element);
+		data.erase(pos);		
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::size_type
+		multiset<Key, Compare, Allocator>::erase(const key_type& x)
+	{
+		typename multiset<Key, Compare, Allocator>::iterator f = lower_bound(x);
+		typename multiset<Key, Compare, Allocator>::iterator l = upper_bound(x);
+		size_type t = l.element - f.element;
+		erase(f, l);
+		return t;
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		void multiset<Key, Compare, Allocator>::erase(iterator first, iterator last)
+	{
+		typename deque<Key, allocator<Key> >::iterator f(&data, first.element);
+		typename deque<Key, allocator<Key> >::iterator l(&data, last.element);
+		data.erase(f, l);
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::iterator 
+		multiset<Key, Compare, Allocator>::find(const key_type& x)
+	{
+		if(data.size() == 0){
+			return end();
+		}
+
+		iterator retval = ifind(x);
+
+		if( c(x, *retval) || c(*retval, x) ){
+			return end();
+		}
+
+		return retval;
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::const_iterator
+		multiset<Key, Compare, Allocator>::find(const key_type& x) const
+	{
+		if(data.size() == 0){
+			return end();
+		}
+		const_iterator retval = ifind(x);
+
+		if( c(x, *retval) || c(*retval, x) ){
+			return end();
+		}
+
+		return retval;
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::size_type
+		multiset<Key, Compare, Allocator>::
+		count(const typename multiset<Key, Compare, Allocator>::key_type& x) const
+	{
+		pair<   typename multiset<Key, Compare, Allocator>::const_iterator,
+			typename multiset<Key, Compare, Allocator>::const_iterator
+		> temp = equal_range(x);
+
+		return temp.second.element - temp.first.element;
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::iterator 
+		multiset<Key, Compare, Allocator>::lower_bound(const key_type& x)
+	{
+		//FIXME - linear search - can we do any better?
+		typename multiset<Key, Compare, Allocator>::iterator i = find(x);
+		if(i == end()){
+			return i;
+		}
+		while( i.element > 0 && !c( *i, x) && !c(x, *i) ){
+			--i;
+		}
+		if( c(*i, x)){
+			++i;
+		}
+		return i;
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::const_iterator
+		multiset<Key, Compare, Allocator>::lower_bound(const key_type& x) const
+	{
+		//FIXME - linear search - can we do any better?
+		typename multiset<Key, Compare, Allocator>::const_iterator i = find(x);
+		if(i == end()){
+			return i;
+		}
+		while( i.element >0 && !c( *i, x) && !c(x, *i) ){
+			--i;
+		}
+		if( c( *i, x)){
+			++i;
+		}
+		return i;
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::iterator
+		multiset<Key, Compare, Allocator>::upper_bound(const key_type& x)
+	{
+		typename multiset<Key, Compare, Allocator>::iterator i = find(x);
+		if(i != end()){
+			++i;
+		}
+		return i;
+	}
+
+	template <class Key, class Compare, class Allocator>
+		typename multiset<Key, Compare, Allocator>::const_iterator
+		multiset<Key, Compare, Allocator>::upper_bound(const key_type& x) const
+	{
+		typename multiset<Key, Compare, Allocator>::const_iterator i = find(x);
+		if(i != end()){
+			++i;
+		}
+		return i;
+	}
+
+
+	template <class Key, class Compare, class Allocator>
+		pair<	typename multiset<Key, Compare, Allocator>::iterator,
+			typename multiset<Key, Compare, Allocator>::iterator
+		> multiset<Key, Compare, Allocator>::equal_range(const key_type& x)
+	{
+		pair<   typename multiset<Key, Compare, Allocator>::iterator,
+                        typename multiset<Key, Compare, Allocator>::iterator
+                > retval;
+		retval.first = lower_bound(x);
+		retval.second = upper_bound(x);
+		return retval;		
+	}
+
+	template <class Key, class Compare, class Allocator>
+		pair<	typename multiset<Key, Compare, Allocator>::const_iterator,
+			typename multiset<Key, Compare, Allocator>::const_iterator
+		> multiset<Key, Compare, Allocator>::equal_range(const key_type& x) const
+	{
+		pair<   typename multiset<Key, Compare, Allocator>::const_iterator,
+                        typename multiset<Key, Compare, Allocator>::const_iterator
+                > retval;
+		retval.first = lower_bound(x);
+		retval.second = upper_bound(x);
+		return retval;		
+	}
+
+
+
+
+/* Non-member functions.  These are at the end because they are not associated with any
+   particular class.  These will be implemented as I figure out exactly what all of 
+   them are supposed to do, and I have time.
+ */
+
 	template <class Key, class Compare, class Allocator> bool operator< 
-		(const set<Key, Compare,Allocator>& x, const set<Key, Compare, Allocator>& y);
+		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
 	template <class Key, class Compare, class Allocator>bool operator!=
-		(const set<Key, Compare,Allocator>& x, const set<Key, Compare, Allocator>& y);
+		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
 	template <class Key, class Compare, class Allocator> bool operator>
-		(const set<Key, Compare,Allocator>& x, const set<Key, Compare, Allocator>& y);
+		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
 	template <class Key, class Compare, class Allocator> bool operator>=
-		(const set<Key, Compare,Allocator>& x, const set<Key, Compare, Allocator>& y);
+		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
 	template <class Key, class Compare, class Allocator> bool operator<=
-		(const set<Key, Compare,Allocator>& x, const set<Key, Compare, Allocator>& y);
+		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
 	template <class Key, class Compare, class Allocator> void swap
-		(set<Key, Compare,Allocator>& x, set<Key, Compare, Allocator>& y);
+		(set<Key,Compare,Allocator>& x, set<Key,Compare,Allocator>& y);
+
+
+	template <class Key, class Compare, class Allocator> bool operator==
+		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
+	template <class Key, class Compare, class Allocator> bool operator< 
+		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
+	template <class Key, class Compare, class Allocator> bool operator!=
+		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
+	template <class Key, class Compare, class Allocator> bool operator> 
+		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
+	template <class Key, class Compare, class Allocator> bool operator>=
+		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
+	template <class Key, class Compare, class Allocator> bool operator<=
+		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
+	template <class Key, class Compare, class Allocator> void swap
+		(multiset<Key,Compare,Allocator>& x, multiset<Key,Compare,Allocator>& y);
 
 }
 

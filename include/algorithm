@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <utility>
+#include <functional>
 
 #ifndef __STD_HEADER_ALGORITHM
 #define __STD_HEADER_ALGORITHM 1
@@ -274,7 +275,7 @@ namespace std{
 				}
 				++temp1;
 				++temp2;
-				if(temp == last2){
+				if(temp2 == last2){
 					return first1;
 				}
 			}
@@ -298,7 +299,7 @@ namespace std{
 				}
 				++temp1;
 				++temp2;
-				if(temp == last2){
+				if(temp2 == last2){
 					return first1;
 				}
 			}
@@ -482,6 +483,7 @@ namespace std{
 			++first;
 			++result;
 		}
+		return result;
 	}
 
 	template<class Iterator, class OutputIterator, class Predicate, class T>
@@ -713,8 +715,33 @@ namespace std{
 		void
 		rotate(ForwardIterator first, ForwardIterator middle, ForwardIterator last)
 	{
-		//FIXME
-		unknown_how_to_implement_this_function();
+		if ((first == middle) || (last  == middle)){
+			return;
+		}
+
+		ForwardIterator first2 = middle;
+
+		do {
+			swap(*first, *first2);
+			first++;
+			first2++;
+			if(first == middle){
+				middle = first2;
+			}
+		} while(first2 != last);
+
+		first2 = middle;
+
+		while (first2 != last) {
+			swap(*first, *first2);
+			first++;
+			first2++;
+			if (first == middle){
+				middle = first2;
+			}else if (first2 == last){
+				first2 = middle;
+			}
+		}
 	}
 
 	template<class ForwardIterator, class OutputIterator>
@@ -761,15 +788,81 @@ namespace std{
 	}
 
 	// _lib.alg.partitions_, partitions:
-	template<class BidirectionalIterator, class Predicate> BidirectionalIterator partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred);
-	template<class BidirectionalIterator, class Predicate> BidirectionalIterator stable_partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred);
+	template<class BidirectionalIterator, class Predicate> BidirectionalIterator
+		partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred)
+	{
+		return stable_partition(first, last, pred);
+	}
 
-	// subclause _lib.alg.sorting_, sorting and related operations:
-	// _lib.alg.sort_, sorting:
-	template<class RandomAccessIterator> void sort(RandomAccessIterator first, RandomAccessIterator last);
-	template<class RandomAccessIterator, class Compare> void sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp);
-	template<class RandomAccessIterator> void stable_sort(RandomAccessIterator first, RandomAccessIterator last);
-	template<class RandomAccessIterator, class Compare> void stable_sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+	template<class BidirectionalIterator, class Predicate> BidirectionalIterator
+		stable_partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred)
+	{
+		//first now points to the first non-desired element
+		while( first != last && pred(*first) ){
+			++first;
+		}
+
+		BidirectionalIterator tempb;
+		BidirectionalIterator tempe = first;
+
+		while( tempe != last ){
+			//Find the next desired element
+			while( !pred(*tempe) ){
+				++tempe;
+
+				//See if we should exit
+				if(tempe == last){
+					return first;
+				}
+			}
+
+			//Rotate the element back to the begining
+			tempb = tempe;
+			while(tempb != first){
+				iter_swap(tempb, tempb-1 );
+				--tempb;
+			}
+			//First now has a desired element
+			++first;
+		}
+
+		return first;
+	}
+
+	template<class RandomAccessIterator> void sort(RandomAccessIterator first, RandomAccessIterator last){
+		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
+		sort(first, last, c );
+	}
+
+	template<class RandomAccessIterator, class Compare>
+		void sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
+	{
+		stable_sort(first, last, comp);
+	}
+
+	template<class RandomAccessIterator> void stable_sort(RandomAccessIterator first, RandomAccessIterator last){
+		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
+		stable_sort(first, last, c);
+	}
+
+	template<class RandomAccessIterator, class Compare>
+		void stable_sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
+	{
+		//FIXME - bubble sort
+		RandomAccessIterator temp;
+		--last;
+		while(last - first > 0){
+			temp = last;
+			while(temp != first){
+				if( comp( *temp, *(temp-1) ) ){
+					iter_swap( temp-1, temp);
+				}
+				--temp;
+			}
+			++first;
+		}
+	}
+
 	template<class RandomAccessIterator> void partial_sort(RandomAccessIterator first, RandomAccessIterator middle, RandomAccessIterator last);
 	template<class RandomAccessIterator, class Compare> void partial_sort(RandomAccessIterator first, RandomAccessIterator  middle, RandomAccessIterator last, Compare comp);
 	template<class InputIterator, class RandomAccessIterator> RandomAccessIterator partial_sort_copy(InputIterator first, InputIterator last, RandomAccessIterator result_first, RandomAccessIterator result_last);
@@ -777,15 +870,158 @@ namespace std{
 	template<class RandomAccessIterator> void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last);
 	template<class RandomAccessIterator, class Compare> void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last, Compare comp);
 
-	// _lib.alg.binary.search_, binary search:
-	template<class ForwardIterator, class T> ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last, const T& value);
-	template<class ForwardIterator, class T, class Compare> ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last, const T& value, Compare comp);
-	template<class ForwardIterator, class T> ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last, const T& value);
-	template<class ForwardIterator, class T, class Compare> ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last, const T& value, Compare comp);
-	template<class ForwardIterator, class T> pair<ForwardIterator, ForwardIterator> equal_range(ForwardIterator first, ForwardIterator last, const T& value);
-	template<class ForwardIterator, class T, class Compare> pair<ForwardIterator, ForwardIterator> equal_range(ForwardIterator first, ForwardIterator last, const T& value, Compare comp);
-	template<class ForwardIterator, class T> bool binary_search(ForwardIterator first, ForwardIterator last, const T& value);
-	template<class ForwardIterator, class T, class Compare> bool binary_search(ForwardIterator first, ForwardIterator last, const T& value, Compare comp);
+	template<class ForwardIterator, class T>
+		ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last,
+			const T& value)
+	{
+		less<typename iterator_traits<ForwardIterator>::value_type> c;
+		return lower_bound(first, last, value, c);
+	}
+
+	template<class ForwardIterator, class T, class Compare>
+		ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last,
+			const T& value, Compare comp)
+	{
+		if(first == last){
+			return last;
+		}
+		//If below or equal to the first element
+		if( comp(*first, value) == false){
+			return first;
+		}
+		ForwardIterator middle;
+
+		//If greater than the top element
+		middle = first;
+		advance(middle, distance(first, last) - 1);
+		if( comp(*middle, value) ){
+			return last;
+		}
+
+		//Now begin the actual search for the begining
+		while( distance(first, last) > 1 ){
+			//Find middle
+			middle = first;
+			advance(middle, (distance(first, last)/2) );
+			if( !comp(*middle, value) ){
+				last = middle;
+			}else{
+				first = middle;
+			}
+		}
+	
+		if( !comp(*first, value) ){
+			return first;
+		}
+		return last;
+	}
+
+	template<class ForwardIterator, class T>
+		ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last,
+			const T& value)
+	{
+		less<typename iterator_traits<ForwardIterator>::value_type> c;
+		return upper_bound(first, last, value, c);
+	}
+
+
+	template<class ForwardIterator, class T, class Compare>
+		ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last,
+			const T& value, Compare comp)
+	{
+		if(first == last){
+			return last;
+		}
+		//If below the first element
+		if( comp(value, *first) == true){
+			return first;
+		}
+
+		ForwardIterator middle;
+
+		//If greater than the top element
+		middle = first;
+		advance(middle, distance(first, last) - 1);
+		if( comp(*middle, value) ){
+			return last;
+		}
+
+		//Now begin the actual search for the end
+		while( distance(first, last) > 1 ){
+			//Find middle
+			middle = first;
+			advance(middle, (distance(first, last)/2) );
+			if( comp(value, *middle) ){
+				last = middle;
+			}else{
+				first = middle;
+			}
+		}
+	
+		if( comp(value, *first) ){
+			return first;
+		}
+		return last;
+	}
+
+
+	template<class ForwardIterator, class T> pair<ForwardIterator, ForwardIterator>
+		equal_range(ForwardIterator first, ForwardIterator last, const T& value)
+	{
+		less<typename iterator_traits<ForwardIterator>::value_type> c;
+		return equal_range(first, last, value, c);
+	}
+
+	template<class ForwardIterator, class T, class Compare> pair<ForwardIterator, ForwardIterator>
+		equal_range(ForwardIterator first, ForwardIterator last, const T& value, Compare comp)
+	{
+		pair<ForwardIterator, ForwardIterator> retval;
+		retval.first = lower_bound(first, last, value, comp);
+		//Reuse retval.first in order to (possibly) save a few comparisons
+		retval.second = lower_bound(retval.first, last, value, comp);
+		return retval;
+
+	}
+
+	template<class ForwardIterator, class T>
+		bool binary_search(ForwardIterator first, ForwardIterator last,
+			const T& value)
+	{
+		less<typename iterator_traits<ForwardIterator>::value_type> c;
+		return binary_search(first, last, value, c);
+	}
+
+	template<class ForwardIterator, class T, class Compare>
+		bool binary_search(ForwardIterator first, ForwardIterator last,
+			const T& value, Compare comp)
+	{
+		if(last - first == 0){
+			return false;
+		}
+
+		ForwardIterator middle;
+
+		while( distance(first, last) > 1 ){
+			//Set middle between first and last
+			middle = first;
+			advance(middle, distance(first, last)/2 );
+
+			if( comp(*middle, value ) == true){
+				first = middle;
+			}else{
+				last = middle;
+			}
+		}
+
+		if( !comp(*first, value) && !comp(value, *first) ){
+			return true;
+		}	
+		if( !comp(*last, value) && !comp(value, *last) ){
+			return true;
+		}	
+
+		return false;
+	}
 
 	// _lib.alg.merge_, merge:
 	template<class InputIterator1, class InputIterator2, class OutputIterator> OutputIterator merge(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, OutputIterator result);
@@ -794,8 +1030,36 @@ namespace std{
 	template<class BidirectionalIterator, class Compare> void inplace_merge(BidirectionalIterator first, BidirectionalIterator middle, BidirectionalIterator last, Compare comp);
 
 	// _lib.alg.set.operations_, set operations:
-	template<class InputIterator1, class InputIterator2> bool includes(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2);
-	template<class InputIterator1, class InputIterator2, class Compare> bool includes(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp);
+	template<class InputIterator1, class InputIterator2> 
+		bool includes(InputIterator1 first1, InputIterator1 last1,
+			InputIterator2 first2, InputIterator2 last2)
+	{
+		less<typename iterator_traits<InputIterator1>::value_type> c;
+		return includes(first1, last1, first2, last2, c );
+	}
+
+	template<class InputIterator1, class InputIterator2, class Compare>
+		bool includes(InputIterator1 first1, InputIterator1 last1,
+			InputIterator2 first2, InputIterator2 last2, Compare comp)
+	{
+		while(first2 != last2){
+			//Advance the large set until no longer smaller than the element we are looking for
+			while( comp(*first1, *first2) ){
+				++first1;
+				//If we are at the end of the list, we don't have the desired element
+				if(first1 == last1){
+					return false;
+				}
+			}
+			//If we are past the element we want, it isn't here
+			if( comp(*first2, *first1) ){
+				return false;
+			}
+			++first2;	//Move to next element
+		}
+		return true;
+	}
+
 	template<class InputIterator1, class InputIterator2, class OutputIterator> OutputIterator set_union(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, OutputIterator result);
 	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> OutputIterator set_union(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp);
 
@@ -808,8 +1072,17 @@ namespace std{
 
 	// _lib.alg.heap.operations_, heap operations:
 
-	template<class RandomAccessIterator> void push_heap(RandomAccessIterator first, RandomAccessIterator last);
-	template<class RandomAccessIterator, class Compare> void push_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp);
+	template<class RandomAccessIterator> void push_heap(RandomAccessIterator first, RandomAccessIterator last){
+		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
+		push_heap(first, last, c);
+	}
+
+	template<class RandomAccessIterator, class Compare>
+		void push_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
+	{
+		
+	}
+
 	template<class RandomAccessIterator> void pop_heap(RandomAccessIterator first, RandomAccessIterator last);
 	template<class RandomAccessIterator, class Compare> void pop_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp);
 	template<class RandomAccessIterator> void make_heap(RandomAccessIterator first, RandomAccessIterator last);
@@ -818,16 +1091,98 @@ namespace std{
 	template<class RandomAccessIterator, class Compare> void sort_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp); 
 
 	// _lib.alg.min.max_, minimum and maximum:
-	template<class T> const T& min(const T& a, const T& b);
-	template<class T, class Compare> const T& min(const T& a, const T& b, Compare comp);
-	template<class T> const T& max(const T& a, const T& b);
-	template<class T, class Compare> const T& max(const T& a, const T& b, Compare comp);
-	template<class ForwardIterator> ForwardIterator min_element(ForwardIterator first, ForwardIterator last);
-	template<class ForwardIterator, class Compare> ForwardIterator min_element(ForwardIterator first, ForwardIterator last, Compare comp);
-	template<class ForwardIterator> ForwardIterator max_element(ForwardIterator first, ForwardIterator last);
-	template<class ForwardIterator, class Compare> ForwardIterator max_element(ForwardIterator first, ForwardIterator last, Compare comp);
-	template<class InputIterator1, class InputIterator2> bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2);
-	template<class InputIterator1, class InputIterator2, class Compare> bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp);
+	template<class T> const T& min(const T& a, const T& b){
+		if(b < a){
+			return b;
+		}
+		return a;
+	}
+
+	template<class T, class Compare> const T& min(const T& a, const T& b, Compare comp){
+		if( comp(b, a) == true){
+			return b;
+		}
+		return a;
+	}
+
+	template<class T> const T& max(const T& a, const T& b){
+		if( a < b){
+			return b;
+		}
+		return a;
+	}
+
+	template<class T, class Compare> const T& max(const T& a, const T& b, Compare comp){
+		if( comp(a, b) ){
+			return b;
+		}
+		return a;
+	}
+
+	template<class ForwardIterator> ForwardIterator min_element(ForwardIterator first, ForwardIterator last){
+		less<typename iterator_traits<ForwardIterator>::value_type> c;
+		return min_element(first, last, c);
+	}
+
+	template<class ForwardIterator, class Compare>
+		ForwardIterator min_element(ForwardIterator first, ForwardIterator last, Compare comp)
+	{
+		ForwardIterator retval = first;
+		++first;
+		while(first != last){
+			if( comp( *first, *retval) ){
+				retval = first;
+			}
+			++first;
+		}
+		return retval;
+	}
+
+	template<class ForwardIterator>
+		ForwardIterator max_element(ForwardIterator first, ForwardIterator last)
+	{
+		less<typename iterator_traits<ForwardIterator>::value_type> c;
+		return max_element(first, last, c);
+	}
+
+	template<class ForwardIterator, class Compare>
+		ForwardIterator max_element(ForwardIterator first, ForwardIterator last, Compare comp)
+	{
+		ForwardIterator retval = first;
+		++first;
+		while(first != last){
+			if( comp( *retval, *first ) ){
+				retval = first;
+			}
+			++first;
+		}
+		return retval;
+	}
+
+	template<class InputIterator1, class InputIterator2>
+		bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
+			InputIterator2 first2, InputIterator2 last2)
+	{
+		less<typename iterator_traits<InputIterator1>::value_type> c;
+		return lexicographical_compare(first1, last1, first2, last2);
+	}
+
+	template<class InputIterator1, class InputIterator2, class Compare>
+		bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
+			InputIterator2 first2, InputIterator2 last2, Compare comp)
+	{
+		while(first1 != last1 && first2 != last2){
+			if( comp(*first1, *first2) ){
+				return true;
+			}
+			if( comp(*first2, *first1) ){
+				return false;
+			}
+			++first1;
+			++first2;
+		}
+		return first1==last1 && first2 != last2;
+	}
 
 	// _lib.alg.permutation.generators_, permutations
 	template<class BidirectionalIterator> bool next_permutation(BidirectionalIterator first, BidirectionalIterator last);

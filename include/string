@@ -81,8 +81,8 @@ public:
 		}
 		reserve(rlen);
 
-		elements = rlen;
-		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, elements);
+		vector<Ch, A>::elements = rlen;
+		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, vector<Ch, A>::elements);
 	}
 
 	basic_string(const Ch* s, size_type n, const A& al = A())
@@ -93,8 +93,8 @@ public:
 		}
 		if(s > 0){
 			reserve(n);
-			elements = n;
-			Tr::copy(vector<Ch, A>::data, s, elements);
+			vector<Ch, A>::elements = n;
+			Tr::copy(vector<Ch, A>::data, s, vector<Ch, A>::elements);
 		}
 	}
 
@@ -116,31 +116,31 @@ public:
 		if(&str == this){	//Check if we are doing a=a 
 			return *this;
 		}
-		clear();
+		vector<Ch, A>::clear();
 		reserve(str.elements);
 		Tr::copy( vector<Ch, A>::data, str.vector<Ch, A>::data, str.elements);
-		elements = str.elements;
+		vector<Ch, A>::elements = str.elements;
 		return *this;
 	}
 
 	basic_string& operator=(const Ch* s){
-		clear();
+		vector<Ch, A>::clear();
 		if(s!=0){
 			size_type len = Tr::length(s);
 			reserve(len);
 			Tr::copy( vector<Ch, A>::data, s, len);
-			elements = len;
+			vector<Ch, A>::elements = len;
 		}
 		return *this;
 	}
 
 	basic_string& operator=(Ch c){
-		clear();
+		vector<Ch, A>::clear();
 		push_back(c);
 		return *this;
 	}
 
-	inline size_type length() const { return size(); }
+	inline size_type length() const { return vector<Ch, A>::size(); }
 
 	void resize(size_type n){
 		vector<Ch, A>::resize(n, Ch() );
@@ -160,9 +160,9 @@ public:
 	}
 
 	basic_string& append(const basic_string& str){
-		reserve(elements + str.elements);
-		Tr::copy( vector<Ch, A>::data + elements, str.vector<Ch, A>::data, str.elements);
-		elements += str.elements;
+		reserve(vector<Ch, A>::elements + str.elements);
+		Tr::copy( vector<Ch, A>::data + vector<Ch, A>::elements, str.vector<Ch, A>::data, str.elements);
+		vector<Ch, A>::elements += str.elements;
 
 		return *this;
 	}
@@ -176,31 +176,31 @@ public:
 		if(rlen > n){
 			rlen = n;
 		}
-		if(elements > npos - rlen){
+		if(vector<Ch, A>::elements > npos - rlen){
 			__throw_length_error();
 		}
-		reserve(elements + rlen);
-		elements += rlen;
-		Tr::copy( data + elements, str.data, rlen);
+		reserve(vector<Ch, A>::elements + rlen);
+		vector<Ch, A>::elements += rlen;
+		Tr::copy( data + vector<Ch, A>::elements, str.data, rlen);
 		return *this;
 	}
 		
 	basic_string& append(const Ch* s, size_type n){
-		reserve(elements + n);
-		Tr::copy( data + elements, s, n);
-		elements+=n;
+		reserve(vector<Ch, A>::elements + n);
+		Tr::copy( data + vector<Ch, A>::elements, s, n);
+		vector<Ch, A>::elements+=n;
 		return *this;
 	}
 	basic_string& append(const Ch* s){
 		size_type strLen = Tr::length(s);
-		reserve(elements + strLen);
-		Tr::copy( vector<Ch, A>::data + elements, s, strLen);
-		elements+=strLen;
+		reserve(vector<Ch, A>::elements + strLen);
+		Tr::copy( vector<Ch, A>::data + vector<Ch, A>::elements, s, strLen);
+		vector<Ch, A>::elements+=strLen;
 		return *this;
 	}
 
 	basic_string& append(size_type n, Ch c){
-		vector<Ch, A>::resize(elements+ n, c);
+		vector<Ch, A>::resize(vector<Ch, A>::elements+ n, c);
 		return *this;
 	}
 
@@ -210,29 +210,30 @@ public:
 	}
 
 	basic_string& assign(const basic_string& str, size_type pos, size_type n){
-		if(pos > str.characters){
+		if(pos > str.elements){
 			__throw_out_of_range();
 		}
-		size_type rlen = str.characters - pos;
-		if(rlen > n){
-			rlen = n;
+		size_type r = str.elements - pos;
+		if(r > n){
+			r = n;
 		}
-		if(memorySize < rlen){
+		if(vector<Ch, A>::data_size < r){
 			//Not using reserve() because we don't need to keep the old data
-			localAlloc.deallocate(data, data_size);
-			data = localAlloc.allocate(data_size);
+			vector<Ch, A>::localAlloc.deallocate(data, vector<Ch, A>::data_size);
+			vector<Ch, A>::data_size = r + __UCLIBCXX_STL_BUFFER_SIZE__;
+			data = vector<Ch, A>::localAlloc.allocate(vector<Ch, A>::data_size);
 		}
-		Tr::copy(data, str.data + pos, rlen);
-		elements = rlen;
+		Tr::copy(data, str.data + pos, r);
+		vector<Ch, A>::elements = r;
 		return *this;
 	}
 
 	basic_string& assign(const Ch* s, size_type n){
-		if( n > memorySize ){
-			localAlloc.deallocate(data, data_size);
-			stringPointer = localAlloc.allocate(data_size);
+		if( n > vector<Ch, A>::data_size ){
+			vector<Ch, A>::localAlloc.deallocate(data, vector<Ch, A>::data_size);
+			data = vector<Ch, A>::localAlloc.allocate(vector<Ch, A>::data_size);
 		}
-		elements = n;
+		vector<Ch, A>::elements = n;
 		Tr::copy(data, s, n);
 		return *this;
 	}
@@ -243,61 +244,62 @@ public:
 	}
 
 	basic_string& assign(size_type n, Ch c){
-		if(n > memorySize){
-			localAlloc.deallocate(stringPointer, memorySize);
-			stringPointer = localAlloc.allocate(memorySize);
+		if(n > vector<Ch, A>::data_size){
+			vector<Ch, A>::localAlloc.deallocate(data, vector<Ch, A>::data_size);
+			vector<Ch, A>::data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
+			data = vector<Ch, A>::localAlloc.allocate(vector<Ch, A>::data_size);
 		}
-		Tr::assign( stringPointer, n ,c);
-		characters = n;
+		Tr::assign( data, n ,c);
+		vector<Ch, A>::elements = n;
 		return *this;
 	}
 
 //	template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
 
 	basic_string& insert(size_type pos1, const basic_string& str){
-		if(pos1 > elements){
+		if(pos1 > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		if(elements > npos - str.elements){
+		if(vector<Ch, A>::elements > npos - str.elements){
 			__throw_length_error();
 		}
-		reserve(str.elements + elements);
+		reserve(str.elements + vector<Ch, A>::elements);
 
 		Tr::move(data + pos1 + str.elements, data + pos1, str.elements);
 		Tr::copy(data + pos1, str.data, str.elements);
-		elements += str.elements;
+		vector<Ch, A>::elements += str.elements;
 		return *this;
 	}
 
 	basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
-		if(pos1 > elements || pos2 > str.elements){
+		if(pos1 > vector<Ch, A>::elements || pos2 > str.elements){
 			__throw_out_of_range();
 		}
-		size_type rlen = str.elements - pos2;
-		if( rlen > n){
-			rlen = n;
+		size_type r = str.elements - pos2;
+		if( r > n){
+			r = n;
 		}
-		if(elements > npos - rlen){
+		if(vector<Ch, A>::elements > npos - r){
 			__throw_length_error();
 		}
-		reserve(elements + rlen);
-		Tr::move(data + pos1 + rlen, data + pos1, rlen);
-		Tr::copy(data + pos1, str.data + pos2, rlen);
-		characters+=rlen;
+		reserve(vector<Ch, A>::elements + r);
+		Tr::move(data + pos1 + r, data + pos1, r);
+		Tr::copy(data + pos1, str.data + pos2, r);
+		vector<Ch, A>::elements+=r;
 		return *this;
 	}
 
 	basic_string& insert(size_type pos, const Ch* s, size_type n){
-		if(pos > elements){
+		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		if(elements > pos - n){
+		if(vector<Ch, A>::elements > pos - n){
 			__throw_length_error();
 		}
-		reserve(elements + n);
-		Tr::move(data + pos + n, data + pos, n);
-		Tr::copy(data + pos, s, n);
-		elements+=n;
+		reserve(vector<Ch, A>::elements + n);
+		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, n);
+		Tr::copy(vector<Ch, A>::data + pos, s, n);
+		vector<Ch, A>::elements+=n;
 		return *this;
 	}
 
@@ -307,16 +309,16 @@ public:
 	}
 
 	basic_string& insert(size_type pos, size_type n, Ch c){
-		if(pos > elements){
+		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		if(elements > pos - n){
+		if(vector<Ch, A>::elements > pos - n){
 			__throw_length_error();
 		}
-		reserve(elements + n);
-		Tr::move(data + pos + n, data + pos, n);
-		Tr::assign(data + pos, n, c);
-		elements+=n;
+		reserve(vector<Ch, A>::elements + n);
+		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, n);
+		Tr::assign(vector<Ch, A>::data + pos, n, c);
+		vector<Ch, A>::elements+=n;
 		return *this;
 	}
 
@@ -325,14 +327,14 @@ public:
 //	template<class InputIterator> void insert(iterator p, InputIterator first, InputIterator last);
 
 	basic_string& erase(size_type pos = 0, size_type n = npos){
-		size_type xlen = elements - pos;
+		size_type xlen = vector<Ch, A>::elements - pos;
 		if(xlen > n){
 			xlen = n;
 		}
-		if( (elements - pos) > n){		//Deleteing past the end
+		if( (vector<Ch, A>::elements - pos) > n){		//Deleteing past the end
 			resize(pos);
 		}else{				//Deleting from the middle
-			Tr::move(data + pos, data + pos + xlen, xlen);
+			Tr::move(vector<Ch, A>::data + pos, vector<Ch, A>::data + pos + xlen, xlen);
 			resize(pos + xlen);
 		}
 		return *this;
@@ -344,10 +346,10 @@ public:
 //	basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
 
 	basic_string& replace(size_type pos1, size_type n1, const basic_string& str, size_type pos2=0, size_type n2=npos){
-		if(pos1 > characters){
+		if(pos1 > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		size_type xlen = elements - pos1;
+		size_type xlen = vector<Ch, A>::elements - pos1;
 		if(xlen >  n1){
 			xlen = n1;
 		}
@@ -355,18 +357,18 @@ public:
 		if(rlen > n2){
 			rlen = n2;
 		}
-		if((elements - xlen) >= (npos - rlen)){
+		if((vector<Ch, A>::elements - xlen) >= (npos - rlen)){
 			__throw_length_error();
 		}
-		reserve(elements - xlen + rlen);
+		reserve(vector<Ch, A>::elements - xlen + rlen);
 
-		//Final length = characters - xlen + rlen
+		//Final length = vector<Ch, A>::elements - xlen + rlen
 		//Initial block is of size pos1
 		//Block 2 is of size len
 
-		Tr::move(data + pos1 + rlen, data + pos1 + xlen, characters - pos1 - xlen);
+		Tr::move(data + pos1 + rlen, data + pos1 + xlen, vector<Ch, A>::elements - pos1 - xlen);
 		Tr::copy(data + pos1, str.data + pos2, rlen);
-		elements = elements - xlen + rlen;
+		vector<Ch, A>::elements = vector<Ch, A>::elements - xlen + rlen;
 		return *this;
 	}
 
@@ -390,37 +392,26 @@ public:
 		InputIterator j1, InputIterator j2);*/
 
 	size_type copy(Ch* s, size_type n, size_type pos = 0) const{
-		if(pos > characters){
+		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		size_type rlen = characters - pos;
-		if(rlen > n){
-			rlen = n;
+		size_type r = vector<Ch, A>::elements - pos;
+		if(r > n){
+			r = n;
 		}
-		Tr::copy(s, &stringPointer[pos], rlen);
-		return rlen;
+		Tr::copy(s, data + pos, r);
+		return r;
 	}
 
 	void swap(basic_string<Ch,Tr,A>& s){
 		//Data pointers
-		Ch* tempPtr = s.stringPointer;
-		s.stringPointer = stringPointer;
-		stringPointer = tempPtr;
 
-		//Amount of allocated memory
-		size_type tempSize= s.memorySize;
-		s.memorySize = memorySize;
-		memorySize = tempSize;
-
-		//Number of characters
-		tempSize = s.characters;
-		s.characters = characters;
-		characters = tempSize;
+		vector<Ch, A>::swap(s);
 	}
 
 	const Ch* c_str() const{
-		const_cast<basic_string<Ch,Tr,A> *>(this)->reserve(elements+1);
-		vector<Ch, A>::data[elements] = 0;	//Add 0 at the end
+		const_cast<basic_string<Ch,Tr,A> *>(this)->reserve(vector<Ch, A>::elements+1);
+		vector<Ch, A>::data[vector<Ch, A>::elements] = 0;	//Add 0 at the end
 		return vector<Ch, A>::data;
 	}
 
@@ -428,7 +419,7 @@ public:
 		return vector<Ch, A>::data;
 	}
 	allocator_type get_allocator() const{
-		return localAlloc;
+		return vector<Ch, A>::localAlloc;
 	};
 
 /*	size_type find (const basic_string& str, size_type pos = 0) const;
@@ -459,10 +450,10 @@ public:
 */
 
 	basic_string substr(size_type pos = 0, size_type n = npos) const{
-		if(pos > elements){
+		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		size_type rlen = elements - pos;
+		size_type rlen = vector<Ch, A>::elements - pos;
 		if(rlen > n){
 			rlen = n;
 		}
@@ -470,16 +461,16 @@ public:
 	}
 
 	int compare(const basic_string& str) const{
-		size_type rlen = elements;
+		size_type rlen = vector<Ch, A>::elements;
 		if(rlen >  str.elements){
 			rlen = str.elements;
 		}
 		int retval = Tr::compare(vector<Ch, A>::data, str.vector<Ch, A>::data, rlen);
 		if(retval == 0){
-			if(elements < str.elements){
+			if(vector<Ch, A>::elements < str.elements){
 				retval = -1;
 			}
-			if(elements > str.elements){
+			if(vector<Ch, A>::elements > str.elements){
 				retval = 1;
 			}
 		}
@@ -487,7 +478,7 @@ public:
 	}
 
 	int compare(size_type pos1, size_type n1, const basic_string& str) const{
-		size_type rlen = elements - pos1;
+		size_type rlen = vector<Ch, A>::elements - pos1;
 		if(rlen > n1){
 			rlen = n1;
 		}
@@ -496,28 +487,28 @@ public:
 		}
 		int retval = Tr::compare(data + pos1, str.data, rlen);
 		if(retval == 0){
-			if(elements - pos1 < str.elements){
+			if(vector<Ch, A>::elements - pos1 < str.elements){
 				retval = -1;
 			}
-			if(elements - pos1 > str.elements){
+			if(vector<Ch, A>::elements - pos1 > str.elements){
 				retval = 1;
 			}
 		}
-		return retaval;
+		return retval;
 	}
 
 	int compare(size_type pos1, size_type n1, const basic_string& str,
 		size_type pos2=0, size_type n2=npos) const{
-		size_type len1 = elements - pos1;
+		size_type len1 = vector<Ch, A>::elements - pos1;
 		if(len1 > n1){
 			len1 = n1;
 		}
-		size_type len2 = elements - pos2;
+		size_type len2 = vector<Ch, A>::elements - pos2;
 		if(len2 > n2){
 			len2 = n2;
 		}
 		size_type rlen = len1;
-		if(len > len2){
+		if(rlen > len2){
 			rlen = len2;
 		}
 		int retval = Tr::compare(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, rlen);
@@ -535,15 +526,15 @@ public:
 	int compare(const Ch* s) const{
 		size_type slen = Tr::length(s);
 		size_type rlen = slen;
-		if(rlen > elements){
-			rlen=elements;
+		if(rlen > vector<Ch, A>::elements){
+			rlen=vector<Ch, A>::elements;
 		}
 		int retval = Tr::compare(vector<Ch, A>::data, s, rlen);
 		if(retval==0){
-			if(elements < slen){
+			if(vector<Ch, A>::elements < slen){
 				retval = -1;
 			}
-			if(elements > slen){
+			if(vector<Ch, A>::elements > slen){
 				retval = 1;
 			}
 		}
@@ -551,7 +542,7 @@ public:
 	}
 
 	int compare(size_type pos1, size_type n1, const Ch* s, size_type n2 = npos) const{
-		size_type len1 = elements - pos1;
+		size_type len1 = vector<Ch, A>::elements - pos1;
 		if(len1 > n1){
 			len1 = n1;
 		}

@@ -1,6 +1,7 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
+#COFLAGS = -fno-rtti -fno-exceptions -static
 
 UFLAGS	=	-nodefaultlibs -nostdinc++ -fno-builtin -L../src
 ifeq ($(IMPORT_LIBSUP),y)
@@ -18,15 +19,17 @@ SRCS	=\
 	dequetest.cpp \
 	listtest.cpp \
 	maptest.cpp \
+	mmaptest.cpp \
 	settest.cpp \
 	numerictest.cpp \
-	hello.cpp \
-	bitsettest.cpp
+	bitsettest.cpp \
+	algotest.cpp
 
 
 EXOBJS	=\
 	listtest.o \
 	maptest.o \
+	mmaptest.o \
 	settest.o \
 	dequetest.o \
 	stringtest.o \
@@ -35,8 +38,8 @@ EXOBJS	=\
 	io.o \
 	newdel.o \
 	numerictest.o \
-	hello.o \
-	bitsettest.o
+	bitsettest.o \
+	algotest.o
 
 ALLOBJS	=	$(EXOBJS) \
 		newdel.o-old \
@@ -47,9 +50,11 @@ ALLOBJS	=	$(EXOBJS) \
 		listtest.o-old \
 		dequetest.o-old \
 		maptest.o-old \
+		mmaptest.o-old \
 		settest.o-old \
 		numerictest.o-old \
-		bitsettest.o-old
+		bitsettest.o-old \
+		algotest.o-old
 
 ALLBIN	=	newdel newdel-old \
 		io io-old \
@@ -58,12 +63,26 @@ ALLBIN	=	newdel newdel-old \
 		sstreamtest sstreamtest-old \
 		dequetest dequetest-old \
 		maptest maptest-old \
+		mmaptest mmaptest-old \
 		settest settest-old \
 		listtest listtest-old \
 		numerictest numerictest-old \
-		bitsettest bitsettest-old
+		bitsettest bitsettest-old \
+		algotest algotest-old
 
-ALLTGT	=	bitsettest sstreamtest numerictest settest maptest dequetest listtest stringtest vectortest io newdel
+ALLTGT	=	algotest \
+		bitsettest \
+		sstreamtest \
+		numerictest \
+		settest \
+		mmaptest \
+		maptest \
+		dequetest \
+		listtest \
+		stringtest \
+		vectortest \
+		io \
+		newdel
 
 ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 SRCS    += excepttest.cpp
@@ -90,57 +109,61 @@ clean:	cleanobjs cleanbin
 
 cleanall:	cleanobjs cleanbin
 
-hello: $(EXOBJS)
-	$(CXX) -o hello hello.o $(CFLAGS) $(UFLAGS) $(LIBS) $(ULIBS)
-	$(CXX) -o hello-old hello.o-old $(COFLAGS)
-
 newdel: $(EXOBJS)
-	$(CXX) -o newdel newdel.o $(CFLAGS) $(UFLAGS) $(LIBS) $(ULIBS)
+	$(CXX) -o newdel newdel.o $(CXXFLAGS) $(UFLAGS) $(LIBS) $(ULIBS)
 	$(CXX) -o newdel-old newdel.o-old $(COFLAGS)
 
 io: $(EXOBJS)
-	$(CXX) -o io io.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o io io.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o io-old io.o-old $(COFLAGS)
 
 vectortest: $(EXOBJS)
-	$(CXX) -o vectortest vectortest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o vectortest vectortest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o vectortest-old vectortest.o-old $(COFLAGS)
 
 stringtest: $(EXOBJS)
-	$(CXX) -o stringtest stringtest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o stringtest stringtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o stringtest-old stringtest.o-old $(COFLAGS)
 
 listtest: $(EXOBJS)
-	$(CXX) -o listtest listtest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o listtest listtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o listtest-old listtest.o-old $(COFLAGS)
 
 excepttest: $(EXOBJS)
-	$(CXX) -o excepttest excepttest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o excepttest excepttest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o excepttest-old excepttest.o-old $(COFLAGS)
 
 dequetest: $(EXOBJS)
-	$(CXX) -o dequetest dequetest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o dequetest dequetest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o dequetest-old dequetest.o-old $(COFLAGS)
 
 maptest: $(EXOBJS)
-	$(CXX) -o maptest maptest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o maptest maptest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o maptest-old maptest.o-old $(COFLAGS)
 
 numerictest: $(EXOBJS)
-	$(CXX) -o numerictest numerictest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o numerictest numerictest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o numerictest-old numerictest.o-old $(COFLAGS)
 
 sstreamtest: $(EXOBJS)
-	$(CXX) -o sstreamtest sstreamtest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o sstreamtest sstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o sstreamtest-old sstreamtest.o-old $(COFLAGS)
 
 bitsettest: $(EXOBJS)
-	$(CXX) -o bitsettest bitsettest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o bitsettest bitsettest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o bitsettest-old bitsettest.o-old $(COFLAGS)
 
 settest: $(EXOBJS)
-	$(CXX) -o settest settest.o $(CFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o settest settest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o settest-old settest.o-old $(COFLAGS)
+
+mmaptest: $(EXOBJS)
+	$(CXX) -o mmaptest mmaptest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o mmaptest-old mmaptest.o-old $(COFLAGS)
+
+algotest: $(EXOBJS)
+	$(CXX) -o algotest algotest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o algotest-old algotest.o-old $(COFLAGS)
 
 
 .cpp.o:

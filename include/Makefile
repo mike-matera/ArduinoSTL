@@ -1,34 +1,11 @@
-MAKE	=	make
-CC  	=	gcc
-CXX	=	g++
-CFLAGS	=	-O2 -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -march=athlon-xp -I../include
-C_FLAGS	=	$(CFLAGS)
-CXXFLAGS=	$(CFLAGS)
-LIBS	=
-SUBDIRS =	
-SRCS	=
-EXOBJS	=
-ALLOBJS	=	$(EXOBJS)
-ALLBIN	=	
-ALLTGT	=	
-
-# User defines:
-
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
 all:
 
-objs:	$(ALLOBJS)
+clean:
 
-cleanobjs:
-
-cleanbin:
-
-clean:	cleanobjs cleanbin
-
-cleanall:	cleanobjs cleanbin
-
+distclean: clean
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
 

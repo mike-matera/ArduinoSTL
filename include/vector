@@ -21,6 +21,7 @@
 #include <basic_definitions>
 #include <memory>
 #include <iterator>
+#include <func_exception>
 #include <vector_helpers>
 
 
@@ -84,7 +85,7 @@ namespace std{
 		}
 
 		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
-			data(0), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(a), a(al)
+			data(0), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
 			data = a.allocate(data_size);
 			assign(first, last);
@@ -111,7 +112,7 @@ namespace std{
 
 		vector<T,Allocator>& operator=(const vector<T,Allocator>& x){
 			if(&x == this){
-				return this;
+				return *this;
 			}
 
 			delete [] data;
@@ -135,7 +136,7 @@ namespace std{
 
 		template <class Size, class U> void assign(Size n, const U& u = U()){
 			clear();
-			resize(s, u);
+			resize(n, u);
 		}
 
 		inline allocator_type get_allocator() const{
@@ -306,7 +307,7 @@ namespace std{
 			v.data  = ptr;
 
 			//Swap element counts
-			temp = elememts;
+			temp = elements;
 			elements = v.elements;
 			v.elements = temp;
 
@@ -370,9 +371,15 @@ namespace std{
 
 
 	template <class T, class Allocator> bool operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y){
-		if(x.elemebnt !=y.elements){
-
+		if(x.size() !=y.size() ){
+			return false;
 		}
+		for(size_t i = 0; i < x.size(); ++i){
+			if(x[i] != y[i]){
+				return false;
+			}
+		}
+		return true;
 	}
 	template <class T, class Allocator> bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator> bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);

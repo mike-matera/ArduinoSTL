@@ -532,9 +532,28 @@ namespace std{
 	}
 
 	template<class T, class Allocator> typename deque<T, Allocator>::iterator 
+		deque<T, Allocator>::
 		erase(typename deque<T, Allocator>::iterator first, typename deque<T, Allocator>::iterator last)
 	{
-		
+		//Shift backwards
+		printf("First element number: %i\nSecond element number: %i\n", first.element, last.element);
+		size_type num_move = last.element - first.element;
+		if( first.element > (elements - last.element) ){
+			for(size_type i = last.element; i < elements ; ++i){
+				at(i-num_move) = at(i);
+			}
+			for(size_type i = 0; i < num_move ; ++i){
+				pop_back();
+			}
+		}else{
+			for(size_type i = 0; i < first.element ; ++i){
+				at(last.element - i - 1) = at(first.element - i - 1);
+			}
+			for(size_type i = 0; i < num_move ; ++i){
+				pop_front();
+			}
+		}
+		return deque_iter(this, first.element);
 	}
 
 	template<class T, class Allocator> void deque<T, Allocator>::swap(deque<T,Allocator>&)

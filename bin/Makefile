@@ -12,10 +12,18 @@ else
 EXTRALIBS += -lsupc++
 endif
 
+ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
+
+else
+INITIALOPTIONS	+= -fno-exceptions -fno-rtti
+endif
 
 # User defines:
 
 all:	wrapper
+
+clean:
+	rm $(WRAPPERNAME)
 
 wrapper:
 	echo "#!/bin/bash" > $(WRAPPERNAME)
@@ -41,6 +49,4 @@ wrapper:
 	echo -n $(UCLIBCXX_RUNTIME_PREFIX) >> $(WRAPPERNAME)
 	echo '/lib/ $$OPTIONS' >> $(WRAPPERNAME)
 	chmod 755 $(WRAPPERNAME)
-clean:
-	rm -f g++-uc
 

@@ -120,86 +120,6 @@ source "extra/Configs/Config.in.arch"
 
 endmenu
 
-menu "General Library Settings"
-
-config HAVE_SHARED
-#	bool "Enable support for shared libraries"
-	bool
-#	depends on DOPIC && !HAVE_NO_SHARED
-	default y
-#	help
-#	  If you wish to build uClibc++ with support for shared libraries then
-#	  answer Y here.  If you only want to build uClibc as a static library,
-#	  then answer N.
-
-config UCLIBCXX_PROFILING
-	bool "Support gprof profiling"
-	default n
-	help
-	  If you wish to build uClibc++ with support for application profiling
-	  using the gprof tool, then you should enable this feature.  Then in
-	  addition to building uClibc++ with profiling support, you will also
-	  need to recompile all your shared libraries with the profiling
-	  enabled version of uClibc++.  To add profiling support to your
-	  applications, you must compile things using the gcc options
-	  "-fprofile-arcs  -pg".  Then when you run your applications, a
-	  gmon.out file will be generated which can then be analyzed by
-	  'gprof'.  
-
-	  These exist a number of less invasive alternatives that do not
-	  require your to specially instrument your application, and recompile
-	  and relink everything.  
-	  
-	  Many people have had good results using the combination of Valgrind 
-	  to generate profiling information and KCachegrind for analysis:
-		  http://developer.kde.org/~sewardj/
-		  http://kcachegrind.sourceforge.net/
-
-	  The OProfile system-wide profiler is another alternative:
-		  http://oprofile.sourceforge.net/
-
-	  Prospect is another alternative based on OProfile:
-		  http://prospect.sourceforge.net/
-
-	  And the Linux Trace Toolkit (LTT) is also a fine tool:
-		http://www.opersys.com/LTT/
-
-	  If none of these tools do what you need, you can of course enable
-	  this option, rebuild everything, and use 'gprof'.  There is both a
-	  size and performance penalty to profiling your applications this way,
-	  so most people should answer N.
-
-config HAS_NO_THREADS
-	bool
-	default n
-
-config UCLIBCXX_HAS_THREADS
-	bool "POSIX Threading Support"
-	depends on !HAS_NO_THREADS
-	default y
-	help
-	  If you want to compile uClibc++ with pthread support, then answer Y.  
-	  This will increase the size of uClibc++ by adding a bunch of locking
-	  to critical data structures, and adding extra code to ensure that
-	  functions are properly reentrant.
-
-	  If your applications require pthreads, answer Y.
-	  THIS DOESN'T WORK YET - FIXME
-
-config UCLIBCXX_HAS_LFS
-	bool "Large File Support"
-	default y
-	depends on !CONFIG_CRIS
-	help
-	  If you wish to build uClibc++ with support for accessing large files 
-	  (i.e. files greater then 2 GiB) then answer Y.  Do not enable this 
-	  if you are using an older Linux kernel (2.0.x) that lacks large file 
-	  support.  Enabling this option will increase the size of uClibc.
-	  THIS DOESN'T WORK YET - FIXME
-
-
-endmenu
-
 menu "String and I/O Stream Support"
 
 config UCLIBCXX_HAS_WCHAR
@@ -227,6 +147,19 @@ config UCLIBCXX_IOSTREAM_BUFSIZE
 	  result in both smaller and very likely faster code.
 
 	  THIS DOESN'T WORK YET - FIXME
+
+
+config UCLIBCXX_HAS_LFS
+	bool "Large File Support"
+	default y
+	depends on !CONFIG_CRIS
+	help
+	  If you wish to build uClibc++ with support for accessing large files 
+	  (i.e. files greater then 2 GiB) then answer Y.  Do not enable this 
+	  if you are using an older Linux kernel (2.0.x) that lacks large file 
+	  support.  Enabling this option will increase the size of uClibc.
+	  THIS DOESN'T WORK YET - FIXME
+
 
 config UCLIBCXX_SUPPORT_CDIR
 	bool "Enable support for cin, cout and cerr"
@@ -343,14 +276,31 @@ config UCLIBCXX_RUNTIME_PREFIX
 	string "uClibc++ runtime library directory"
 	default "/usr/$(TARGET_ARCH)-linux-uclibc/usr"
 	help
-	  RUNTIME_PREFIX is the directory into which the uClibc++ runtime
-	  libraries will be installed.
+	 UCLIBCXX_ RUNTIME_PREFIX is the directory into which the uClibc++
+	  runtime libraries will be installed.
 
-	  For a typical target system this should be set to "/", such that
-	  'make install' will install /usr/lib/libuClibc++-<VERSION>.so
+	  For a typical target system this should be set to "/usr", such
+	  that'make install' will install
+	  /usr/lib/libuClibc++.so
+
+config UCLIBCXX_EXCEPTION_SUPPORT
+	bool "Exception and RTTI support"
+	default y
+	help
+	  This option enables exception support in the library.
+	  Exception support is part of the C++ standard, and as such
+	  should almost always be enabled.  This increases the size of
+	  the library.
+
+	  RTTI support is used for exceptions as well as operators such
+	  as dynamic_cast<>() and others.  This must be disabled to support
+	  static linking.  Using this increases the size of the library.
+
+	  Most people will answer Y.
 
 config IMPORT_LIBSUP
 	bool "Import libsupc++.a"
+	depends on UCLIBCXX_EXCEPTION_SUPPORT
 	default y
 	help
 	  libsupc++.a is a file which comes with the g++ compiler and provides
@@ -362,18 +312,35 @@ config IMPORT_LIBSUP
 	  need to be compiled into each executible.  However, it can also be
 	  imported into this library and shared. GNU libc++ imports this code.
 
+	  There is no point in importing this if you disable exception and rtti
+	  support above.
+
 	  You should say yes.
 
-config LIBSUP_PATH
-	string "Path for libsupc++"
-	default "/usr/lib/gcc-lib/$(TARGET_ARCH)/3.3.4/libsupc++.a"
-	depends on IMPORT_LIBSUP
+config BUILD_STATIC_LIB
+	bool "Build static library"
+	depends on !UCLIBCXX_EXCEPTION_SUPPORT
+	default y
 	help
-	  LIBSUP_PATH is the location of the gcc libsupc++.a library.
+	  By default, libuClibc++ is built only as a shared library.  Choosing
+	  'y' here will also build a static library which can be used to build
+	  statically linked executibles.
 
-endmenu
+	  There is little reason to say 'no' here.
 
-menu "uClibc++ development/debugging options"
+	  You should say yes.
+
+config BUILD_ONLY_STATIC_LIB
+	bool "Build only static library"
+	depends on BUILD_STATIC_LIB
+	default n
+	help
+	  By default, libuClibc++ is builds a shared library.  Choosing
+	  'y' here will disable the building of the shared library.  You
+	  should only choose 'y' here if you are on a system which does
+	  not support shared libraries
+
+	  You should say no.
 
 config DODEBUG
 	bool "Build uClibc++ with debugging symbols"
@@ -386,16 +353,5 @@ config DODEBUG
 	  If you are doing development and want to debug uClibc++, answer Y.
 
 	  Otherwise, answer N.
-
-config UCLIBCXX_EXCEPTION_SUPPORT
-	bool "Exception support"
-	default y
-	help
-	  This option enables exception support in the library.
-	  Exception support is part of the C++ standard, and as such
-	  should almost always be enabled.  This increases the size of
-	  the library.
-
-	  Most people will answer Y.
 
 endmenu

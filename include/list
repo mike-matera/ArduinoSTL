@@ -19,6 +19,7 @@
 
 #include <memory>
 #include <iterator>
+#include <algorithm>
 
 #ifndef __STD_HEADER_LIST
 #define __STD_HEADER_LIST 1
@@ -55,7 +56,8 @@ namespace std{
 
 		explicit list(const Allocator& = Allocator());
 		explicit list(size_type n, const T& value = T(), const Allocator& = Allocator());
-		template <class InputIterator> list(InputIterator first, InputIterator last, const Allocator& = Allocator());
+		template <class InputIterator> list(InputIterator first, InputIterator last, 
+			const Allocator& al= Allocator());
 		list(const list<T,Allocator>& x);
 		~list();
 
@@ -107,6 +109,8 @@ namespace std{
 		void sort();
 		template <class Compare> void sort(Compare comp);
 		void reverse();
+	protected:
+		void swap_nodes(node * x, node * y);
 	};
 
 
@@ -144,7 +148,7 @@ namespace std{
 		node * current;
 	public:
 		iter_list():current(0) { }
-		iter_list(list<T, Allocator>::node * n): current(n) { }
+		iter_list( typename list<T, Allocator>::node * n): current(n) { }
 		iter_list(const list<T, Allocator>::iter_list & l): current(l.current) { }
 		~iter_list(){ }
 
@@ -157,6 +161,12 @@ namespace std{
 			return *current->val;
 		}
 		T * operator->(){
+			return current->val;
+		}
+		const T & operator*() const{
+			return *current->val;
+		}
+		const T * operator->() const{
 			return current->val;
 		}
 
@@ -227,10 +237,22 @@ namespace std{
 			push_back(value);
 		}
 	}
-//	template <class InputIterator> list(InputIterator first, InputIterator last, const Allocator& = Allocator());
+
+	template<class T, class Allocator> template <class InputIterator>
+		list<T, Allocator>::list
+		(InputIterator first, InputIterator last, const Allocator& al)
+		: list_start(0), list_end(0), elements(0), a(al)
+	{
+		list_start = new node();
+		list_end = list_start;
+		while(first != last){
+			push_back(*first);
+			++first;
+		}
+	}
 
 	template<class T, class Allocator> list<T, Allocator>::list(const list<T,Allocator>& x)
-		: list_start(0), list_end(0), elements(0), a(x.al)
+		: list_start(0), list_end(0), elements(0), a(x.a)
 	{
 		list_start = new node();
 		list_end = list_start;
@@ -245,6 +267,17 @@ namespace std{
 		list_end = 0;
 	}
 
+
+	template<class T, class Allocator> void list<T, Allocator>::swap_nodes(node * x, node * y){
+		if(x == y){
+			return;
+		}
+
+		T * v = x->val;
+		x->val = y->val;
+		y->val = v;
+
+	}
 
 	template<class T, class Allocator> typename list<T, Allocator>::iterator 
 		list<T, Allocator>::begin()
@@ -407,11 +440,13 @@ namespace std{
 		//This should never happen
 		return position;
 	}
+
 	template<class T, class Allocator> void list<T, Allocator>::insert(iterator position, size_type n, const T& x){
 		for(typename list<T, Allocator>::size_type i = 0; i < n; ++i){
 			position = insert(position, x);
 		}
 	}
+
 	template<class T, class Allocator> template <class InputIterator> void
 		list<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last)
 	{
@@ -465,6 +500,233 @@ namespace std{
 			pop_front();
 		}
 	}
+
+	template<class T, class Allocator>
+		void list<T, Allocator>::splice(iterator position, list<T,Allocator>& x)
+	{
+
+		//Can't add non-existant elements
+		if(x.elements == 0){
+			return;
+		}
+
+		elements += x.elements;
+		x.elements = 0;
+
+
+		//Chaining to the begining
+		if(position == begin()){
+			x.list_end->previous->next = list_start;
+			list_start->previous = x.list_end->previous;
+
+			list_start = x.list_start;
+
+			x.list_start = x.list_end;
+			x.list_end->previous = 0;
+
+			return;
+		}
+
+		//Link everything we need
+		x.list_start->previous = position.link_struct()->previous;
+		position.link_struct()->previous->next = x.list_start;
+	
+		position.link_struct()->previous = x.list_end->previous;
+		x.list_end->previous->next = position.link_struct();
+
+		//Clean up the other list
+		
+		x.list_start = x.list_end;
+		x.list_end->previous=0;
+
+	}
+
+	template<class T, class Allocator>
+                void list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator i)
+	{
+		//Invalid conditions
+		if( x.elements == 0 || i == position || position.link_struct() == i.link_struct()->next ){
+			return;
+		}
+
+
+		//Do we need to adjust the begining pointer?
+		if(i == x.begin()){
+			x.list_start = x.list_start->next;
+			x.list_start->previous = 0;
+		}
+
+
+		//Insert at begining special case
+		if(position == begin()){
+
+			i.link_struct()->previous->next = i.link_struct()->next;
+			i.link_struct()->next->previous = i.link_struct()->previous;
+
+			i.link_struct()->previous = 0;
+			i.link_struct()->next = position.link_struct();
+			position.link_struct()->previous = i.link_struct();
+
+			list_start = i.link_struct();
+
+			--x.elements;
+			++elements;
+			return;
+		}
+
+
+		i.link_struct()->previous->next = i.link_struct()->next;
+		i.link_struct()->next->previous = i.link_struct()->previous;
+		
+		i.link_struct()->previous = position.link_struct()->previous;
+		position.link_struct()->previous->next = i.link_struct();
+
+		i.link_struct()->next = position.link_struct();
+		position.link_struct()->previous = i.link_struct();
+
+		--x.elements;
+		++elements;
+	}
+
+	template<class T, class Allocator>
+		void list<T, Allocator>::splice(iterator position, list<T,Allocator>& x,
+			iterator first, iterator last)
+	{
+		if(x.elements == 0){
+			return;
+		}
+
+		iterator temp;
+		while(first != last){
+			temp = first;
+			++first;
+			splice(position, x, temp);
+		}		
+	}
+
+
+	template<class T, class Allocator> void list<T, Allocator>::merge(list<T,Allocator>& x){
+		less<typename iterator_traits<typename list<T, Allocator>::iterator>::value_type> c;
+		merge(x, c);
+	}
+
+	template<class T, class Allocator> template <class Compare> 
+		void list<T, Allocator>::merge(list<T,Allocator>& x, Compare comp)
+	{
+		iterator source = x.begin();
+		iterator temp;
+		iterator dest  = begin();
+
+		while(source != x.end()){
+			while( dest != end() && comp (*dest, *source) ){
+				++dest;
+			}
+			++elements;
+			--x.elements;
+
+			temp = source;
+			++temp;
+
+			if(dest == begin()){
+				dest.link_struct()->previous = source.link_struct();
+				source.link_struct()->next = dest.link_struct();
+				source.link_struct()->previous = 0;
+				list_start = source.link_struct();
+			}else{
+				source.link_struct()->previous = dest.link_struct()->previous;
+				dest.link_struct()->previous->next = source.link_struct();
+				source.link_struct()->next = dest.link_struct();
+				dest.link_struct()->previous = source.link_struct();
+			}
+			source = temp;
+		}
+
+		//Fix up x;
+		x.list_start = x.list_end;
+		x.list_start->previous = 0;
+	}
+
+	template<class T, class Allocator> void list<T, Allocator>::sort(){
+		less<typename iterator_traits<typename list<T, Allocator>::iterator>::value_type> c;
+		sort(c);
+	}
+
+	template<class T, class Allocator> template <class Compare>
+		void list<T, Allocator>::sort(Compare comp)
+	{
+		typename list<T, Allocator>::iterator i, j, k;
+
+		//FIXME - bubble sort
+
+		if(elements == 0){
+			return;
+		}
+
+		i = end();
+		--i;
+		while(i != begin()){
+			j = begin();
+			k = j;
+			++k;
+			while(j != i){
+				if( comp(*k, *j) ){
+					swap_nodes(k.link_struct(), j.link_struct());
+				}
+				++j;
+				++k;
+			}
+			--i;
+		}
+	}
+
+
+	template<class T, class Allocator> void list<T, Allocator>::reverse(){
+		if(elements == 0){
+			return;
+		}
+
+		node * current;
+		node * following;
+		node * temp;
+
+		//Need to move the list_end element to the begining
+
+		temp = list_end;
+		list_end = temp->previous;
+		list_end->next = 0;
+
+		list_start->previous = temp;
+		temp->previous = 0;
+		temp->next = list_start;
+		list_start = temp;
+
+		current = list_start;
+
+		while( current != list_end ){
+			following = current->next;
+
+			//Swap the values pointed to/at with the current node
+			temp = current->next;
+			current->next = current->previous;
+			current->previous = temp;
+
+			current = following;
+		}
+
+		//Swap pointers on the end node
+		temp = list_end->next;
+		list_end->next = list_end->previous;
+		list_end->previous = temp;
+
+
+		//Swap the fixed pointers
+		temp = list_start;
+		list_start = list_end;
+		list_end = temp;
+
+	}
+
+
 
 }
 

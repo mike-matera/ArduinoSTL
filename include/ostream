@@ -89,25 +89,25 @@ namespace std {
 		}
 		basic_ostream<charT,traits>& flush(){
 			if(sbuffer->pubsync() == -1){
-				setstate(badbit);
+				basic_ios<charT,traits>::setstate(ios_base::badbit);
 			}
 			return *this;
 		}
 		pos_type tellp(){
-			if(fail() != false){
+			if(basic_ios<charT,traits>::fail() != false){
 				return pos_type(-1);
 			}
-			return rdbuf()->pubseekoff(0, cur, out);
+			return basic_ios<charT,traits>::rdbuf()->pubseekoff(0, ios_base::cur, ios_base::out);
 		}
-		basic_ostream<charT,traits>& seekp(pos_type){
-			if( fail() != true ){
-				rdbuf()->pubseekpos(pos);
+		basic_ostream<charT,traits>& seekp(pos_type pos){
+			if( basic_ios<charT,traits>::fail() != true ){
+				basic_ios<charT,traits>::rdbuf()->pubseekpos(pos);
 			}
 			return *this;
 		}
-		basic_ostream<charT,traits>& seekp(off_type, ios_base::seekdir){
-			if(fail() != true){
-				rdbuf()->pubseekoff(off, dir);
+		basic_ostream<charT,traits>& seekp(off_type off, ios_base::seekdir dir){
+			if( basic_ios<charT,traits>::fail() != true){
+				basic_ios<charT,traits>::rdbuf()->pubseekoff(off, dir);
 			}
 			return *this;
 		}
@@ -265,7 +265,7 @@ namespace std {
 		return out;
 	}
 	
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>&, unsigned char c){
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, unsigned char c){
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.put(c);
 		return out;
@@ -301,7 +301,7 @@ namespace std {
 		return out;
 	}
 	
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>&, const unsigned char* c){
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const unsigned char* c){
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.write(c, traits::length(c));
 		return out;

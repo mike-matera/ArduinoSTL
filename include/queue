@@ -91,7 +91,7 @@ namespace std{
 		typedef Container			container_type;
 
 		explicit priority_queue(const Compare& x = Compare(), const Container& a = Container())
-			: c(a), comp(x) { make_heap(c.begin(), c.end(), cmp) ; }
+			: c(a), comp(x) { make_heap(c.begin(), c.end(), comp) ; }
 		template <class InputIterator> priority_queue(InputIterator first,
 			InputIterator last,
 			const Compare& x = Compare(),

@@ -1,4 +1,3 @@
-#LIBS	=	-lc -lgcc_s -lm
 LIBS	=	-lc -lgcc_s
 
 TOPDIR=../
@@ -31,7 +30,8 @@ SRCS	=\
 	algorithm.cpp \
 	numeric.cpp \
 	sstream.cpp \
-	bitset.cpp
+	bitset.cpp \
+	valarray.cpp
 
 
 EXOBJS	=\
@@ -61,21 +61,15 @@ EXOBJS	=\
 	algorithm.o \
 	numeric.o \
 	sstream.o \
-	bitset.o
+	bitset.o \
+	valarray.o 
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.a
 ALLTGT	=	libuClibc++
 
 ifeq ($(IMPORT_LIBSUP),y)
-_TEST_LIBSUP_EXISTANCE = $(shell ls $(LIBSUP_PATH))
-
-ifeq ($(_TEST_LIBSUP_EXISTANCE),)
-$(error "***You specified to include libsupc++.a but did not specify a valid location")
-endif
-
-
-SUPOBJS	=	$(LIBSUP_PATH)
+SUPOBJS	=	$(shell $(CXX) -print-file-name=libsupc++.a)
 else
 SUPOBJS =
 endif
@@ -87,11 +81,19 @@ all:	$(ALLOBJS) $(ALLTGT)
 objs:	$(ALLOBJS)
 
 libuClibc++:	$(ALLOBJS)
-	ar rcs libuClibc++.a $(EXOBJS)
-	gcc -shared -o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS)
+ifeq ($(BUILD_STATIC_LIB),y)
+	ar rcs libuClibc++.a $(EXOBJS) $(SUPOBJS)
+endif
+
+ifeq ($(BUILD_ONLY_STATIC_LIB),y)
+else
+	$(CC) -shared $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS) \
+		-o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
+		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
+endif
 
 cleanobjs:
 	rm -f $(ALLOBJS)

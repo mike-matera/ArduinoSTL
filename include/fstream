@@ -72,7 +72,7 @@ namespace std{
 
 		basic_filebuf<charT,traits>* open(const char* s, ios_base::openmode mode){
 			bool move_end = (mode & ios_base::ate) != 0;
-			if(is_opened() !=false){	//Must call close() first
+			if(is_open() !=false){	//Must call close() first
 				return 0;
 			}
 			mode = mode & ~ios_base::ate;
@@ -86,7 +86,9 @@ namespace std{
 				fp = fopen(s, "r+");
 			}else if(mode == (ios_base::in & ios_base::out & ios_base::trunc)){
 				fp = fopen(s, "w+");
-			}else if(mode == (ios_base::bin & ios_base::out) || mode==(ios_base::binary & ios_base::out & ios_base::trunc)){
+			}else if(mode == (ios_base::binary & ios_base::out) 
+				|| mode==(ios_base::binary & ios_base::out & ios_base::trunc))
+			{
 				fp = fopen(s, "wb");
 			}else if(mode == (ios_base::binary & ios_base::out & ios_base::app)){
 				fp = fopen(s, "ab");
@@ -129,7 +131,7 @@ namespace std{
 		//Overridden virtual functions:
 
 		virtual int showmanyc(){
-			return egptr() - gptr();
+			return basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr();
 		}
 		virtual int_type underflow(){
 			/* Some variables used internally:
@@ -146,23 +148,18 @@ namespace std{
 
 			*/
 
-			if(mgnext == mgbeg){	//Buffer is full
-				return traits::to_int_type(*mgbeg);
+			if(basic_streambuf<charT,traits>::mgnext == basic_streambuf<charT,traits>::mgbeg){	//Buffer is full
+				return traits::to_int_type(*basic_streambuf<charT,traits>::mgbeg);
 			}
 			//Shift entire buffer back to the begining
-			size_t offset = gptr() - eback();
-			for(charT * i = gptr(); i < egptr(); i++){
+			size_t offset = basic_streambuf<charT,traits>::gptr() - basic_streambuf<charT,traits>::eback();
+			for(charT * i = basic_streambuf<charT,traits>::gptr(); i < basic_streambuf<charT,traits>::egptr(); i++){
 				*(i-offset) = *i;
 			}
 			//Adjust current buffer pointer
-			gbump(-offset);
+			basic_streambuf<charT,traits>::gbump(-offset);
 			//Fill rest of buffer
-//			printf("Running fscanf inside basic_filebuf:\n");
-//			printf("fp: %p\n", fp);
-//			printf("gptr(): %p\n", gptr());
-			int retval = fscanf(fp, "%1c", (gptr() + 1));
-//			int retval = fscanf(fp, "%1c", egptr() - offset);
-//			int retval = fscanf(fp, "%1c", temp_buf);
+			int retval = fscanf(fp, "%1c", (basic_streambuf<charT,traits>::gptr() + 1));
 			if(retval < 0){
 				printf("Error trying to run scanf\n");
 				abort();
@@ -173,34 +170,37 @@ namespace std{
 					return traits::eof();
 				}
 				for(size_t i = 1; i <= u_retval; ++i){
-					*(egptr() - i) = *(gptr() +retval );
+					*(basic_streambuf<charT,traits>::egptr() - i) = 
+						*(basic_streambuf<charT,traits>::gptr() +retval );
 				}
-				gbump(offset - u_retval);
+				basic_streambuf<charT,traits>::gbump(offset - u_retval);
 			}
-			return traits::to_int_type(*gptr());
+			return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 		}
 		virtual int_type uflow(){
-			bool dobump = (gptr() != egptr());
+			bool dobump = (basic_streambuf<charT,traits>::gptr() != basic_streambuf<charT,traits>::egptr());
 			int_type retval = underflow();
 			if(dobump){
-				gbump(1);
+				basic_streambuf<charT,traits>::gbump(1);
 			}
 			return retval;
 		}
 		virtual int_type pbackfail(int_type c = traits::eof()){
-			if(is_open() == false || gptr() == eback()){
+			if(is_open() == false || 
+				basic_streambuf<charT,traits>::gptr() == basic_streambuf<charT,traits>::eback())
+			{
 				return traits::eof();
 			}
 			if(traits::eq_int_type(c,traits::eof()) == false){
-				if(traits::eq(traits::to_char_type(c),gptr()[-1]) == true){
-					gbump(-1);
+				if(traits::eq(traits::to_char_type(c), basic_streambuf<charT,traits>::gptr()[-1]) == true){
+					basic_streambuf<charT,traits>::gbump(-1);
 				}else{
-					gbump(-1);
-					gptr()[0] = c;
+					basic_streambuf<charT,traits>::gbump(-1);
+					basic_streambuf<charT,traits>::gptr()[0] = c;
 				}
 				return c;
 			}else{
-				gbump(-1);
+				basic_streambuf<charT,traits>::gbump(-1);
 				return traits::not_eof(c);
 			}
 		}
@@ -209,17 +209,17 @@ namespace std{
 				//Can't do much
 				return traits::eof();
 			}
-			if(pbase() == 0){		//Unbuffered
+			if(basic_streambuf<charT,traits>::pbase() == 0){		//Unbuffered
 				if(fputc(c, fp) == EOF){
 					return traits::eof();
 				}
 				return c;
 			}
-			if(pbase() == 0 && traits::eq_int_type(c,traits::eof()) ){
+			if(basic_streambuf<charT,traits>::pbase() == 0 && traits::eq_int_type(c,traits::eof()) ){
 				//Nothing to flush
 				return traits::not_eof(c);
 			}
-			size_t r = pptr() - pbase();
+			size_t r = basic_streambuf<charT,traits>::pptr() - basic_streambuf<charT,traits>::pbase();
 			size_t s = r;
 
 			char_type *buffer = 0;
@@ -231,7 +231,7 @@ namespace std{
 				s++;
 			}
 			if(r!=0){	//Nothing to do
-				traits::copy(buffer, pbase(), r);
+				traits::copy(buffer, basic_streambuf<charT,traits>::pbase(), r);
 			}
 			
 			size_t retval = fwrite(buffer, sizeof(charT), s, fp);
@@ -240,9 +240,9 @@ namespace std{
 					delete [] buffer;
 					return traits::eof();
 				}
-				pbump(-retval);
+				basic_streambuf<charT,traits>::pbump(-retval);
 			}else{
-				pbump(-r);
+				basic_streambuf<charT,traits>::pbump(-r);
 			}
 
 			delete [] buffer;
@@ -258,7 +258,9 @@ namespace std{
 				}
 				pbuffer = 0;
 				gbuffer = 0;
-			}else if(gptr() !=0 && gptr()==egptr()){
+			}else if(basic_streambuf<charT,traits>::gptr() !=0 && 
+				basic_streambuf<charT,traits>::gptr()==basic_streambuf<charT,traits>::egptr())
+			{
 				delete [] pbuffer;
 				pbuffer = s;
 			}
@@ -280,10 +282,10 @@ namespace std{
 
 			sync();
 
-			int retval = fseek(fp,sizeof(charT)*(off - (egptr() - gptr())),whence);
+			int retval = fseek(fp,sizeof(charT)*(off - (basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr())),whence);
 
 			//Invalidate read buffer
-			gbump(egptr() - gptr());
+			basic_streambuf<charT,traits>::gbump(basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr());
 
 			return retval;
 		}
@@ -296,7 +298,7 @@ namespace std{
 			int retval = fseek(fp,sizeof(charT)* sp, SEEK_SET);
 
 			//Invalidate read buffer
-			gbump(egptr() - gptr());
+			basic_streambuf<charT,traits>::gbump(basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr());
 			if(retval > -1){
 				return sp;
 			}
@@ -322,7 +324,7 @@ namespace std{
 			//Check to see if buffered
 
 			//Check to see if we can buffer the data
-			streamsize buffer_avail = epptr() - pptr();
+			streamsize buffer_avail = basic_streambuf<charT,traits>::epptr() - basic_streambuf<charT,traits>::pptr();
 
 			streamsize len = traits::length(s);
 			if(len > n){
@@ -338,22 +340,11 @@ namespace std{
 
 			//Add to buffer to be written later
 
-//			printf("Adding to buffer\n");
-
-			traits::copy(pptr(), s, len);
-			pbump(len);
+			traits::copy(basic_streambuf<charT,traits>::pptr(), s, len);
+			basic_streambuf<charT,traits>::pbump(len);
 
 			return len;
-
-/*			if( fp !=0 ){
-				char buffer[30];
-				snprintf(buffer, 29, "%%%ds", n);
-				return fprintf(fp, buffer, s);
-			}else{	//Bad File Pointer
-				return 0;
-			}*/
 		}
-
 
 //		bool opened;
 
@@ -390,7 +381,7 @@ namespace std{
 		bool is_open(){
 			return sb.is_open();
 		}
-		void open(const char* s, ios_base::openmode mode = in){
+		void open(const char* s, ios_base::openmode mode = ios_base::in){
 			sb.open(s, mode);
 		}
 		void close(){
@@ -424,7 +415,7 @@ namespace std{
 		bool is_open(){
 			return sb.is_open();
 		}
-		void open(const char* s, ios_base::openmode mode = out | trunc){
+		void open(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc){
 			sb.open(s, mode);
 		}
 		void close(){

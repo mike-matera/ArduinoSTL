@@ -195,7 +195,7 @@ namespace std{
 	public:
 		explicit binary_negate(const Predicate& pred) : p(pred) {  }
 		bool operator()(const typename Predicate::first_argument_type& x,
-			const typename Predicate::second_argument_type& ) const
+			const typename Predicate::second_argument_type& y) const
 		{
 			return !p(x, y);
 		}
@@ -343,8 +343,29 @@ namespace std{
 }
 
 
-//This is an SGI extension which is checked for by some conformance checks.  This
-// is *NOT* part of the C++ standard, however
+//These are SGI extensions which are checked for by some conformance checks.  They
+// are *NOT* part of the C++ standard, however
+
+template <class Op1, class Op2> class unary_compose :
+	public std::unary_function<typename Op2::argument_type,
+		typename Op1::result_type>
+{
+protected:
+	Op1 mf1;
+	Op2 mf2;
+public:
+	unary_compose(const Op1& x, const Op2& y) : mf1(x), mf2(y) {  }
+	typename Op1::result_type operator()(const typename Op2::argument_type& x) const {
+		return mf1(mf2(x));
+	}
+};
+
+template <class Op1, class Op2>
+inline unary_compose<Op1, Op2>
+compose1(const Op1& fn1, const Op2& fn2){
+	return unary_compose<Op1, Op2>(fn1, fn2);
+}
+
 template <class Op1, class Op2, class Op3> class binary_compose : 
 	public std::unary_function<typename Op2::argument_type, typename Op1::result_type>
 {
@@ -360,7 +381,7 @@ public:
 	}
 };
 
-template <class Op1, class Op2, class Op3> binary_compose<Op1, Op2, Op3>
+template <class Op1, class Op2, class Op3> inline binary_compose<Op1, Op2, Op3>
 compose2(const Op1 & fn1, const Op2 & fn2, const Op3 & fn3){
 	return binary_compose<Op1, Op2, Op3>(fn1, fn2, fn3);
 }

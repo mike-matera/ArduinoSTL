@@ -251,7 +251,7 @@ namespace std{
 		}
 
 		unsigned long to_ulong() const{
-			if(N > sizeof(retval) * CHAR_BIT){
+			if(N > sizeof(unsigned long) * CHAR_BIT){
 				__throw_overflow_error();
 			}
 			unsigned long retval = 0;

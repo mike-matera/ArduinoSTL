@@ -26,6 +26,10 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
 
+void __throw_bad_alloc(){
+	throw bad_alloc();
+}
+
 void __throw_out_of_range( const char * message){
 	if(message == 0){
 		throw out_of_range();
@@ -55,6 +59,10 @@ void __throw_invalid_argument(const char * message){
 }
 
 #else
+
+void __throw_bad_alloc(){
+	abort();
+}
 
 void __throw_out_of_range( const char * ){
 	abort();

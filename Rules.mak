@@ -47,7 +47,7 @@ HOSTCXXFLAGS=-O2 -Wall
 # this stuff alone.
 MAJOR_VERSION:=0
 MINOR_VERSION:=1
-SUBLEVEL:=0
+SUBLEVEL:=4
 VERSION:=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL)
 # Ensure consistent sort order, 'gcc -print-search-dirs' behavior, etc.
 # LC_ALL:= C
@@ -69,9 +69,9 @@ check_gcc=$(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; 
 
 # Make certain these contain a final "/", but no "//"s.
 TARGET_ARCH:=$(strip $(subst ",, $(strip $(TARGET_ARCH))))
-RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(RUNTIME_PREFIX))))))
-DEVEL_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(DEVEL_PREFIX))))))
-export RUNTIME_PREFIX DEVEL_PREFIX
+#RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(RUNTIME_PREFIX))))))
+UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX))))))
+export UCLIBCXX_RUNTIME_PREFIX
 
 ARFLAGS:=r
 
@@ -102,7 +102,7 @@ PICFLAG:=-fPIC
 OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 
 # Add a bunch of extra pedantic annoyingly strict checks
-XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wall -Wno-trigraphs -W -pedantic
+XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -W -pedantic
 XARCH_CFLAGS=$(subst ",, $(strip $(ARCH_CFLAGS)))
 CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
@@ -118,7 +118,7 @@ ifeq ($(DODEBUG),y)
     LDFLAGS:= $(CPU_LDFLAGS-y) -shared --warn-common --warn-once -z combreloc
     STRIPTOOL:= true -Since_we_are_debugging
 else
-    LDFLAGS := $(CPU_LDFLAGS-y) -s -shared --warn-common --warn-once -z combreloc
+    LDFLAGS := $(CPU_LDFLAGS-y) -shared --warn-common --warn-once -z combreloc
 endif
 
 # Sigh, some stupid versions of gcc can't seem to cope with '-iwithprefix include'
@@ -135,6 +135,13 @@ CFLAGS_NOPIC:=$(CFLAGS)
 #endif
 
 CXXFLAGS=$(CFLAGS)
+
+ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
+
+else
+    CXXFLAGS+= -fno-exceptions -fno-rtti
+endif
+
 
 LIBGCC_CFLAGS ?= $(CFLAGS) $(CPU_CFLAGS-y)
 LIBGCC:=$(shell $(CC) $(LIBGCC_CFLAGS) -print-libgcc-file-name)
