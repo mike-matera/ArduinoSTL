@@ -1,0 +1,15 @@
+#include <exception>
+
+
+#ifndef HEADER_IMPLEMENTATION_FUNC_EXCEPTION
+#define HEADER_IMPLEMENTATION_FUNC_EXCEPTION
+
+namespace std{
+
+	void __throw_out_of_range(const char * message = 0);
+	void __throw_length_error(const char * message = 0);
+
+};
+
+#endif
+

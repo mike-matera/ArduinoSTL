@@ -1,0 +1,56 @@
+#include <exception>
+
+#ifndef _STD_NEW_OPERATOR
+#define _STD_NEW_OPERATOR 1
+
+//FIXME NOW!!!
+//static std::exception __dummy_exception_to_deal_with_compiler_issues;
+
+namespace std{
+	typedef unsigned int size_t;
+
+	class bad_alloc : public exception {};
+
+
+	struct nothrow_t {};
+//	typedef nothrow_t nothrow;
+
+	extern const nothrow_t nothrow;
+	typedef void (*new_handler)();
+	new_handler set_new_handler(new_handler new_p) throw();
+
+
+
+//	extern const nothrow_t nothrow;
+
+//	typedef void (*new_handler)();
+//	new_handler set_new_handler(new_handler) throw();
+
+};
+
+
+	void* operator new(std::size_t numBytes) throw(std::bad_alloc);
+	void operator delete(void* ptr) throw();
+
+	void* operator new[](std::size_t numBytes) throw(std::bad_alloc);
+	void operator delete[](void * ptr) throw();
+
+#ifndef NO_NOTHROW
+	void* operator new(std::size_t numBytes, const std::nothrow_t& ) throw();
+	void operator delete(void* ptr, const std::nothrow_t& ) throw();
+
+	void* operator new[](std::size_t numBytes, const std::nothrow_t& ) throw();
+	void operator delete[](void* ptr, const std::nothrow_t& ) throw();
+#endif
+
+	/* Placement operators */
+
+	inline void* operator new(std::size_t, void* ptr) throw() {return ptr; }
+	inline void operator delete(void* , void *) throw() { }
+	
+	inline void* operator new[](std::size_t, void *p) throw() { return p; }
+	inline void operator delete[](void* , void *) throw() {}
+
+
+#endif
+

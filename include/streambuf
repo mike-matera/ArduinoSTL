@@ -1,0 +1,214 @@
+#include <basic_definitions>
+#include <locale>
+#include <string>
+#include <iosfwd>
+
+#ifndef HEADER_STD_STREAMBUF
+#define HEADER_STD_STREAMBUF 1
+
+#include <ios>
+
+namespace std{
+//	template class basic_streambuf<char, char_traits<char> >;
+
+	template <class charT, class traits>  class basic_streambuf{
+	public:
+		friend ios_base::Init::Init();
+	// Types:
+		typedef charT				char_type;
+		typedef typename traits::int_type	int_type;
+		typedef typename traits::pos_type	pos_type;
+		typedef typename traits::off_type	off_type;
+		typedef traits				traits_type;
+		virtual ~basic_streambuf(){
+
+		}
+		locale pubimbue(const locale &loc){
+			locale temp = myLocale;
+			myLocale = loc;
+			return temp;
+		}
+		locale getloc() const{
+			return myLocale;
+		}
+
+		basic_streambuf<char_type,traits>* pubsetbuf(char_type* s, streamsize n){
+			return setbuf(s,n);
+		}
+		pos_type pubseekoff(off_type off, 
+			typename ios_base::seekdir way, 
+			ios_base::openmode which = ios_base::in |
+			ios_base::out
+			)
+		{
+			seekoff(off,way,which);
+		}
+		pos_type pubseekpos(pos_type sp, ios_base::openmode which = ios_base::in | ios_base::out){
+			seekpos(sp,which);
+		}
+		int pubsync(){
+			return sync();
+		}
+
+		streamsize in_avail(){
+			if(mgend !=0 && mgnext !=0){
+				return mgend - mgnext;
+			}
+			return showmanyc();
+		}
+		int_type snextc(){
+			if(sbumpc() == traits::eof() ){
+				return traits::eof() ;
+			}
+			return sgetc();
+		}
+		int_type sbumpc(){
+			if(mgbeg == 0 || mgnext == mgend){
+				return uflow();
+			}
+			int_type retval = traits::to_int_type(*gptr());
+			gbump(1);
+			return retval;
+		}
+		int_type sgetc(){
+			if(mgbeg == 0 || mgnext == mgend){
+				return underflow();
+			}
+			return traits::to_int_type(*gptr());
+		}
+		streamsize sgetn(char_type* s, streamsize n){
+			return xsgetn(s,n);
+		}
+
+		int_type sputbackc(char_type c){
+			if(mgbeg == 0 || mgnext == mgbeg){
+				return ios_base::failbit;
+			}
+			gbump(-1);
+			return traits::to_int_type(*gptr());
+		}
+		int_type sungetc(){
+			if(mgbeg == 0 || mgnext == mgbeg){
+				return ios_base::failbit;
+			}
+			gbump(-1);
+		}
+
+		int_type sputc(char_type c){
+			overflow(c);
+			return traits::to_int_type(c);
+		}
+
+		streamsize sputn(const char_type* s, streamsize n){
+			return xsputn(s, n);
+		}
+
+	protected:
+		locale myLocale;
+		//Pointers for the "get" buffers
+		charT * mgbeg;
+		charT * mgnext;
+		charT * mgend;
+
+		//Pointers for the "put" buffers	
+		charT * mpbeg;
+		charT * mpnext;
+		charT * mpend;
+
+		//In the event of null buffers Lets us know what the buffer is opened for
+		ios_base::openmode openedFor;
+		
+		basic_streambuf() : myLocale(), mgbeg(0), mgnext(0), mgend(0), mpbeg(0), mpnext(0), mpend(0), openedFor(0){
+
+		}
+		char_type* eback() const{
+			return mgbeg;
+		}
+		char_type* gptr()  const{
+			return mgnext;
+		}
+		char_type* egptr() const{
+			return mgend;
+		}
+		void gbump(int n){
+			mgnext+=n;
+		}
+		void setg(char_type* gbeg, char_type* gnext, char_type* gend){
+			mgbeg = gbeg;
+			mgnext = gnext;
+			mgend = gend;
+		}
+
+		char_type* pbase() const{
+			return mpbeg;
+		}
+		char_type* pptr() const{
+			return mpnext;
+		}
+		char_type* epptr() const{
+			return mpend;
+		}
+		void pbump(int n){
+			mpnext+=n;
+		}
+		void setp(char_type* pbeg, char_type* pend){
+			mpbeg = pbeg;
+			mpnext  = pbeg;
+			mpend = pend;
+		}
+
+		virtual void imbue(const locale &loc){
+			myLocale = loc;
+		}
+
+		//Virtual functions which we will not implement
+
+		virtual basic_streambuf<char_type,traits>* setbuf(char_type* , streamsize){
+			return 0;
+		}
+		virtual pos_type seekoff(off_type , ios_base::seekdir , 
+			ios_base::openmode = ios_base::in | ios_base::out){
+			return 0;
+		}
+		virtual pos_type seekpos(pos_type , ios_base::openmode = ios_base::in | ios_base::out){
+			return 0;
+		}
+		virtual int sync(){
+			return 0;
+		}
+
+		virtual int showmanyc(){
+			return 0;
+		}
+		virtual streamsize xsgetn(char_type* , streamsize ){
+			return 0;
+		}
+		virtual int_type underflow(){
+			return traits_type::eof();
+		}
+		virtual int_type uflow(){
+			return traits_type::eof();
+		}
+
+		virtual int_type pbackfail(int_type c = traits::eof()){
+			return c;
+		}
+		virtual streamsize xsputn(const char_type* , streamsize ){
+			return 0;
+		}
+		virtual int_type overflow (int_type c = traits::eof()){
+			return c;
+		}
+	};
+
+
+	typedef basic_streambuf<char>     streambuf;
+#ifdef USE_WCHAR
+	typedef basic_streambuf<wchar_t> wstreambuf;
+#endif
+
+};
+
+
+
+#endif

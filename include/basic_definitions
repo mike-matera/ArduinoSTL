@@ -1,0 +1,14 @@
+#define USE_WCHAR 1		//Testing purposes
+#define DEFAULT_ALLOC_UNITS 32	//Default units to allocate for containers.
+#define STRING_MAX_UNITS 65535
+
+//#define EXPAND_OSTREAM_FOR_CHAR 1
+//#define EXPAND_ISTREAM_FOR_CHAR 1
+//#define EXPAND_VECTOR_FOR_CHAR 1
+
+namespace std{
+	typedef signed long int streamsize;
+
+
+
+};

@@ -1,0 +1,37 @@
+#include <string>
+#include <memory>
+
+
+namespace std{
+
+	/* Pull out some of the vector functions here so that the main functions
+	 * can be instantiated to save space
+	 */
+
+
+	template<class T, class Allocator = allocator<T> > class __vector_helper_functions{
+	public:
+		inline static void reserve(Allocator & a, T * &data,
+			typename Allocator::size_type & elements, 
+			typename Allocator::size_type & data_size,
+			typename Allocator::size_type n)
+		{
+			if(n > data_size){              //We never shrink...
+				T * temp_ptr = data;
+				typename Allocator::size_type temp_size = data_size;
+
+				data_size = elements = n;
+				data = a.allocate(data_size);
+
+				for(typename Allocator::size_type i = 0; i<elements; ++i){
+					data[i] = temp_ptr[i];
+				}
+				a.deallocate(temp_ptr, temp_size);
+			}
+
+			return; 
+		}
+
+	};
+
+};

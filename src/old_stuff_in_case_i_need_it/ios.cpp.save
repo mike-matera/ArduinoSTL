@@ -1,0 +1,26 @@
+#include <ios>
+
+namespace std{
+/*	ios_base::Init::Init(){
+		init_cnt++;
+	}
+
+	ios_base::Init::~Init(){
+		if(init_cnt>0){
+			init_cnt--;
+		}
+	}*/
+
+//	ios_base::ios_base();
+
+
+
+
+
+
+
+
+
+};
+
+

@@ -1,0 +1,64 @@
+#include <basic_definitions>
+#include <memory>
+#include <string>
+#include <iterator>
+#include <exception>
+#include <stdexcept>
+#include <typeinfo>
+
+#ifndef HEADER_STD_LOCALE
+#define HEADER_STD_LOCALE 1
+
+#include <iosfwd>
+
+namespace std{
+	class locale {
+	public:
+	// types:
+		class facet;
+		class id;
+		typedef unsigned char category;
+
+		static const category
+		none     = 0,
+		collate  = 0x01, ctype    = 0x02,
+		monetary = 0x04, numeric  = 0x08,
+		time = 0x10, messages = 0x20,
+		all = collate | ctype | monetary | numeric | time  | messages;
+
+		// construct/copy/destroy:
+		locale() throw(){
+			return;
+                }
+		locale(const locale& other) throw(){
+			return;
+		}
+		~locale() throw(){
+			return;
+		}
+
+		const locale& operator=(const locale&) throw(){
+			return *this;
+		}
+	};
+
+	class locale::facet {
+		friend class locale;
+		explicit facet(size_t = 0){
+			return;
+		}
+		virtual ~facet(){
+			return;
+		}
+	};
+
+	class locale::id {
+		id(){ }
+	};
+
+}
+
+#endif
+
+
+

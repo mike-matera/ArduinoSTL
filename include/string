@@ -1,0 +1,993 @@
+#include <basic_definitions>
+#include <string.h>
+#include <exception>
+#include <func_exception>
+#include <memory>
+
+#ifdef USE_WCHAR
+#include <wchar.h>
+#include <wctype.h>
+#endif
+
+
+#ifndef HEADER_STD_STRING
+#define HEADER_STD_STRING 1
+
+namespace std{
+	/* Inlining all wrapped function calls to shrink the amount of code generated*/	
+	//Typedefs to use for stuff
+	typedef signed int char_traits_off_type;
+
+	//Generic char_traits
+	template<class charT> struct char_traits { };
+
+	//Specialize for char
+	template<> struct char_traits<char> {
+		typedef char char_type;
+		typedef short int int_type;
+		typedef char_traits_off_type off_type;
+		typedef char_traits_off_type pos_type;
+		typedef char state_type;
+		
+		inline static void assign(char_type & c, char_type & d) { c = d; }
+
+		inline static bool eq(const char_type& c1, const char_type& c2){
+			if(strncmp(&c1, &c2, 1) == 0){
+				return true;
+			}
+			return false;
+		}
+
+		static char_type to_char_type(const int_type & i){
+			if(i > 0 && i <= 255){
+				return i;
+			}
+
+			//Out of range
+			return 0;
+		}
+
+		static int_type to_int_type(const char_type & c){
+			return c;
+		}
+
+		inline static bool eq_int_type(const int_type & a, const int_type & b){
+			if(a==b){
+				return true;
+			}
+			return false;
+		}
+
+
+		inline static bool lt(const char_type& c1, const char_type& c2){
+			if(strncmp(&c1, &c2, 1) < 0){
+				return true;
+			}
+			return false;
+		}
+
+		inline static char_type* move(char_type* s1, const char_type* s2, size_t n){
+			return (char*) memmove(s1, s2, n);
+		}
+
+		inline static char_type* copy(char_type* s1, const char_type* s2, size_t n){
+			return strncpy(s1, s2, n);
+		}
+
+		inline static char_type* assign(char_type* s, size_t n, char_type a){
+			return (char *)memset(s, a, n);
+		}
+
+		inline static int compare(const char_type* s1, const char_type* s2, size_t n){
+			return strncmp(s1, s2, n);
+		}
+
+		inline static size_t length(const char_type* s){
+			return strlen(s);
+		}
+
+		static const char_type* find(const char_type* s, int n, const char_type& a);
+
+		inline static int_type eof() { return -1; }
+		inline static int_type not_eof(const int_type & i) {
+			if(i == -1){
+				return 0;
+			} else {
+				return i;
+			}
+		}
+		static state_type get_state(pos_type p){
+			state_type a;
+			return a;
+		}
+	};
+
+
+#ifdef USE_WCHAR
+	template<> struct char_traits<wchar_t> {
+		typedef wchar_t char_type;
+		typedef wint_t int_type;
+		typedef char_traits_off_type off_type;
+		typedef char_traits_off_type pos_type;
+		typedef mbstate_t state_type;
+
+		static void assign(char_type & c, char_type & d){ c=d; }
+		inline static bool eq(const char_type& c1, const char_type& c2){
+			if(wcsncmp(&c1, &c2, 1) == 0){
+				return true;
+			}
+			return false;
+		}
+
+		inline static bool lt(const char_type& c1, const char_type& c2){
+			if(wcsncmp(&c1, &c2, 1) < 0){
+				return true;
+			}
+			return false;
+		}
+
+		inline static char_type* move(char_type* s1, const char_type* s2, size_t n){
+			return (char_type*) memmove(s1, s2, n * sizeof(char_type));
+		}
+
+		inline static char_type* copy(char_type* s1, const char_type* s2, size_t n){
+			return wcsncpy(s1, s2, n);
+		}
+
+		inline static char_type* assign(char_type* s, size_t n, char_type a){
+			return (char_type *)memset(s, a, n);	/*FIXME*/
+		}
+
+		inline static int compare(const char_type* s1, const char_type* s2, size_t n){
+			return wcsncmp(s1, s2, n);
+		}
+
+		inline static size_t length(const char_type* s){
+			return wcslen(s);
+		}
+
+		static const char_type* find(const char_type* s, int n, const char_type& a);
+
+		inline static int_type eof() { return WEOF; }
+		inline static int_type not_eof(const int_type & i) {
+			if(i == WEOF){
+				return (int_type)0;
+			} else {
+				return i;
+			}
+		}
+		static state_type get_state(pos_type p){
+			state_type a;
+			return a;
+		}
+	};
+#endif
+
+	//Basic basic_string
+
+template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class basic_string {
+public:
+	typedef Tr traits_type;
+	typedef typename Tr::char_type value_type;
+	typedef A allocator_type;
+	typedef typename A::size_type size_type;
+//	typedef typename A::difference_type difference_type;
+
+	typedef typename A::reference reference;
+	typedef typename A::const_reference const_reference;
+	typedef typename A::pointer pointer;
+	typedef typename A::const_pointer const_pointer;
+
+//	typedef implementation_defined iterator;
+//	typedef implementation_defined const_iterator;
+
+//	typedef std::reverse_iterator<iterator> reverse_iterator;
+//	typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
+private:
+	mutable pointer stringPointer;
+	unsigned long int characters;
+	unsigned long int memorySize;
+	A localAlloc;
+
+public:
+
+	static const size_type npos = -1;
+
+	explicit basic_string(const A& a = A()) : stringPointer(0), characters(0), memorySize(0), localAlloc(a){
+		stringPointer = localAlloc.allocate(DEFAULT_ALLOC_UNITS);
+		memorySize = DEFAULT_ALLOC_UNITS;
+	}
+
+	basic_string(const basic_string& str, size_type pos = 0, size_type n = npos, const A& a = A()) 
+	: stringPointer(0), characters(0), memorySize(0), localAlloc(a) {
+		if(pos>str.size()){
+			__throw_out_of_range();
+		}
+		size_type rlen = str.size() - pos;
+		if( rlen > n){
+			rlen = n;
+		}
+		memorySize = rlen+1;
+		stringPointer = localAlloc.allocate(memorySize);
+		characters = rlen;
+		for(size_t i = 0; i < rlen; i++){
+			stringPointer[i] = str[npos + i];
+		}		
+	}
+
+	basic_string(const Ch* s, size_type n, const A& a = A())
+	: stringPointer(0), characters(n), memorySize(n+1), localAlloc(a){
+		if(n == npos){
+			__throw_out_of_range();
+		}
+		stringPointer = localAlloc.allocate(memorySize);
+		if(s == 0){
+			characters=0;
+		}else{
+			for(size_type i = 0; i < n ; i++){
+				stringPointer[i] = s[i];
+			}
+		}
+	}
+
+	basic_string(const Ch* s, const A& a = A()) 
+	: stringPointer(0), characters(0), memorySize(0), localAlloc(a){
+		if(s==0){
+			memorySize = DEFAULT_ALLOC_UNITS;
+			stringPointer = localAlloc.allocate(memorySize);
+		}else{
+			characters = Tr::length(s);
+			memorySize = characters + 1;
+			stringPointer = localAlloc.allocate(memorySize);
+			Tr::copy(stringPointer, s, characters);
+		}
+	}
+
+	
+	basic_string(size_type n, Ch c, const A& a = A())
+	: stringPointer(0), characters(n), memorySize(n+1), localAlloc(a){
+		if(n == npos){
+			stringPointer = localAlloc.allocate(memorySize);
+			Tr::assign(stringPointer, characters, c);
+		}
+	}
+
+//	template<class InputIterator> basic_string(InputIterator begin, InputIterator end, const A& a = A());
+	~basic_string() {
+		localAlloc.deallocate(stringPointer, memorySize);
+		stringPointer = 0;
+	}
+	basic_string& operator=(const basic_string& str){
+		if(&str == this){	//Check if we are doing a=a 
+			return *this;
+		}
+	
+		return *this;
+	}
+
+	basic_string& operator=(const Ch* s){
+		if(s==0){
+			characters=0;
+		}else{
+			size_type len = Tr::length(s);
+			if(len>memorySize){
+				resize(len + DEFAULT_ALLOC_UNITS);
+			}
+			Tr::copy(stringPointer, s, len);
+			characters = len;
+		}
+		return *this;
+	}
+
+	basic_string& operator=(Ch c){
+		if(memorySize == 0){
+			resize(DEFAULT_ALLOC_UNITS);
+		}
+		characters=1;
+		stringPointer[0] = c;
+		return *this;
+	}
+
+//	iterator begin();
+//	const_iterator begin() const;
+//	iterator end();
+//	const_iterator end() const;
+
+//	reverse_iterator rbegin();
+//	const_reverse_iterator rbegin() const;
+//	reverse_iterator       rend();
+//	const_reverse_iterator rend() const;
+
+	size_type size() const{
+		return characters;
+	}
+
+	inline size_type length() const { return characters; }
+
+	inline size_type max_size() const{
+		return STRING_MAX_UNITS;
+	}
+
+	void resize(size_type n, Ch c){
+		if(n > characters){	//May need to expand
+			if(n > memorySize){	//Need to resize
+				size_type oldSize = memorySize;
+				memorySize = n+1;
+				pointer tmpPtr = localAlloc.allocate(memorySize);
+				if(characters > 0){	//Otherwise nothing to copy
+					Tr::copy(tmpPtr, stringPointer, n);
+				}
+				Tr::assign( &tmpPtr[characters], n - characters, c);
+				characters = n;
+				localAlloc.deallocate(stringPointer, oldSize);
+				stringPointer = tmpPtr;
+
+			}else{	//Just shuffle numbers around
+				Tr::assign( &stringPointer[characters], n - characters, c);
+				characters = n;
+			}
+		}else{			//May delete memory so that we are able to save memory
+			if(memorySize - n > DEFAULT_ALLOC_UNITS ){	//Resize
+				size_type oldSize = memorySize;
+				memorySize = n + DEFAULT_ALLOC_UNITS;
+				pointer tmpPtr = localAlloc.allocate(memorySize);
+				Tr::copy(tmpPtr, stringPointer, n);
+				characters = n;
+				localAlloc.deallocate(stringPointer, oldSize);
+				stringPointer = tmpPtr;
+			}else{
+				characters=n;
+			}
+		}
+	}
+
+	void resize(size_type n){
+		resize(n, Ch() );
+	}
+
+
+	size_type capacity() const{
+		return memorySize;
+	}
+
+
+	void reserve(size_type res_arg = 0){
+		if(res_arg > memorySize){	//Must do allocation
+			size_type oldSize = memorySize;
+			//Adding 1 byte to allow for 0 at end of string - may not be needed
+			memorySize = res_arg+1;
+			pointer tmpPtr = localAlloc.allocate(memorySize);
+			Tr::copy(tmpPtr, stringPointer, characters);
+			localAlloc.deallocate(stringPointer, oldSize);
+			stringPointer = tmpPtr;
+		}
+	}
+
+	void clear(){
+		characters = 0;
+	}
+
+	bool empty() const{
+		if(characters == 0){
+			return true;
+		}
+		return false;
+	}
+
+	const_reference operator[](size_type pos) const{
+		return stringPointer[pos];
+	}
+
+	reference operator[](size_type pos){
+		return stringPointer + pos;
+	}
+
+	const_reference at(size_type n) const{
+		if(n > characters){
+			__throw_out_of_range();
+		}
+		return &stringPointer[n];
+	}
+
+	reference at(size_type n){
+		if(n > characters){
+			__throw_out_of_range();
+		}
+		return stringPointer[n];
+	}
+
+	basic_string& operator+=(const basic_string& str){
+		if( (str.characters + characters) > memorySize){	//Allocate more memory!
+			reserve(str.characters + memorySize + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::copy( &stringPointer[characters], str.stringPointer, str.characters);
+		characters+= str.characters;
+		return *this;
+	}
+
+	basic_string& operator+=(const Ch * s){
+		strLen = Tr::length(s);
+		if((strLen + characters) > memorySize){
+			reserve(strLen + memorySize + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::copy( &stringPointer[characters], s, strLen);
+		characters+=strLen;
+		return *this;
+	}
+
+	basic_string& operator+=(Ch c){
+		if(characters == memorySize){
+			reserve(memorySize + DEFAULT_ALLOC_UNITS);
+		}
+		stringPointer[characters] = c;
+		characters+=1;
+		return *this;
+	}
+
+	basic_string& append(const basic_string& str){
+		*this+=str;
+		return *this;
+	}
+
+	basic_string& append(const basic_string& str, size_type pos, size_type n){
+		if(pos > str.characters){
+			__throw_out_of_range();
+		}
+
+		size_type rlen = str.characters - pos;
+		if(rlen > n){
+			rlen = n;
+		}
+		if(characters > npos - rlen){
+			__throw_length_error();
+		}
+		if((memorySize < characters) + rlen){
+			reserve(characters + rlen + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::copy( &stringPointer[characters], str.stringPointer, rlen);
+		characters+=rlen;
+		return *this;
+	}
+		
+	basic_string& append(const Ch* s, size_type n){
+		if(n+characters > memorySize){
+			reserve(characters + n + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::copy( &stringPointer[characters], s, n);
+		characters+=n;
+		return *this;
+	}
+	basic_string& append(const Ch* s){
+		*this+=s;
+		return *this;
+	}
+	basic_string& append(size_type n, Ch c){
+		if(n + characters > memorySize){
+			reserve(characters + n + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::assign( &stringPointer[characters], n ,c);
+		characters+=n;
+		return *this;
+	}
+
+//	template<class InputIterator> basic_string& append(InputIterator first, InputIterator last);
+
+	basic_string& assign(const basic_string& str){
+		*this = str;
+		return *this;
+	}
+
+	basic_string& assign(const basic_string& str, size_type pos, size_type n){
+		if(pos > str.characters){
+			__throw_out_of_range();
+		}
+		size_type rlen = str.characters - pos;
+		if(rlen > n){
+			rlen = n;
+		}
+		if(memorySize < rlen){
+			//Not using reserve() because we don't need to keep the old data
+			localAlloc.deallocate(stringPointer, memorySize);
+			memorySize = rlen + DEFAULT_ALLOC_UNITS;
+			stringPointer = localAlloc.allocate(memorySize);
+		}
+		Tr::copy(stringPointer, &str.stringPointer[pos], rlen);
+		characters = rlen;
+		return *this;
+	}
+
+	basic_string& assign(const Ch* s, size_type n){
+		if( n > memorySize ){
+			localAlloc.deallocate(stringPointer, memorySize);
+			memorySize = n + DEFAULT_ALLOC_UNITS;
+			stringPointer = localAlloc.allocate(memorySize);
+		}
+		Tr::copy(stringPointer, s, n);
+		characters = n;
+		return *this;
+	}
+
+	basic_string& assign(const Ch* s){
+		size_type len = Tr::length(s);
+		if(len > memorySize){
+			localAlloc.deallocate(stringPointer, memorySize);
+			memorySize = len + DEFAULT_ALLOC_UNITS;
+			stringPointer = localAlloc.allocate(memorySize);
+		}
+		Tr::copy(stringPointer, s, len);
+		characters = len;
+		return *this;
+	}
+
+	basic_string& assign(size_type n, Ch c){
+		if(n > memorySize){
+			localAlloc.deallocate(stringPointer, memorySize);
+			memorySize = n + DEFAULT_ALLOC_UNITS;
+			stringPointer = localAlloc.allocate(memorySize);
+		}
+		Tr::assign( stringPointer, n ,c);
+		characters = n;
+		return *this;
+	}
+
+//	template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
+
+/*	basic_string& insert(size_type pos1, const basic_string& str){
+		if(pos1 > characters){
+			__throw_out_of_range();
+		}
+		if(characters > npos - str.characters){
+			__throw_length_error();
+		}
+		if(str.characters + characters > memorySize){
+			reserve(str.characters + characters + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::move(&stringPointer[pos1 + str.characters], &stringPointer[pos1], str.characters);
+		Tr::copy(&stringPointer[pos1], str.stringPointer, str.characters);
+		characters+=str.characters;
+		return *this;
+	}*/
+
+	basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
+		if(pos1 > characters || pos2 > str.characters){
+			__throw_out_of_range();
+		}
+		size_type rlen = str.characters - pos2;
+		if( rlen > n){
+			rlen = n;
+		}
+		if(characters > npos - rlen){
+			__throw_length_error();
+		}
+		if(characters + rlen > memorySize){
+			reserve(characters + rlen + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::move(&stringPointer[pos1+rlen], &stringPointer[pos1], rlen);
+		Tr::copy(&stringPointer[pos1], &str.stringPointer[pos2], rlen);
+		characters+=rlen;
+		return *this;
+	}
+
+	basic_string& insert(size_type pos, const Ch* s, size_type n){
+		if(pos > characters){
+			__throw_out_of_range();
+		}
+		if(characters > pos - n){
+			__throw_length_error();
+		}
+		if(characters + n > memorySize){
+			reserve(characters + n + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::move(&stringPointer[pos+n], &stringPointer[pos], n);
+		Tr::copy(&stringPointer[pos], s, n);
+		characters+=n;
+		return *this;
+	}
+
+	inline basic_string& insert(size_type pos, const Ch* s){
+		size_type len = Tr::length(s);
+		return insert(pos, s, len);
+	}
+
+	basic_string& insert(size_type pos, size_type n, Ch c){
+		if(pos > characters){
+			__throw_out_of_range();
+		}
+		if(characters > pos - n){
+			__throw_length_error();
+		}
+		if(characters + n > memorySize){
+			reserve(characters + n + DEFAULT_ALLOC_UNITS);
+		}
+		Tr::move(&stringPointer[pos+n], &stringPointer[pos], n);
+		Tr::assign(&stringPointer[pos], n, c);
+		characters+=n;
+		return *this;
+	}
+
+//	iterator insert(iterator p, charT c = charT());
+//	void insert(iterator p, size_type n, charT c);
+//	template<class InputIterator> void insert(iterator p, InputIterator first, InputIterator last);
+	basic_string& erase(size_type pos = 0, size_type n = npos){
+		size_type xlen = characters - pos;
+		if(xlen > n){
+			xlen = n;
+		}
+		if(characters - pos > n){	//Deleteing past the end
+			resize(pos);
+		}else{				//Deleting from the middle
+			Tr::move(&stringPointer[pos], &stringPointer[pos+xlen], xlen);
+			resize(pos + xlen);
+		}
+		return *this;
+	}
+
+//	iterator erase(iterator position);
+//	iterator erase(iterator first, iterator last);
+
+//	basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
+
+	basic_string& replace(size_type pos1, size_type n1, const basic_string& str, size_type pos2=0, size_type n2=npos){
+		if(pos1 > characters){
+			__throw_out_of_range();
+		}
+		size_type xlen = characters - pos1;
+		if(xlen >  n1){
+			xlen = n1;
+		}
+		size_type rlen = str.characters - pos2;
+		if(rlen > n2){
+			rlen = n2;
+		}
+		if((characters - xlen) >= (npos - rlen)){
+			__throw_length_error();
+		}
+		if(memorySize < characters - xlen + rlen){
+			reserve(characters - xlen + rlen + DEFAULT_ALLOC_UNITS);
+		}
+		//Final length = characters - xlen + rlen
+		//Initial block is of size pos1
+		//Block 2 is of size len
+
+		Tr::move(&stringPointer[pos1+rlen], &stringPointer[pos1+xlen], characters - pos1 - xlen);
+		Tr::copy(&stringPointer[pos1], &str.stringPointer[pos2], rlen);
+		characters = characters -xlen + rlen;
+		return *this;
+	}
+
+	basic_string& replace(size_type pos, size_type n1, const Ch* s, size_type n2){
+		return replace(pos,n1,basic_string<Ch,Tr,A>(s,n2));
+		
+	}
+
+	inline basic_string& replace(size_type pos, size_type n1, const Ch* s){
+		return replace(pos,n1,basic_string<Ch,Tr,A>(s));
+	}
+
+	basic_string& replace(size_type pos, size_type n1, size_type n2, Ch c){
+		return replace(pos,n1,basic_string<Ch, Tr, A>(n2,c));
+	}
+//	basic_string& replace(iterator i1, iterator i2, const basic_string& str);
+//	basic_string& replace(iterator i1, iterator i2, const Ch* s, size_type n);
+//	basic_string& replace(iterator i1, iterator i2, const Ch* s);
+//	basic_string& replace(iterator i1, iterator i2, size_type n, Ch c);
+/*	template<class InputIterator> basic_string& replace(iterator i1, iterator i2,
+		InputIterator j1, InputIterator j2);*/
+
+	size_type copy(Ch* s, size_type n, size_type pos = 0) const{
+		if(pos > characters){
+			__throw_out_of_range();
+		}
+		size_type rlen = characters - pos;
+		if(rlen > n){
+			rlen = n;
+		}
+		Tr::copy(s, &stringPointer[pos], rlen);
+		return rlen;
+	}
+
+	void swap(basic_string<Ch,Tr,A>& s){
+		//Data pointers
+		Ch* tempPtr = s.stringPointer;
+		s.stringPointer = stringPointer;
+		stringPointer = tempPtr;
+
+		//Amount of allocated memory
+		size_type tempSize= s.memorySize;
+		s.memorySize = memorySize;
+		memorySize = tempSize;
+
+		//Number of characters
+		tempSize = s.characters;
+		s.characters = characters;
+		characters = tempSize;
+	}
+
+	const Ch* c_str() const{
+		if(characters == memorySize){	//No room for 0 at the end - replace char
+//			reserve(characters+1);
+			stringPointer[characters-1] = 0;	//Add 0 at the end
+		}else{
+			stringPointer[characters] = 0;	//Add 0 at the end
+		}
+		return stringPointer;
+	}
+
+	const Ch* data() const{
+		return stringPointer;
+	}
+	allocator_type get_allocator() const{
+		return localAlloc;
+	};
+
+/*	size_type find (const basic_string& str, size_type pos = 0) const;
+	size_type find (const charT* s, size_type pos, size_type n) const;
+	size_type find (const charT* s, size_type pos = 0) const;
+	size_type find (charT c, size_type pos = 0) const;
+	size_type rfind(const basic_string& str, size_type pos = npos) const;
+	size_type rfind(const charT* s, size_type pos, size_type n) const;
+	size_type rfind(const charT* s, size_type pos = npos) const;
+	size_type rfind(charT c, size_type pos = npos) const;
+	size_type find_first_of(const basic_string& str, size_type pos = 0) const;
+	size_type find_first_of(const charT* s, size_type pos, size_type n) const;
+	size_type find_first_of(const charT* s, size_type pos = 0) const;
+	size_type find_first_of(charT c, size_type pos = 0) const;
+	size_type find_last_of (const basic_string& str, size_type pos = npos) const;
+	size_type find_last_of (const charT* s, size_type pos, size_type n) const;
+	size_type find_last_of (const charT* s, size_type pos = npos) const;
+	size_type find_last_of (charT c, size_type pos = npos) const;
+
+	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const;
+	size_type find_first_not_of(const charT* s, size_type pos, size_type n) const;
+	size_type find_first_not_of(const charT* s, size_type pos = 0) const;
+	size_type find_first_not_of(charT c, size_type pos = 0) const;
+	size_type find_last_not_of (const basic_string& str, size_type pos = npos) const;
+	size_type find_last_not_of (const charT* s, size_type pos, size_type n) const;
+	size_type find_last_not_of (const charT* s, size_type pos = npos) const;
+	size_type find_last_not_of (charT c, size_type pos = npos) const;
+*/
+
+	basic_string substr(size_type pos = 0, size_type n = npos) const{
+		if(pos > characters){
+			__throw_out_of_range();
+		}
+		size_type rlen = characters - pos;
+		if(rlen > n){
+			rlen = n;
+		}
+		return basic_string<Ch,Tr,A>(&stringPointer[pos],rlen);
+	}
+
+	int compare(const basic_string& str) const{
+		size_type rlen = characters;
+		if(rlen >  str.characters){
+			rlen = str.characters;
+		}
+		int retval = Tr::compare(stringPointer, str.stringPointer, rlen);
+		if(retval == 0){
+			if(characters < str.characters){
+				retval = -1;
+			}
+			if(characters > str.characters){
+				retval = 1;
+			}
+		}
+		return retval;
+	}
+
+/*	int compare(size_type pos1, size_type n1, const basic_string& str) const{
+		size_type rlen = characters - pos1;
+		if(rlen > n1){
+			rlen = n1;
+		}
+		if(rlen > str.characters){
+			rlen = str.characters;
+		}
+		int retval = Tr::compare(&stringPointer[pos1], str.stringPointer, rlen);
+		if(retval == 0){
+			if(characters - pos1 < str.characters){
+				retval = -1;
+			}
+			if(characters - pos1 > str.characters){
+				retval = 1;
+			}
+		}
+		return retaval;
+	}*/
+
+	int compare(size_type pos1, size_type n1, const basic_string& str,
+		size_type pos2=0, size_type n2=npos) const{
+		size_type len1 = characters - pos1;
+		if(len1 > n1){
+			len1 = n1;
+		}
+		size_type len2 = characters - pos2;
+		if(len2 > n2){
+			len2 = n2;
+		}
+		size_type rlen = len1;
+		if(len > len2){
+			rlen = len2;
+		}
+		int retval = Tr::compare(&stringPointer[pos1], &str.stringPointer[pos2], rlen);
+		if(retval == 0){
+			if(len1 < len2){
+				retval = -1;
+			}
+			if(len1 > len2){
+				retval = 1;
+			}
+		}
+		return retval;
+	}
+
+	int compare(const Ch* s) const{
+		size_type slen = Tr::length(s);
+		size_type rlen = slen;
+		if(rlen > characters){
+			rlen=characters;
+		}
+		int retval = Tr::compare(stringPointer, s, rlen);
+		if(retval==0){
+			if(characters < slen){
+				retval = -1;
+			}
+			if(characters > slen){
+				retval = 1;
+			}
+		}
+		return retval;
+	}
+
+	int compare(size_type pos1, size_type n1, const Ch* s, size_type n2 = npos) const{
+		size_type len1 = characters - pos1;
+		if(len1 > n1){
+			len1 = n1;
+		}
+		size_type slen = Tr::length(s);
+		size_type len2 = slen;
+		if(len2 > n2){
+			len2 = n2;
+		}
+		size_type rlen = len1;
+		if(rlen > len2){
+			rlen = len2;
+		}
+		int retval  = Tr::compare(&stringPointer[pos1], s, rlen);
+		if(retval == 0){
+			if(len1 < len2){
+				retval = -1;
+			}
+			if(len1 > len2){
+				retval = 1;
+			}
+		}
+		return retval;
+	}
+
+};
+
+
+
+
+//typedef basic_string<char> string;
+
+template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator> 
+	operator+(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+	operator+(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+
+template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+	operator+(charT lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+	operator+(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs);
+
+template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+	operator+(const basic_string<charT,traits,Allocator>& lhs, charT rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator==(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
+{
+	if(lhs.compare(rhs) == 0){
+		return true;
+	}
+	return false;
+}
+
+template<class charT, class traits, class Allocator> bool 
+	operator==(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
+{
+	if(rhs.compare(lhs) == 0){
+		return true;
+	}
+	return false;
+}
+
+template<class charT, class traits, class Allocator> bool 
+	operator==(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
+{
+	if(lhs.compare(rhs)==0){
+		return true;
+	}
+	return false;
+}
+
+template<class charT, class traits, class Allocator> bool 
+	operator!=(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
+{
+	if(lhs.compare(rhs) !=0){
+		return true;
+	}
+	return false;
+}
+
+template<class charT, class traits, class Allocator> bool 
+	operator!=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator!=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator< (const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator< (const basic_string<charT,traits,Allocator>& lhs, const charT* rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator< (const charT* lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator> (const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator> (const basic_string<charT,traits,Allocator>& lhs, const charT* rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator> (const charT* lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator<=(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator<=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator<=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator>=(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator>=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs);
+
+template<class charT, class traits, class Allocator> bool 
+	operator>=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs);
+
+template<class charT, class traits, class Allocator> void 
+	swap(basic_string<charT,traits,Allocator>& lhs, basic_string<charT,traits,Allocator>& rhs);
+
+/*template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+	operator>>(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str);
+
+template<class charT, class traits, class Allocator> basic_ostream<charT, traits>&
+	operator<<(basic_ostream<charT, traits>& os, const basic_string<charT,traits,Allocator>& str);
+
+template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str, charT delim);
+
+template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str);
+*/
+
+typedef basic_string<char> string;
+typedef basic_string<wchar_t> wstring;
+
+
+};
+
+#endif
+

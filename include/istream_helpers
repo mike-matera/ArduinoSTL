@@ -1,0 +1,303 @@
+#include <ios>
+#include <cctype>
+#include <string>
+
+#ifndef __STD_HEADER_ISTREAM_HELPERS
+#define __STD_HEADER_ISTREAM_HELPERS 1
+
+
+namespace std{
+
+
+	/* We are making the following template class for serverl reasons.  Firstly,
+	 * we want to keep the main istream code neat and tidy.  Secondly, we want it
+	 * to be easy to do partial specialization of the istream code so that it can
+	 * be expanded and put into the library.  This will allow us to make application
+	 * code smaller at the expense of increased library size.  This is a fair
+	 * trade-off when there are multiple applications being compiled.  Also, this
+	 * feature will be used optionally via configuration options.  It will also
+	 * allow us to keep the code bases in sync, dramatically simplifying the
+	 * maintenance required.  We specialized for char because wchar and others
+	 * require different scanf functions
+	 */
+
+	template <class traits, class charT, class dataType> class __istream_readin{
+	public:
+		static void readin(basic_istream<charT,traits>& stream, dataType & var);
+	};
+
+	template <class traits> class __istream_readin<traits, char, short>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, short & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(stream.flags() & ios_base::dec){
+				sscanf(temp.c_str(), "%hd", &var );
+			}else if( stream.flags() & ios_base::oct){
+				sscanf(temp.c_str(), "%ho", (unsigned short int *)(&var) );
+			}else if(stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::uppercase){
+					sscanf(temp.c_str(), "%hX", (unsigned short int *)(&var) );
+				}else{
+					sscanf(temp.c_str(), "%hx", (unsigned short int *)(&var) );
+				}
+			}else{
+				sscanf(temp.c_str(), "%hi", &var);
+			}
+		}
+	};
+
+	template <class traits> class __istream_readin<traits, char, unsigned short>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, unsigned short & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(stream.flags() & ios_base::dec){
+				sscanf(temp.c_str(), "%hu", &var );
+			}else if( stream.flags() & ios_base::oct){
+				sscanf(temp.c_str(), "%ho", &var);
+			}else if(stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::uppercase){
+					sscanf(temp.c_str(), "%hX", &var );
+				}else{
+					sscanf(temp.c_str(), "%hx", &var);
+				}
+			}else{
+				sscanf(temp.c_str(), "%hi", (signed short int*)(&var) );
+			}
+		}
+	};
+
+	template <class traits> class __istream_readin<traits, char, int>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, int & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(stream.flags() & ios_base::dec){
+				sscanf(temp.c_str(), "%d", &var );
+			}else if( stream.flags() & ios_base::oct){
+				sscanf(temp.c_str(), "%o", (unsigned int *)(&var) );
+			}else if(stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::uppercase){
+					sscanf(temp.c_str(), "%X", (unsigned int *)(&var) );
+				}else{
+					sscanf(temp.c_str(), "%x", (unsigned int *)(&var) );
+				}
+			}else{
+				sscanf(temp.c_str(), "%i", &var);
+			}
+		}
+	};
+
+	template <class traits> class __istream_readin<traits, char, unsigned int>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, unsigned int & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(stream.flags() & ios_base::dec){
+				sscanf(temp.c_str(), "%u", &var );
+			}else if( stream.flags() & ios_base::oct){
+				sscanf(temp.c_str(), "%o", (unsigned int *)(&var) );
+			}else if(stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::uppercase){
+					sscanf(temp.c_str(), "%X", (unsigned int *)(&var) );
+				}else{
+					sscanf(temp.c_str(), "%x", (unsigned int *)(&var) );
+				}
+			}else{
+				sscanf(temp.c_str(), "%i", (int *)(&var) );
+			}
+
+		}
+	};
+
+
+	template <class traits> class __istream_readin<traits, char, long int>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, long int & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(stream.flags() & ios_base::dec){
+				sscanf(temp.c_str(), "%ld", &var );
+			}else if( stream.flags() & ios_base::oct){
+				sscanf(temp.c_str(), "%lo", (unsigned long int *)(&var) );
+			}else if(stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::uppercase){
+					sscanf(temp.c_str(), "%lX", (unsigned long int *)(&var) );
+				}else{
+					sscanf(temp.c_str(), "%lx", (unsigned long int *)(&var) );
+				}
+			}else{
+				sscanf(temp.c_str(), "%li", (long int *)(&var) );
+			}
+
+		}
+	};
+
+
+	template <class traits> class __istream_readin<traits, char, unsigned long int>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, unsigned long int & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(stream.flags() & ios_base::dec){
+				sscanf(temp.c_str(), "%lu", &var );
+			}else if( stream.flags() & ios_base::oct){
+				sscanf(temp.c_str(), "%lo", &var );
+			}else if(stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::uppercase){
+					sscanf(temp.c_str(), "%lX", &var );
+				}else{
+					sscanf(temp.c_str(), "%lx", &var);
+				}
+			}else{
+				sscanf(temp.c_str(), "%li", (long int *)(&var) );
+			}
+		}
+	};
+
+	template <class traits> class __istream_readin<traits, char, float>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, float & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			sscanf(temp.c_str(), "%g", &var);
+		}
+	};
+
+	template <class traits> class __istream_readin<traits, char, double>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, double & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			sscanf(temp.c_str(), "%lg", &var);
+		}
+	};
+
+	template <class traits> class __istream_readin<traits, char, long double>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, long double & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			sscanf(temp.c_str(), "%Lg", &var);
+		}
+	};
+
+
+	template <class traits> class __istream_readin<traits, char, void*>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, void* & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			sscanf(temp.c_str(), "%p", &var);
+		}
+	};
+
+
+};
+
+
+#endif
+
+
+

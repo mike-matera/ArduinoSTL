@@ -1,0 +1,43 @@
+#include <basic_definitions>
+
+#ifndef HEADER_STD_IOSTREAM
+#define HEADER_STD_IOSTREAM 1
+
+#include <iosfwd>
+#include <ios>
+#include <istream>
+#include <ostream>
+#include <fstream>
+
+namespace std{
+	extern istream cin;
+	extern ostream cout;
+	extern ostream cerr;
+	extern ostream clog;
+
+#ifdef USE_WCHAR
+	extern wistream wcin;
+	extern wostream wcout;
+	extern wostream wcerr;
+	extern wostream wclog;
+#endif
+
+
+	template <class charT, class traits> class basic_iostream :
+		public basic_istream<charT,traits>, public basic_ostream<charT,traits> 
+	{
+	public:
+		// constructor/destructor
+		explicit basic_iostream(basic_streambuf<charT,traits>* sb):
+			basic_istream<charT,traits>(sb), basic_ostream<charT,traits>(sb)
+		{
+			
+		}
+
+		virtual ~basic_iostream(){ }
+	};
+
+};
+
+
+#endif

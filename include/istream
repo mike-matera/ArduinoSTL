@@ -1,0 +1,457 @@
+#include <ios>
+#include <cctype>
+#include <string>
+#include <streambuf>
+#include <istream_helpers>
+
+#ifndef __STD_HEADER_ISTREAM
+#define __STD_HEADER_ISTREAM 1
+
+namespace std{
+
+	typedef basic_istream<char> istream;
+	typedef basic_istream<wchar_t> wistream;
+	template <class charT, class traits> basic_istream<charT,traits>& ws(basic_istream<charT,traits>& is);
+
+	template <class charT, class traits> class basic_istream : virtual public basic_ios<charT,traits> {
+	public:
+
+		typedef charT                     char_type;
+		typedef typename traits::int_type int_type;
+		typedef typename traits::pos_type pos_type;
+		typedef typename traits::off_type off_type;
+		typedef traits                    traits_type;
+    
+		explicit basic_istream(basic_streambuf<charT,traits>* sb) : sbuffer(sb), count_last_ufmt_input(0){ }
+		virtual ~basic_istream() { }
+	
+		class sentry;
+
+		basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& (*pf)(basic_istream<charT,traits>&));
+		basic_istream<charT,traits>& operator>>(basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&));
+		basic_istream<charT,traits>& operator>>(ios_base& (*pf)(ios_base&));
+		basic_istream<charT,traits>& operator>>(bool& n);
+		basic_istream<charT,traits>& operator>>(short& n);
+		basic_istream<charT,traits>& operator>>(unsigned short& n);
+		basic_istream<charT,traits>& operator>>(int& n);
+		basic_istream<charT,traits>& operator>>(unsigned int& n);
+		basic_istream<charT,traits>& operator>>(long& n);
+		basic_istream<charT,traits>& operator>>(unsigned long& n);
+		basic_istream<charT,traits>& operator>>(float& f);
+		basic_istream<charT,traits>& operator>>(double& f);
+		basic_istream<charT,traits>& operator>>(long double& f);
+		basic_istream<charT,traits>& operator>>(void*& p);
+		basic_istream<charT,traits>& operator>>(basic_streambuf<char_type,traits>* sb);
+	
+		streamsize gcount() const{
+			return count_last_ufmt_input;
+		}
+		
+		int_type get(){
+			int_type retval = sbuffer->snextc();
+			if(retval == traits::eof()){
+				count_last_ufmt_input = 0;
+			}else{
+				count_last_ufmt_input = 1;
+			}
+			return retval;
+		}
+		
+		basic_istream<charT,traits>& get(char_type& c){
+			int_type retval = sbuffer->snextc();
+			if(retval == traits::eof()){
+				count_last_ufmt_input = 0;
+				setstate(failbit);
+			}else{
+				count_last_ufmt_input = 1;
+				c = retval;
+			}
+			return *this;
+		}
+		
+		basic_istream<charT,traits>& get(char_type* s, streamsize n){
+			return get(s,n,widen('\n'));
+		}
+		
+		basic_istream<charT,traits>& get(char_type* s, streamsize n, char_type delim){
+			streamsize i = 0;
+			int_type c;
+			for(i=0;i<n;++i){
+				c= sbuffer->snextc();
+				if(c == traits::eof() ){
+					if(i==0){
+						setstate(failbit);
+					}else{
+						setstate(eofbit);
+					}
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				if(c == delim){
+					if(i==0){
+						setstate(failbit);
+					}
+					sbuffer->sputbackc(c);
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				s[i] = c;
+			}
+		}
+		
+		basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb){
+			return get(sb, widen('\n'));
+		}
+		
+		basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb, char_type delim){
+			streamsize i = 0;
+			int_type c;
+			while(1){		//We will exit internally based upon error conditions
+				c = sbuffer->snextc();
+				if(c == traits::eof()){
+					if(i==0){
+						setstate(failbit);
+					}else{
+						setstate(eofbit);
+					}
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				if(c == delim){
+					if(i==0){
+						setstate(failbit);
+					}
+					sbuffer->sputbackc(c);
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				if(sb->sputc(c) != c){	//Error doing output
+					sbuffer->sputbackc(c);
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				++i;
+			}		
+		}
+		
+		basic_istream<charT,traits>& getline(char_type* s, streamsize n){
+			return get(s, n, widen('\n'));
+		}
+		
+		basic_istream<charT,traits>& getline(char_type* s, streamsize n, char_type delim){
+			streamsize i = 0;
+			int_type c;
+			for(i=0;i<n;++i){
+				c= sbuffer->snextc();
+				if(c == traits::eof() ){
+					if(i==0){
+						setstate(failbit);
+					}else{
+						setstate(eofbit);
+					}
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				if(c == delim){
+					if(i==0){
+						setstate(failbit);
+					}
+					count_last_ufmt_input = i+1;
+					return *this;
+				}
+				s[i] = c;
+			}
+		}
+		
+		basic_istream<charT,traits>& ignore (streamsize n = 1, int_type delim = traits::eof()){
+			streamsize i;
+			int_type c;
+			for(i=0;i<n;++i){
+				c = sbuffer->snextc();
+				if(c == traits::eof()){
+					setstate(eofbit);
+					return *this;
+				}
+				if(c == delim){
+					return *this;
+				}
+			}
+			return *this;
+		}
+		
+		int_type peek(){
+			if(good() == false){
+				return traits::eof();
+			}else{
+				return sbuffer->sgetc();
+			}
+		}
+		
+		basic_istream<charT,traits>& read (char_type* s, streamsize n){
+			streamsize i;
+			int_type c;
+			for(i=0;i<n;++i){
+				c = sbuffer->snextc();
+				if(c == traits::eof()){
+					setstate(failbit);
+					count_last_ufmt_input = i;
+					return *this;
+				}
+				s[i] = c;
+			}				
+			return *this;
+		}
+		
+		streamsize readsome(char_type* s, streamsize n){
+			if(good()){
+				count_last_ufmt_input = 0;
+				setstate(failbit);
+				return 0;
+			}
+			
+			if( sbuffer->in_avail()  ==  -1){
+				count_last_ufmt_input=0;
+				setstate(eofbit);
+				return 0;
+			}
+			
+			if(n > sbuffer->in_avail() ){
+				n = sbuffer->in_avail();
+			}
+			
+			streamsize i;
+			int_type c;
+			
+			for(i=0;i<n;++i){
+				c = sbuffer->snextc();
+				s[i] = c;
+			}
+			count_last_ufmt_input = n;
+			return n;
+		}
+		
+		basic_istream<charT,traits>& putback(char_type c){
+			if(!good()){
+				setstate(failbit);
+				return *this;
+			}
+			if(sbuffer == 0){
+				setstate(badbit);
+				return *this;
+			}
+			if(sbuffer->sputbackc(c) == traits::eof()){
+				setstate(badbit);
+				return *this;
+			}
+			return *this;
+		}
+		
+		basic_istream<charT,traits>& unget(){
+			if(!good()){
+				setstate(failbit);
+				return *this;
+			}
+			if(sbuffer == 0){
+				setstate(failbit);
+				return *this;
+			}
+			if(sbuffer->sungetc() == traits::eof()){
+				setstate(failbit);
+			}
+			return *this;
+		}
+		
+		int sync(){
+			if(sbuffer == 0){
+				return -1;
+			}
+			if(sbuffer->pubsync() == -1){
+				state(badbit);
+				return traits::eof();
+			}
+			return 0;
+		}
+
+		pos_type tellg(){
+			if(fail() !=false){
+				return pos_type(-1);
+			}
+			return sbuffer->pubseekoff(0, cur, in);
+		}
+		
+		basic_istream<charT,traits>& seekg(pos_type pos){
+			 if(fail() !=true){
+			 	sbuffer()->pubseekpos(pos);
+			 }
+			return *this;		
+		}
+		
+		basic_istream<charT,traits>& seekg(off_type, ios_base::seekdir){
+			if(fail() !=true){
+				sbuffer()->pubseekoff(off, dir);
+			}
+			return *this;
+		}
+		
+	protected:
+		basic_streambuf<charT,traits>* sbuffer;
+		streamsize count_last_ufmt_input;
+
+	};
+	
+	template <class charT,class traits = char_traits<charT> > class basic_istream<charT,traits>::sentry {
+		bool ok;
+	public:
+		explicit sentry(basic_istream<charT,traits>& os){
+			if(os.good() !=0){		//Prepare for output
+			}
+
+			//Flush any tied buffer
+			ok = true;
+		}
+		~sentry() { }
+		operator bool() {
+			return ok;
+		}
+	};
+	
+	//Template implementations of basic_istream functions which may be partially specialized
+	//For code reduction
+
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(short& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, short>::readin(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(unsigned short& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, unsigned short>::readin(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_istream<charT,traits>& basic_istream<charT,traits>::operator>>(int& n){
+		sentry(*this);
+		__istream_readin<traits, charT, int>::readin(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_istream<charT,traits>& basic_istream<charT,traits>::operator>>(unsigned int& n){
+		sentry(*this);
+		__istream_readin<traits, charT, unsigned int>::readin(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_istream<charT,traits>& basic_istream<charT,traits>::operator>>(long int& n){
+		sentry(*this);
+		__istream_readin<traits, charT, long int>::readin(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(unsigned long int& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, unsigned long int>::readin(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(float& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, float>::readin(*this, n);
+		return *this;
+	}
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(double& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, double>::readin(*this, n);
+		return *this;
+	}
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(long double& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, long double>::readin(*this, n);
+		return *this;
+	}
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(void *& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, void*>::readin(*this, n);
+		return *this;
+	}
+
+#ifdef EXPAND_ISTREAM_FOR_CHAR
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(bool &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(short &n);
+	template <> basic_istream<char,char_traits<char> > & 
+		basic_istream<char, char_traits<char> >::operator>>(unsigned short &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(int &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(unsigned int &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long int &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(float &f);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(double &f);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long double &f);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(void *& p);
+#endif
+	
+	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT& c){
+		typename basic_istream<charT,traits>::sentry s;
+		is.get(c);
+		return is;
+	}
+
+	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char& c){
+		typename basic_istream<char,traits>::sentry s;
+		is.get(c);
+		return is;
+	}
+	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char& c){
+		typename basic_istream<char,traits>::sentry s;
+		is.get(c);
+		return is;
+	}
+
+	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT* c){
+		typename basic_istream<charT,traits>::sentry s;
+		int n = is.width();
+		if(n == 0){
+			n = STRING_MAX_UNITS;
+		}
+		is.get(c, n);
+		return is;
+
+	}
+	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char* c){
+		typename basic_istream<char,traits>::sentry s;
+		int n = is.width();
+		if(n == 0){
+			n = STRING_MAX_UNITS;
+		}
+		is.get(c, n);
+		return is;
+	}
+	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char* c){
+		typename basic_istream<char,traits>::sentry s;
+		int n = is.width();
+		if(n == 0){
+			n = STRING_MAX_UNITS;
+		}
+		is.get(c, n);
+		return is;
+	}
+
+
+};
+
+#endif
+

@@ -1,0 +1,276 @@
+#include <ios>
+#include <cctype>
+#include <string>
+
+#ifndef __STD_HEADER_OSTREAM_HELPERS
+#define __STD_HEADER_OSTREAM_HELPERS 1
+
+
+namespace std{
+
+
+	/* We are making the following template class for serveral reasons.  Firstly,
+	 * we want to keep the main istream code neat and tidy.  Secondly, we want it
+	 * to be easy to do partial specialization of the istream code so that it can
+	 * be expanded and put into the library.  This will allow us to make application
+	 * code smaller at the expense of increased library size.  This is a fair
+	 * trade-off when there are multiple applications being compiled.  Also, this
+	 * feature will be used optionally via configuration options.  It will also
+	 * allow us to keep the code bases in sync, dramatically simplifying the
+	 * maintenance required.  We specialized for char because wchar and others
+	 * require different scanf functions
+	 */
+
+	template <class traits, class charT, class dataType> class __ostream_printout{
+	public:
+		static void printout(basic_ostream<charT,traits>& stream, const dataType n);
+	};
+
+	template <class traits> class __ostream_printout<traits, char, bool>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const bool n)
+		{
+			if(stream.flags() & ios_base::boolalpha){
+				if(n){
+					stream.write("true", 4);
+				}else{
+					stream.write("false", 5);
+				}
+			}else{
+				if(n){
+					stream.write("1", 1);
+				}else{
+					stream.write("0", 1);
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, int>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const int n)
+		{
+			char buffer[20];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, snprintf(buffer, 20, "%d", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, snprintf(buffer, 20, "%#o", n));
+				}else{
+					stream.write(buffer, snprintf(buffer, 20, "%o", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%#X", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%#x", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%X", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%x", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, unsigned int>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const unsigned int n)
+		{
+			char buffer[20];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, snprintf(buffer, 20, "%u", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, snprintf(buffer, 20, "%#o", n));
+				}else{
+					stream.write(buffer, snprintf(buffer, 20, "%o", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%#X", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%#x", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%X", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%x", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, long int>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const long int n)
+		{
+			char buffer[20];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, snprintf(buffer, 20, "%ld", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, snprintf(buffer, 20, "%#lo", n));
+				}else{
+					stream.write(buffer, snprintf(buffer, 20, "%lo", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%#lX", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%#lx", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%lX", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%lx", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, unsigned long int>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const unsigned long int n)
+		{
+			char buffer[20];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, snprintf(buffer, 20, "%lu", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, snprintf(buffer, 20, "%#lo", n));
+				}else{
+					stream.write(buffer, snprintf(buffer, 20, "%lo", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%#lX", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%#lx", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, snprintf(buffer, 20, "%lX", n) );
+					}else{
+						stream.write(buffer, snprintf(buffer, 20, "%lx", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+
+	template <class traits> class __ostream_printout<traits, char, double>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const double f)
+		{
+			char buffer[32];
+			char format_string[20];
+			if(stream.flags() & ios_base::scientific){
+				if(stream.flags() & ios_base::uppercase){
+					snprintf(format_string, 20, "%%%ue", static_cast<unsigned int>(stream.width()));
+				}else{
+					snprintf(format_string, 20, "%%%ue", static_cast<unsigned int>(stream.width()));
+				}
+			} else if(stream.flags() & ios_base::fixed){
+				snprintf(format_string, 20, "%%%uf", static_cast<unsigned int>(stream.width()));
+			} else {
+				snprintf(format_string, 20, "%%%ug", static_cast<unsigned int>(stream.width()));
+			}
+			stream.write(buffer, snprintf(buffer, 32, format_string, f) );
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, long double>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const long double f)
+		{
+			char buffer[32];
+			char format_string[20];
+			if(stream.flags() & ios_base::scientific){
+				if(stream.flags() & ios_base::uppercase){
+					snprintf(format_string, 20, "%%%uLe", static_cast<unsigned int>(stream.width()));
+				}else{
+					snprintf(format_string, 20, "%%%uLe", static_cast<unsigned int>(stream.width()));
+				}
+			} else if(stream.flags() & ios_base::fixed){
+				snprintf(format_string, 20, "%%%uLf", static_cast<unsigned int>(stream.width()));
+			} else {
+				snprintf(format_string, 20, "%%%uLg", static_cast<unsigned int>(stream.width()));
+			}
+			stream.write(buffer, snprintf(buffer, 32, format_string, f) );
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, void *>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, const void * p)
+		{
+			char buffer[20];
+			stream.write(buffer, snprintf(buffer, 20, "%p", p) );
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, char, basic_streambuf<char,traits> *>{
+	public:
+		inline static void printout(basic_ostream<char, traits >& stream, basic_streambuf<char,traits>* sb)
+		{
+			if(sb == 0){
+				stream.setstate(ios_base::badbit);
+				return;
+			}
+
+			typename traits::int_type c;
+
+			while((c = sb->sgetc()) != traits::eof() ){
+				stream.put(c);
+			}
+
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+};
+
+
+#endif
+
+
+

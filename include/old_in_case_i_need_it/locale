@@ -1,0 +1,422 @@
+#include <basic_definitions>
+#include <memory>
+#include <string>
+#include <iterator>
+#include <exception>
+#include <stdexcept>
+#include <typeinfo>
+
+#ifndef HEADER_STD_LOCALE
+#define HEADER_STD_LOCALE 1
+
+#include <iosfwd>
+
+namespace std{
+	class locale {
+		template<typename Facet> friend const Facet& use_facet(const locale&);
+		template<typename Facet> friend bool has_facet(const locale&) throw ();
+	protected:
+		string lName;
+
+	public:
+	// types:
+		class facet;
+		class id;
+		typedef unsigned char category;
+
+		static const category
+		none     = 0,
+		collate  = 0x01, ctype    = 0x02,
+		monetary = 0x04, numeric  = 0x08,
+		time = 0x10, messages = 0x20,
+		all = collate | ctype | monetary | numeric | time  | messages;
+
+		// construct/copy/destroy:
+		locale() throw();
+		locale(const locale& other) throw();
+		explicit locale(const char* std_name);
+		locale(const locale& other, const char* std_name, category c);
+		template <class Facet> locale(const locale& other, Facet* f);
+		locale(const locale& other, const locale& one, category);
+
+		~locale() throw();  // non-virtual
+
+		const locale& operator=(const locale& other) throw();
+		
+		// locale operations:
+		basic_string<char> name() const;
+		bool operator==(const locale& other) const;
+		bool operator!=(const locale& other) const;
+		template <class charT, class Traits, class Allocator>
+			bool operator()(const basic_string<charT,Traits,Allocator>& s1,
+			const basic_string<charT,Traits,Allocator>& s2) const;
+
+		// global locale objects:
+		static       locale  global(const locale&);
+		static const locale& classic();
+	private:
+		struct localeImplementation{	//Holds all of the reference counting/facetpointers
+			localeImplementation();
+			localeImplementation(const localeImplementation & copyFrom);
+			~localeImplementation();
+			void reserveFacets(size_t numFacets);
+
+			size_t references; 
+			size_t facetCount;
+			facet ** facets;
+			localeImplementation & operator=(const localeImplementation & other);
+		};
+		localeImplementation * locImp;
+	};
+
+	class locale::facet {
+		friend class locale;
+		friend class locale::localeImplementation;
+	protected:
+		size_t manager;
+		size_t references;
+		locale::category c;
+		explicit facet(size_t refs = 0);
+		virtual ~facet();
+	private:
+		facet(const facet&);          // not defined
+		void operator=(const facet&); // not defined
+	};
+
+	class locale::id {
+		friend class locale;
+		friend class facet;
+
+		template<typename Facet> friend const Facet& use_facet(const locale&);
+		template<typename _Facet> friend bool has_facet(const locale&) throw ();
+
+	public:
+		id();
+	private:
+		size_t index;		//The value of the current id
+		static size_t max_index;
+
+		void operator=(const id&); // not defined
+		id(const id&);             // not defined
+	};
+
+	template <class Facet> const Facet& use_facet(const locale& loc);
+	template <class Facet> bool has_facet(const locale& loc) throw();
+
+	template <class charT> bool isspace (charT c, const locale& loc);
+	template <class charT> bool isprint (charT c, const locale& loc);
+	template <class charT> bool iscntrl (charT c, const locale& loc);
+	template <class charT> bool isupper (charT c, const locale& loc);
+	template <class charT> bool islower (charT c, const locale& loc);
+	template <class charT> bool isalpha (charT c, const locale& loc);
+	template <class charT> bool isdigit (charT c, const locale& loc);
+	template <class charT> bool ispunct (charT c, const locale& loc);
+	template <class charT> bool isxdigit(charT c, const locale& loc);
+	template <class charT> bool isalnum (charT c, const locale& loc);
+	template <class charT> bool isgraph (charT c, const locale& loc);
+	template <class charT> charT toupper(charT c, const locale& loc);
+	template <class charT> charT tolower(charT c, const locale& loc);
+
+	class ctype_base;
+	template <class charT> 	class ctype;
+	template <> 		class ctype<char>;        // specialization
+	template <class charT> 	class ctype_byname;
+	template <>		class ctype_byname<char>; // specialization
+
+	class codecvt_base;
+	template <class internT, class externT, class stateT> class codecvt;
+	template <class internT, class externT, class stateT> class codecvt_byname;
+
+	template <class charT, class InputIterator>  class num_get;
+	template <class charT, class OutputIterator> class num_put;
+	template <class charT> class numpunct;
+	template <class charT> class numpunct_byname;
+
+	template <class charT> class collate;
+	template <class charT> class collate_byname;
+
+	class time_base;
+	template <class charT, class InputIterator>  class time_get;
+	template <class charT, class InputIterator>  class time_get_byname;
+	template <class charT, class OutputIterator> class time_put;
+	template <class charT, class OutputIterator> class time_put_byname;
+
+	class money_base;
+	template <class charT, class InputIterator>  class money_get;
+	template <class charT, class OutputIterator> class money_put;
+	template <class charT, bool Intl> class moneypunct;
+	template <class charT, bool Intl> class moneypunct_byname;
+
+	class messages_base;
+	template <class charT> class messages;
+	template <class charT> class messages_byname;
+
+	//Actual definitions
+
+	class ctype_base {
+	public:
+		enum mask { 	space=1<<0, print=1<<1, cntrl=1<<2, upper=1<<3,
+				lower=1<<4, alpha=1<<5, digit=1<<6, punct=1<<7,
+				xdigit=1<<8, alnum=alpha|digit, graph=alnum|punct
+		};
+	};
+
+	template <class charT> class ctype : public locale::facet, public ctype_base {
+	public:
+		typedef charT char_type;
+
+		explicit ctype(size_t refs = 0) : facet(refs){
+			references = 1;
+			c = locale::ctype;
+			return;
+		}
+		virtual ~ctype();  // virtual
+
+		bool is(mask m, charT c) const;
+		const charT* is(const charT* low, const charT* high, mask* vec) const;
+		const charT* scan_is(mask m, const charT* low, const charT* high) const;
+		const charT* scan_not(mask m, const charT* low, const charT* high) const;
+		charT toupper(charT) const;
+		const charT* toupper(charT* low, const charT* high) const;
+		charT tolower(charT c) const;
+		const charT* tolower(charT* low, const charT* high) const;
+		charT widen(char c) const;
+		const char* widen(const char* low, const char* high, charT* to) const;
+		char narrow(charT c, char dfault) const;
+		const charT* narrow(const charT* low, const charT*, char dfault, char* to) const;
+		static locale::id id;
+
+	protected:
+		virtual bool         do_is(mask m, charT c) const;
+		virtual const charT* do_is(const charT* low, const charT* high, mask* vec) const;
+		virtual const charT* do_scan_is(mask m, const charT* low, const charT* high) const;
+		virtual const charT* do_scan_not(mask m, const charT* low, const charT* high) const;
+		virtual charT        do_toupper(charT) const;
+		virtual const charT* do_toupper(charT* low, const charT* high) const;
+		virtual charT        do_tolower(charT) const;
+		virtual const charT* do_tolower(charT* low, const charT* high) const;
+		virtual charT        do_widen(char) const;
+		virtual const char*  do_widen(const char* low, const char* high, charT* dest) const;
+		virtual char         do_narrow(charT, char dfault) const;
+		virtual const charT* do_narrow(const charT* low, const charT* high, char dfault, char* dest) const;
+	};
+
+	template <> class ctype<char> : public locale::facet, public ctype_base {
+	public:
+		typedef char char_type;
+		explicit ctype(size_t refs = 0);
+		bool is(mask m, char c) const;
+		const char* is(const char* low, const char* high, mask* vec) const;
+		const char* scan_is(mask m, const char* low, const char* high) const;
+		const char* scan_not(mask m, const char* low, const char* high) const;
+		char toupper(char c) const;
+		const char* toupper(char* low, const char* high) const;
+		char tolower(char c) const;
+		const char* tolower(char* low, const char* high) const;
+		char widen(char c) const;
+		const char* widen(const char* low, const char* high, char* to) const;
+		char narrow(char c, char dfault) const;
+		const char* narrow(const char* low, const char* high, char dfault, char* to) const;
+		static locale::id id;
+		virtual ~ctype();  // virtual
+
+	protected:
+		virtual bool do_is(mask m, char c) const;
+		virtual const char* do_is(const char* low, const char* high, mask* vec) const;
+		virtual const char* do_scan_is(mask m, const char* low, const char* high) const;
+		virtual const char* do_scan_not(mask m, const char* low, const char* high) const;
+		virtual char do_toupper(char c) const;
+		virtual const char* do_toupper(char* low, const char* high) const;
+		virtual char do_tolower(char c) const;
+		virtual const char* do_tolower(char* low, const char* high) const;
+		virtual char do_widen(char c) const;
+		virtual const char*  do_widen(const char* low, const char* high, char* dest) const;
+		virtual char do_narrow(char c, char dfault) const;
+		virtual const char* do_narrow(const char* low, const char* high, char dfault, char* dest) const;
+
+	};
+
+	template <class charT> 	class ctype_byname : public ctype<charT>{
+	public:
+		typedef typename ctype<charT>::mask mask;
+		explicit ctype_byname(const char*, size_t refs = 0) : ctype<charT>(refs){
+			
+
+		}
+	protected:
+		virtual ~ctype_byname(){
+
+		}
+		virtual bool         do_is(mask m, charT c) const;
+		virtual const charT* do_is(const charT* low, const charT* high, mask* vec) const;
+		virtual const char*  do_scan_is(mask m, const charT* low, const charT* high) const;
+		virtual const char*  do_scan_not(mask m, const charT* low, const charT* high) const;
+		virtual charT        do_toupper(charT) const;
+		virtual const charT* do_toupper(charT* low, const charT* high) const;
+		virtual charT        do_tolower(charT) const;
+		virtual const charT* do_tolower(charT* low, const charT* high) const;
+		virtual charT        do_widen(char) const;
+		virtual const char*  do_widen(const char* low, const char* high, charT* dest) const;
+		virtual char         do_narrow(charT, char dfault) const;
+		virtual const charT* do_narrow(const charT* low, const charT* high, char dfault, char* dest) const;
+	};
+
+	template <> class ctype_byname<char> : public ctype<char> {
+	public:
+		typedef ctype<char>::mask mask;
+		explicit ctype_byname(const char* name, size_t refs = 0);
+	protected:
+		basic_string<char> locName;
+		virtual ~ctype_byname();             //  virtual
+		virtual char        	do_toupper(char c) const;
+		virtual const char* 	do_toupper(char* low, const char* high) const;
+		virtual char        	do_tolower(char c) const;
+		virtual const char* 	do_tolower(char* low, const char* high) const;
+		virtual char        	do_widen(char c) const;
+		virtual const char* 	do_widen(char* low, const char* high, char* to) const;
+		virtual char		do_narrow(char c, char dfault) const;
+		virtual const char* 	do_narrow(const char* low, const char* high, char dfault, char* dest) const;
+	};
+
+
+
+	template <class Facet> locale::locale(const locale& other, Facet* f){
+		//Copy existing facet array
+		locImp = new localeImplementation(other.locImp);
+		//Make sure new facet has an appropriate ID number
+		if(Facet::id.index == 0){
+			Facet::id.max_index++;
+			Facet::id.index = Facet::id::max_index;
+		}
+
+		//Make sure that the facet array is large enough
+		if(locImp->facetCount < Facet::id.index){
+			locImp->reserveFacets(locImp->facetCount);
+		}
+	
+		//Copy the new facet into the facet array
+		locImp->facets[Facet::id.index ] = f;
+		Facet::references++;		
+	}
+
+	template <class Facet> const Facet& use_facet(const locale& loc){
+		//Make sure specified facet is in the locale we are working with
+		if(!has_facet<Facet>(loc)){
+			throw bad_cast();
+		}
+
+		//Otherwise return the object that we want
+		return static_cast<Facet const&>(*(loc.locImp->facets[Facet::id.index]));
+//		return *loc.locImp->facets[Facet::id.index];
+	}
+
+	template <class Facet> bool has_facet(const locale& loc) throw(){
+		if(Facet::id.index > loc.locImp->facetCount || loc.locImp->facets[Facet::id.index] == 0){
+			printf("Pointer for desired facet: %p\n", loc.locImp->facets[Facet::id.index]);
+			printf("Facet not found: Facet::id.index: %i\n", (Facet::id.index));
+			
+			return false;
+		}
+		return true;
+	}	
+
+
+
+	template <class charT> bool isspace (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isspace, c);
+	}
+	template <class charT> bool isprint (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isprint, c);
+	}
+	template <class charT> bool iscntrl (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::iscntrl, c);
+	}
+	template <class charT> bool isupper (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isupper, c);
+	}
+	template <class charT> bool islower (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::islower, c);
+	}
+	template <class charT> bool isalpha (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isalpha, c);
+	}
+	template <class charT> bool isdigit (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isdigit, c);
+	}
+	template <class charT> bool ispunct (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::ispunct, c);
+	}
+	template <class charT> bool isxdigit(charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isxdigit, c);
+	}
+	template <class charT> bool isalnum (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isalnum, c);
+	}
+	template <class charT> bool isgraph (charT c, const locale& loc){
+		return use_facet< ctype<charT> >(loc).is(ctype_base::isgraph, c);
+	}
+	template <class charT> charT toupper(charT c, const locale& loc){
+		return use_facet<ctype<charT> >(loc).toupper(c);
+	}
+	template <class charT> charT tolower(charT c, const locale& loc){
+		return use_facet<ctype<charT> >(loc).tolower(c);
+	}
+
+
+	template <class charT, class OutputIterator = ostreambuf_iterator<charT> >
+		class num_put : public locale::facet
+	{
+	public:
+		typedef charT            char_type;
+		typedef OutputIterator   iter_type;
+		explicit num_put(size_t refs = 0) { }
+		iter_type put(iter_type s, ios_base& f, char_type fill, bool v) const{
+			return do_put(s, f, fill, v);
+		}
+		iter_type put(iter_type s, ios_base& f, char_type fill, long v) const{
+			return do_put(s, f, fill, v);
+		}
+		iter_type put(iter_type s, ios_base& f, char_type fill, unsigned long v) const{
+			return do_put(s, f, fill, v);
+		}
+		iter_type put(iter_type s, ios_base& f, char_type fill, double v) const{
+			return do_put(s, f, fill, v);
+		}
+		iter_type put(iter_type s, ios_base& f, char_type fill, long double v) const{
+			return do_put(s, f, fill, v);
+		}
+		iter_type put(iter_type s, ios_base& f, char_type fill, void* v) const{
+			return do_put(s, f, fill, v);
+		}
+		static locale::id id;
+
+		virtual ~num_put() { }  // virtual
+
+	protected:
+		virtual iter_type do_put(iter_type s, ios_base& f, char_type fill, bool v) const{
+			
+			return s;
+		}
+		virtual iter_type do_put(iter_type s, ios_base& f, char_type fill, long v) const{
+			return s;
+		}
+		virtual iter_type do_put(iter_type s, ios_base& f, char_type fill, unsigned long) const{
+			return s;
+		}
+		virtual iter_type do_put(iter_type s, ios_base& f, char_type fill, double v) const{
+			return s;
+		}
+		virtual iter_type do_put(iter_type s, ios_base& f, char_type fill, long double v) const{
+			return s;
+		}
+		virtual iter_type do_put(iter_type s, ios_base& f, char_type fill, void* v) const{
+			return s;
+		}
+	};
+
+}
+
+#endif
+
+
+

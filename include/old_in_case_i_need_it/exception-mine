@@ -1,0 +1,55 @@
+#include <basic_definitions>
+
+
+#ifndef CLASS_STD_EXCEPTION
+#define CLASS_STD_EXCEPTION 1
+
+namespace std{
+
+class exception {
+public:
+	exception() throw() { } 
+	exception(const exception&) throw() { }
+	exception& operator=(const exception&) throw() { return *this; }
+
+	virtual ~exception() throw() {} ;
+	virtual const char* what() const throw();
+};
+
+
+class bad_exception : public exception{
+public:
+	bad_exception() throw() : exception() { }
+	bad_exception(const bad_exception&) throw() : exception() { }
+	bad_exception& operator=(const bad_exception&) throw() { return *this; }
+
+	virtual ~bad_exception() throw();
+	virtual const char* what() const throw();
+
+
+};
+
+typedef void (*unexpected_handler)();
+unexpected_handler set_unexpected(unexpected_handler f) throw();
+void unexpected();
+
+typedef void (*terminate_handler)();
+terminate_handler set_terminate(terminate_handler f) throw();
+void terminate();
+
+extern unexpected_handler	__ulc_unexpected_handler;
+extern terminate_handler 	__ulc_terminate_handler;
+
+void _default_unexpected_handler();
+void _default_terminate_handler();
+
+bool uncaught_exception();
+
+void __throw_out_of_range(const char* errorMessage = "");
+
+};
+
+
+#endif
+
+

@@ -1,0 +1,305 @@
+#include <basic_definitions>
+
+#ifndef STD_HEADER_OSTREAM
+#define STD_HEADER_OSTREAM 1
+
+#include <iosfwd>
+#include <fstream>
+#include <streambuf>
+#include <cstdio>
+#include <ostream_helpers>
+
+namespace std {
+	template <class charT, class traits > class basic_ostream;
+	typedef basic_ostream<char> ostream;
+	typedef basic_ostream<wchar_t> wostream;
+
+	template <class charT, class traits> basic_ostream<charT,traits>& endl(basic_ostream<charT,traits>& os);
+	template <class charT, class traits> basic_ostream<charT,traits>& ends(basic_ostream<charT,traits>& os);
+	template <class charT, class traits> basic_ostream<charT,traits>& flush(basic_ostream<charT,traits>& os);
+
+	template <class charT, class traits > class basic_ostream : virtual public basic_ios<charT,traits> {
+	public:
+
+		typedef charT char_type;
+		typedef typename traits::int_type int_type;
+		typedef typename traits::pos_type pos_type;
+		typedef typename traits::off_type off_type;
+		typedef traits traits_type;
+
+
+		basic_ostream(basic_streambuf<charT,traits>* sb){
+			basic_ios<charT,traits>::init(sb);
+			sbuffer = sb;
+		}
+		virtual ~basic_ostream(){ }
+
+		class sentry;
+
+		basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& (*pf)(basic_ostream<charT,traits>&)){
+			return pf(*this);
+		}
+		basic_ostream<charT,traits>& operator<<(basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&)){
+			pf(*this);
+			return *this;
+		}
+		basic_ostream<charT,traits>& operator<<(ios_base& (*pf)(ios_base&)){
+			pf(*this);
+			return *this;
+		}
+		basic_ostream<charT,traits>& operator<<(bool n);
+		basic_ostream<charT,traits>& operator<<(short n);
+		basic_ostream<charT,traits>& operator<<(unsigned short n);
+		basic_ostream<charT,traits>& operator<<(int n);
+		basic_ostream<charT,traits>& operator<<(unsigned int n);
+		basic_ostream<charT,traits>& operator<<(long n);
+		basic_ostream<charT,traits>& operator<<(unsigned long n);
+		basic_ostream<charT,traits>& operator<<(float f);
+		basic_ostream<charT,traits>& operator<<(double f);
+		basic_ostream<charT,traits>& operator<<(long double f);
+		basic_ostream<charT,traits>& operator<<(void* p);
+		basic_ostream<charT,traits>& operator<<(basic_streambuf<char_type,traits>* sb);
+		basic_ostream<charT,traits>& put(char_type c){
+			sbuffer->sputc(c);
+			flush();
+			return *this;
+		}
+		basic_ostream<charT,traits>& write(const char_type* s, streamsize n){
+			sbuffer->sputn(s, n);
+//			flush();
+			return *this;
+		}
+		basic_ostream<charT,traits>& flush(){
+			if(sbuffer->pubsync() == -1){
+				setstate(badbit);
+			}
+			return *this;
+		}
+		pos_type tellp(){
+			if(fail() != false){
+				return pos_type(-1);
+			}
+			return rdbuf()->pubseekoff(0, cur, out);
+		}
+		basic_ostream<charT,traits>& seekp(pos_type){
+			if( fail() != true ){
+				rdbuf()->pubseekpos(pos);
+			}
+			return *this;
+		}
+		basic_ostream<charT,traits>& seekp(off_type, ios_base::seekdir){
+			if(fail() != true){
+				rdbuf()->pubseekoff(off, dir);
+			}
+			return *this;
+		}
+
+	protected:
+		basic_streambuf<char_type,traits>* sbuffer;
+	};
+
+	//Implementations of template functions.  To allow for partial specialization
+	
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(bool n){
+		sentry s(*this);
+		__ostream_printout<traits, charT, bool>::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& 
+		basic_ostream<charT, traits>::operator<<(unsigned short n){
+		sentry s(*this);
+		__ostream_printout<traits, charT, unsigned int>::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(short n){
+		sentry s(*this);
+		__ostream_printout<traits, charT, int>::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(int n){
+		sentry s(*this);
+		__ostream_printout<traits, charT, int>::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(unsigned int n){
+		sentry s(*this);
+		__ostream_printout<traits, charT, unsigned int>::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(long n){
+		sentry s(*this);
+		__ostream_printout<traits, charT, long >::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& 
+		basic_ostream<charT, traits>::operator<<(unsigned long n)
+	{
+		sentry s(*this);
+		__ostream_printout<traits, charT, unsigned long >::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(float f){
+		sentry s(*this);
+		__ostream_printout<traits, charT, double >::printout(*this, f);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(double f){
+		sentry s(*this);
+		__ostream_printout<traits, charT, double >::printout(*this, f);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(long double f){
+		sentry s(*this);
+		__ostream_printout<traits, charT, long double >::printout(*this, f);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(void* p){
+		sentry s(*this);
+		__ostream_printout<traits, charT, void * >::printout(*this, p);
+		return *this;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& 
+		basic_ostream<charT, traits>::operator<<(basic_streambuf<charT,traits>* sb)
+	{
+		sentry s(*this);
+		__ostream_printout<traits, charT, basic_streambuf<charT,traits>* >::printout(*this, sb);
+		return *this;
+	}
+
+	/*Template Specializations*/
+
+#ifdef EXPAND_OSTREAM_FOR_CHAR
+
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(bool n);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(int n);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(unsigned int n);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(long n);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(unsigned long n);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(float f);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(double f);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(long double f);
+	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(void* p);
+	template <> basic_ostream<char,char_traits<char> > & 
+		basic_ostream<char, char_traits<char> >::operator<<(basic_streambuf<char, char_traits<char> >* sb);
+
+#endif
+
+	template <class charT,class traits = char_traits<charT> > class basic_ostream<charT,traits>::sentry {
+		bool ok;
+	public:
+		explicit sentry(basic_ostream<charT,traits>& os){
+			if(os.good() !=0){		//Prepare for output
+			}
+
+			//Flush any tied buffer
+			if(os.tie() !=0 ){
+				os.tie()->flush();
+			}
+			ok = true;
+		}
+		~sentry() { }
+		operator bool() {
+			return ok;
+		}
+	};
+
+
+	//Non - class functions
+
+
+	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, charT c){
+		typename basic_ostream<charT,traits>::sentry s(out);
+		out.put(c);
+		return out;
+	}
+	
+	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, char c){
+		typename basic_ostream<charT,traits>::sentry s(out);
+		out.put(c);
+		return out;
+	}
+    
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, char c){
+		typename basic_ostream<char,traits>::sentry s(out);
+		out.put(c);
+		return out;
+	}
+    
+    // signed and unsigned
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, signed char c){
+		typename basic_ostream<char,traits>::sentry s(out);
+		out.put(c);
+		return out;
+	}
+	
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>&, unsigned char c){
+		typename basic_ostream<char,traits>::sentry s(out);
+		out.put(c);
+		return out;
+	}
+	
+	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, const charT* c){
+		typename basic_ostream<charT,traits>::sentry s(out);
+		out.write(c, traits::length(c) );
+		return out;
+	}
+	
+	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, const char* c){
+		typename basic_ostream<charT,traits>::sentry s(out);
+		out.write(c, traits::length(c) );
+		return out;
+	}
+
+    // partial specializations
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const char* c){
+		typename basic_ostream<char,traits>::sentry s(out);
+		out.write(c, traits::length(c));
+		return out;
+	}
+
+	template<> basic_ostream<char,char_traits<char> >& operator<<(basic_ostream<char,char_traits<char> >& out, const char* c);
+
+
+    
+    //  signed and unsigned
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const signed char* c){
+		typename basic_ostream<char,traits>::sentry s(out);
+		out.write(c, traits::length(c));
+		return out;
+	}
+	
+	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>&, const unsigned char* c){
+		typename basic_ostream<char,traits>::sentry s(out);
+		out.write(c, traits::length(c));
+		return out;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& endl(basic_ostream<charT,traits>& os){
+		os.put('\n');
+		os.flush();
+		return os;
+	}
+
+	template <class charT, class traits> basic_ostream<charT,traits>& flush(basic_ostream<charT,traits>& os){
+		os.flush();
+		return os;
+	}
+
+
+
+};
+
+
+#endif
+
