@@ -25,6 +25,7 @@
 #include <streambuf>
 #include <istream>
 #include <ostream>
+#include <errno.h>
 
 #ifndef __STD_HEADER_FSTREAM 
 #define __STD_HEADER_FSTREAM 1
@@ -99,15 +100,25 @@ namespace std{
 			if(fp == 0){
 				return 0;
 			}
+			if(ferror(fp)){
+				fclose(fp);
+				fp=0;
+				return 0;
+			}
 			int retval = 0;
+
+			//Check to make sure the stream is good
 			if(move_end == true){
 				retval = fseek(fp, 0, SEEK_END);
-				if(retval!=0){		//Seek error
-					fclose(fp);
-					fp=0;
-					return 0;
-				}
+			}else{
+				retval = fseek(fp, 0, SEEK_SET);
 			}
+			if(retval!=0){		//Seek error
+				fclose(fp);
+				fp=0;
+				return 0;
+			}
+
 			return this;
 		}
 		basic_filebuf<charT,traits>* close(){
@@ -149,15 +160,10 @@ namespace std{
 				//No buffer, so...
 				charT c;
 				int retval;
-				retval = fscanf(fp, "%1c", &c);
+				retval = fread(&c, sizeof(charT), 1, fp);
 
-				printf("Calling zero buffer underflow\n");
-
-				if(retval == EOF){
+				if(retval == 0 || feof(fp) || ferror(fp) ){
 					return traits::eof();
-				}
-				if(retval < 0){
-					abort();
 				}
 				return c;
 			}
@@ -192,13 +198,12 @@ namespace std{
 
 			basic_streambuf<charT,traits>::mgnext -= retval;
 
-			if(feof(fp)){
+			if(feof(fp) || ferror(fp) ){
 				return traits::eof();
 			}
-			if(ferror(fp)){
-				printf("Error trying to run scanf\n");
-				abort();
-			}
+//			if(ferror(fp)){
+//				return traits::eof();
+//			}
 
 			return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 		}
