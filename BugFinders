@@ -1,0 +1,24 @@
+//This file lists everybody who has sent me bug problems/fixes as of Jan 24, 2005
+//The list will be in order of total number of points, with the most at the top
+//Anybody who sends me a bug listing with some sample code gets 1 point
+//If that sample code is a minimal test case, it becomes 2 points
+//If a patch or usable instructions for correction are included, it is 3 points
+//Note that I am the final arbiter on how many points a bug report is worth
+//I reserve the right to alter any and all bug points at a whim without any recourse
+//Functionality that isn't part of the standard isn't included
+//Stuff that hasn't been implemented yet doesn't count
+//Saying "this piece of software doesn't work" doesn't count
+//I reserve the right to modify the rules at any point without notice
+//I suggest killing all the lawyers
+//Using the bug tracking system at bugs.uclibc.org gets you a bonus point
+
+
+scott: 4 Points
+2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
+2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
+
+Anthony Lee: 1 Point
+2005-01-24: 1: Found problem in functional which had const missing causing havok
+
+
+
