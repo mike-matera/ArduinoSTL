@@ -15,11 +15,13 @@ all:	headers
 	$(MAKE) -C src all
 	$(MAKE) -C bin all
 
+
 tests:	all
 	$(MAKE) -C tests all
 
 test:	all tests
 	$(MAKE) -C tests test
+
 
 clean:
 	for dir in $(SUBDIRS); do \
@@ -28,7 +30,6 @@ clean:
 	$(MAKE) -C extra/locale clean
 
 cleanall:	cleanobjs cleanbin
-
 
 distclean: clean
 	$(MAKE) -C extra clean
@@ -74,7 +75,6 @@ include/system_configuration.h: .config
 	@./extra/config/conf -o extra/Configs/Config.in
 
 headers: include/system_configuration.h
-	echo "headers"
 
 install:
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
