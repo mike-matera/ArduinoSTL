@@ -56,6 +56,13 @@ template<class charT, class traits, class Allocator> basic_istream<charT,traits>
 	if(n == 0){
 		n = str.max_size();
 	}
+	//Clear out preliminary spaces first
+	c = is.get();
+	while(isspace(c)){
+		c = is.get();
+	}
+	is.putback(c);
+
 	do{
 		c = is.get();
 		if(c == traits::eof() || isspace(c) || n == 0){

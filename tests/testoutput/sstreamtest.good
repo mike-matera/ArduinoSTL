@@ -1,0 +1,10 @@
+Begining sstream test
+Starting testing 2 2
+Character getted: a
+Character getted: b
+input buffer: abcdefg
+Character 0: a, character 1: b
+f (should be 2.35): 2.35
+i (should be 5): 5
+s (should be Test): Test
+Buffer: 2.35 5 Test

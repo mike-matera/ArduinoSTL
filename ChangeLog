@@ -1,3 +1,16 @@
+0.1.7 - 2004-12-23
+-	Significant changes to the library
+-	Converted a lot of forced instanteation from double definitions to ifdef tricks
+-	Merged some of the helper functions into the main files
+-	Split off i/ostream string code from core string header
+-	Lots of little bugfixes done involving function definitions, etc.
+-	Fixed a spec error in list code - erase now returns a pointer after deleted elements, not before
+-	Fixed a spec error in streambuf - now call pbackfail instead of returning error.
+-	Added more code to valarray - now supports slice_array - untested
+-	Modified test suite (by popular demand).  Now the process can be automated
+-	Added targets make tests and make test.  tests builds tests and test runs them
+
+
 0.1.6 - 2004-11-30
 -	Fixed problem with straembuf where a value was being returned instead of a pointer
 -	Fixed a problem where a buffer was not flushed on close of an fstraem

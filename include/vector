@@ -133,7 +133,8 @@ namespace std{
 			insert(begin(), first, last);
 		}
 
-		template <class Size, class U> void assign(Size n, const U& u = U()){
+//		template <class Size, class U> void assign(Size n, const U& u = U()){
+		void assign(size_type n, const T& u ){
 			clear();
 			resize(n, u);
 		}
@@ -332,7 +333,6 @@ namespace std{
 	//Here go template instantiations
 
 	template<class T, class Allocator> void vector<T, Allocator>::reserve(size_type n){
-//		__vector_helper_functions<T, Allocator>::reserve(*this, n);
 		if(n > data_size){              //We never shrink...
 			T * temp_ptr = data;
 			size_type temp_size = data_size;
@@ -348,7 +348,6 @@ namespace std{
 	}
 
 	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, T c){
-//		__vector_helper_functions<T, Allocator>::resize(*this, sz, c);
 		if(sz > elements){      //Need to actually call constructor
 			size_type temp_el = elements;
 			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);

@@ -1,0 +1,51 @@
+Element 0: 1
+Element 1: 2
+Element 2: 3
+Element 3: 4
+Element 4: 5
+Testing at(int)
+Element 0: 1
+Element 1: 2
+Element 2: 3
+Element 3: 4
+Element: 1
+Element: 2
+Element: 3
+Element: 4
+Testing iterator insert
+Return value points to: 12, should be 12
+Element: 1
+Element: 2
+Element: 12
+Element: 3
+Element: 4
+Testing iterator multi-insert
+Element: 1
+Element: 23
+Element: 23
+Element: 23
+Element: 2
+Element: 12
+Element: 3
+Element: 4
+Testing iterator erase
+Element: 1
+Element: 23
+Element: 23
+Element: 2
+Element: 12
+Element: 3
+Element: 4
+Testing iterator multierase
+Element: 1
+Element: 23
+Element: 12
+Element: 3
+Element: 4
+Testing iterator range insert
+The following should be the same as the above:
+Element: 1
+Element: 23
+Element: 12
+Element: 3
+Element: 4

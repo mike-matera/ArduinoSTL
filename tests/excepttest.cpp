@@ -23,7 +23,7 @@ int main(){
 	}
 
 
-	printf("Testing inheriting excepetion handler\n");
+	printf("Testing inheriting exception handler\n");
 	try{
 		printf("Throwing length_error\n");
 		throw std::length_error("Length error test text");

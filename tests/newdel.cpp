@@ -1,8 +1,45 @@
 #include <new>
+#include <cstdio>
 
 struct test{
 	int a;
 	float b;
+};
+
+class base {
+protected:
+	int a;
+
+public:
+	base() : a(0){
+		printf("Executing default base class constructor\n");
+	}
+	
+	virtual ~base(){
+		printf("Executing base class destructor\n");
+	}
+
+	virtual void print(){
+		printf("Base class print function with a=%i\n", a);
+	}
+
+};
+
+class sub : public base{
+protected:
+	float f;
+public:
+	sub() : f(0){
+		printf("Executing default sub class constructor\n");
+	}
+	virtual ~sub(){
+		printf("Executing sub class destructor\n");
+	}
+
+	virtual void print(){
+		printf("Sub class print function with a=%i and f=%f\n", a, f);
+	}
+
 };
 
 
@@ -15,6 +52,29 @@ int main(){
 	temp = new test[25];
 	delete [] temp;
 	temp = 0;
+
+	base * b = new base;
+	b->print();
+	delete b;
+	b=0;
+
+	b = new base[3];
+	for(int i = 0; i < 3; ++i){
+		b[i].print();
+	}
+	delete [] b;
+	b = 0;
+
+	b = new sub;
+	b->print();
+	delete b;
+	b = 0;
+
+	//We can only create one because we can't step through the array properly
+	b = new sub[1];
+	b[0].print();
+	delete [] b;
+	b = 0;	
 
 	return 0;
 }

@@ -15,8 +15,11 @@ all:	headers
 	$(MAKE) -C src all
 	$(MAKE) -C bin all
 
-test:	all
+tests:	all
 	$(MAKE) -C tests all
+
+test:	all tests
+	$(MAKE) -C tests test
 
 clean:
 	for dir in $(SUBDIRS); do \

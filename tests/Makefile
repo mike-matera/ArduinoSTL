@@ -5,16 +5,16 @@ include $(TOPDIR)Rules.mak
 
 CXXOFLAGS = -O0
 
-UCXX	= ../bin/g++-uc
+ifeq ($(IMPORT_LIBSUP),y)
+ULIBS = -luClibc++ -lc
+else
+ULIBS = -luClibc++ -lc -lsupc++
+endif
 
 
-#UFLAGS	=	-nodefaultlibs -nostdinc++ -fno-builtin -L../src
+UCXX	= g++ -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src
+
 UFLAGS	=	-L../src
-#ifeq ($(IMPORT_LIBSUP),y)
-#ULIBS	=	-luClibc++ -lc
-#else
-#ULIBS	=	-luClibc++ -lc -lsupc++
-#endif
 
 SRCS	=\
 	newdel.cpp \
@@ -127,8 +127,12 @@ cleanbin:
 	rm -f $(ALLBIN)
 
 clean:	cleanobjs cleanbin
+	$(MAKE) -C testoutput clean
 
 cleanall:	cleanobjs cleanbin
+
+test:	all
+	$(MAKE) -C testoutput test
 
 newdel: $(EXOBJS)
 	$(UCXX) -o newdel newdel.o $(CXXFLAGS) $(UFLAGS) $(LIBS) $(ULIBS)

@@ -1,0 +1,43 @@
+Start of map test
+Adding a few elements...
+Elements:
+test["b"] = 2
+test["a"] = 1
+test["k"] = 11
+Reasigning the value of a
+test["a"] = 65
+All of the contents of test:
+First element: a: 65
+First element: a: 65
+a: 65
+b: 2
+c: 3
+k: 11
+Number of elements: 4
+Container empty? 0
+Finding element "c"
+Found value for c: 3
+Count of elements with key "c": 1
+Inserting element g: 
+Value inserted? 1
+Key: g, value: 6
+a: 65
+b: 2
+c: 3
+g: 6
+k: 11
+Erasing element "g"
+a: 65
+b: 2
+c: 3
+k: 11
+Erasing element "c"
+a: 65
+b: 2
+k: 11
+This should read 2: 2
+This should read 2: 2
+This should read 11: 11
+map_char_myClass['x'] = 20
+map_char_myClass['x'] = 10
+map_char_myClass['z'] = 0

@@ -31,7 +31,7 @@ int main(){
 	test["a"] = 1;
 
 
-	std::cout << "Elements: " << std::endl;
+	std::cout << "Elements:" << std::endl;
 	std::cout << "test[\"b\"] = " << test["b"] << std::endl;
 	std::cout << "test[\"a\"] = " << test["a"] << std::endl;
 	std::cout << "test[\"k\"] = " << test["k"] << std::endl;
@@ -58,7 +58,6 @@ int main(){
 
 	std::cout << "Number of elements: " << test.size() << std::endl;
 	std::cout << "Container empty? " << test.empty() << std::endl;
-	std::cout << "Max size: " << test.max_size() << std::endl;
 
 	std::pair<std::string, double> q;
 

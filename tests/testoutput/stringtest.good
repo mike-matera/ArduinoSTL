@@ -1,0 +1,25 @@
+Value of a: Testing string constructor
+Test string initial values:
+This is test string a
+This is test string b
+This is test string c
+a = b: This is test string b
+a = b + c: This is test string bThis is test string c
+a = "Test cstring" + b: Test cstringThis is test string b
+a = c + "Test cstring": This is test string cTest cstring
+b !===c (good)
+b != c (good)
+b == a (good)
+a == b (good)
+b !!= a (good)
+a !!= b (good)
+a == "Test text comparison" (good)
+"Test text comparison" == a (good)
+b < c (good)
+b !> c (good)
+Please enter a test string:
+You entered: word1
+Checking advanced string functions:
+Checking substr.  The following two lines should be identical:
+"is th"
+"is th"

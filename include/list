@@ -477,6 +477,7 @@ namespace std{
 				--position;
 				temp->next->previous = temp->previous;
 				temp->previous->next = temp->next;
+				++position;
 			}
 			delete temp->val;
 			delete temp;
@@ -490,9 +491,7 @@ namespace std{
 		iterator temp = position;
 		while(position !=last){
 			position = erase(position);
-			++position;
 		}
-		--position;
 		return position;
 	}
 	template<class T, class Allocator> void list<T, Allocator>::swap(list<T,Allocator>& l){

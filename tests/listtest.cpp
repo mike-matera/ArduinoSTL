@@ -56,7 +56,7 @@ int main(){
 	i = temp.begin();
 	++i;
 	i = temp.erase(i);
-	std::cout << "First element in list: " << *i << std::endl;
+	std::cout << "Second element in list: " << *i << std::endl;
 	for(j = temp.begin(); j!=temp.end(); j++){
 		std::cout << "j: " << *j << std::endl;
 	}
@@ -67,7 +67,8 @@ int main(){
 	i--;
 	i--;
 	i = temp.erase(i,temp.end());
-	std::cout << "First element in list: " << *i << std::endl;
+	--i;
+	std::cout << "Last element in list: " << *i << std::endl;
 	for(j = temp.begin(); j!=temp.end(); j++){
 		std::cout << "j: " << *j << std::endl;
 	}

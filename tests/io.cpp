@@ -24,7 +24,9 @@ int main(){
 	float i = 0;
 	long double j = 0;
 
-	std::cout << "Address of i: " << &i << std::endl;
+	void * p = (void *)12345678;
+
+	std::cout << "Pointer: " << p << std::endl;
 	std::cout << "Please enter two floats:" << std::flush;
 	std::cin >> i >> j;
 

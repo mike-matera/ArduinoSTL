@@ -100,7 +100,11 @@ int main(){
 	std::cin >> a;
 	std::cout << std::endl << "You entered: " << a << std::endl;
 
-
+	std::cout << "Checking advanced string functions:\n";
+	std::cout << "Checking substr.  The following two lines should be identical:\n";
+	a="This is the base string";
+	std::cout << "\"is th\"" << std::endl;
+	std::cout << "\"" << a.substr(5, 5) << "\""  << std::endl;
 
 	return 0;
 }

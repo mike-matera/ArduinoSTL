@@ -117,7 +117,7 @@ namespace std{
 		}
 
 		bitset(const bitset & val){
-			for(size_t i = 0; i <= byte_num(N); ++i){
+			for(size_t i = 0; i < num_bytes; ++i){
 				data[i] = val.data[i];
 			}
 		}
@@ -153,25 +153,21 @@ namespace std{
 		}
 
 		bitset<N>& operator&=(const bitset<N>& rhs){
-			for(size_t i =0; i < N; ++i){
-				if(rhs.test(i) == false){
-					reset(i);
-				}
+			for(size_t i =0; i < num_bytes; ++i){
+				data[i] &= rhs.data[i];
 			}
 			return *this;
 		}
 
 		bitset<N>& operator|=(const bitset<N>& rhs){
-			for(size_t i =0; i < N; ++i){
-				if(rhs.test(i) == true){
-					set(i);
-				}
+			for(size_t i =0; i < num_bytes; ++i){
+				data[i] |= rhs.data[i];
 			}
 			return *this;
 		}
 		bitset<N>& operator^=(const bitset<N>& rhs){
-			for(size_t i =0; i < N; ++i){
-				set(i, test(i) ^ rhs.test(i));
+			for(size_t i=0; i < num_bytes; ++i){
+				data[i] ^= rhs.data[i];
 			}
 			return *this;
 		}
@@ -212,7 +208,7 @@ namespace std{
 			return *this;
 		}
 		bitset<N>& reset(){
-			for(size_t i = 0; i <= byte_num(N); ++i){
+			for(size_t i = 0; i <= num_bytes; ++i){
 				data[i] = 0;
 			}
 			return *this;
@@ -228,7 +224,7 @@ namespace std{
 		}
 
 		bitset<N>& flip(){
-			for(size_t i = 0; i <= byte_num(N); ++i){
+			for(size_t i = 0; i <= num_bytes; ++i){
 				data[i] =  ~data[i];
 			}
 			return *this;

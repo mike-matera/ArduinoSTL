@@ -1,0 +1,302 @@
+deque test start
+Deque elements:
+12
+13
+14
+Deque elements by subscript:
+12
+13
+14
+Pushing many elements to the front:
+Pushing in: 1 1
+Pushing in: 2 2
+Pushing in: 3 3
+Pushing in: 4 4
+Pushing in: 5 5
+Pushing in: 6 6
+Pushing in: 7 7
+Pushing in: 8 8
+Pushing in: 9 9
+Pushing in: 10 10
+Pushing in: 11 11
+Pushing in: 12 12
+Pushing in: 13 13
+Pushing in: 14 14
+Pushing in: 15 15
+Pushing in: 16 16
+Pushing in: 17 17
+Pushing in: 18 18
+Pushing in: 19 19
+Pushing in: 20 20
+Pushing in: 21 21
+Pushing in: 22 22
+Pushing in: 23 23
+Deque elements:
+23
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+Push back:
+23
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+2.5
+Pop_front:
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+2.5
+Pop_back:
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+Copy constructor:
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+Assignement:
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+Insert near beginning:
+22
+21
+25
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+Insert near end:
+22
+21
+25
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+27
+13
+14
+Erase near begining:
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+27
+13
+14
+Erase near end:
+22
+21
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+12
+13
+14
+Returned iterator points to: 13

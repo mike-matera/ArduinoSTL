@@ -1,0 +1,9 @@
+Starting exception testing
+Throwing out of range
+Caught thrown exception
+Testing inheriting exception handler
+Throwing length_error
+Caught logic_error (good)
+Testing generic excepetion handler
+Throwing length_error
+Caught generic exception (good)
