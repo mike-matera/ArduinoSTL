@@ -605,6 +605,50 @@ namespace std{
 	}
 
 
+	template<class T, class Allocator> void list<T, Allocator>::remove(const T& value){
+		iterator temp = begin();
+		while( temp != end() ){
+			if(*temp == value){
+				erase(temp);
+			}
+			++temp;
+		}
+	}
+
+
+	template<class T, class Allocator> template <class Predicate> void list<T, Allocator>::remove_if(Predicate pred){
+		iterator temp = begin();
+		while( temp != end() ){
+			if( pred(*temp) ){
+				erase(temp);
+			}
+			++temp;
+		}
+	}
+
+
+	template<class T, class Allocator> void list<T, Allocator>::unique(){
+		equal_to<typename iterator_traits<iterator>::value_type> p;
+		unique(p);
+	}
+
+	template<class T, class Allocator> template <class BinaryPredicate>
+		void list<T, Allocator>::unique(BinaryPredicate binary_pred)
+	{
+		iterator temp1 = begin();
+		iterator temp2;
+		++temp1;
+		while( temp1 != end() ){
+			temp2 = temp1;
+			--temp2;
+			if( binary_pred(*temp1, *temp2) ){
+				erase(temp1);
+				temp1 = temp2;
+			}
+			++temp1;
+		}
+	}
+
 	template<class T, class Allocator> void list<T, Allocator>::merge(list<T,Allocator>& x){
 		less<typename iterator_traits<typename list<T, Allocator>::iterator>::value_type> c;
 		merge(x, c);

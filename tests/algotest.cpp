@@ -15,7 +15,7 @@ public:
 int main(){
 	std::cout << "Begining algorithm test" << std::endl;
 
-	std::vector<double> a, b;
+	std::vector<double> a, b, c;
 
 	std::vector<double>::iterator i, j;
 	a.push_back(12.5);
@@ -329,8 +329,6 @@ int main(){
 	std::cout << std::endl;
 
 
-
-
 	std::cout << "Merge test\n";
 	a.clear();
 	a.push_back(10.8);
@@ -356,6 +354,133 @@ int main(){
 	while(j != a.end()){
 		std::cout << *j << " ";
 		++j;
+	}
+	std::cout << std::endl;
+
+
+	std::cout << "Set union\n";
+	a.clear();
+	a.push_back(10.8);
+	a.push_back(12.5);
+	a.push_back(32.7);
+	a.push_back(52.9);
+	a.push_back(72.3);
+	
+	b.clear();
+	b.push_back(12.5);
+	b.push_back(19.6);
+	b.push_back(22.7);
+	b.push_back(32.7);
+	b.push_back(38.4);
+	b.push_back(52.9);
+	b.push_back(92.7);
+
+	c.assign(20, 0.0);
+	
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "10.8 12.5 19.6 22.7 32.7 38.4 52.9 72.3 92.7 " << std::endl;
+
+	j = std::set_union(a.begin(), a.end(), b.begin(), b.end(), c.begin() );
+	i = c.begin();
+	while(i != j){
+		std::cout << *i << " " ;
+		++i;
+	}
+	std::cout << std::endl;
+
+
+	std::cout << "Set intersection\n";
+	a.clear();
+	a.push_back(10.8);
+	a.push_back(12.5);
+	a.push_back(32.7);
+	a.push_back(52.9);
+	a.push_back(72.3);
+	
+	b.clear();
+	b.push_back(12.5);
+	b.push_back(19.6);
+	b.push_back(22.7);
+	b.push_back(32.7);
+	b.push_back(38.4);
+	b.push_back(52.9);
+	b.push_back(92.7);
+
+	c.assign(20, 0.0);
+	
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "12.5 32.7 52.9 " << std::endl;
+
+	j = std::set_intersection(a.begin(), a.end(), b.begin(), b.end(), c.begin() );
+	i = c.begin();
+	while(i != j){
+		std::cout << *i << " " ;
+		++i;
+	}
+	std::cout << std::endl;
+
+
+
+	std::cout << "Set difference\n";
+	a.clear();
+	a.push_back(10.8);
+	a.push_back(12.5);
+	a.push_back(12.5);
+	a.push_back(32.7);
+	a.push_back(52.9);
+	a.push_back(72.3);
+	
+	b.clear();
+	b.push_back(12.5);
+	b.push_back(19.6);
+	b.push_back(22.7);
+	b.push_back(32.7);
+	b.push_back(38.4);
+	b.push_back(52.9);
+	b.push_back(92.7);
+
+	c.assign(20, 0.0);
+	
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "10.8 72.3 " << std::endl;
+
+	j = std::set_difference(a.begin(), a.end(), b.begin(), b.end(), c.begin() );
+	i = c.begin();
+	while(i != j){
+		std::cout << *i << " " ;
+		++i;
+	}
+	std::cout << std::endl;
+
+
+	std::cout << "Set symmetric difference\n";
+	a.clear();
+	a.push_back(10.8);
+	a.push_back(12.5);
+	a.push_back(12.5);
+	a.push_back(32.7);
+	a.push_back(52.9);
+	a.push_back(72.3);
+	
+	b.clear();
+	b.push_back(12.5);
+	b.push_back(19.6);
+	b.push_back(22.7);
+	b.push_back(32.7);
+	b.push_back(38.4);
+	b.push_back(52.9);
+	b.push_back(92.7);
+
+	c.assign(20, 0.0);
+	
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "10.8 19.6 22.7 38.4 72.3 92.7 " << std::endl;
+
+	j = std::set_symmetric_difference(a.begin(), a.end(), b.begin(), b.end(), c.begin() );
+	i = c.begin();
+	while(i != j){
+		std::cout << *i << " " ;
+		++i;
 	}
 	std::cout << std::endl;
 

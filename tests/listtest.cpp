@@ -316,5 +316,57 @@ int main(){
 	
 
 
+	std::cout << "Testing remove\n";
+
+	temp.clear();
+	temp.push_back(12.8);
+	temp.push_back(22.4);
+	temp.push_back(37.9);
+	temp.push_back(48.5);
+	temp.push_back(11.7);
+	temp.push_back(29.1);
+	temp.push_back(37.9);
+	temp.push_back(99.9);
+
+	temp.remove(37.9);
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "12.8 22.4 48.5 11.7 29.7 99.9 \n";
+	i = temp.begin();
+	while(i != temp.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+
+
+	std::cout << "Testing unique\n";
+
+	temp.clear();
+	temp.push_back(11.7);
+	temp.push_back(12.8);
+	temp.push_back(12.8);
+	temp.push_back(22.4);
+	temp.push_back(29.1);
+	temp.push_back(37.9);
+	temp.push_back(37.9);
+	temp.push_back(37.9);
+	temp.push_back(37.9);
+	temp.push_back(48.5);
+	temp.push_back(99.9);
+
+	temp.unique();
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "11.7 12.8 22.4 29.1 37.9 48.5 99.9 \n";
+	i = temp.begin();
+	while(i != temp.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+	
+
+
 	return 0;
 }

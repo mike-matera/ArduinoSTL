@@ -23,6 +23,7 @@
 #include <iterator>
 #include <func_exception>
 #include <vector_helpers>
+#include <algorithm>
 
 
 #ifndef __STD_HEADER_VECTOR
@@ -39,13 +40,13 @@ namespace std{
 	template <class T, class Allocator> bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator> void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 
-	template <class Allocator> bool operator==(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-	template <class Allocator> bool operator< (const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-	template <class Allocator> bool operator!=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-	template <class Allocator> bool operator> (const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-	template <class Allocator> bool operator>=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-	template <class Allocator> bool operator<=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-	template <class Allocator> void swap(vector<bool,Allocator>& x, vector<bool,Allocator>& y);
+//	template <class Allocator> bool operator==(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
+//	template <class Allocator> bool operator< (const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
+//	template <class Allocator> bool operator!=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
+//	template <class Allocator> bool operator> (const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
+//	template <class Allocator> bool operator>=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
+//	template <class Allocator> bool operator<=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
+//	template <class Allocator> void swap(vector<bool,Allocator>& x, vector<bool,Allocator>& y);
 
 
 	template <class T, class Allocator> class vector {
@@ -381,14 +382,30 @@ namespace std{
 		}
 		return true;
 	}
-	template <class T, class Allocator> bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
-	template <class T, class Allocator> bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
-	template <class T, class Allocator> bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
-	template <class T, class Allocator> bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
-	template <class T, class Allocator> bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
-	template <class T, class Allocator> void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 
+	template <class T, class Allocator> bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y){
+		less<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
+                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+	}
+	template <class T, class Allocator> bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y){
+		return !(x == y);
+	}
+	template <class T, class Allocator> bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y){
+		greater<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
+                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+	}
+	template <class T, class Allocator> bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y){
+		greater_equal<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
+                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+	}
+	template <class T, class Allocator> bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y){
+		less_equal<typename iterator_traits<typename vector<T,Allocator>::iterator >::value_type> c;
+                return lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(), c);
+	}
 
+	template <class T, class Allocator> void swap(vector<T,Allocator>& x, vector<T,Allocator>& y){
+		x.swap(y);
+	}
 
 }
 
