@@ -1,3 +1,9 @@
+0.1.6 - 2004-11-30
+-	Fixed problem with straembuf where a value was being returned instead of a pointer
+-	Fixed a problem where a buffer was not flushed on close of an fstraem
+-	Added basic test for fstream
+-	Started working on better way to expand symbols in library
+
 0.1.5 - 2004-09-26
 -	Added code for all algorithms
 -	Fixed map/set code to prevent infinite loops.  Oops.

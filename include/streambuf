@@ -102,7 +102,7 @@ namespace std{
 		}
 
 		int_type sputbackc(char_type c){
-			if(mgbeg == 0 || mgnext == mgbeg){
+			if(mgbeg == 0 || mgnext == mgbeg || !traits::eq(c,gptr()[-1])){
 				return ios_base::failbit;
 			}
 			gbump(-1);

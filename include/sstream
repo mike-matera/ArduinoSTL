@@ -177,7 +177,7 @@ namespace std{
 			}
 
 			//Test for error conditions
-			if(newpos < 0 || newpos > data.length()){
+			if(newpos > data.length()){
 				return -1;
 			}
 

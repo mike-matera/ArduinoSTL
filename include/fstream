@@ -112,10 +112,11 @@ namespace std{
 					return 0;
 				}
 			}
-			return *this;
+			return this;
 		}
 		basic_filebuf<charT,traits>* close(){
 			if(fp != 0){
+				overflow();
 				int retval = fclose(fp);
 				if(retval !=0){		//Error of some sort
 					return 0;
@@ -243,7 +244,7 @@ namespace std{
 			if(r!=0){	//Nothing to do
 				traits::copy(buffer, basic_streambuf<charT,traits>::pbase(), r);
 			}
-			
+
 			size_t retval = fwrite(buffer, sizeof(charT), s, fp);
 			if(retval !=s){
 				if(retval == 0){
