@@ -14,8 +14,8 @@ choice
 #config TARGET_alpha
 #	bool "alpha"
 
-#config TARGET_arm
-#	bool "arm"
+config TARGET_arm
+	bool "arm"
 
 #config TARGET_cris
 #	bool "cris"
@@ -41,8 +41,8 @@ config TARGET_i386
 #config TARGET_mips
 #	bool "mips"
 
-#config TARGET_powerpc
-#	bool "powerpc"
+config TARGET_powerpc
+	bool "powerpc"
 
 #config TARGET_sh
 #	bool "SuperH"
