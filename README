@@ -1,0 +1,6 @@
+A few notes:
+
+-	If you are looking to statically compile an application, you must compile it
+	without the use of either rtti or exceptions.  The library should be compiled
+	likewise.  Since the application will be statically compiled, you may run a 
+	dynamic library with exception support.
