@@ -503,13 +503,13 @@ namespace std{
 		reserve(elements+1);
 		if(position.element > (elements/2)){
 			//Push all elements back 1
-			push_back(T());
+			push_back(x);
 			for(size_type i = elements-1; i > position.element; --i){
 				at(i) = at(i-1);
 			}
 		}else{
 			//Push all elements forward 1
-			push_front(T());
+			push_front(x);
 			for(size_type i = 0; i < position.element; ++i){
 				at(i) = at(i+1);
 			}
