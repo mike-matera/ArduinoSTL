@@ -21,8 +21,10 @@ scott: 7 Points
 thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
 
+Thomas Giesel: 2 Points
+2005-03-02: 2  :  Found problems in getline code with minimal test case.
+
 Anthony Lee: 1 Point
 2005-01-24: 1: Found problem in functional which had const missing causing havok
-
 
 
