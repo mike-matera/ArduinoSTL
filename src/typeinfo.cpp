@@ -17,56 +17,18 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <exception>
-#include <stdexcept>
+#include <typeinfo>
 
 namespace std{
 
-	logic_error::logic_error() throw() : mstring(){
+	bad_cast::~bad_cast() throw(){
 
 	}
 
-	logic_error::logic_error(const string& what_arg) : mstring(what_arg){
+	bad_typeid::~bad_typeid() throw(){
 
-	}
-
-	logic_error::~logic_error() throw(){
-
-	}
-
-	const char * logic_error::what(){
-		return mstring.c_str();
-	}
-
-
-	out_of_range::out_of_range() : logic_error(){
-
-	}
-
-	out_of_range::out_of_range(const string & what_arg) : logic_error(what_arg) {
-	
-	}
-
-	out_of_range::~out_of_range() throw() {
-	
-	}
-
-
-	runtime_error::runtime_error() : mstring(){
-
-	}
-
-	runtime_error::runtime_error(const string& what_arg) : mstring(what_arg){
-
-	}
-
-	runtime_error::~runtime_error(){
-
-	}
-
-	const char * runtime_error::what(){
-		return mstring.c_str();
 	}
 
 };
+
 

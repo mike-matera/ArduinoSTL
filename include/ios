@@ -1,3 +1,22 @@
+/*	Copyright (C) 2004 Garrett A. Kajmowicz
+
+	This file is part of the uClibc++ Library.
+
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
 #include <basic_definitions>
 #include <exception>
 #include <locale>
@@ -42,6 +61,7 @@ namespace std{
 	class ios_base {
 	public:
 		class failure;
+#ifdef __INCLUDE_CIN_COUT
 		class Init{
 		public:
 			Init();
@@ -49,6 +69,7 @@ namespace std{
 		private:
 			static int init_cnt;
 		};
+#endif
 
 		public:
 
@@ -172,7 +193,10 @@ namespace std{
 
 	protected:
 		ios_base() : mLocale(), mformat(dec | showbase | unitbuf ), mstate(goodbit), 
-			mmode(), mdir(), mprecision(6), mwidth(0), mInit()
+			mmode(), mdir(), mprecision(6), mwidth(0)
+#ifdef __INCLUDE_CIN_COUT
+			,mInit()
+#endif
 		{
 
 		}
@@ -183,7 +207,9 @@ namespace std{
 		seekdir mdir;
 		streamsize mprecision;
 		streamsize mwidth;
+#ifdef __INCLUDE_CIN_COUT
 		Init mInit;
+#endif
 	};
 
 	template <class charT, class traits > class basic_ios : public ios_base {
@@ -266,9 +292,9 @@ namespace std{
 		basic_ostream<charT,traits>* mtied;
 		basic_streambuf<charT,traits>* mstreambuf;
 		iostate minternalState;
-		basic_ios() : mtied(0), mstreambuf(0), minternalState(goodbit){
-
-		}
+		basic_ios() : mtied(0), mstreambuf(0), minternalState(goodbit){	}
+		basic_ios(const basic_ios<charT,traits> &){ }
+		basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		void init(basic_streambuf<charT,traits>* sb){
 			mstreambuf = sb;
 			minternalState = goodbit;

@@ -15,58 +15,30 @@
 	You should have received a copy of the GNU Lesser General Public
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 */
 
 #include <exception>
-#include <stdexcept>
+
 
 namespace std{
+	static char * __std_exception_what_value = "exception";
 
-	logic_error::logic_error() throw() : mstring(){
+	/*We are providing our own versions to be sneaky*/
+
+
+	exception::~exception() throw(){
+		//Empty function
+	}
+
+	const char* exception::what() const throw(){
+		return __std_exception_what_value;
+	}
+
+	bad_exception::~bad_exception() throw(){
 
 	}
 
-	logic_error::logic_error(const string& what_arg) : mstring(what_arg){
-
-	}
-
-	logic_error::~logic_error() throw(){
-
-	}
-
-	const char * logic_error::what(){
-		return mstring.c_str();
-	}
-
-
-	out_of_range::out_of_range() : logic_error(){
-
-	}
-
-	out_of_range::out_of_range(const string & what_arg) : logic_error(what_arg) {
-	
-	}
-
-	out_of_range::~out_of_range() throw() {
-	
-	}
-
-
-	runtime_error::runtime_error() : mstring(){
-
-	}
-
-	runtime_error::runtime_error(const string& what_arg) : mstring(what_arg){
-
-	}
-
-	runtime_error::~runtime_error(){
-
-	}
-
-	const char * runtime_error::what(){
-		return mstring.c_str();
-	}
 
 };
 

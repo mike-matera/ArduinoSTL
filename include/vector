@@ -1,5 +1,24 @@
+/*	Copyright (C) 2004 Garrett A. Kajmowicz
+
+	This file is part of the uClibc++ Library.
+
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+
 #include <basic_definitions>
-#include <stdexcept>
 #include <memory>
 #include <iterator>
 #include <vector_helpers>
@@ -29,6 +48,7 @@ namespace std{
 
 
 	template <class T, class Allocator> class vector {
+		friend class __vector_helper_functions<T, Allocator>;
 	public:
 
 		typedef typename Allocator::reference reference;
@@ -45,7 +65,7 @@ namespace std{
 		typedef std::reverse_iterator<iterator> reverse_iterator;
 		typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		explicit vector(const Allocator& al= Allocator()): data(0), data_size(DEFAULT_ALLOC_UNITS), elements(0), a(al){
+		explicit vector(const Allocator& al= Allocator()): data(0), data_size(__DEFAULT_ALLOC_UNITS), elements(0), a(al){
 			data = a.allocate(data_size);
 		}
 
@@ -53,7 +73,7 @@ namespace std{
 			data(0), data_size(0), elements(0), a(al)
 		{
 			elements = n;
-			data_size = elements + DEFAULT_ALLOC_UNITS;
+			data_size = elements + __DEFAULT_ALLOC_UNITS;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
@@ -61,13 +81,18 @@ namespace std{
 			}
 		}
 
-		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator());
+		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
+			data(0), data_size(__DEFAULT_ALLOC_UNITS), elements(a), a(al)
+		{
+			data = a.allocate(data_size);
+			assign(first, last);
+		}
 
 		vector(const vector<T,Allocator>& x){
 			a = x.a;
 
 			elements  = x.elements;
-			data_size = elements + DEFAULT_ALLOC_UNITS;
+			data_size = elements + __DEFAULT_ALLOC_UNITS;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
@@ -91,7 +116,7 @@ namespace std{
 			data = 0;
 
 			elements = x.elements;
-			data_size = elements + DEFAULT_ALLOC_UNITS;
+			data_size = elements + __DEFAULT_ALLOC_UNITS;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
@@ -155,21 +180,7 @@ namespace std{
 			return ((size_type)(-1)) / sizeof(T);
 		}
 
-		void resize(size_type sz, T c = T()){
-			if(sz > elements){	//Need to actually call constructor
-				size_type temp_el = elements;
-				reserve(sz + DEFAULT_ALLOC_UNITS);
-
-				elements = sz;
-
-				for(size_type i = temp_el; i<elements;i++){
-					data[i] = c;
-				}
-			}else{
-				reserve(sz + DEFAULT_ALLOC_UNITS);
-				elements = sz;
-			}
-		}
+		void resize(size_type sz, T c = T());
 
 		inline size_type capacity() const{
 			return data_size;
@@ -178,21 +189,6 @@ namespace std{
 		inline bool empty() const{
 			return (size() == 0);
 		}
-
-/*		void reserve(size_type n){
-			if(n > data_size){		//We never shrink...
-				T * temp_ptr = data;
-				size_type temp_size = data_size;
-
-				data_size = elements = n;
-				data = a.allocate(data_size);
-
-				for(size_type i = 0; i<elements; ++i){
-					data[i] = temp_ptr[i];
-				}
-				a.deallocate(temp_ptr, temp_size);
-			}
-		}*/
 
 		void reserve(size_type n);
 
@@ -206,7 +202,7 @@ namespace std{
 
 		const_reference at(size_type n) const{
 			if(n >= elements){
-				throw out_of_range("Invalid subscript");
+				__throw_out_of_range("Invalid subscript");
 			}else{
 				return data[n];
 			}
@@ -214,7 +210,7 @@ namespace std{
 
 		reference at(size_type n){
 			if(n >= elements){
-				throw out_of_range("Invalid subscript");
+				__throw_out_of_range("Invalid subscript");
 			}else{
 				return data[n];
 			}
@@ -336,13 +332,54 @@ namespace std{
 	//Here go template instantiations
 
 	template<class T, class Allocator> void vector<T, Allocator>::reserve(size_type n){
-		__vector_helper_functions<T, Allocator>::reserve(a, data, elements, data_size, n);
+		__vector_helper_functions<T, Allocator>::reserve(*this, n);
 	}
 
-#ifdef EXPAND_VECTOR_FOR_CHAR
+	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, T c){
+		__vector_helper_functions<T, Allocator>::resize(*this, sz, c);
+	}
+
+
+#ifdef __EXPAND_VECTOR_FOR_BASIC_TYPES
 	template<> void vector<char, allocator<char> >::reserve(size_type n);
-//	template<> void vector<unsigned char, allocator<unsigned char> >::reserve(size_type n);
+	template<> void vector<unsigned char, allocator<unsigned char> >::reserve(size_type n);
+	template<> void vector<short int, allocator<short int> >::reserve(size_type n);
+	template<> void vector<unsigned short int, allocator<unsigned short int> >::reserve(size_type n);
+	template<> void vector<int, allocator<int> >::reserve(size_type n);
+	template<> void vector<unsigned int, allocator<unsigned int> >::reserve(size_type n);
+	template<> void vector<long int, allocator<long int> >::reserve(size_type n);
+	template<> void vector<unsigned long int, allocator<unsigned long int> >::reserve(size_type n);
+	template<> void vector<float, allocator<float> >::reserve(size_type n);
+	template<> void vector<double, allocator<double> >::reserve(size_type n);
+	template<> void vector<bool, allocator<bool> >::reserve(size_type n);
+
+	template<> void vector<char, allocator<char> >::resize(size_type sz, char c);
+	template<> void vector<unsigned char, allocator<unsigned char> >::resize(size_type sz, unsigned char c);
+	template<> void vector<short int, allocator<short int> >::resize(size_type sz, short c);
+	template<> void vector<unsigned short int, allocator<unsigned short int> >::resize(size_type sz, unsigned short int c);
+	template<> void vector<int, allocator<int> >::resize(size_type sz, int c);
+	template<> void vector<unsigned int, allocator<unsigned int> >::resize(size_type sz, unsigned int c);
+	template<> void vector<long int, allocator<long int> >::resize(size_type sz, long int c);
+	template<> void vector<unsigned long int, allocator<unsigned long int> >::resize(size_type sz, unsigned long int c);
+	template<> void vector<float, allocator<float> >::resize(size_type sz, float c);
+	template<> void vector<double, allocator<double> >::resize(size_type sz, double c);
+	template<> void vector<bool, allocator<bool> >::resize(size_type sz, bool c);
+
 #endif
+
+
+
+	template <class T, class Allocator> bool operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y){
+		if(x.elemebnt !=y.elements){
+
+		}
+	}
+	template <class T, class Allocator> bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	template <class T, class Allocator> bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	template <class T, class Allocator> bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	template <class T, class Allocator> bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	template <class T, class Allocator> bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
+	template <class T, class Allocator> void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 
 
 	

@@ -1,0 +1,82 @@
+/*	Copyright (C) 2004 Garrett A. Kajmowicz
+
+	This file is part of the uClibc++ Library.
+
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+#include <memory>
+
+#ifndef __HEADER_STRING_HELPERS
+#define __HEADER_STRING_HELPERS 1
+
+	template<class Ch, class Tr> class basic_istream;
+
+
+namespace std{
+
+	/* Pull out some of the vector functions here so that the main functions
+	 * can be instantiated to save space
+	 */
+	template<class Ch, class Tr, class A> class basic_string;
+
+	template<class Ch, class Tr, class A> class __string_helper_functions{
+	public:
+		inline static void constructor(basic_string<Ch, Tr, A> & me, const Ch * s){
+			if(s!=0){
+				typename A::size_type temp = Tr::length(s);
+				for(typename A::size_type i = 0; i< temp; ++i){
+					me.push_back(s[i]);
+				}
+			}
+		}
+
+		inline static basic_istream<Ch, Tr> & op_right_right(
+			basic_istream<Ch, Tr> &is, basic_string<Ch, Tr, A> &str)
+		{
+			typename basic_istream<Ch, Tr>::sentry s(is);
+			if(s == false){
+				return is;
+			}
+
+			str.clear();
+
+			typename basic_istream<Ch, Tr>::int_type c;
+			typename A::size_type n = is.width();
+			bool exitnow = false;
+			if(n == 0){
+				n = str.max_size();
+			}
+			do{
+				c = is.get();
+				if(c == Tr::eof() || isspace(c) || n == 0){
+					exitnow = true;
+				}else{
+					str.append(1, Tr::to_char_type(c) );
+					--n;
+				}
+			}while(exitnow == false);
+
+			return is;
+		}
+
+
+	};
+
+};
+
+
+#endif
+

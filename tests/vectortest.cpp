@@ -1,7 +1,12 @@
 #include <vector>
+#include <string>
 #include <iostream>
 
 int main(){
+	std::vector<char, std::allocator<char> > ctest;
+	std::string stest;
+	ctest.push_back('t');
+
 	std::vector<unsigned int> test;
 	std::vector<unsigned int> test1;
 	unsigned int temp;

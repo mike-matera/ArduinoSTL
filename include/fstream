@@ -1,3 +1,21 @@
+/*	Copyright (C) 2004 Garrett A. Kajmowicz
+
+	This file is part of the uClibc++ Library.
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
 #include<basic_definitions>
 
 #ifndef STD_HEADER_FSTREAM
@@ -11,8 +29,10 @@
 namespace std{
 
 	template <class charT, class traits> class basic_filebuf : public basic_streambuf<charT,traits> {
-	public:
+#ifdef __INCLUDE_CIN_COUT
 		friend ios_base::Init::Init();	//Needed for cout/cin stuff
+#endif
+	public:
 		// Types (inherited from basic_streambuf:
 		typedef typename basic_streambuf<charT, traits>::char_type	char_type;
 		typedef typename basic_streambuf<charT, traits>::int_type 	int_type;
@@ -23,12 +43,12 @@ namespace std{
 		//Constructors/destructor:
 
 		basic_filebuf() : basic_streambuf<charT,traits>(), fp(0), pbuffer(0), gbuffer(0), l() {
-			pbuffer = new char_type[DEFAULT_ALLOC_UNITS];
-			gbuffer = new char_type[DEFAULT_ALLOC_UNITS];
+			pbuffer = new char_type[__DEFAULT_ALLOC_UNITS];
+			gbuffer = new char_type[__DEFAULT_ALLOC_UNITS];
 
-			setp(pbuffer, pbuffer + DEFAULT_ALLOC_UNITS);
+			setp(pbuffer, pbuffer + __DEFAULT_ALLOC_UNITS);
 			//Position get buffer so that there is no data available
-			setg(gbuffer, gbuffer + DEFAULT_ALLOC_UNITS, gbuffer + DEFAULT_ALLOC_UNITS);
+			setg(gbuffer, gbuffer + __DEFAULT_ALLOC_UNITS, gbuffer + __DEFAULT_ALLOC_UNITS);
 		}
 
 		virtual ~basic_filebuf(){
@@ -101,6 +121,9 @@ namespace std{
 			return this;
 		}
 	protected:
+		basic_filebuf(const basic_filebuf<charT,traits> &){ }
+		basic_filebuf<charT,traits> & operator=(const basic_filebuf<charT,traits> &){ return *this; }
+
 		//Overridden virtual functions:
 
 		virtual int showmanyc(){
@@ -282,11 +305,10 @@ namespace std{
 			}
 
 			if(len > buffer_avail){		//Flush buffer and write directly
-//				printf("Writing immediately.  len: %i, buffer_avail: %i\n", len, buffer_avail);
 				overflow();	//Flush the buffer
 				char buffer[30];
-                                snprintf(buffer, 29, "%%%ds", static_cast<int>(len) );
-                                return fprintf(fp, buffer, s);
+				snprintf(buffer, 29, "%%.%ds", static_cast<unsigned int>(len) );
+				return fprintf(fp, buffer, s);
 			}
 
 			//Add to buffer to be written later

@@ -1,15 +1,18 @@
 CC  	=	distcc gcc
 CXX	=	distcc g++
-#CFLAGS	=	-O2 -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -march=athlon-xp -I../include -nostdinc++ -fPIC -Weffc++ -ansi
-CFLAGS	=	-Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -march=athlon-xp -I../include -nostdinc++ -fPIC -ansi
+#CFLAGS	=	-O2 -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -I../include -nostdinc++ -fPIC -Weffc++ -ansi
+CFLAGS	=	-Os -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -I../include -nostdinc++ -fPIC -ansi
 C_FLAGS	=	$(CFLAGS)
 CXXFLAGS=	$(CFLAGS)
-LIBS	=	-lc -lgcc_s -lsupc++ -lm
+LIBS	=	-lc -lgcc_s -lm
 SRCS	=\
 	new.cpp \
+	exception.cpp \
+	char_traits.cpp \
 	string.cpp \
 	iostream.cpp \
 	ios.cpp \
+	utility.cpp \
 	stdexcept.cpp \
 	func_exception.cpp \
 	locale.cpp \
@@ -18,14 +21,20 @@ SRCS	=\
 	ostream.cpp \
 	iterator.cpp \
 	fstream.cpp \
-	vector.cpp
+	vector.cpp \
+	deque.cpp \
+	list.cpp \
+	map.cpp
 
 
 EXOBJS	=\
 	new.o \
+	exception.o \
+	char_traits.o \
 	string.o \
 	iostream.o \
 	ios.o \
+	utility.o \
 	stdexcept.o \
 	func_exception.o \
 	locale.o \
@@ -34,11 +43,16 @@ EXOBJS	=\
 	ostream.o \
 	iterator.o \
 	fstream.o \
-	vector.o
+	vector.o \
+	deque.o \
+	list.o \
+	map.o
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	libuClibc++.so libuClibc++.a
 ALLTGT	=	libuClibc++
+
+SUPOBJS	=	/usr/lib/gcc-lib/i686-pc-linux-gnu/3.3.4/libsupc++.a
 
 # User defines:
 
@@ -48,7 +62,7 @@ objs:	$(ALLOBJS)
 
 libuClibc++:	$(ALLOBJS)
 #	ar rcs libuClibc++.a $(EXOBJS)
-	gcc -shared -o libuClibc++.so $(CFLAGS) $(LIBS) $(EXOBJS)
+	gcc -shared -o libuClibc++.so $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS)
 
 cleanobjs:
 	rm -f $(ALLOBJS)
