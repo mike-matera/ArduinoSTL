@@ -23,3 +23,19 @@ Checking advanced string functions:
 Checking substr.  The following two lines should be identical:
 "is th"
 "is th"
+
+Checking find on string "
+This is the string we are searching through"
+Position of "the": 8 - should be 8
+Position of 'g': 17 - should be 17
+Position of "search": 26 - should be 26
+Position of "is" starting at character 3: 5 - should be 5
+Position of "q": 4294967295 - should be 4294967295
+
+Checking rfind on string "
+This is the string we are searching through"
+8 = should be 8
+Position of 'g': 41 - should be 41
+Position of "search": 26 - should be 26
+Position of "is" starting at character 3: 2 - should be 2
+Position of "q": 4294967295 - should be 4294967295

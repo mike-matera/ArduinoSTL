@@ -106,5 +106,47 @@ int main(){
 	std::cout << "\"is th\"" << std::endl;
 	std::cout << "\"" << a.substr(5, 5) << "\""  << std::endl;
 
+	std::cout << "\nChecking find on string \"" << std::endl;
+	a = "This is the string we are searching through";
+	std::cout << a << "\"\n";
+
+	std::cout << "Position of \"the\": ";
+	b = "the";
+	std::cout << a.find(b) << " - should be 8\n";
+
+	std::cout << "Position of \'g\': ";
+	std::cout << a.find('g') << " - should be 17\n";
+
+	std::cout << "Position of \"search\": ";
+	std::cout << a.find("search") << " - should be 26\n";
+
+	std::cout << "Position of \"is\" starting at character 3: ";
+	std::cout << a.find("is", 3) << " - should be 5\n";
+
+	std::cout << "Position of \"q\": ";
+	std::cout << a.find("q") << " - should be " << a.npos << std::endl;
+
+	std::cout << "\nChecking rfind on string \"" << std::endl;
+	a = "This is the string we are searching through";
+	std::cout << a << "\"\n";
+
+	b = "the";
+	std::cout << a.rfind(b) << " = should be 8\n";
+
+	std::cout << "Position of \'g\': ";
+	std::cout << a.rfind('g') << " - should be 41\n";
+
+	std::cout << "Position of \"search\": ";
+	std::cout << a.rfind("search") << " - should be 26\n";
+
+	std::cout << "Position of \"is\" starting at character 3: ";
+	std::cout << a.rfind("is", 3) << " - should be 2\n";
+
+	std::cout << "Position of \"q\": ";
+	std::cout << a.rfind("q") << " - should be " << a.npos << std::endl;
+
+	
+
 	return 0;
 }
+
