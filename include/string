@@ -823,7 +823,7 @@ template<class charT, class traits, class Allocator> bool
 	operator!=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
-	return (lhs != rhs);
+	return (lhs != temp);
 }
 
 template<class charT, class traits, class Allocator> bool 
