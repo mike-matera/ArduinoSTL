@@ -64,19 +64,7 @@ public:
 
 	explicit basic_string(const A& al = A()) : vector<Ch, A>(al){ return; }
 
-	basic_string(const basic_string& str, size_type pos = 0, size_type n = npos, const A& al = A()) 
-		: vector<Ch, A>(al)
-	{
-		if(pos>str.size()){
-			__throw_out_of_range();
-		}
-		size_type rlen = str.size() - pos;
-		if( rlen > n){
-			rlen = n;
-		}
-		resize(rlen);
-		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, vector<Ch, A>::elements);
-	}
+	basic_string(const basic_string& str, size_type pos = 0, size_type n = npos, const A& al = A());	//Below
 
 	basic_string(const Ch* s, size_type n, const A& al = A())
 		: vector<Ch, A>(al)
@@ -90,7 +78,7 @@ public:
 		}
 	}
 
-	basic_string(const Ch* s, const A& al = A());
+	basic_string(const Ch* s, const A& al = A());		//Below
 	
 	basic_string(size_type n, Ch c, const A& al = A())
 		: vector<Ch, A>(n, c, al)
@@ -105,16 +93,7 @@ public:
 
 	~basic_string() { }
 
-	basic_string& operator=(const basic_string& str){
-		if(&str == this){	//Check if we are doing a=a 
-			return *this;
-		}
-		vector<Ch, A>::clear();
-		resize(str.elements);
-		Tr::copy( vector<Ch, A>::data, str.vector<Ch, A>::data, str.elements);
-//		vector<Ch, A>::elements = str.elements;
-		return *this;
-	}
+	basic_string& operator=(const basic_string& str);	//Below
 
 	basic_string& operator=(const Ch* s){
 		vector<Ch, A>::clear();
@@ -422,19 +401,8 @@ public:
 		return vector<Ch, A>::a;
 	}
 
-	size_type find (const basic_string& str, size_type pos = 0) const{
-		if(str.length() > length()){
-			return npos;
-		}
-		size_type max_string_start = 1 + length() - str.length();
-		for(size_type i = pos; i < max_string_start; ++i){
-			if(str == substr(i, str.length())){
-				return i;
-			}
-		}
+	size_type find (const basic_string& str, size_type pos = 0) const;	//Below
 
-		return npos;
-	}
 	size_type find (const Ch* s, size_type pos, size_type n) const{
 		return find(basic_string<Ch, Tr, A>(s,n), pos);
 	}
@@ -563,16 +531,7 @@ public:
 	size_type find_last_not_of (charT c, size_type pos = npos) const;
 */
 
-	basic_string substr(size_type pos = 0, size_type n = npos) const{
-		if(pos > vector<Ch, A>::elements){
-			__throw_out_of_range();
-		}
-		size_type rlen = vector<Ch, A>::elements - pos;
-		if(rlen > n){
-			rlen = n;
-		}
-		return basic_string<Ch,Tr,A>(vector<Ch, A>::data + pos,rlen);
-	}
+	basic_string substr(size_type pos = 0, size_type n = npos) const;
 
 	int compare(const basic_string& str) const{
 		size_type rlen = vector<Ch, A>::elements;
@@ -695,9 +654,81 @@ template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::basic_string(const Ch
 	}
 }
 
+template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::
+	basic_string(const basic_string& str, size_type pos, size_type n, const A& al) 
+	: vector<Ch, A>(al)
+{
+	if(pos>str.size()){
+		__throw_out_of_range();
+	}
+	size_type rlen = str.size() - pos;
+	if( rlen > n){
+		rlen = n;
+	}
+	resize(rlen);
+	Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, vector<Ch, A>::elements);
+}
+
+template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>&
+	basic_string<Ch,Tr,A>::operator=(const basic_string<Ch,Tr,A> & str)
+{
+	if(&str == this){	//Check if we are doing a=a 
+		return *this;
+	}
+	vector<Ch, A>::clear();
+	resize(str.elements);
+	Tr::copy( vector<Ch, A>::data, str.vector<Ch, A>::data, str.elements);
+//	vector<Ch, A>::elements = str.elements;
+	return *this;
+}
+
+
+template<class Ch,class Tr,class A> typename basic_string<Ch,Tr,A>::size_type
+	basic_string<Ch,Tr,A>::find (const basic_string<Ch,Tr,A>& str, size_type pos) const
+{
+	if(str.length() > length()){
+		return npos;
+	}
+	size_type max_string_start = 1 + length() - str.length();
+	for(size_type i = pos; i < max_string_start; ++i){
+		if(str == substr(i, str.length())){
+			return i;
+		}
+	}
+	return npos;
+}
+
+
+template<class Ch,class Tr,class A>
+	basic_string<Ch, Tr, A> basic_string<Ch,Tr,A>::substr(size_type pos, size_type n) const
+{
+	if(pos > vector<Ch, A>::elements){
+		__throw_out_of_range();
+	}
+	size_type rlen = vector<Ch, A>::elements - pos;
+	if(rlen > n){
+		rlen = n;
+	}
+	return basic_string<Ch,Tr,A>(vector<Ch, A>::data + pos,rlen);
+}
+
+
+
+
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
 #ifndef __UCLIBCXX_COMPILE_STRING__
 	template<> basic_string<char,char_traits<char>, allocator<char> >::basic_string(const char* s, const allocator<char>& al);
+	template<> basic_string<char,char_traits<char>, allocator<char> >::
+		basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
+	template<> basic_string<char,char_traits<char>, allocator<char> > &
+		basic_string<char,char_traits<char>, allocator<char> >::operator=
+			(const basic_string<char, char_traits<char>, allocator<char> > & str);
+	template<> basic_string<char, char_traits<char>, allocator<char> >::size_type
+		basic_string<char, char_traits<char>, allocator<char> >::
+			find (const basic_string<char, char_traits<char>, allocator<char> >& str, size_type pos) const;
+	template<> basic_string<char,char_traits<char>, allocator<char> >
+		basic_string<char,char_traits<char>, allocator<char> >::substr(size_type pos, size_type n) const;
+
 #endif
 #endif
 

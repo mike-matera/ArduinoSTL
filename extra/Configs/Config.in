@@ -315,6 +315,14 @@ config UCLIBCXX_EXPAND_FSTREAM_CHAR
 	  If you use any fstream derivative, you will want to say 
 	  yes here to expand the code and place it into the library.
 
+config UCLIBCXX_EXPAND_SSTREAM_CHAR
+	bool "Expand std::sstream for <char>"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  If you use any stringstream derivative, you will want to say 
+	  yes here to expand the code and place it into the library.
+
 endmenu
 
 

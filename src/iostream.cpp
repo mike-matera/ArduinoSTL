@@ -17,14 +17,20 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define __UCLIBCXX_COMPILE_IOSTREAM__ 1
+
 #include <iostream>
 
 namespace std{
 
+#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
+	template basic_iostream<char, char_traits<char> >::basic_iostream(basic_streambuf<char, char_traits<char> >* sb);
+	template basic_iostream<char, char_traits<char> >::~basic_iostream();
 
-
-
+#endif
+#endif
 
 }
 

@@ -17,16 +17,32 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define __UCLIBCXX_COMPILE_SSTREAM__ 1
+
 #include <sstream>
 
 namespace std{
 
+#ifdef __UCLIBCXX_EXPAND_SSTREAM_CHAR__
 
-#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
+	typedef char_traits<char> tr_ch;
+	typedef basic_stringbuf<char, tr_ch, allocator<char> > char_stringbuf;
 
+	template char_stringbuf::basic_stringbuf(ios_base::openmode which);
+	template char_stringbuf::~basic_stringbuf();
+	template basic_string<char, char_traits<char>, allocator<char> > char_stringbuf::str() const;
+	template char_stringbuf::int_type char_stringbuf::pbackfail(char_stringbuf::int_type c);
+	template char_stringbuf::int_type char_stringbuf::overflow(char_stringbuf::int_type c);
+	template char_stringbuf::pos_type char_stringbuf::seekoff(char_stringbuf::off_type, ios_base::seekdir, ios_base::openmode);
+	template char_stringbuf::int_type char_stringbuf::underflow ();
+	template streamsize char_stringbuf::xsputn(const char* s, streamsize n);
+
+	template basic_stringstream<char, tr_ch, allocator<char> >::basic_stringstream(ios_base::openmode which);
+	template basic_istringstream<char, tr_ch, allocator<char> >::~basic_istringstream();
+	template basic_ostringstream<char, tr_ch, allocator<char> >::~basic_ostringstream();
+	template basic_stringstream<char, tr_ch, allocator<char> >::~basic_stringstream();
 
 #endif
-
 
 }
 

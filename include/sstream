@@ -54,12 +54,9 @@ namespace std{
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
 
-		virtual ~basic_stringbuf();
+		virtual ~basic_stringbuf() { }
 
-		basic_string<charT,traits,Allocator> str() const{
-			return data;
-		}
-
+		basic_string<charT,traits,Allocator> str() const;		//Below
 		void str(const basic_string<charT,traits,Allocator>& s){
 			data = s;
 			ielement = 0;
@@ -223,13 +220,13 @@ namespace std{
 		size_type oelement;
 	};
 
+	template <class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+		basic_stringbuf<charT,traits,Allocator>::str() const
+	{
+		return data;
+	}
 
-	template <class charT, class traits, class Allocator> basic_stringbuf<charT, traits, Allocator>::~basic_stringbuf(){ }
 
-#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
-
-
-#endif
 
 
 	template <class charT, class traits, class Allocator> class basic_istringstream
@@ -247,7 +244,7 @@ namespace std{
 		explicit basic_istringstream( const basic_string<charT,traits,Allocator>& str, 
 			ios_base::openmode which = ios_base::in) 
 			: basic_istream<charT,traits>(&sb), sb(str, which) {  }
-
+		virtual ~basic_istringstream() {  }
 		basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
 			return &sb;
 		}
@@ -305,12 +302,11 @@ namespace std{
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		explicit basic_stringstream(ios_base::openmode which = ios_base::out|ios_base::in)
-			: basic_iostream<charT,traits>(&sb), sb(which) {  }
+		explicit basic_stringstream(ios_base::openmode which = ios_base::out|ios_base::in);	//Below
 		explicit basic_stringstream(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::out|ios_base::in)
 			: basic_iostream<charT,traits>(&sb), sb(str, which) {  }
-		virtual ~basic_stringstream();
+		virtual ~basic_stringstream();		//Below
 
 		basic_stringbuf<charT,traits,Allocator>* rdbuf(){
 			return &sb;
@@ -326,12 +322,49 @@ namespace std{
 		basic_stringbuf<charT, traits> sb;
 	};
 
-	template <class charT, class traits, class Allocator> 
-		basic_stringstream<charT, traits, Allocator>::~basic_stringstream() { }
+	template <class charT, class traits, class Allocator> basic_stringstream<charT, traits, Allocator>::
+		basic_stringstream(ios_base::openmode which)
+			: basic_iostream<charT,traits>(&sb), sb(which) {  }
+
+	template <class charT, class traits, class Allocator>
+		basic_stringstream<charT, traits, Allocator>::~basic_stringstream() {  }
 
 
-#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
+#ifdef __UCLIBCXX_EXPAND_SSTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_SSTREAM__
 
+	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::basic_stringbuf(ios_base::openmode which);
+	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::~basic_stringbuf();
+
+	template <> basic_string<char, char_traits<char>, allocator<char> >
+		basic_stringbuf<char, char_traits<char>, allocator<char> >::str() const;
+
+	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::int_type
+		basic_stringbuf<char, char_traits<char>, allocator<char> >::
+			pbackfail(basic_stringbuf<char, char_traits<char>, allocator<char> >::int_type c);
+
+	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::pos_type
+		basic_stringbuf<char, char_traits<char>, allocator<char> >::
+			seekoff (basic_stringbuf<char, char_traits<char>, allocator<char> >::off_type off,
+				ios_base::seekdir way,
+				ios_base::openmode which
+			);
+
+	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::int_type
+		basic_stringbuf<char, char_traits<char>, allocator<char> >::
+			overflow (basic_stringbuf<char, char_traits<char>, allocator<char> >::int_type c);
+
+	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::int_type
+		basic_stringbuf<char, char_traits<char>, allocator<char> >::underflow ();
+
+	template <> streamsize basic_stringbuf<char, char_traits<char>, allocator<char> >::xsputn(const char* s, streamsize n);
+
+	template <> basic_stringstream<char, char_traits<char>, allocator<char> >::basic_stringstream(ios_base::openmode which);
+	template <> basic_stringstream<char, char_traits<char>, allocator<char> >::~basic_stringstream();
+	template <> basic_istringstream<char, char_traits<char>, allocator<char> >::~basic_istringstream();
+	template <> basic_ostringstream<char, char_traits<char>, allocator<char> >::~basic_ostringstream();
+
+#endif
 #endif
 
 

@@ -83,7 +83,7 @@ namespace std{
 //			for(size_type i = 0; i < elements; i++){
 //				a.construct( data+i, value);
 //			}
-				resize(n, value);
+			resize(n, value);
 		}
 
 		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
@@ -106,15 +106,7 @@ namespace std{
 			}	
 		}
 
-		~vector(){
-			for(size_t i = 0; i < elements; ++i){
-				a.destroy(data + i);
-			}
-			a.deallocate(data, data_size);
-			data = 0;
-			elements = 0;
-			data_size=0;
-		}
+		~vector();	//Below
 
 		vector<T,Allocator>& operator=(const vector<T,Allocator>& x){
 			if(&x == this){
@@ -376,6 +368,17 @@ namespace std{
 
 	//Here go template instantiations
 
+	template<class T, class Allocator> vector<T, Allocator>::~vector(){
+		for(size_t i = 0; i < elements; ++i){
+			a.destroy(data + i);
+		}
+		a.deallocate(data, data_size);
+		data = 0;
+		elements = 0;
+		data_size=0;
+	}
+
+
 	template<class T, class Allocator> void vector<T, Allocator>::reserve(size_type n){
 		if(n > data_size){              //We never shrink...
 			T * temp_ptr = data;
@@ -417,6 +420,10 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 #ifndef __UCLIBCXX_COMPILE_VECTOR__
+
+	template<> vector<char, allocator<char> >::~vector();
+	template<> vector<unsigned char, allocator<unsigned char> >::~vector();
+
 	template<> void vector<char, allocator<char> >::reserve(size_type n);
 	template<> void vector<unsigned char, allocator<unsigned char> >::reserve(size_type n);
 	template<> void vector<short int, allocator<short int> >::reserve(size_type n);

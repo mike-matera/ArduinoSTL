@@ -11,8 +11,8 @@ else
 ULIBS = -luClibc++ -lc -lsupc++
 endif
 
-
 UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src
+#UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src -fno-default-inline
 
 UFLAGS	=	-L../src
 

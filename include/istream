@@ -72,30 +72,8 @@ namespace std{
 			return count_last_ufmt_input;
 		}
 		
-		int_type get(){
-			int_type retval = sbuffer->sgetc();
-			if(retval == traits::eof()){
-				count_last_ufmt_input = 0;
-				basic_ios<charT,traits>::setstate(ios_base::eofbit);
-			}else{
-				count_last_ufmt_input = 1;
-				sbuffer->sbumpc();
-			}
-			return retval;
-		}
-		
-		basic_istream<charT,traits>& get(char_type& c){
-			int_type retval = sbuffer->sgetc();
-			if(retval == traits::eof()){
-				count_last_ufmt_input = 0;
-				basic_ios<charT,traits>::setstate(ios_base::failbit);
-			}else{
-				count_last_ufmt_input = 1;
-				c = retval;
-				sbuffer->sbumpc();
-			}
-			return *this;
-		}
+		int_type get();		//below
+		basic_istream<charT,traits>& get(char_type& c); 	//Below
 		
 		basic_istream<charT,traits>& get(char_type* s, streamsize n){
 			return get(s, n, basic_ios<charT,traits>::widen('\n'));
@@ -359,6 +337,34 @@ namespace std{
 	//Template implementations of basic_istream functions which may be partially specialized
 	//For code reduction
 
+	template <class charT, class traits>
+	typename basic_istream<charT,traits>::int_type basic_istream<charT,traits>::get(){
+		int_type retval = sbuffer->sgetc();
+		if(retval == traits::eof()){
+			count_last_ufmt_input = 0;
+			basic_ios<charT,traits>::setstate(ios_base::eofbit);
+		}else{
+			count_last_ufmt_input = 1;
+			sbuffer->sbumpc();
+		}
+		return retval;
+	}
+
+	template <class charT, class traits>
+	basic_istream<charT,traits>& basic_istream<charT,traits>::get(char_type& c){
+		int_type retval = sbuffer->sgetc();
+		if(retval == traits::eof()){
+			count_last_ufmt_input = 0;
+			basic_ios<charT,traits>::setstate(ios_base::failbit);
+		}else{
+			count_last_ufmt_input = 1;
+			c = retval;
+			sbuffer->sbumpc();
+		}
+		return *this;
+	}
+		
+
 	template <class charT, class traits> basic_istream<charT,traits>& 
 		basic_istream<charT,traits>::operator>>(bool& n)
 	{
@@ -440,6 +446,11 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_ISTREAM__
+
+
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::get(char & c);
+	template <> basic_istream<char,char_traits<char> >::int_type basic_istream<char, char_traits<char> >::get();
+
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(bool &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(short &n);
 	template <> basic_istream<char,char_traits<char> > & 

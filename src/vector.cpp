@@ -27,6 +27,9 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 
+	template vector<char, allocator<char> >::~vector();
+	template vector<unsigned char, allocator<unsigned char> >::~vector();
+
 	template void vector<char, allocator<char> >::reserve(size_type n);
 	template void vector<unsigned char, allocator<unsigned char> >::reserve(size_type n);
 	template void vector<short int, allocator<short int> >::reserve(size_type n);

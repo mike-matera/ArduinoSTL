@@ -61,16 +61,35 @@ namespace std{
 	{
 	public:
 		// constructor/destructor
-		explicit basic_iostream(basic_streambuf<charT,traits>* sb):
-			basic_istream<charT,traits>(sb), basic_ostream<charT,traits>(sb)
-		{
-			
-		}
-
-		virtual ~basic_iostream(){ }
+		explicit basic_iostream(basic_streambuf<charT,traits>* sb);
+		virtual ~basic_iostream();	//Below
 	};
 
-}
+	template <class charT, class traits> basic_iostream<charT, traits>:: basic_iostream(basic_streambuf<charT,traits>* sb)
+		:basic_istream<charT,traits>(sb), basic_ostream<charT,traits>(sb)
+	{
+		return;
+	}
 
+
+	template <class charT, class traits> basic_iostream<charT, traits>::~basic_iostream(){
+		return;
+	}
+
+
+#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_IOSTREAM__
+
+	template <> basic_iostream<char, char_traits<char> >::basic_iostream(basic_streambuf<char, char_traits<char> >* sb);
+	template <> basic_iostream<char, char_traits<char> >::~basic_iostream();
+
+#endif
+#endif
+#endif
+
+
+
+}
 
 #endif

@@ -377,6 +377,8 @@ namespace std {
 #ifndef __UCLIBCXX_COMPILE_OSTREAM__
 	template <> basic_ostream<char,char_traits<char> >& endl(basic_ostream<char,char_traits<char> >& os);
 	template <> basic_ostream<char,char_traits<char> >& flush(basic_ostream<char,char_traits<char> >& os);
+	template <> basic_ostream<char,char_traits<char> >&
+		operator<<(basic_ostream<char,char_traits<char> >& out, char c);
 	template <> basic_ostream<char,char_traits<char> >& 
 		operator<<(basic_ostream<char,char_traits<char> >& out, const char* c);
 
