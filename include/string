@@ -24,8 +24,7 @@
 #include <func_exception>
 #include <memory>
 #include <vector>
-#include <string_helpers>
-#include <iostream>
+//#include <iostream>
 
 
 #ifdef __USE_WCHAR
@@ -36,7 +35,6 @@
 #ifndef __HEADER_STD_STRING
 #define __HEADER_STD_STRING 1
 
-
 namespace std{
 
 	//Basic basic_string
@@ -44,7 +42,6 @@ namespace std{
 template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class basic_string
 	: public std::vector<Ch, A>
 {
-	friend class __string_helper_functions<Ch, Tr, A>;
 public:
 	typedef Tr traits_type;
 	typedef typename Tr::char_type value_type;
@@ -181,13 +178,13 @@ public:
 		}
 		reserve(vector<Ch, A>::elements + rlen);
 		vector<Ch, A>::elements += rlen;
-		Tr::copy( data + vector<Ch, A>::elements, str.data, rlen);
+		Tr::copy( vector<Ch, A>::data + vector<Ch, A>::elements, str.vector<Ch, A>::data, rlen);
 		return *this;
 	}
 		
 	basic_string& append(const Ch* s, size_type n){
 		reserve(vector<Ch, A>::elements + n);
-		Tr::copy( data + vector<Ch, A>::elements, s, n);
+		Tr::copy( vector<Ch, A>::data + vector<Ch, A>::elements, s, n);
 		vector<Ch, A>::elements+=n;
 		return *this;
 	}
@@ -219,22 +216,22 @@ public:
 		}
 		if(vector<Ch, A>::data_size < r){
 			//Not using reserve() because we don't need to keep the old data
-			vector<Ch, A>::localAlloc.deallocate(data, vector<Ch, A>::data_size);
+			vector<Ch, A>::a.deallocate(vector<Ch, A>::data, vector<Ch, A>::data_size);
 			vector<Ch, A>::data_size = r + __UCLIBCXX_STL_BUFFER_SIZE__;
-			data = vector<Ch, A>::localAlloc.allocate(vector<Ch, A>::data_size);
+			vector<Ch, A>::data = vector<Ch, A>::a.allocate(vector<Ch, A>::data_size);
 		}
-		Tr::copy(data, str.data + pos, r);
+		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, r);
 		vector<Ch, A>::elements = r;
 		return *this;
 	}
 
 	basic_string& assign(const Ch* s, size_type n){
 		if( n > vector<Ch, A>::data_size ){
-			vector<Ch, A>::localAlloc.deallocate(data, vector<Ch, A>::data_size);
-			data = vector<Ch, A>::localAlloc.allocate(vector<Ch, A>::data_size);
+			vector<Ch, A>::a.deallocate(vector<Ch, A>::data, vector<Ch, A>::data_size);
+			vector<Ch, A>::data = vector<Ch, A>::a.allocate(vector<Ch, A>::data_size);
 		}
 		vector<Ch, A>::elements = n;
-		Tr::copy(data, s, n);
+		Tr::copy(vector<Ch, A>::data, s, n);
 		return *this;
 	}
 
@@ -245,11 +242,11 @@ public:
 
 	basic_string& assign(size_type n, Ch c){
 		if(n > vector<Ch, A>::data_size){
-			vector<Ch, A>::localAlloc.deallocate(data, vector<Ch, A>::data_size);
+			vector<Ch, A>::a.deallocate(vector<Ch, A>::data, vector<Ch, A>::data_size);
 			vector<Ch, A>::data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
-			data = vector<Ch, A>::localAlloc.allocate(vector<Ch, A>::data_size);
+			vector<Ch, A>::data = vector<Ch, A>::a.allocate(vector<Ch, A>::data_size);
 		}
-		Tr::assign( data, n ,c);
+		Tr::assign( vector<Ch, A>::data, n ,c);
 		vector<Ch, A>::elements = n;
 		return *this;
 	}
@@ -265,8 +262,8 @@ public:
 		}
 		reserve(str.elements + vector<Ch, A>::elements);
 
-		Tr::move(data + pos1 + str.elements, data + pos1, str.elements);
-		Tr::copy(data + pos1, str.data, str.elements);
+		Tr::move(vector<Ch, A>::data + pos1 + str.elements, vector<Ch, A>::data + pos1, str.elements);
+		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data, str.elements);
 		vector<Ch, A>::elements += str.elements;
 		return *this;
 	}
@@ -283,8 +280,8 @@ public:
 			__throw_length_error();
 		}
 		reserve(vector<Ch, A>::elements + r);
-		Tr::move(data + pos1 + r, data + pos1, r);
-		Tr::copy(data + pos1, str.data + pos2, r);
+		Tr::move(vector<Ch, A>::data + pos1 + r, vector<Ch, A>::data + pos1, r);
+		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, r);
 		vector<Ch, A>::elements+=r;
 		return *this;
 	}
@@ -395,8 +392,8 @@ public:
 		//Initial block is of size pos1
 		//Block 2 is of size len
 
-		Tr::move(data + pos1 + rlen, data + pos1 + xlen, vector<Ch, A>::elements - pos1 - xlen);
-		Tr::copy(data + pos1, str.data + pos2, rlen);
+		Tr::move(vector<Ch, A>::data + pos1 + rlen, vector<Ch, A>::data + pos1 + xlen, vector<Ch, A>::elements - pos1 - xlen);
+		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, rlen);
 		vector<Ch, A>::elements = vector<Ch, A>::elements - xlen + rlen;
 		return *this;
 	}
@@ -428,7 +425,7 @@ public:
 		if(r > n){
 			r = n;
 		}
-		Tr::copy(s, data + pos, r);
+		Tr::copy(s, vector<Ch, A>::data + pos, r);
 		return r;
 	}
 
@@ -448,7 +445,7 @@ public:
 		return vector<Ch, A>::data;
 	}
 	allocator_type get_allocator() const{
-		return vector<Ch, A>::localAlloc;
+		return vector<Ch, A>::a;
 	};
 
 /*	size_type find (const basic_string& str, size_type pos = 0) const;
@@ -486,7 +483,7 @@ public:
 		if(rlen > n){
 			rlen = n;
 		}
-		return basic_string<Ch,Tr,A>(data + pos,rlen);
+		return basic_string<Ch,Tr,A>(vector<Ch, A>::data + pos,rlen);
 	}
 
 	int compare(const basic_string& str) const{
@@ -514,7 +511,7 @@ public:
 		if(rlen > str.elements){
 			rlen = str.elements;
 		}
-		int retval = Tr::compare(data + pos1, str.data, rlen);
+		int retval = Tr::compare(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data, rlen);
 		if(retval == 0){
 			if(vector<Ch, A>::elements - pos1 < str.elements){
 				retval = -1;
@@ -604,11 +601,19 @@ public:
 template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::basic_string(const Ch* s, const A& al)
 	: vector<Ch, A>(al)
 {
-	__string_helper_functions<Ch, Tr, A>::constructor(*this, s);
+	if(s!=0){
+		size_type temp = Tr::length(s);
+		reserve(temp);
+		for(size_type i = 0; i< temp; ++i){
+			push_back(s[i]);
+		}
+	}
 }
 
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
+#ifndef __UCLIBCXX_COMPILE_STRING__
 	template<> basic_string<char,char_traits<char>, allocator<char> >::basic_string(const char* s, const allocator<char>& al);
+#endif
 #endif
 
 
@@ -817,24 +822,58 @@ template<class charT, class traits, class Allocator> bool
 template<class charT, class traits, class Allocator> void 
 	swap(basic_string<charT,traits,Allocator>& lhs, basic_string<charT,traits,Allocator>& rhs);
 
-template<class charT, class traits, class Allocator> basic_ostream<charT, traits>&
+/*template<class charT, class traits, class Allocator> basic_ostream<charT, traits>&
 	operator<<(basic_ostream<charT, traits>& os, const basic_string<charT,traits,Allocator>& str)
 {
 	return os.write(str.data(), str.length());
-}
+}*/
 
-#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
-template<> basic_ostream<char, char_traits<char> >&
-	operator<<(basic_ostream<char, char_traits<char> >& os, 
-	const basic_string<char,char_traits<char>, std::allocator<char> >& str);
+#ifndef __UCLIBCXX_COMPILE_STRING__
+
+//Operators we can avoid duplication of
+
+template<> basic_string<char, char_traits<char>, allocator<char> >
+	operator+(const basic_string<char, char_traits<char> , allocator<char> >& lhs, const char* rhs);
+
+template<> basic_string<char, char_traits<char>, allocator<char> >
+        operator+(const char* lhs, const basic_string<char, char_traits<char>, allocator<char> >& rhs);
+
+//#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
+//template<> basic_ostream<char, char_traits<char> >&
+//	operator<<(basic_ostream<char, char_traits<char> >& os, 
+//	const basic_string<char,char_traits<char>, std::allocator<char> >& str);
+//#endif
 #endif
 #endif
 
-template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+/*template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
 	operator>>(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str)
 {
-	return __string_helper_functions<charT, traits, Allocator>::op_right_right(is, str);
+
+	typename basic_istream<charT, traits>::sentry s(is);
+	if(s == false){
+		return is;
+	}
+
+	str.clear();
+
+	typename basic_istream<charT, traits>::int_type c;
+	typename Allocator::size_type n = is.width();
+	bool exitnow = false;
+	if(n == 0){
+		n = str.max_size();
+	}
+	do{
+		c = is.get();
+		if(c == traits::eof() || isspace(c) || n == 0){
+			exitnow = true;
+		}else{
+			str.append(1, traits::to_char_type(c) );
+			--n;
+		}
+	}while(exitnow == false);
+	return is;
 }
 
 template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
@@ -867,14 +906,14 @@ template<class charT, class traits, class Allocator> basic_istream<charT,traits>
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
+#ifndef __UCLIBCXX_COMPILE_STRING__
 template<> basic_istream<char, char_traits<char> >& operator>>(
 	basic_istream<char,char_traits<char> >& is,
-	basic_string<char, char_traits<char>,
-	allocator<char> >& str
-);
+	basic_string<char, char_traits<char>, allocator<char> >& str);
 #endif
 #endif
-
+#endif
+*/
 
 typedef basic_string<char> string;
 typedef basic_string<wchar_t> wstring;
@@ -884,3 +923,4 @@ typedef basic_string<wchar_t> wstring;
 
 #endif
 
+//#include <string_iostream>

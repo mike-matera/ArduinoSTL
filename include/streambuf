@@ -62,10 +62,10 @@ namespace std{
 			ios_base::out
 			)
 		{
-			seekoff(off,way,which);
+			return seekoff(off,way,which);
 		}
 		pos_type pubseekpos(pos_type sp, ios_base::openmode which = ios_base::in | ios_base::out){
-			seekpos(sp,which);
+			return seekpos(sp,which);
 		}
 		int pubsync(){
 			return sync();
@@ -113,6 +113,7 @@ namespace std{
 				return ios_base::failbit;
 			}
 			gbump(-1);
+			return traits::to_int_type(*gptr());
 		}
 
 		int_type sputc(char_type c){

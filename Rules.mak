@@ -47,7 +47,7 @@ HOSTCXXFLAGS=-O2 -Wall
 # this stuff alone.
 MAJOR_VERSION:=0
 MINOR_VERSION:=1
-SUBLEVEL:=6
+SUBLEVEL:=7
 VERSION:=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL)
 # Ensure consistent sort order, 'gcc -print-search-dirs' behavior, etc.
 # LC_ALL:= C
@@ -100,6 +100,7 @@ PICFLAG:=-fPIC
 
 # use '-Os' optimization if available, else use -O2, allow Config to override
 OPTIMIZATION+=$(call check_gcc,-Os,-O2)
+#OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 
 # Add a bunch of extra pedantic annoyingly strict checks
 XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -W -pedantic

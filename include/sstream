@@ -54,6 +54,8 @@ namespace std{
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
 
+		virtual ~basic_stringbuf();
+
 		basic_string<charT,traits,Allocator> str() const{
 			return data;
 		}
@@ -207,6 +209,14 @@ namespace std{
 	};
 
 
+	template <class charT, class traits, class Allocator> basic_stringbuf<charT, traits, Allocator>::~basic_stringbuf(){ }
+
+#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
+
+
+#endif
+
+
 	template <class charT, class traits, class Allocator> class basic_istringstream
 		: public basic_istream<charT,traits>
 	{
@@ -283,8 +293,9 @@ namespace std{
 		explicit basic_stringstream(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::out|ios_base::in)
 			: basic_iostream<charT,traits>(&sb), sb(str, which) {  }
+		virtual ~basic_stringstream();
 
-		basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
+		basic_stringbuf<charT,traits,Allocator>* rdbuf(){
 			return &sb;
 		}
 		basic_string<charT,traits,Allocator> str() const{
@@ -296,6 +307,14 @@ namespace std{
 	private:
 		basic_stringbuf<charT, traits> sb;
 	};
+
+	template <class charT, class traits, class Allocator> 
+		basic_stringstream<charT, traits, Allocator>::~basic_stringstream() { }
+
+
+#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
+
+#endif
 
 
 }

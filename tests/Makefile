@@ -3,12 +3,18 @@ include $(TOPDIR)Rules.mak
 
 #COFLAGS = -fno-rtti -fno-exceptions -static
 
-UFLAGS	=	-nodefaultlibs -nostdinc++ -fno-builtin -L../src
-ifeq ($(IMPORT_LIBSUP),y)
-ULIBS	=	-luClibc++ -lc
-else
-ULIBS	=	-luClibc++ -lc -lsupc++
-endif
+CXXOFLAGS = -O0
+
+UCXX	= ../bin/g++-uc
+
+
+#UFLAGS	=	-nodefaultlibs -nostdinc++ -fno-builtin -L../src
+UFLAGS	=	-L../src
+#ifeq ($(IMPORT_LIBSUP),y)
+#ULIBS	=	-luClibc++ -lc
+#else
+#ULIBS	=	-luClibc++ -lc -lsupc++
+#endif
 
 SRCS	=\
 	newdel.cpp \
@@ -125,77 +131,77 @@ clean:	cleanobjs cleanbin
 cleanall:	cleanobjs cleanbin
 
 newdel: $(EXOBJS)
-	$(CXX) -o newdel newdel.o $(CXXFLAGS) $(UFLAGS) $(LIBS) $(ULIBS)
+	$(UCXX) -o newdel newdel.o $(CXXFLAGS) $(UFLAGS) $(LIBS) $(ULIBS)
 	$(CXX) -o newdel-old newdel.o-old $(COFLAGS)
 
 io: $(EXOBJS)
-	$(CXX) -o io io.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o io io.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o io-old io.o-old $(COFLAGS)
 
 vectortest: $(EXOBJS)
-	$(CXX) -o vectortest vectortest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o vectortest vectortest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o vectortest-old vectortest.o-old $(COFLAGS)
 
 stringtest: $(EXOBJS)
-	$(CXX) -o stringtest stringtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o stringtest stringtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o stringtest-old stringtest.o-old $(COFLAGS)
 
 listtest: $(EXOBJS)
-	$(CXX) -o listtest listtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o listtest listtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o listtest-old listtest.o-old $(COFLAGS)
 
 excepttest: $(EXOBJS)
-	$(CXX) -o excepttest excepttest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o excepttest excepttest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o excepttest-old excepttest.o-old $(COFLAGS)
 
 dequetest: $(EXOBJS)
-	$(CXX) -o dequetest dequetest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o dequetest dequetest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o dequetest-old dequetest.o-old $(COFLAGS)
 
 maptest: $(EXOBJS)
-	$(CXX) -o maptest maptest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o maptest maptest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o maptest-old maptest.o-old $(COFLAGS)
 
 numerictest: $(EXOBJS)
-	$(CXX) -o numerictest numerictest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o numerictest numerictest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o numerictest-old numerictest.o-old $(COFLAGS)
 
 sstreamtest: $(EXOBJS)
-	$(CXX) -o sstreamtest sstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o sstreamtest sstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o sstreamtest-old sstreamtest.o-old $(COFLAGS)
 
 bitsettest: $(EXOBJS)
-	$(CXX) -o bitsettest bitsettest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o bitsettest bitsettest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o bitsettest-old bitsettest.o-old $(COFLAGS)
 
 settest: $(EXOBJS)
-	$(CXX) -o settest settest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o settest settest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o settest-old settest.o-old $(COFLAGS)
 
 mmaptest: $(EXOBJS)
-	$(CXX) -o mmaptest mmaptest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o mmaptest mmaptest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o mmaptest-old mmaptest.o-old $(COFLAGS)
 
 algotest: $(EXOBJS)
-	$(CXX) -o algotest algotest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o algotest algotest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o algotest-old algotest.o-old $(COFLAGS)
 
 stacktest: $(EXOBJS)
-	$(CXX) -o stacktest stacktest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o stacktest stacktest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o stacktest-old stacktest.o-old $(COFLAGS)
 
 streamitertest: $(EXOBJS)
-	$(CXX) -o streamitertest streamitertest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o streamitertest streamitertest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o streamitertest-old streamitertest.o-old $(COFLAGS)
 
 fstreamtest: $(EXOBJS)
-	$(CXX) -o fstreamtest fstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(UCXX) -o fstreamtest fstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o fstreamtest-old fstreamtest.o-old $(COFLAGS)
 
 
 
 .cpp.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
+	$(UCXX) -c $(CXXFLAGS) -o $@ $<
 	$(CXX) -c $(CXXOFLAGS) -o $@-old $<
 
 .cc.o:

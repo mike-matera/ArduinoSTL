@@ -113,6 +113,7 @@ namespace std{
 			}
 		}
 		static state_type get_state(pos_type p){
+			p = p;
 			state_type a;
 			return a;
 		}

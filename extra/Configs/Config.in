@@ -265,6 +265,14 @@ config UCLIBCXX_EXPAND_OSTREAM_CHAR
 	  iostream with characters, you will want to say yes here to
 	  expand the code and place it into the library.
 
+config UCLIBCXX_EXPAND_FSTREAM_CHAR
+	bool "Expand std::fstream for <char>"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  If you use any fstream derivative, you will want to say 
+	  yes here to expand the code and place it into the library.
+
 endmenu
 
 

@@ -180,7 +180,7 @@ namespace std{
 //		void register_callback(event_call_back fn, int index);
 
 		//We are going to wrap stdio so we don't need implementation of the following:
-		inline static bool sync_with_stdio(bool sync = true) { return true; }
+		inline static bool sync_with_stdio(bool = true) { return true; }
 
 	protected:
 		ios_base() : mLocale(), mformat(dec | showbase | unitbuf ), mstate(goodbit), 

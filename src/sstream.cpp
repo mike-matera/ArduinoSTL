@@ -22,9 +22,10 @@
 namespace std{
 
 
+#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
 
 
-
+#endif
 
 
 }

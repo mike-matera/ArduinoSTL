@@ -19,6 +19,7 @@
 
 #include <ios>
 #include <cctype>
+
 #include <string>
 
 #ifndef __STD_HEADER_ISTREAM_HELPERS
@@ -44,6 +45,31 @@ namespace std{
 	public:
 		static void readin(basic_istream<charT,traits>& stream, dataType & var);
 	};
+
+
+	template <class traits> class __istream_readin<traits, char, bool>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, bool & var)
+		{
+			basic_string<char, traits > temp;
+			typename traits::int_type c;
+			int exitnow = 0;
+			while(exitnow == 0){
+				c = stream.get();
+				if(c != traits::eof() && isspace(c) == false){
+					temp.append(1, c);
+				}else{
+					exitnow = 1;
+				}
+			}
+			if(temp == "true" || temp == "True" || temp == "TRUE" || temp == "1"){
+				var = true;
+			}else{
+				var = false;
+			}
+		}
+	};
+
 
 	template <class traits> class __istream_readin<traits, char, short>{
 	public:

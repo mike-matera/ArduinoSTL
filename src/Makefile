@@ -31,8 +31,7 @@ SRCS	=\
 	numeric.cpp \
 	sstream.cpp \
 	bitset.cpp \
-	valarray.cpp \
-	forcefunction.cpp
+	valarray.cpp
 
 
 EXOBJS	=\
@@ -63,8 +62,7 @@ EXOBJS	=\
 	numeric.o \
 	sstream.o \
 	bitset.o \
-	valarray.o \
-	forcefunction.o
+	valarray.o
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.a

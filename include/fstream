@@ -18,14 +18,16 @@
 
 #include<basic_definitions>
 
-#ifndef STD_HEADER_FSTREAM
-#define STD_HEADER_FSTREAM
-
 #include <iosfwd>
 #include <cstdio>
 #include <cstdlib>
 #include <ios>
 #include <streambuf>
+#include <istream>
+#include <ostream>
+
+#ifndef __STD_HEADER_FSTREAM 
+#define __STD_HEADER_FSTREAM 1
 
 namespace std{
 
@@ -53,13 +55,7 @@ namespace std{
 				gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 		}
 
-		virtual ~basic_filebuf(){
-			close();
-			delete [] pbuffer;
-			delete [] gbuffer;
-			pbuffer = 0;
-			gbuffer = 0;
-		}
+		virtual ~basic_filebuf();
 
 		//Members:
 
@@ -357,13 +353,47 @@ namespace std{
 			return len;
 		}
 
-//		bool opened;
-
 		FILE * fp;
 		char_type * pbuffer;
 		char_type * gbuffer;
-//		locale l;
 	};
+
+	template <class charT, class traits> basic_filebuf<charT, traits>::~basic_filebuf()
+	{
+		close();
+		delete [] pbuffer;
+		delete [] gbuffer;
+		pbuffer = 0;
+		gbuffer = 0;
+	}
+
+
+
+#ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_FSTREAM__
+
+	template <> basic_filebuf<char, char_traits<char> >::~basic_filebuf();
+
+	template <> basic_filebuf<char, char_traits<char> >::int_type basic_filebuf<char, char_traits<char> >::
+		pbackfail(basic_filebuf<char, char_traits<char> >::int_type c);
+
+	template <> basic_filebuf<char, char_traits<char> > * basic_filebuf<char, char_traits<char> >::
+		open(const char* s, ios_base::openmode mode);
+
+	template <> basic_filebuf<char, char_traits<char> >::int_type basic_filebuf<char, char_traits<char> >::
+		overflow (basic_filebuf<char, char_traits<char> >::int_type c);
+
+	template <> basic_filebuf<char, char_traits<char> >::int_type
+		basic_filebuf<char, char_traits<char> >::underflow ();
+
+	template <> basic_streambuf<char, char_traits<char> >*
+		basic_filebuf<char, char_traits<char> >::
+		setbuf(char * s, streamsize n);
+
+	template <> streamsize basic_filebuf<char, char_traits<char> >::xsputn(const char* s, streamsize n);
+
+#endif
+#endif
 
 
 	typedef basic_filebuf<char>    filebuf;
@@ -413,6 +443,9 @@ namespace std{
 		basic_ofstream() : basic_ostream<charT,traits>(&sb){
 
 		}
+
+		virtual ~basic_ofstream();
+
 		explicit basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc) :
 			basic_ostream<charT,traits>(&sb)
 		{
@@ -435,6 +468,21 @@ namespace std{
 	private:
 		basic_filebuf<charT,traits> sb;
 	};
+
+	template <class charT, class traits> basic_ofstream<charT, traits>::~basic_ofstream(){
+	
+	}
+
+
+#ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_FSTREAM__
+
+	template <> basic_ofstream<char, char_traits<char> >::~basic_ofstream();
+
+
+#endif
+#endif
+
 
 
 	template <class charT, class traits> class basic_fstream : public basic_iostream<charT,traits> {

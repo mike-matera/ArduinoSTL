@@ -268,23 +268,6 @@ namespace std{
 		ForwardIterator1 search(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2)
 	{
-/*		while(first1 != last1){
-			ForwardIterator1 temp1(first1);
-			ForwardIterator2 temp2(first2);
-			while(temp2 != last2 && temp1 != last1){
-				if(*temp2 != *temp1){
-					break;
-				}
-				++temp1;
-				++temp2;
-				if(temp2 == last2){
-					return first1;
-				}
-			}
-			++first1;
-		}
-		return last1;
-*/
 		equal_to<typename iterator_traits<ForwardIterator1>::value_type> c;
                 return search(first1, last1, first2, last2, c);
 	}
@@ -1599,37 +1582,6 @@ namespace std{
 		}
 
 
-/*		temp = i;
-		--temp;
-		while( comp(*i, *temp) && first < i){
-			--i;
-			--temp;
-		}
-
-		BidirectionalIterator j = last;
-
-		--j;
-
-		--i;
-		--j;
-		while( comp(*j, *i) && first < j){
-			--j;
-		}
-
-		iter_swap(i, j);
-
-		++i;
-		++i;
-
-		j = last;
-
-		--i;
-		while(i < j && first < j && i < last){
-			--j;
-			iter_swap(i, j);
-			++i;
-		}*/
-
 		//This part of the algorithm copied from G++ header files ver. 3.4.2
 		i = last;
 		--i;
@@ -1684,8 +1636,6 @@ namespace std{
 		//Copied from GNU GCC header files version 3.4.2
 		i = last;
 		--i;
-
-//		BidirectionalIterator ii;
 
 		for(;;){
 			ii = i;

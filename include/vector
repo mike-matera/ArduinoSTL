@@ -22,7 +22,6 @@
 #include <memory>
 #include <iterator>
 #include <func_exception>
-#include <vector_helpers>
 #include <algorithm>
 
 
@@ -50,7 +49,6 @@ namespace std{
 
 
 	template <class T, class Allocator> class vector {
-		friend class __vector_helper_functions<T, Allocator>;
 	public:
 
 		typedef typename Allocator::reference reference;
@@ -334,15 +332,41 @@ namespace std{
 	//Here go template instantiations
 
 	template<class T, class Allocator> void vector<T, Allocator>::reserve(size_type n){
-		__vector_helper_functions<T, Allocator>::reserve(*this, n);
+//		__vector_helper_functions<T, Allocator>::reserve(*this, n);
+		if(n > data_size){              //We never shrink...
+			T * temp_ptr = data;
+			size_type temp_size = data_size;
+
+			data_size = n;
+			data = a.allocate(data_size);
+
+			for(size_type i = 0; i<elements; ++i){
+				data[i] = temp_ptr[i];
+			}
+			a.deallocate(temp_ptr, temp_size);
+		}
 	}
 
 	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, T c){
-		__vector_helper_functions<T, Allocator>::resize(*this, sz, c);
+//		__vector_helper_functions<T, Allocator>::resize(*this, sz, c);
+		if(sz > elements){      //Need to actually call constructor
+			size_type temp_el = elements;
+			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
+
+			elements = sz;
+
+			for(size_type i = temp_el; i<elements;i++){
+				data[i] = c;
+			}
+		}else{
+			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
+			elements = sz;
+		}
 	}
 
 
 #ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
+#ifndef __UCLIBCXX_COMPILE_VECTOR__
 	template<> void vector<char, allocator<char> >::reserve(size_type n);
 	template<> void vector<unsigned char, allocator<unsigned char> >::reserve(size_type n);
 	template<> void vector<short int, allocator<short int> >::reserve(size_type n);
@@ -367,6 +391,7 @@ namespace std{
 	template<> void vector<double, allocator<double> >::resize(size_type sz, double c);
 	template<> void vector<bool, allocator<bool> >::resize(size_type sz, bool c);
 
+#endif
 #endif
 
 

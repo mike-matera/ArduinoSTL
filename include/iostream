@@ -27,6 +27,7 @@
 #include <istream>
 #include <ostream>
 #include <fstream>
+#include <string_iostream>
 
 namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CIN__

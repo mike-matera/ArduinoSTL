@@ -115,7 +115,33 @@ namespace std{
 
 	//Actual class definitions
 
+
+	class slice {
+	protected:
+		size_t sta;
+		size_t siz;
+		size_t str;
+
+	public:
+		slice() : sta(0), siz(0), str(0){  }
+		slice(size_t a, size_t b, size_t c) : sta(a), siz(b), str(c) {  }
+		slice(const slice& s) : sta(s.sta), siz(s.siz), str(s.str) {  }
+		~slice() {  }
+		size_t start() const{
+			return sta;
+		}
+		size_t size() const{
+			return siz;
+		}
+		size_t stride() const{
+			return str;
+		}
+	};
+
+
+
 	template<class T> class valarray {
+		friend class slice_array<T>;
 	protected:
 		T * data;
 		size_t length;
@@ -144,7 +170,12 @@ namespace std{
 				data[i] = v.data[i];
 			}
 		}
-		valarray(const slice_array<T>&);
+		valarray(const slice_array<T> & sa) : data(0), length(sa.s.size()){
+			data = new T[length];
+			for(unsigned int i = 0; i < length; ++i){
+				data[i] = sa.array->data[sa.size() + i * sa.stride()];
+			}
+		}
 		valarray(const gslice_array<T>&);
 		valarray(const mask_array<T>&);
 		valarray(const indirect_array<T>&);
@@ -164,7 +195,11 @@ namespace std{
 				data[i] = t;
 			}
 		}
-		valarray<T>& operator=(const slice_array<T>&);
+		valarray<T>& operator=(const slice_array<T>& sa){
+			for(size_t i =0; i < length; ++i){
+				data[i] = sa.data[sa.s.start() + i * sa.s.stride()];
+			}
+		}
 		valarray<T>& operator=(const gslice_array<T>&);
 		valarray<T>& operator=(const mask_array<T>&);
 		valarray<T>& operator=(const indirect_array<T>&);
@@ -176,8 +211,21 @@ namespace std{
 			return data[t];
 		}
 
-		valarray<T> operator[](slice) const;
-		slice_array<T> operator[](slice);
+		valarray<T> operator[](slice s) const{
+			valarray<T> retval(s.size());
+			for(unsigned int i = 0; i< s.size(); ++i){
+				retval.data[i] = data[s.start() + i * s.stride()];
+			}
+			return retval;
+		}
+
+		slice_array<T> operator[](slice sl){
+			slice_array<T> retval;
+			retval.s = sl;
+			retval.array = this;
+			return retval;
+		}
+
 		valarray<T> operator[](const gslice&) const;
 		gslice_array<T> operator[](const gslice&);
 		valarray<T> operator[](const valarray<bool>&) const;
@@ -399,56 +447,116 @@ namespace std{
 		void resize(size_t sz, T c = T()){
 			delete [] data;
 			data = 0;
-			data = new T[sz](c);
+			if(sz > 0){
+				data = new T[sz](c);
+			}
 			length = sz;
 		}
 	};
 
 
 
-	class slice {
-	protected:
-		size_t sta;
-		size_t siz;
-		size_t str;
-
-	public:
-		slice() : sta(0), siz(0), str(0){  }
-		slice(size_t a, size_t b, size_t c) : sta(a), siz(b), str(c) {  }
-		~slice() {  }
-		size_t start() const{
-			return sta;
-		}
-		size_t size() const{
-			return siz;
-		}
-		size_t stride() const{
-			return str;
-		}
-	};
-
-
 	template <class T> class slice_array {
+		friend class valarray<T>;
 	public:
 		typedef T value_type;
 
-		void operator=  (const valarray<T>&) const;
-		void operator*= (const valarray<T>&) const;
-		void operator/= (const valarray<T>&) const;
-		void operator%= (const valarray<T>&) const;
-		void operator+= (const valarray<T>&) const;
-		void operator-= (const valarray<T>&) const;
-		void operator^= (const valarray<T>&) const;
-		void operator&= (const valarray<T>&) const;
-		void operator|= (const valarray<T>&) const;
-		void operator<<=(const valarray<T>&) const;
-		void operator>>=(const valarray<T>&) const;
-		void fill(const T&);
-		~slice_array();
+		void operator=  (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] = v[i];
+			}
+		}
+		void operator=  (const T & v){
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] = v;
+			}
+		}
+		void operator*= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] *= v[i];
+			}
+		}
+		void operator/= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] /= v[i];
+			}
+		}
+		void operator%= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] %= v[i];
+			}
+		}
+		void operator+= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] += v[i];
+			}
+		}
+		void operator-= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] -= v[i];
+			}
+		}
+		void operator^= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] ^= v[i];
+			}
+		}
+		void operator&= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] &= v[i];
+			}
+		}
+		void operator|= (const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] |= v[i];
+			}
+		}
+		void operator<<=(const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] <<= v[i];
+			}
+		}
+		void operator>>=(const valarray<T>& v) const{
+			for(unsigned int i = 0; i < s.size(); ++i){
+				array->data[s.start() + i * s.stride()] >>= v[i];
+			}
+		}
+		~slice_array(){
+			array = 0;
+		}
 	private:
-		slice_array();
-		slice_array(const slice_array&);
-		slice_array& operator=(const slice_array&);
+		slice_array() : array(0){  }
+		slice_array(const slice_array& sa) : array(sa.array), s(sa.s){  }
+		slice_array& operator=(const slice_array& sa){
+			array = sa.array;
+			s = sa.s;
+		}
+
+		valarray<T> * array;
+		slice s;
+	};
+
+
+	class gslice {
+	private:
+		size_t sta;
+		valarray<size_t> siz;
+		valarray<size_t> str;
+
+	public:
+		gslice();
+		gslice(size_t s, const valarray<size_t>& l, const valarray<size_t>& d)
+			: sta(s), siz(l), str(d) {  }
+
+		size_t start() const{
+			return sta;
+		}
+		valarray<size_t> size() const{
+			return siz;
+		}
+		valarray<size_t> stride() const{
+			return str;
+		}
 	};
 
 

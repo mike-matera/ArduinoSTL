@@ -19,10 +19,10 @@
 
 #include <ios>
 #include <cctype>
-#include <string>
+//#include <string>
 #include <streambuf>
-#include <fstream>
 #include <istream_helpers>
+#include <ostream>
 
 #ifndef __STD_HEADER_ISTREAM
 #define __STD_HEADER_ISTREAM 1
@@ -126,6 +126,7 @@ namespace std{
 				}
 				s[i] = c;
 			}
+			return *this;
 		}
 		
 		basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb){
@@ -150,17 +151,15 @@ namespace std{
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
 					}
-//					sbuffer->sputbackc(c);
 					count_last_ufmt_input = i;
 					return *this;
 				}
-				if(sb->sputc(c) != c){	//Error doing output
-//					sbuffer->sputbackc(c);
+				if(sb.sputc(c) != c){	//Error doing output
 					count_last_ufmt_input = i;
 					return *this;
 				}
 				++i;
-				sbuffer->sbump();
+				sbuffer->sbumpc();
 			}		
 		}
 		
@@ -182,7 +181,7 @@ namespace std{
 					count_last_ufmt_input = i;
 					return *this;
 				}
-				sbuffer->sbump();
+				sbuffer->sbumpc();
 				if(c == delim){
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -192,6 +191,7 @@ namespace std{
 				}
 				s[i] = c;
 			}
+			return *this;
 		}
 		
 		basic_istream<charT,traits>& ignore (streamsize n = 1, int_type delim = traits::eof()){
@@ -203,7 +203,7 @@ namespace std{
 					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 					return *this;
 				}
-				sbuffer->sbump();
+				sbuffer->sbumpc();
 				if(c == delim){
 					return *this;
 				}
@@ -229,7 +229,7 @@ namespace std{
 					count_last_ufmt_input = i;
 					return *this;
 				}
-				sbuffer->sbump();
+				sbuffer->sbumpc();
 				s[i] = c;
 			}				
 			return *this;
@@ -257,7 +257,7 @@ namespace std{
 			
 			for(i=0;i<n;++i){
 				c = sbuffer->sgetc();
-				sbuffer->sbump();
+				sbuffer->sbumpc();
 				s[i] = c;
 			}
 			count_last_ufmt_input = n;
@@ -315,20 +315,20 @@ namespace std{
 		
 		basic_istream<charT,traits>& seekg(pos_type pos){
 			 if(basic_ios<charT,traits>::fail() !=true){
-			 	sbuffer()->pubseekpos(pos);
+			 	sbuffer->pubseekpos(pos);
 			 }
 			return *this;		
 		}
 		
 		basic_istream<charT,traits>& seekg(off_type off, ios_base::seekdir dir){
 			if(basic_ios<charT,traits>::fail() !=true){
-				sbuffer()->pubseekoff(off, dir);
+				sbuffer->pubseekoff(off, dir);
 			}
 			return *this;
 		}
 		
 	protected:
-		basic_istream(const basic_istream<charT,traits> &) { }
+		basic_istream(const basic_istream<charT,traits> &): basic_ios<charT, traits>() { }
 		basic_streambuf<charT,traits>* sbuffer;
 		basic_istream<charT,traits> & operator=(const basic_istream<charT,traits> &){ return *this; }
 		streamsize count_last_ufmt_input;
@@ -356,6 +356,14 @@ namespace std{
 	
 	//Template implementations of basic_istream functions which may be partially specialized
 	//For code reduction
+
+	template <class charT, class traits> basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(bool& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, bool>::readin(*this, n);
+		return *this;
+	}
 
 	template <class charT, class traits> basic_istream<charT,traits>& 
 		basic_istream<charT,traits>::operator>>(short& n)
@@ -429,18 +437,20 @@ namespace std{
 	}
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_ISTREAM__
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(bool &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(short &n);
 	template <> basic_istream<char,char_traits<char> > & 
 		basic_istream<char, char_traits<char> >::operator>>(unsigned short &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(int &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(unsigned int &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long &n);
+	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long unsigned &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long int &n);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(float &f);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(double &f);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long double &f);
 	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(void *& p);
+#endif
 #endif
 	
 	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT& c){

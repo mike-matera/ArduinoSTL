@@ -17,35 +17,34 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define __UCLIBCXX_COMPILE_STRING__ 1
+
 #include <basic_definitions>
 #include <char_traits>
 #include <string>
+#include <string_iostream>
 #include <string.h>
 #include <ostream>
 
 namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
-//Pure string functions
-	template<> basic_string<char,char_traits<char>, allocator<char> >::
-		basic_string(const char* s, const allocator<char>& al)
-		: vector<char, allocator<char> >(al)
-	{
-		__string_helper_functions<char, char_traits<char>, allocator<char> >::constructor(*this, s);
-		
-	}
 
+	template basic_string<char,char_traits<char>, allocator<char> >::basic_string(const char* s, const allocator<char>& al);
+
+	template basic_string<char, char_traits<char>, allocator<char> >
+		operator+(const basic_string<char, char_traits<char>, allocator<char> >& lhs, const char* rhs);
+
+	template basic_string<char, char_traits<char>, allocator<char> >
+		operator+(const char* lhs, const basic_string<char, char_traits<char>, allocator<char> >& rhs);
 
 
 //Functions dependent upon OSTREAM
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 
-template<> basic_ostream<char, char_traits<char> >& 
+template basic_ostream<char, char_traits<char> >&
 	operator<<(basic_ostream<char, char_traits<char> >& os,
-	const basic_string<char,char_traits<char>, std::allocator<char> >& str)
-{
-	return os.write(str.data(), str.length());
-}
+	const basic_string<char,char_traits<char>, std::allocator<char> >& str);
 
 #endif
 
@@ -53,14 +52,9 @@ template<> basic_ostream<char, char_traits<char> >&
 //Functions dependent upon ISTREAM
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
-template<> basic_istream<char, char_traits<char> >& operator>>(
+template basic_istream<char, char_traits<char> >& operator>>(
 	basic_istream<char,char_traits<char> >& is,
-	basic_string<char, char_traits<char>,
-	allocator<char> >& str)
-{
-	return __string_helper_functions<char, char_traits<char>, allocator<char> >::op_right_right(is, str);
-	
-}
+	basic_string<char, char_traits<char>, allocator<char> >& str);
 
 
 #endif
