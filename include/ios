@@ -18,18 +18,14 @@
 */
 
 #include <basic_definitions>
-#include <exception>
+#include <cstddef>
 #include <locale>
-#include <memory>
-#include <string>
 #include <iosfwd>
-#include <cstdio>
 
-#ifndef HEADER_STD_IOS
-#define HEADER_STD_IOS 1
+#ifndef __HEADER_STD_IOS
+#define __HEADER_STD_IOS 1
 
 namespace std{
-//	typedef OFF_T streamoff;
 	template <class stateT> class fpos;
 
 	class ios_base {
@@ -101,9 +97,6 @@ namespace std{
 
 		fmtflags setf(fmtflags fmtfl);
 		fmtflags setf(fmtflags fmtfl, fmtflags mask ){
-//			fmtflags temp = mformat;
-//			mformat = (mformat& (~mask)) | (fmtfl & mask);
-//			return temp;
 			return flags( (flags()& ~mask) | (fmtfl & mask));
 		}
 
@@ -369,13 +362,10 @@ namespace std{
 			return temp;
 		}
 
-
 		locale imbue(const locale& loc);
 		char narrow(char_type c, char dfault) const;
-		char_type widen(char c) const{
-//			return use_facet< ctype<char_type> >(getloc()).widen(c);
-			return c;
-		}
+		char_type widen(char c) const;
+
 	protected:
 		char_type fill_char;
 		basic_ostream<charT,traits>* mtied;
@@ -388,6 +378,50 @@ namespace std{
 			mstate = goodbit;
 		}
 	};
+
+	template <class charT, class traits>
+		inline char basic_ios<charT, traits>::narrow(char_type c, char dfault) const
+	{
+		return dfault;
+	}
+
+	template <>
+		inline char basic_ios<char, char_traits<char> >::narrow(char_type c, char) const
+	{
+		return c;
+	}
+
+	template <>
+		inline char basic_ios<wchar_t, char_traits<wchar_t> >::narrow(char_type c, char dfault) const
+	{
+		char retval = wctob (c);
+		if(retval == EOF){
+			retval = dfault;
+		}
+		return retval;
+	}
+
+	template <class charT, class traits> 
+		inline typename basic_ios<charT, traits>::char_type
+		basic_ios<charT, traits>::widen(char c) const
+	{
+		return c;
+	}
+
+	template <> 
+		inline basic_ios<char, char_traits<char> >::char_type
+		basic_ios<char, char_traits<char> >::widen(char c) const
+	{
+		return c;
+	}
+
+	template <> 
+		inline basic_ios<wchar_t, char_traits<wchar_t> >::char_type
+		basic_ios<wchar_t, char_traits<wchar_t> >::widen(char c) const
+	{
+		return btowc(c);
+	}
+
 
 
 	template <class stateT> class fpos{

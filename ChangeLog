@@ -1,3 +1,10 @@
+0.1.10
+-	Implemented clog and changed cerr to meet spec (unbuffered)
+-	Implemented wcout, wcin, wcerr and wclog
+-	Added functions to support conversion of wchar to appropriate types
+-	Cleanup of #includes in header files to reduce bloat and compilation time
+
+
 0.1.9
 Peter S. Mazinger:	wchar cleanups across the board
 -	Make sure that operator= changes the number of elements in the vector.

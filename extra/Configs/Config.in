@@ -162,16 +162,15 @@ config UCLIBCXX_HAS_LFS
 
 
 config UCLIBCXX_SUPPORT_CDIR
-	bool "Enable support for cin, cout and cerr"
+	bool "Enable support for standard streams like cin and cout"
 	default y
 	help
-	  Answer Y to enable the framework for cin, cout and cerr.  Note
+	  Answer Y to enable the framework for cin, cout, cerr and clog as well
+	  as their wide character versions wcin, wcout, wcerr and wclog.  Note
 	  that each of those can be manually altered at a later point.
 	  Disabling this option will result in space savings as well as 
 	  performance improvements as some startup code can be eliminated.
-	  This is a widely used feature.
-
-	  Most people will answer Y.
+	  This is a widely used feature.  Most people will answer Y.
 
 config UCLIBCXX_SUPPORT_CIN
 	bool "Enable cin"
@@ -197,6 +196,49 @@ config UCLIBCXX_SUPPORT_CERR
 	  Answer y to have support for std::cerr.  This is a commonly used
 	  feature, so you will probably want to say yes here.
 
+config UCLIBCXX_SUPPORT_CLOG
+	bool "Enable clog"
+	default n
+	depends on UCLIBCXX_SUPPORT_CDIR
+	help
+	  Answer y to have support for std::clog.  This stream is the same as
+	  std::cerr except that it is buffered, where cerr is not.
+
+config UCLIBCXX_SUPPORT_WCIN
+	bool "Enable wcin"
+	default y
+	depends on UCLIBCXX_SUPPORT_CDIR
+	depends on UCLIBCXX_HAS_WCHAR
+	help
+	  Answer y to have support for std::wcin.  This is the wide-character
+	  version of cin.  You will probably want to say yes here.
+
+config UCLIBCXX_SUPPORT_WCOUT
+	bool "Enable wcout"
+	default y
+	depends on UCLIBCXX_SUPPORT_CDIR
+	depends on UCLIBCXX_HAS_WCHAR
+	help
+	  Answer y to have support for std::wcout.  This is the wide-character
+	  version of cout.  You will probably want to say yes here.
+
+config UCLIBCXX_SUPPORT_WCERR
+	bool "Enable wcerr"
+	default y
+	depends on UCLIBCXX_SUPPORT_CDIR
+	depends on UCLIBCXX_HAS_WCHAR
+	help
+	  Answer y to have support for std::wcerr.  This is the wide-character
+	  version of cerr.  You will probably want to say yes here.
+
+config UCLIBCXX_SUPPORT_WCLOG
+	bool "Enable wclog"
+	default n
+	depends on UCLIBCXX_SUPPORT_CDIR
+	depends on UCLIBCXX_HAS_WCHAR
+	help
+	  Answer y to have support for std::wclog.  This is the wide-character
+	  version of clog.
 
 endmenu
 

@@ -22,8 +22,8 @@
 #include <memory>
 
 
-#ifndef HEADER_STD_IOSFWD
-#define HEADER_STD_IOSFWD 1
+#ifndef __HEADER_STD_IOSFWD
+#define __HEADER_STD_IOSFWD 1
 
 namespace std {
 	class ios_base;

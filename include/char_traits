@@ -22,10 +22,8 @@
 #include <memory>
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-#include <wchar.h>
-#ifdef __UCLIBCXX_HAS_WCTYPE_H
-#include <wctype.h>
-#endif
+#include <cwchar>
+#include <cwctype>
 #endif
 
 #ifndef __HEADER_CHAR_TRAITS
@@ -132,6 +130,22 @@ namespace std{
 		typedef mbstate_t state_type;
 
 		static void assign(char_type & c, char_type & d){ c=d; }
+
+		static char_type to_char_type(const int_type & i){
+			return i;
+		}
+
+		static int_type to_int_type(const char_type & c){
+			return c;
+		}
+
+		inline static bool eq_int_type(const int_type & a, const int_type & b){
+			if(a==b){
+				return true;
+			}
+			return false;
+		}
+
 		inline static bool eq(const char_type& c1, const char_type& c2){
 			if(wcsncmp(&c1, &c2, 1) == 0){
 				return true;
@@ -177,7 +191,7 @@ namespace std{
 				return i;
 			}
 		}
-		static state_type get_state(pos_type p){
+		static state_type get_state(pos_type){
 			state_type a;
 			return a;
 		}

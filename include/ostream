@@ -316,7 +316,7 @@ namespace std {
 	
 	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, const char* c){
 		typename basic_ostream<charT,traits>::sentry s(out);
-		out.write(c, traits::length(c) );
+		out.write(c, char_traits<char>::length(c) );
 		return out;
 	}
 
@@ -327,6 +327,18 @@ namespace std {
 		return out;
 	}
 
+	template<class traits> basic_ostream<wchar_t,traits>& operator<<(basic_ostream<wchar_t,traits>& out, const char* c){
+		typename basic_ostream<wchar_t, traits>::sentry s(out);
+		size_t numChars = char_traits<char>::length(c);
+		wchar_t * temp = new wchar_t[numChars];
+
+		for(size_t i=0; i < numChars; ++i){
+			temp[i] = out.widen(c[i]);
+		}
+
+		out.write(temp, numChars);
+		return out;
+	}
     
     //  signed and unsigned
 	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const signed char* c){
@@ -342,14 +354,14 @@ namespace std {
 	}
 
 	template <class charT, class traits> basic_ostream<charT,traits>& endl(basic_ostream<charT,traits>& os){
-		typename basic_ostream<char,traits>::sentry s(os);
+		typename basic_ostream<charT,traits>::sentry s(os);
 		os.put('\n');
 		os.flush();
 		return os;
 	}
 
 	template <class charT, class traits> basic_ostream<charT,traits>& flush(basic_ostream<charT,traits>& os){
-		typename basic_ostream<char,traits>::sentry s(os);
+		typename basic_ostream<charT,traits>::sentry s(os);
 		os.flush();
 		return os;
 	}

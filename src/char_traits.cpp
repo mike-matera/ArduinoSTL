@@ -34,7 +34,7 @@ const char_traits<char>::char_type* char_traits<char>::find(const char_type* s, 
 
 
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 
 const char_traits<wchar_t>::char_type* char_traits<wchar_t>::find(const char_type* s, int n, const char_type& a){
 	for(int i=0; i < n; i++){

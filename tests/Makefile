@@ -32,7 +32,8 @@ SRCS	=\
 	algotest.cpp \
 	stacktest.cpp \
 	streamitertest.cpp \
-	fstreamtest.cpp
+	fstreamtest.cpp \
+	wchartest.cpp
 
 
 EXOBJS	=\
@@ -51,7 +52,8 @@ EXOBJS	=\
 	algotest.o \
 	stacktest.o \
 	streamitertest.o \
-	fstreamtest.o
+	fstreamtest.o \
+	wchartest.o
 
 ALLOBJS	=	$(EXOBJS) \
 		newdel.o-old \
@@ -69,7 +71,8 @@ ALLOBJS	=	$(EXOBJS) \
 		algotest.o-old \
 		stacktest.o-old \
 		streamitertest.o-old \
-		fstreamtest.o-old
+		fstreamtest.o-old \
+		wchartest.o-old
 
 ALLBIN	=	newdel newdel-old \
 		io io-old \
@@ -86,7 +89,8 @@ ALLBIN	=	newdel newdel-old \
 		algotest algotest-old \
 		stacktest stacktest-old \
 		streamitertest streamitertest-old \
-		fstreamtest fstreamtest-old
+		fstreamtest fstreamtest-old \
+		wchartest wchartest-old
 
 ALLTGT	=	streamitertest \
 		stacktest \
@@ -103,7 +107,8 @@ ALLTGT	=	streamitertest \
 		vectortest \
 		io \
 		newdel \
-		fstreamtest
+		fstreamtest \
+		wchartest
 
 ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 SRCS    += excepttest.cpp
@@ -203,6 +208,10 @@ streamitertest: $(EXOBJS)
 fstreamtest: $(EXOBJS)
 	$(UCXX) -o fstreamtest fstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o fstreamtest-old fstreamtest.o-old $(COFLAGS)
+
+wchartest: $(EXOBJS)
+	$(UCXX) -o wchartest wchartest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o wchartest-old wchartest.o-old $(COFLAGS)
 
 
 

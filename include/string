@@ -20,17 +20,14 @@
 #include <basic_definitions>
 #include <char_traits>
 #include <string.h>
-#include <exception>
 #include <func_exception>
 #include <memory>
 #include <vector>
 
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-#include <wchar.h>
-#ifdef __UCLIBCXX_HAS_WCTYPE_H
-#include <wctype.h>
-#endif
+#include <cwchar>
+#include <cwctype>
 #endif
 
 #ifndef __HEADER_STD_STRING

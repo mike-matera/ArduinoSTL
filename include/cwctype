@@ -46,12 +46,10 @@
 
 #pragma GCC system_header
 
-#include <bits/c++config.h>
+//#include <bits/c++config.h>
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-#ifdef __UCLIBCXX_HAS_WCTYPE_H
 #include <wctype.h>
-#endif
 #endif
 
 // Get rid of those macros defined in <wctype.h> in lieu of real functions.

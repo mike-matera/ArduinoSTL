@@ -18,14 +18,11 @@
 
 #include<basic_definitions>
 
-#include <iosfwd>
 #include <cstdio>
 #include <cstdlib>
-#include <ios>
 #include <streambuf>
 #include <istream>
 #include <ostream>
-#include <errno.h>
 
 #ifndef __STD_HEADER_FSTREAM 
 #define __STD_HEADER_FSTREAM 1

@@ -39,6 +39,21 @@ namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 	filebuf _cerr_filebuf;
 #endif
+#ifdef __UCLIBCXX_SUPPORT_CLOG__
+	filebuf _clog_filebuf;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCOUT__
+	wfilebuf _wcout_filebuf;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCIN__
+	wfilebuf _wcin_filebuf;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCERR__
+	wfilebuf _wcerr_filebuf;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCLOG__
+	wfilebuf _wclog_filebuf;
+#endif
 
 //Then create streams
 #ifdef __UCLIBCXX_SUPPORT_COUT__
@@ -49,6 +64,21 @@ namespace std{
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 	ostream cerr(&_cerr_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_CLOG__
+	ostream clog(&_clog_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCOUT__
+	wostream wcout(&_wcout_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCIN__
+	wistream wcin(&_wcin_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCERR__
+	wostream wcerr(&_wcerr_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCLOG__
+	wostream wclog(&_wclog_filebuf);
 #endif
 
 
@@ -61,6 +91,11 @@ namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 			_cerr_filebuf.fp = stderr;
 			_cerr_filebuf.openedFor = ios_base::out;
+			cerr.mformat |= ios_base::unitbuf;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_CLOG__
+			_clog_filebuf.fp = stderr;
+			_clog_filebuf.openedFor = ios_base::out;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CIN__
 			_cin_filebuf.fp = stdin;
@@ -68,6 +103,28 @@ namespace std{
 
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 			cin.tie(&cout);
+#endif
+
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCOUT__
+			_wcout_filebuf.fp = stdout;
+			_wcout_filebuf.openedFor = ios_base::out;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCERR__
+			_wcerr_filebuf.fp = stderr;
+			_wcerr_filebuf.openedFor = ios_base::out;
+			wcerr.mformat |= ios_base::unitbuf;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCLOG__
+			_wclog_filebuf.fp = stderr;
+			_wclog_filebuf.openedFor = ios_base::out;
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCIN__
+			_wcin_filebuf.fp = stdin;
+			_wcin_filebuf.openedFor = ios_base::in;
+
+#ifdef __UCLIBCXX_SUPPORT_WCOUT__
+			wcin.tie(&wcout);
 #endif
 
 #endif

@@ -19,8 +19,8 @@
 
 #include <basic_definitions>
 
-#ifndef HEADER_STD_IOSTREAM
-#define HEADER_STD_IOSTREAM 1
+#ifndef __HEADER_STD_IOSTREAM
+#define __HEADER_STD_IOSTREAM 1
 
 #include <iosfwd>
 #include <ios>
@@ -39,18 +39,19 @@ namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 	extern ostream cerr;
 #endif
+#ifdef __UCLIBCXX_SUPPORT_CLOG__
 	extern ostream clog;
-
-#ifdef __UCLIBCXX_HAS_WCHAR__
-#ifdef __UCLIBCXX_SUPPORT_CIN__
+#endif
+#ifdef __UCLIBCXX_SUPPORT_WCIN__
 	extern wistream wcin;
 #endif
-#ifdef __UCLIBCXX_SUPPORT_COUT__
+#ifdef __UCLIBCXX_SUPPORT_WCOUT__
 	extern wostream wcout;
 #endif
-#ifdef __UCLIBCXX_SUPPORT_CERR__
+#ifdef __UCLIBCXX_SUPPORT_WCERR__
 	extern wostream wcerr;
 #endif
+#ifdef __UCLIBCXX_SUPPORT_WCLOG__
 	extern wostream wclog;
 #endif
 
