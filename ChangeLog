@@ -9,6 +9,7 @@ Peter S. Mazinger:	Added -z defs to $(CC) -shared
 -	Fixed wchar enhancements if wchar is not enabled
 -	Cleaned up tests system to be much easier to add additional tests
 -	Fixed problems in getline() code
+-	Major performance increase on fstream input code (4.5X, approximately)
 
 
 0.1.9

@@ -24,6 +24,10 @@
 #include <istream>
 #include <ostream>
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+
 #ifndef __STD_HEADER_FSTREAM 
 #define __STD_HEADER_FSTREAM 1
 
@@ -176,15 +180,44 @@ namespace std{
 				*(i-offset) = *i;
 			}
 
+			size_t retval = 0;
+			//Save operating flags from file descriptor
+			int fcntl_flags = fcntl(fileno(fp), F_GETFL);
+			//Set to non_blocking mode
+			fcntl(fileno(fp), F_SETFL, fcntl_flags | O_NONBLOCK);
+
 			//Fill rest of buffer
-			size_t retval;
 			retval = fread(basic_streambuf<charT,traits>::egptr() - 
 				basic_streambuf<charT,traits>::gptr() + basic_streambuf<charT,traits>::eback(),
 				sizeof(charT),
-//				offset,
-				1,
+				offset,
 				fp
 			);
+
+			//Clear problems where we didn't read in enough characters
+			if(EAGAIN == errno){
+				clearerr(fp);
+			}
+
+			//Restore file descriptor clase
+			fcntl(fileno(fp), F_SETFL, fcntl_flags);
+
+			//Now we are going to make sure that we read in at least one character.  The hard way.
+			if(retval == 0){
+				fcntl_flags = fcntl(fileno(fp), F_GETFL);
+				//Set to blocking mode
+				fcntl(fileno(fp), F_SETFL, fcntl_flags & ~O_NONBLOCK);
+
+				retval = fread(basic_streambuf<charT,traits>::egptr() - 
+					basic_streambuf<charT,traits>::gptr() + basic_streambuf<charT,traits>::eback(),
+					sizeof(charT),
+					1,
+					fp
+				);
+
+				//Restore file descriptor clase
+				fcntl(fileno(fp), F_SETFL, fcntl_flags);
+			}
 
 			if(retval !=offset){ //Slide buffer forward again
 				for(size_t i = 0; i < amountData + retval; ++i){
@@ -195,12 +228,9 @@ namespace std{
 
 			basic_streambuf<charT,traits>::mgnext -= retval;
 
-			if(feof(fp) || ferror(fp) ){
+			if( (retval <= 0 && feof(fp)) || ferror(fp) ){
 				return traits::eof();
 			}
-//			if(ferror(fp)){
-//				return traits::eof();
-//			}
 
 			return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 		}
