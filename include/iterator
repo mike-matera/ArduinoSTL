@@ -53,15 +53,19 @@ namespace std{
 		typedef charT char_type;
 		typedef traits traits_type;
 		typedef basic_istream<charT,traits> istream_type;
-		istream_iterator() : in_stream(0), value() {}
-		istream_iterator(istream_type& s) : in_stream(&s), value() { }
-		istream_iterator(const istream_iterator<T,charT,traits,Distance>& x) : in_stream(x.in_stream), value(x.value) { }
+		istream_iterator() : in_stream(0), value(0) {}
+		istream_iterator(istream_type& s) : in_stream(&s), value() {
+			*in_stream >> value;
+		}
+		istream_iterator(const istream_iterator<T,charT,traits,Distance>& x)
+			: in_stream(x.in_stream), value(x.value)
+		{ }
 		~istream_iterator() { }
 		const T& operator*() const{
 			return value;
 		}
 		const T* operator->() const{
-			return &(operator*());
+			return &value;
 		}
 		istream_iterator<T,charT,traits,Distance>& operator++() {
 			*in_stream >> value;

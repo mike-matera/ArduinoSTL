@@ -608,7 +608,7 @@ namespace std{
 			OutputIterator result, Predicate pred)
 	{
 		while(first !=last){
-			if( pred(*first) ){
+			if( !pred(*first) ){
 				*result = *first;
 				++result;
 			}
@@ -913,13 +913,26 @@ namespace std{
 		if(temp_size < output_size){
 			output_size = temp_size;
 		}
-		RandomAccessIterator middle = first;
-		first += output_size;
-		partial_sort(first, middle, last, comp);
-		for(size_t i =0; i < output_size; ++i){
-			result_first[i] = first[i];
+
+		RandomAccessIterator middle = result_first + output_size;
+		RandomAccessIterator temp = result_first;
+
+		while(temp != middle){
+			*temp = *first;
+			++temp;
+			++first;
 		}
-		return (result_first + output_size);
+		sort(result_first, middle, comp);
+
+		while( first != last){
+			if( comp( *first, *(middle-1) ) ){
+				*(middle-1) = *first;
+				sort(result_first, middle, comp);
+			}
+			++first;
+		}
+
+		return middle;
 	}
 	template<class RandomAccessIterator>
 		void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last)
@@ -1446,7 +1459,7 @@ namespace std{
 
 	template<class RandomAccessIterator> void make_heap(RandomAccessIterator first, RandomAccessIterator last){
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
-		sort_heap(first, last, c);
+		make_heap(first, last, c);
 	}
 	template<class RandomAccessIterator, class Compare>
 		void make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
@@ -1460,7 +1473,7 @@ namespace std{
 	template<class RandomAccessIterator, class Compare>
 		void sort_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	{
-		sort( reverse_iterator<RandomAccessIterator>(last), reverse_iterator<RandomAccessIterator>(first), comp);
+		sort( first, last, comp);
 	}
 
 

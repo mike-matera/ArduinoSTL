@@ -341,7 +341,7 @@ public:
 	}
 
 	iterator erase(iterator position){
-		if(position == end()){
+		if(position == vector<Ch, A>::end()){
 			return position;
 		}
 
@@ -349,7 +349,7 @@ public:
 
 		iterator temp = position;
 
-		while(position != end()){
+		while(position != vector<Ch, A>::end()){
 			*(position-1) = *position;
 			++position;
 		}
@@ -362,7 +362,7 @@ public:
 
 		iterator temp = last;
 
-		while(last != end()){
+		while(last != vector<Ch, A>::end()){
 			*(last - count) = *last;
 			++last;
 		}

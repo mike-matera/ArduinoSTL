@@ -293,7 +293,7 @@ int main(){
 	std::sort_heap<std::vector<double>::iterator, std::greater<double> >(a.begin(), a.end(), std::greater<double>() );
 
 	std::cout << "The following two lines should be identical:\n";
-	std::cout << "5.2 7.2 12.5 21.8 27.4 36.6 55.5 67.9 93.4" << std::endl;
+	std::cout << "93.4 67.9 55.5 36.6 27.4 21.8 12.5 7.2 5.2 " << std::endl;
 	i = a.begin();
 	while(i != a.end()){
 		std::cout << *i << " ";

@@ -24,7 +24,8 @@ SRCS	=\
 	numerictest.cpp \
 	bitsettest.cpp \
 	algotest.cpp \
-	stacktest.cpp
+	stacktest.cpp \
+	streamitertest.cpp
 
 
 EXOBJS	=\
@@ -41,7 +42,8 @@ EXOBJS	=\
 	numerictest.o \
 	bitsettest.o \
 	algotest.o \
-	stacktest.o
+	stacktest.o \
+	streamitertest.o
 
 ALLOBJS	=	$(EXOBJS) \
 		newdel.o-old \
@@ -57,7 +59,8 @@ ALLOBJS	=	$(EXOBJS) \
 		numerictest.o-old \
 		bitsettest.o-old \
 		algotest.o-old \
-		stacktest.o-old
+		stacktest.o-old \
+		streamitertest.o-old
 
 ALLBIN	=	newdel newdel-old \
 		io io-old \
@@ -72,9 +75,11 @@ ALLBIN	=	newdel newdel-old \
 		numerictest numerictest-old \
 		bitsettest bitsettest-old \
 		algotest algotest-old \
-		stacktest stacktest-old
+		stacktest stacktest-old \
+		streamitertest streamitertest-old
 
-ALLTGT	=	stacktest \
+ALLTGT	=	streamitertest \
+		stacktest \
 		algotest \
 		bitsettest \
 		sstreamtest \
@@ -173,6 +178,11 @@ algotest: $(EXOBJS)
 stacktest: $(EXOBJS)
 	$(CXX) -o stacktest stacktest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o stacktest-old stacktest.o-old $(COFLAGS)
+
+streamitertest: $(EXOBJS)
+	$(CXX) -o streamitertest streamitertest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o streamitertest-old streamitertest.o-old $(COFLAGS)
+
 
 
 .cpp.o:

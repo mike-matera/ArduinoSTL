@@ -1,4 +1,4 @@
-0.1.5 - PRE
+0.1.5 - 2004-09-26
 -	Added code for all algorithms
 -	Fixed map/set code to prevent infinite loops.  Oops.
 -	Fixed list code to prevent most memory leaks.  1 still remains, but unknown location
@@ -7,6 +7,10 @@
 -	Added erase capability to vector
 -	Changed multimap::find to point to first matching element instead of any matching element
 -	Added more tests to test suite based upon problems from stlport test suite
+-	Altered istream_iterator template so that it handles begining of stream conditions properly
+-	Fixed make_heap and sort_heap functions to sort in the correct order
+-	Fixed a few pedantic errors in std::string as it relates to the vector base
+-	All (known) stlport issues have been resolved.  Compiles and runs properly.
 
 
 0.1.4 - 2004-09-10
