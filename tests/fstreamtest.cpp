@@ -26,6 +26,54 @@ int main()
 		}
 	}
 	inFile.close();
+
+	outFile.open("fstreamtest2.out", std::ios::out);
+	outFile.write("abcd", 4);
+	outFile.put('e');
+	outFile.write("fghi", 4);
+	outFile.close();
+
+	inFile.open("fstreamtest2.out", std::ios::in | std::ios::binary);
+
+	inFile >> a;
+	if (a != 'a'){
+		std::cout << "Error reading character a, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'b'){
+		std::cout << "Error reading character b, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'c'){
+		std::cout << "Error reading character c, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'd'){
+		std::cout << "Error reading character d, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'e'){
+		std::cout << "Error reading character e, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'f'){
+		std::cout << "Error reading character f, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'g'){
+		std::cout << "Error reading character g, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'h'){
+		std::cout << "Error reading character h, was instead: " << a << std::endl;
+	}
+	inFile >> a;
+	if (a != 'i'){
+		std::cout << "Error reading character i, was instead: " << a << std::endl;
+	}
+	inFile.close();
+
+
 	return 0;
 }
 

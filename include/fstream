@@ -239,7 +239,7 @@ namespace std{
 				//Can't do much
 				return traits::eof();
 			}
-			if(basic_streambuf<charT,traits>::pbase() == 0){		//Unbuffered
+			if(basic_streambuf<charT,traits>::pbase() == 0){		//Unbuffered - elliminate dupe code below
 				if(fputc(c, fp) == EOF){
 					return traits::eof();
 				}
@@ -281,6 +281,8 @@ namespace std{
 					return traits::eof();
 				}
 				basic_streambuf<charT,traits>::pbump(-retval);
+				fprintf(stderr, "***** Did not write the full buffer out.  Should be: %d, actually: %d\n",
+					 s, retval);
 			}else{
 				basic_streambuf<charT,traits>::pbump(-r);
 			}
@@ -366,24 +368,26 @@ namespace std{
 			//Check to see if we can buffer the data
 			streamsize buffer_avail = basic_streambuf<charT,traits>::epptr() - basic_streambuf<charT,traits>::pptr();
 
-			streamsize len = traits::length(s);
-			if(len > n){
-				len = n;
-			}
+//			streamsize len = traits::length(s);
+//			if(len > n){
+//				len = n;
+//			}
+//			streamsize len = n;		//FIXME by ellimination
 
-			if(len > buffer_avail){		//Flush buffer and write directly
+			if(n > buffer_avail){		//Flush buffer and write directly
 				overflow();	//Flush the buffer
-				char buffer[30];
-				snprintf(buffer, 29, "%%.%ds", static_cast<unsigned int>(len) );
-				return fprintf(fp, buffer, s);
+//				char buffer[30];
+//				snprintf(buffer, 29, "%%.%ds", static_cast<unsigned int>(len) );
+//				return fprintf(fp, buffer, s);
+				return fwrite(s, sizeof(charT), n, fp);
 			}
 
 			//Add to buffer to be written later
 
-			traits::copy(basic_streambuf<charT,traits>::pptr(), s, len);
-			basic_streambuf<charT,traits>::pbump(len);
+			traits::copy(basic_streambuf<charT,traits>::pptr(), s, n);
+			basic_streambuf<charT,traits>::pbump(n);
 
-			return len;
+			return n;
 		}
 
 		FILE * fp;
