@@ -49,5 +49,12 @@ int main(){
 	std::cout << "Read out: " << "'" << s << "'" << std::endl;
 	std::cout << "Current buffer value: " << a.str() << std::endl;
 
+	std::cout << "Appending more text by a number of methods\n";
+	a << "trd" << std::endl << std::endl;
+	a.put(10);
+	a << "4635";
+	std::cout << "String stream text:" << a.str() << std::endl;
+	std::cout << "String stream test:" << a.str().c_str() << std::endl;
+
 	return 0;
 }

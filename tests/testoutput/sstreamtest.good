@@ -12,3 +12,12 @@ Combining read and write activities
 Read out: 'Testing'
 Read out: 'data2.5'
 Current buffer value: Testing data2.5 
+Appending more text by a number of methods
+String stream text:Testing data2.5 trd
+
+
+4635
+String stream test:Testing data2.5 trd
+
+
+4635
