@@ -65,8 +65,13 @@ EXOBJS	=\
 	valarray.o
 
 ALLOBJS	=	$(EXOBJS)
-ALLBIN	=	libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.a
-ALLTGT	=	libuClibc++
+ALLBIN	=	
+ifeq ($(BUILD_STATIC_LIB),y)
+ALLBIN	+=	libuClibc++.a
+endif
+ifneq ($(BUILD_ONLY_STATIC_LIB),y)
+ALLBIN	+=	libuClibc++.so
+endif
 
 ifeq ($(IMPORT_LIBSUP),y)
 SUPOBJS	=	$(shell $(CXX) -print-file-name=libsupc++.a)
@@ -76,24 +81,20 @@ endif
 
 # User defines:
 
-all:	$(ALLOBJS) $(ALLTGT)
+all:	$(ALLOBJS) $(ALLBIN)
 
 objs:	$(ALLOBJS)
 
-libuClibc++:	$(ALLOBJS)
-ifeq ($(BUILD_STATIC_LIB),y)
+libuClibc++.a:
 	$(AR) rcs libuClibc++.a $(EXOBJS) $(SUPOBJS)
-endif
 
-ifeq ($(BUILD_ONLY_STATIC_LIB),y)
-else
+libuClibc++.so:
 	$(CC) -shared $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS) \
 		-o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
 		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
-endif
 
 cleanobjs:
 	rm -f $(ALLOBJS)
