@@ -74,22 +74,20 @@ namespace std{
 
 		explicit vector(size_type n, const T& value = T(), const Allocator& al= Allocator()) : 
 			data(0), 
-//			defaultValue(value),
 			data_size(0), elements(0), a(al)
 		{
-			elements = n;
-			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
+//			elements = n;
+			data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
 			data = a.allocate(data_size);
 
-			for(size_type i = 0; i < elements; i++){
-//				data[i] = value;
-				a.construct( data+i, value);
-			}
+//			for(size_type i = 0; i < elements; i++){
+//				a.construct( data+i, value);
+//			}
+				resize(n, value);
 		}
 
 		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
 			data(0),
-//			defaultValue(T()),
 			data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
 			data = a.allocate(data_size);
@@ -101,11 +99,9 @@ namespace std{
 
 			elements  = x.elements;
 			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
-//			defaultValue = x.defaultValue;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
-//				data[i] = x.data[i];
 				a.construct(data+i, x.data[i]);
 			}	
 		}
@@ -125,45 +121,28 @@ namespace std{
 				return *this;
 			}
 
-/*			if(data_size < x.elements){
-				for(size_t i = 0; i < elements; ++i){
-					a.destroy(data + i);
-				}
-				a.deallocate(data);
-				data = 0;
+			reserve(x.elements);	//Make sure that we have enough actual memory
 
-				data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
-				data = a.allocate(data_size);
-				elements = x.elements;
-				for(size_t i = 0; i< elements; ++i){
-					a.construct(data+i, x.data[i]);
-				}
-			}else{
-				size_t minElements = elements;
-				if(minElements > x.elements){
-					minElements = x.elements;
-				}
 
-				//Construct extra needed elements (if aplicable)
-				for(size_t i = elements; i < x.elements; +i){
-					a.construct(data+i, x.data[i]);
-				}
-				//Destroy extra elements (if applicable)
-				for(size_t i = minElements; i < elements; ++i){
-					a.destroy(data+i);
-				}
-				//Copy over the rest of the elements
-				for(size_t i = 0; i < minElements; ++i){
-					data[i] = x.data[i];
-				}
-				elements = x.elements;
-			}*/
+			//Copy as many elements as possible
 
-//			resize(x.elements, defaultValue);
-			resize(x.elements);
-
-			for(size_t i = 0; i < elements; ++i){
+			size_t minElements = elements;
+			if(minElements > x.elements){
+				minElements = x.elements;
+			}
+			for(size_t i = 0; i < minElements; ++i){
 				data[i] = x.data[i];
+			}
+
+			//If we need to add new elements
+			if(elements < x.elements){
+				for(size_t i = elements; i< x.elements; ++i){
+					a.construct(data+i, x.data[i]);
+				}
+			}
+
+			if(elements > x.elements){
+				downsize(x.elements);
 			}
 
 			return *this;
@@ -224,7 +203,8 @@ namespace std{
 			return ((size_type)(-1)) / sizeof(T);
 		}
 
-		void resize(size_type sz, T c = T());
+		void downsize(size_type sz);
+		void resize(size_type sz, const T & c);
 
 		inline size_type capacity() const{
 			return data_size;
@@ -280,13 +260,12 @@ namespace std{
 
 		inline void pop_back(){
 //			resize(size() - 1, defaultValue);
-			resize(size() - 1);
+			downsize(size() - 1);
 		}
 
 		iterator insert(iterator position, const T& x = T()){
 			size_type index = position - data;
-//			resize(size() + 1, defaultValue);
-			resize(size() + 1);
+			resize(size() + 1, x);
 			for(size_type i = elements - 1; i > index; --i){
 				data[i] = data[i-1];
 			}
@@ -296,8 +275,7 @@ namespace std{
 
 		void _insert_fill(iterator position, size_type n, const T & x){
 			size_type index = position - data;
-//			resize(size() + n, defaultValue);
-			resize(size() + n);
+			resize(size() + n, x);
 
 			for(size_type i = elements -1; (i > (index+n-1)); --i){
 				data[i] = data[i-n];
@@ -343,8 +321,7 @@ namespace std{
 			for(size_type i = index; i < (elements - 1); ++i){
 				data[i] = data[i+1];
 			}
-//			resize(size() - 1, defaultValue);
-			resize(size() - 1);
+			downsize(size() - 1);
 			return (data + index);
 		}
 
@@ -354,8 +331,7 @@ namespace std{
 			for(size_type i = index; i < (elements - width) ;++i){
 				data[i] = data[i+width];
 			}
-//			resize(size() - width, defaultValue);
-			resize(size() - width);
+			downsize(size() - width);
 			return (data + index);
 		}
 
@@ -415,7 +391,7 @@ namespace std{
 		}
 	}
 
-	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, T c){
+	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, const T & c){
 		if(sz > elements){      //Need to actually call constructor
 			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
 
@@ -424,6 +400,12 @@ namespace std{
 			}
 			elements = sz;
 		}else{
+			downsize(sz);
+		}
+	}
+
+	template<class T, class Allocator> void vector<T, Allocator>::downsize(size_type sz){
+		if(sz < elements){      //Actually are downsizing
 			for(size_t i = sz; i< elements; ++i){
 				a.destroy(data+i);
 			}
@@ -446,17 +428,17 @@ namespace std{
 	template<> void vector<double, allocator<double> >::reserve(size_type n);
 	template<> void vector<bool, allocator<bool> >::reserve(size_type n);
 
-	template<> void vector<char, allocator<char> >::resize(size_type sz, char c);
-	template<> void vector<unsigned char, allocator<unsigned char> >::resize(size_type sz, unsigned char c);
-	template<> void vector<short int, allocator<short int> >::resize(size_type sz, short c);
-	template<> void vector<unsigned short int, allocator<unsigned short int> >::resize(size_type sz, unsigned short int c);
-	template<> void vector<int, allocator<int> >::resize(size_type sz, int c);
-	template<> void vector<unsigned int, allocator<unsigned int> >::resize(size_type sz, unsigned int c);
-	template<> void vector<long int, allocator<long int> >::resize(size_type sz, long int c);
-	template<> void vector<unsigned long int, allocator<unsigned long int> >::resize(size_type sz, unsigned long int c);
-	template<> void vector<float, allocator<float> >::resize(size_type sz, float c);
-	template<> void vector<double, allocator<double> >::resize(size_type sz, double c);
-	template<> void vector<bool, allocator<bool> >::resize(size_type sz, bool c);
+	template<> void vector<char, allocator<char> >::resize(size_type sz, const char & c);
+	template<> void vector<unsigned char, allocator<unsigned char> >::resize(size_type sz, const unsigned char & c);
+	template<> void vector<short int, allocator<short int> >::resize(size_type sz, const short & c);
+	template<> void vector<unsigned short int, allocator<unsigned short int> >::resize(size_type sz, const unsigned short int & c);
+	template<> void vector<int, allocator<int> >::resize(size_type sz, const int & c);
+	template<> void vector<unsigned int, allocator<unsigned int> >::resize(size_type sz, const unsigned int & c);
+	template<> void vector<long int, allocator<long int> >::resize(size_type sz, const long int & c);
+	template<> void vector<unsigned long int, allocator<unsigned long int> >::resize(size_type sz, const unsigned long int & c);
+	template<> void vector<float, allocator<float> >::resize(size_type sz, const float & c);
+	template<> void vector<double, allocator<double> >::resize(size_type sz, const double & c);
+	template<> void vector<bool, allocator<bool> >::resize(size_type sz, const bool & c);
 
 #endif
 #endif

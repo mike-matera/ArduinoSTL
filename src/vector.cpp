@@ -39,17 +39,17 @@ namespace std{
 	template void vector<double, allocator<double> >::reserve(size_type n);
 	template void vector<bool, allocator<bool> >::reserve(size_type n);
 
-	template void vector<char, allocator<char> >::resize(size_type sz, char c);
-	template void vector<unsigned char, allocator<unsigned char> >::resize(size_type sz, unsigned char c);
-	template void vector<short int, allocator<short int> >::resize(size_type sz, short c);
-	template void vector<unsigned short int, allocator<unsigned short int> >::resize(size_type sz, unsigned short int c);
-	template void vector<int, allocator<int> >::resize(size_type sz, int c);
-	template void vector<unsigned int, allocator<unsigned int> >::resize(size_type sz, unsigned int c);
-	template void vector<long int, allocator<long int> >::resize(size_type sz, long int c);
-	template void vector<unsigned long int, allocator<unsigned long int> >::resize(size_type sz, unsigned long int c);
-	template void vector<float, allocator<float> >::resize(size_type sz, float c);
-	template void vector<double, allocator<double> >::resize(size_type sz, double c);
-	template void vector<bool, allocator<bool> >::resize(size_type sz, bool c);
+	template void vector<char, allocator<char> >::resize(size_type sz, const char & c);
+	template void vector<unsigned char, allocator<unsigned char> >::resize(size_type sz, const unsigned char & c);
+	template void vector<short int, allocator<short int> >::resize(size_type sz, const short & c);
+	template void vector<unsigned short int, allocator<unsigned short int> >::resize(size_type sz, const unsigned short int & c);
+	template void vector<int, allocator<int> >::resize(size_type sz, const int & c);
+	template void vector<unsigned int, allocator<unsigned int> >::resize(size_type sz, const unsigned int & c);
+	template void vector<long int, allocator<long int> >::resize(size_type sz, const long int & c);
+	template void vector<unsigned long int, allocator<unsigned long int> >::resize(size_type sz, const unsigned long int & c);
+	template void vector<float, allocator<float> >::resize(size_type sz, const float & c);
+	template void vector<double, allocator<double> >::resize(size_type sz, const double & c);
+	template void vector<bool, allocator<bool> >::resize(size_type sz, const bool & c);
 
 
 #endif
