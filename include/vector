@@ -275,22 +275,22 @@ namespace std{
 		}
 
 		template <class InputIterator>
-			void _dispatch_insert(iterator position, InputIterator first, InputIterator last, __true_type)
+			inline void _dispatch_insert(iterator position, InputIterator first, InputIterator last, __true_type)
 		{
 			_insert_fill(position, first, last);
 		}
 
 		template <class InputIterator>
-			void _dispatch_insert(iterator position, InputIterator first, InputIterator last, __false_type)
+			inline void _dispatch_insert(iterator position, InputIterator first, InputIterator last, __false_type)
 		{
 				_insert_from_iterator(position, first, last);
 		}
 
-		void insert(iterator position, size_type n, const T& x ){
+		inline void insert(iterator position, size_type n, const T& x ){
 			_insert_fill(position, n, x);
 		}
 
-		template <class InputIterator> void insert(iterator position, InputIterator first, InputIterator last){
+		template <class InputIterator> inline void insert(iterator position, InputIterator first, InputIterator last){
 			typedef typename __is_integer<InputIterator>::value __some_type;
 			_dispatch_insert(position, first, last, __some_type());
 		}

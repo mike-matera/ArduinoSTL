@@ -68,27 +68,27 @@ public:
 
 //Actual manipulator functions
 
-__resetiosflags resetiosflags(ios_base::fmtflags mask){
+inline __resetiosflags resetiosflags(ios_base::fmtflags mask){
 	return __resetiosflags(mask);
 }
 
-__setiosflags setiosflags(ios_base::fmtflags mask){
+inline __setiosflags setiosflags(ios_base::fmtflags mask){
 	return __setiosflags(mask);
 }
 
-__setbase setbase(int b){
+inline __setbase setbase(int b){
 	return __setbase(b);
 }
 
-__setfill setfill(int c){
+inline __setfill setfill(int c){
 	return __setfill(c);
 }
 
-__setprecision setprecision(int n){
+inline __setprecision setprecision(int n){
 	return __setprecision(n);
 }
 
-__setw setw(int n){
+inline __setw setw(int n){
 	return __setw(n);
 }
 
@@ -141,7 +141,7 @@ template<class Ch, class Tr> basic_ostream<Ch, Tr>&
 template<class Ch, class Tr> basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setfill s)
 {
-	os.setfill(s.character);
+	os.fill(s.character);
 	return os;
 }
 
@@ -155,7 +155,7 @@ template<class Ch, class Tr> basic_ostream<Ch, Tr>&
 template<class Ch, class Tr> basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setw s)
 {
-	os.setw(s.width);
+	os.width(s.width);
 	return os;
 }
 
