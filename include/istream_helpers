@@ -28,7 +28,7 @@
 namespace std{
 
 
-	/* We are making the following template class for serverl reasons.  Firstly,
+	/* We are making the following template class for serveral reasons.  Firstly,
 	 * we want to keep the main istream code neat and tidy.  Secondly, we want it
 	 * to be easy to do partial specialization of the istream code so that it can
 	 * be expanded and put into the library.  This will allow us to make application
@@ -313,7 +313,7 @@ namespace std{
 	};
 
 
-};
+}
 
 
 #endif

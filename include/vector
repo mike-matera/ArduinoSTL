@@ -205,17 +205,15 @@ namespace std{
 		const_reference at(size_type n) const{
 			if(n >= elements){
 				__throw_out_of_range("Invalid subscript");
-			}else{
-				return data[n];
 			}
+			return data[n];
 		}
 
 		reference at(size_type n){
 			if(n >= elements){
 				__throw_out_of_range("Invalid subscript");
-			}else{
-				return data[n];
 			}
+			return data[n];
 		}
 
 		inline reference front(){
@@ -384,9 +382,8 @@ namespace std{
 	template <class T, class Allocator> void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 
 
-	
 
-};
+}
 
 
 #endif

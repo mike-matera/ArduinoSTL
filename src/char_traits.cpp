@@ -47,4 +47,4 @@ const char_traits<wchar_t>::char_type* char_traits<wchar_t>::find(const char_typ
 
 #endif
 
-};
+}

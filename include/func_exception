@@ -26,9 +26,11 @@
 namespace std{
 
 	void __throw_out_of_range(const char * message = 0);
+	void __throw_overflow_error(const char * message = 0);
 	void __throw_length_error(const char * message = 0);
+	void __throw_invalid_argument(const char * message = 0);
 
-};
+}
 
 #endif
 

@@ -28,18 +28,29 @@ namespace std{
 
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 	int ios_base::Init::init_cnt;	//Needed to ensure the static value is created
+
+//Create buffers first
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	filebuf _cout_filebuf;
-	ostream cout(&_cout_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CIN__
 	filebuf _cin_filebuf;
-	istream cin(&_cin_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 	filebuf _cerr_filebuf;
+#endif
+
+//Then create streams
+#ifdef __UCLIBCXX_SUPPORT_COUT__
+	ostream cout(&_cout_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_CIN__
+	istream cin(&_cin_filebuf);
+#endif
+#ifdef __UCLIBCXX_SUPPORT_CERR__
 	ostream cerr(&_cerr_filebuf);
 #endif
+
 
 	ios_base::Init::Init(){
 		if(init_cnt == 0){	//Need to construct cout et al
@@ -54,6 +65,11 @@ namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CIN__
 			_cin_filebuf.fp = stdin;
 			_cin_filebuf.openedFor = ios_base::in;
+
+#ifdef __UCLIBCXX_SUPPORT_COUT__
+			cin.tie(&cout);
+#endif
+
 #endif
 		}
 		init_cnt++;
@@ -83,6 +99,6 @@ namespace std{
 
 
 
-};
+}
 
 

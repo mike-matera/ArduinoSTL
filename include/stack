@@ -74,7 +74,7 @@ namespace std{
 		return (x.c <= y.c);
 	}
 
-};
+}
 
 
 #endif

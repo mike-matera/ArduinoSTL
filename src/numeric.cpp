@@ -18,3 +18,10 @@
 */
 
 #include <numeric>
+
+namespace std{
+
+
+}
+
+

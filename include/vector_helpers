@@ -65,7 +65,7 @@ namespace std{
 		}
 	};
 
-};
+}
 
 
 #endif

@@ -41,7 +41,7 @@ namespace std{
 	}
 
 
-};
+}
 
 
 #endif

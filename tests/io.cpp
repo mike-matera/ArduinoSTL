@@ -1,8 +1,15 @@
 #include <iostream>
 #include <string>
 #include <iterator>
+#include <fstream>
+#include <istream>
+
+using namespace std;
 
 int main(){
+//	double q;
+//	std::cin >> q;
+
 	std::basic_string<char> temp("Test string");
 
 	std::cout << "Hello, World!\n";
@@ -17,7 +24,7 @@ int main(){
 	float i = 0;
 	long double j = 0;
 
-	std::cout << "Address of i: " << &i << std::endl;	
+	std::cout << "Address of i: " << &i << std::endl;
 	std::cout << "Please enter two floats:" << std::flush;
 	std::cin >> i >> j;
 

@@ -340,7 +340,7 @@ namespace std{
 	}
 
 
-};
+}
 
 
 //This is an SGI extension which is checked for by some conformance checks.  This

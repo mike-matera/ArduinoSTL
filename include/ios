@@ -309,9 +309,7 @@ namespace std{
 	};
 
 
-
-
-};
+}
 
 #endif
 

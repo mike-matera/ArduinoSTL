@@ -18,3 +18,11 @@
 */
 
 #include <iterator>
+
+namespace std{
+
+
+
+}
+
+

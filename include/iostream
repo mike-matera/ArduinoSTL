@@ -68,7 +68,7 @@ namespace std{
 		virtual ~basic_iostream(){ }
 	};
 
-};
+}
 
 
 #endif

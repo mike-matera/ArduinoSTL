@@ -19,7 +19,7 @@
 
 #include <support>
 
-extern "C" void *__cxa_allocate_exception(size_t thrown_size){
+/*extern "C" void *__cxa_allocate_exception(size_t thrown_size){
 	void * retval;
 
 	/*The amount of data needed is the size of the object *PLUS*
@@ -50,3 +50,4 @@ extern "C" void __cxa_throw (void *thrown_exception, std::type_info *tinfo,void 
 
 
 }
+*/

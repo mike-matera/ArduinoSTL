@@ -446,7 +446,7 @@ namespace std{
 		bool f;
 	};
 
-};
+}
 
 
 #endif

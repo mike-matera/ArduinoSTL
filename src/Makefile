@@ -25,10 +25,13 @@ SRCS	=\
 	deque.cpp \
 	list.cpp \
 	map.cpp \
+	set.cpp \
 	stack.cpp \
 	queue.cpp \
 	algorithm.cpp \
-	numeric.cpp
+	numeric.cpp \
+	sstream.cpp \
+	bitset.cpp
 
 
 EXOBJS	=\
@@ -52,16 +55,26 @@ EXOBJS	=\
 	deque.o \
 	list.o \
 	map.o \
+	set.o \
 	stack.o \
 	queue.o \
 	algorithm.o \
-	numeric.o
+	numeric.o \
+	sstream.o \
+	bitset.o
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.a
 ALLTGT	=	libuClibc++
 
 ifeq ($(IMPORT_LIBSUP),y)
+_TEST_LIBSUP_EXISTANCE = $(shell ls $(LIBSUP_PATH))
+
+ifeq ($(_TEST_LIBSUP_EXISTANCE),)
+$(error "***You specified to include libsupc++.a but did not specify a valid location")
+endif
+
+
 SUPOBJS	=	$(LIBSUP_PATH)
 else
 SUPOBJS =

@@ -835,7 +835,7 @@ namespace std{
 	template<class BidirectionalIterator> bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last);
 	template<class BidirectionalIterator, class Compare> bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp);
 
-};
+}
 
 #endif
 

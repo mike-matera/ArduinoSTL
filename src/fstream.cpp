@@ -18,3 +18,13 @@
 */
 
 #include <fstream>
+
+namespace std{
+
+
+
+
+
+
+
+}

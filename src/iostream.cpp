@@ -19,3 +19,13 @@
 
 #include <iostream>
 
+namespace std{
+
+
+
+
+
+
+}
+
+

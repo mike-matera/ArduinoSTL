@@ -130,4 +130,4 @@ template<> basic_ostream<char,char_traits<char> >& operator<<(basic_ostream<char
 }
 
 
-};
+}

@@ -179,7 +179,7 @@ namespace std{
 	};
 #endif
 
-};
+}
 
 #endif
 

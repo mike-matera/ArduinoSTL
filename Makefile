@@ -22,9 +22,10 @@ TOPDIR=./
 include Rules.mak
 
 all:	headers
-	for dir in $(SUBDIRS); do \
-		$(MAKE) -C $$dir all; \
-	done
+	$(MAKE) -C include all
+	$(MAKE) -C src all
+	$(MAKE) -C bin all
+	$(MAKE) -C tests all
 
 objs:	$(ALLOBJS)
 

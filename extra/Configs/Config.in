@@ -233,7 +233,7 @@ config UCLIBCXX_SUPPORT_CDIR
 	default y
 	help
 	  Answer Y to enable the framework for cin, cout and cerr.  Note
-	  that each of those can me manually altered at a later point.
+	  that each of those can be manually altered at a later point.
 	  Disabling this option will result in space savings as well as 
 	  performance improvements as some startup code can be eliminated.
 	  This is a widely used feature.
@@ -391,7 +391,7 @@ config UCLIBCXX_EXCEPTION_SUPPORT
 	bool "Exception support"
 	default y
 	help
-	  This option enables exception support in the library.  You will
+	  This option enables exception support in the library.
 	  Exception support is part of the C++ standard, and as such
 	  should almost always be enabled.  This increases the size of
 	  the library.

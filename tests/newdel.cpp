@@ -1,6 +1,4 @@
-//#include <new>
-//#include <memory>
-#include <string>
+#include <new>
 
 struct test{
 	int a;
@@ -8,11 +6,15 @@ struct test{
 };
 
 
-
 int main(){
-	std::exception a;
 	test * temp = new test;
 	temp->a = 5;
-//	std::string a;
+	delete temp;
+	temp = 0;
+
+	temp = new test[25];
+	delete [] temp;
+	temp = 0;
+
 	return 0;
 }

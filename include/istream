@@ -21,6 +21,7 @@
 #include <cctype>
 #include <string>
 #include <streambuf>
+#include <fstream>
 #include <istream_helpers>
 
 #ifndef __STD_HEADER_ISTREAM
@@ -29,25 +30,29 @@
 namespace std{
 
 	typedef basic_istream<char> istream;
+
 #ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_istream<wchar_t> wistream;
 #endif
+
 	template <class charT, class traits> basic_istream<charT,traits>& ws(basic_istream<charT,traits>& is);
 
 	template <class charT, class traits> class basic_istream : virtual public basic_ios<charT,traits> {
 	public:
-
+	
 		typedef charT                     char_type;
 		typedef typename traits::int_type int_type;
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 		typedef traits                    traits_type;
-    
-		explicit basic_istream(basic_streambuf<charT,traits>* sb) : sbuffer(sb), count_last_ufmt_input(0){ }
+    	
+		explicit basic_istream(basic_streambuf<charT,traits>* sb) : sbuffer(0), count_last_ufmt_input(0){
+			sbuffer = sb;
+		}
 		virtual ~basic_istream() { }
 	
 		class sentry;
-
+	
 		basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& (*pf)(basic_istream<charT,traits>&));
 		basic_istream<charT,traits>& operator>>(basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&));
 		basic_istream<charT,traits>& operator>>(ios_base& (*pf)(ios_base&));
@@ -69,23 +74,25 @@ namespace std{
 		}
 		
 		int_type get(){
-			int_type retval = sbuffer->snextc();
+			int_type retval = sbuffer->sgetc();
 			if(retval == traits::eof()){
 				count_last_ufmt_input = 0;
 			}else{
 				count_last_ufmt_input = 1;
+				sbuffer->sbumpc();
 			}
 			return retval;
 		}
 		
 		basic_istream<charT,traits>& get(char_type& c){
-			int_type retval = sbuffer->snextc();
+			int_type retval = sbuffer->sgetc();
 			if(retval == traits::eof()){
 				count_last_ufmt_input = 0;
 				setstate(failbit);
 			}else{
 				count_last_ufmt_input = 1;
 				c = retval;
+				sbuffer->sbumpc();
 			}
 			return *this;
 		}
@@ -98,7 +105,8 @@ namespace std{
 			streamsize i = 0;
 			int_type c;
 			for(i=0;i<n;++i){
-				c= sbuffer->snextc();
+				c= sbuffer->sgetc();
+				sbuffer->sbumpc();
 				if(c == traits::eof() ){
 					if(i==0){
 						setstate(failbit);
@@ -128,7 +136,7 @@ namespace std{
 			streamsize i = 0;
 			int_type c;
 			while(1){		//We will exit internally based upon error conditions
-				c = sbuffer->snextc();
+				c = sbuffer->sgetc();
 				if(c == traits::eof()){
 					if(i==0){
 						setstate(failbit);
@@ -142,16 +150,17 @@ namespace std{
 					if(i==0){
 						setstate(failbit);
 					}
-					sbuffer->sputbackc(c);
+//					sbuffer->sputbackc(c);
 					count_last_ufmt_input = i;
 					return *this;
 				}
 				if(sb->sputc(c) != c){	//Error doing output
-					sbuffer->sputbackc(c);
+//					sbuffer->sputbackc(c);
 					count_last_ufmt_input = i;
 					return *this;
 				}
 				++i;
+				sbuffer->sbump();
 			}		
 		}
 		
@@ -163,7 +172,7 @@ namespace std{
 			streamsize i = 0;
 			int_type c;
 			for(i=0;i<n;++i){
-				c= sbuffer->snextc();
+				c= sbuffer->sgetc();
 				if(c == traits::eof() ){
 					if(i==0){
 						setstate(failbit);
@@ -173,6 +182,7 @@ namespace std{
 					count_last_ufmt_input = i;
 					return *this;
 				}
+				sbuffer->sbump();
 				if(c == delim){
 					if(i==0){
 						setstate(failbit);
@@ -188,11 +198,12 @@ namespace std{
 			streamsize i;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->snextc();
+				c = sbuffer->sgetc();
 				if(c == traits::eof()){
 					setstate(eofbit);
 					return *this;
 				}
+				sbuffer->sbump();
 				if(c == delim){
 					return *this;
 				}
@@ -212,12 +223,13 @@ namespace std{
 			streamsize i;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->snextc();
+				c = sbuffer->sgetc();
 				if(c == traits::eof()){
 					setstate(failbit);
 					count_last_ufmt_input = i;
 					return *this;
 				}
+				sbuffer->sbump();
 				s[i] = c;
 			}				
 			return *this;
@@ -244,7 +256,8 @@ namespace std{
 			int_type c;
 			
 			for(i=0;i<n;++i){
-				c = sbuffer->snextc();
+				c = sbuffer->sgetc();
+				sbuffer->sbump();
 				s[i] = c;
 			}
 			count_last_ufmt_input = n;
@@ -292,7 +305,7 @@ namespace std{
 			}
 			return 0;
 		}
-
+	
 		pos_type tellg(){
 			if(fail() !=false){
 				return pos_type(-1);
@@ -330,6 +343,9 @@ namespace std{
 			}
 
 			//Flush any tied buffer
+			if(os.tie() != 0){
+				os.tie()->flush();
+			}
 			ok = true;
 		}
 		~sentry() { }
@@ -474,7 +490,7 @@ namespace std{
 	}
 
 
-};
+}
 
 #endif
 

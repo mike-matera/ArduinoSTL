@@ -234,7 +234,7 @@ namespace std{
 	typedef basic_streambuf<wchar_t> wstreambuf;
 #endif
 
-};
+}
 
 
 

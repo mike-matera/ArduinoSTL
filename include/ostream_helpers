@@ -29,8 +29,8 @@ namespace std{
 
 
 	/* We are making the following template class for serveral reasons.  Firstly,
-	 * we want to keep the main istream code neat and tidy.  Secondly, we want it
-	 * to be easy to do partial specialization of the istream code so that it can
+	 * we want to keep the main ostream code neat and tidy.  Secondly, we want it
+	 * to be easy to do partial specialization of the ostream code so that it can
 	 * be expanded and put into the library.  This will allow us to make application
 	 * code smaller at the expense of increased library size.  This is a fair
 	 * trade-off when there are multiple applications being compiled.  Also, this
@@ -286,7 +286,7 @@ namespace std{
 		}
 	};
 
-};
+}
 
 
 #endif

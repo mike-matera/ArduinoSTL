@@ -70,7 +70,7 @@ namespace std{
 		return mstring.c_str();
 	}
 
-};
+}
 
 #endif
 

@@ -18,3 +18,11 @@
 */
 
 #include <streambuf>
+
+namespace std{
+
+
+
+}
+
+

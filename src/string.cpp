@@ -68,4 +68,4 @@ template<> basic_istream<char, char_traits<char> >& operator>>(
 
 #endif
 
-};
+}

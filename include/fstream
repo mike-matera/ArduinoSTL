@@ -23,6 +23,7 @@
 
 #include <iosfwd>
 #include <cstdio>
+#include <cstdlib>
 #include <ios>
 #include <streambuf>
 
@@ -42,7 +43,7 @@ namespace std{
 
 		//Constructors/destructor:
 
-		basic_filebuf() : basic_streambuf<charT,traits>(), fp(0), pbuffer(0), gbuffer(0), l() {
+		basic_filebuf() : basic_streambuf<charT,traits>(), fp(0), pbuffer(0), gbuffer(0) {
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
@@ -131,6 +132,20 @@ namespace std{
 			return egptr() - gptr();
 		}
 		virtual int_type underflow(){
+			/* Some variables used internally:
+			   Buffer pointers:
+			   charT * mgbeg;
+			   charT * mgnext;
+			   charT * mgend;
+
+			   eback() returns mgbeg
+			   gptr()  returns mgnext
+			   egptr() returns mgend
+
+			   gbump(int n) mgnext+=n
+
+			*/
+
 			if(mgnext == mgbeg){	//Buffer is full
 				return traits::to_int_type(*mgbeg);
 			}
@@ -142,16 +157,25 @@ namespace std{
 			//Adjust current buffer pointer
 			gbump(-offset);
 			//Fill rest of buffer
-//			size_t retval = fread( (egptr() - offset), 1, offset, fp);
-			size_t retval = fscanf(fp, "%1c", (gptr() + 1));
-			if(retval !=offset){ //Slide buffer forward again
-				if(retval == 0){
+//			printf("Running fscanf inside basic_filebuf:\n");
+//			printf("fp: %p\n", fp);
+//			printf("gptr(): %p\n", gptr());
+			int retval = fscanf(fp, "%1c", (gptr() + 1));
+//			int retval = fscanf(fp, "%1c", egptr() - offset);
+//			int retval = fscanf(fp, "%1c", temp_buf);
+			if(retval < 0){
+				printf("Error trying to run scanf\n");
+				abort();
+			}
+			size_t u_retval = retval;
+			if(u_retval !=offset){ //Slide buffer forward again
+				if(u_retval == 0){
 					return traits::eof();
 				}
-				for(size_t i = 1; i <= retval; ++i){
+				for(size_t i = 1; i <= u_retval; ++i){
 					*(egptr() - i) = *(gptr() +retval );
 				}
-				gbump(offset - retval);
+				gbump(offset - u_retval);
 			}
 			return traits::to_int_type(*gptr());
 		}
@@ -286,8 +310,8 @@ namespace std{
 			}
 			return 0;
 		}
-		virtual void imbue(const locale& loc){
-			l = loc;
+		virtual void imbue(const locale&){
+			return;
 		}
 
 
@@ -336,7 +360,7 @@ namespace std{
 		FILE * fp;
 		char_type * pbuffer;
 		char_type * gbuffer;
-		locale l;
+//		locale l;
 	};
 
 
@@ -441,7 +465,7 @@ namespace std{
 		basic_filebuf<charT,traits> sb;
 	};
 
-};
+}
 
 #endif
 
