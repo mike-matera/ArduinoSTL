@@ -12,7 +12,7 @@ ULIBS = -luClibc++ -lc -lsupc++
 endif
 
 
-UCXX	= g++ -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src
+UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src
 
 UFLAGS	=	-L../src
 
