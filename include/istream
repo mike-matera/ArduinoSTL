@@ -464,7 +464,9 @@ namespace std{
 
 	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char& c){
 		typename basic_istream<char,traits>::sentry s(is);
-		is.get(c);
+		char b;
+		is.get(b);
+		c = b;
 		return is;
 	}
 	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char& c){

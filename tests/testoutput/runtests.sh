@@ -158,6 +158,19 @@ else
 fi
 
 
+#Test of fstreamtest
+
+LD_LIBRARY_PATH="../../src" ../fstreamtest > fstreamtest.test
+cmp fstreamtest.good fstreamtest.test
+if [ "$?" -eq "1" ]
+then
+	echo "fstreamtest test      FAILED"
+	exit 1;
+else
+	echo "fstreamtest test      OK"
+fi
+
+
 
 #Test of bitsettest
 

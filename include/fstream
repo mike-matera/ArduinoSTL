@@ -72,27 +72,27 @@ namespace std{
 				return 0;
 			}
 			mode = mode & ~ios_base::ate;
-			if(mode == ios_base::out || mode == (ios_base::out & ios_base::trunc)){
+			if(mode == ios_base::out || mode == (ios_base::out | ios_base::trunc)){
 				fp = fopen(s, "w" );
-			}else if(mode == (ios_base::out & ios_base::app)){
+			}else if(mode == (ios_base::out | ios_base::app)){
 				fp = fopen(s, "a");
 			}else if(mode == ios_base::in){
 				fp = fopen(s, "r");
-			}else if(mode == (ios_base::in & ios_base::out)){
+			}else if(mode == (ios_base::in | ios_base::out)){
 				fp = fopen(s, "r+");
-			}else if(mode == (ios_base::in & ios_base::out & ios_base::trunc)){
+			}else if(mode == (ios_base::in | ios_base::out | ios_base::trunc)){
 				fp = fopen(s, "w+");
-			}else if(mode == (ios_base::binary & ios_base::out) 
-				|| mode==(ios_base::binary & ios_base::out & ios_base::trunc))
+			}else if(mode == (ios_base::binary | ios_base::out) 
+				|| mode==(ios_base::binary | ios_base::out | ios_base::trunc))
 			{
 				fp = fopen(s, "wb");
-			}else if(mode == (ios_base::binary & ios_base::out & ios_base::app)){
+			}else if(mode == (ios_base::binary | ios_base::out | ios_base::app)){
 				fp = fopen(s, "ab");
-			}else if(mode == (ios_base::in & ios_base::binary)){
+			}else if(mode == (ios_base::in | ios_base::binary)){
 				fp = fopen(s, "rb");
-			}else if(mode == (ios_base::in & ios_base::binary & ios_base::out)){
+			}else if(mode == (ios_base::in | ios_base::binary | ios_base::out)){
 				fp = fopen(s, "r+b");
-			}else if(mode == (ios_base::in & ios_base::binary & ios_base::out & ios_base::trunc)){
+			}else if(mode == (ios_base::in | ios_base::binary | ios_base::out | ios_base::trunc)){
 				fp = fopen(s, "w+b");
 			}
 
@@ -145,35 +145,61 @@ namespace std{
 
 			*/
 
-			if(basic_streambuf<charT,traits>::mgnext == basic_streambuf<charT,traits>::mgbeg){	//Buffer is full
-				return traits::to_int_type(*basic_streambuf<charT,traits>::mgbeg);
+			if(basic_streambuf<charT,traits>::eback() == 0){
+				//No buffer, so...
+				charT c;
+				int retval;
+				retval = fscanf(fp, "%1c", &c);
+
+				printf("Calling zero buffer underflow\n");
+
+				if(retval == EOF){
+					return traits::eof();
+				}
+				if(retval < 0){
+					abort();
+				}
+				return c;
+			}
+
+			if(basic_streambuf<charT,traits>::eback() == basic_streambuf<charT,traits>::gptr()){	//Buffer is full
+				return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 			}
 			//Shift entire buffer back to the begining
 			size_t offset = basic_streambuf<charT,traits>::gptr() - basic_streambuf<charT,traits>::eback();
-			for(charT * i = basic_streambuf<charT,traits>::gptr(); i < basic_streambuf<charT,traits>::egptr(); i++){
+			size_t amountData = basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr();
+
+			for(charT * i = basic_streambuf<charT,traits>::gptr(); i < basic_streambuf<charT,traits>::egptr(); ++i){
 				*(i-offset) = *i;
 			}
-			//Adjust current buffer pointer
-			basic_streambuf<charT,traits>::gbump(-offset);
+
 			//Fill rest of buffer
-			int retval = fscanf(fp, "%1c", (basic_streambuf<charT,traits>::gptr() + 1));
+			int retval;
+			retval = fscanf(fp, "%1c",
+				(basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr() +
+					basic_streambuf<charT,traits>::eback() )
+			);
+
+			size_t u_retval = retval;
+			if(retval < 0 ){
+				u_retval = 0;
+			}
+			if(u_retval !=offset){ //Slide buffer forward again
+				for(size_t i = 0; i < amountData + u_retval; ++i){
+					*(basic_streambuf<charT,traits>::egptr() - i - 1) =
+						*(basic_streambuf<charT,traits>::eback() + amountData + retval - i - 1);
+				}
+			}
+
+			basic_streambuf<charT,traits>::gbump(-((long)u_retval));
+
 			if(retval == EOF){
 				return traits::eof();
 			}else if(retval < 0){
 				printf("Error trying to run scanf\n");
 				abort();
 			}
-			size_t u_retval = retval;
-			if(u_retval !=offset){ //Slide buffer forward again
-				if(u_retval == 0){
-					return traits::eof();
-				}
-				for(size_t i = 1; i <= u_retval; ++i){
-					*(basic_streambuf<charT,traits>::egptr() - i) = 
-						*(basic_streambuf<charT,traits>::gptr() +retval );
-				}
-				basic_streambuf<charT,traits>::gbump(offset - u_retval);
-			}
+
 			return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 		}
 		virtual int_type uflow(){
@@ -416,7 +442,9 @@ namespace std{
 			//Passing the address of sb
 		}
 		explicit basic_ifstream(const char* s, ios_base::openmode mode = ios_base::in) : basic_istream<charT,traits>(&sb){
-			sb.open(s, mode);
+			if(sb.open(s, mode) == 0){
+				basic_ios<charT,traits>::setstate(ios_base::failbit);
+			}
 		}
 		basic_filebuf<charT,traits>* rdbuf() const{
 			return &sb;
@@ -451,7 +479,9 @@ namespace std{
 		explicit basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc) :
 			basic_ostream<charT,traits>(&sb)
 		{
-			sb.open(s, mode);
+			if(sb.open(s, mode) == 0){
+				basic_ios<charT,traits>::setstate(ios_base::failbit);
+			}
 		}
 
 		basic_filebuf<charT,traits>* rdbuf() const{

@@ -128,6 +128,7 @@ cleanbin:
 
 clean:	cleanobjs cleanbin
 	$(MAKE) -C testoutput clean
+	rm -f fstreamtest.out
 
 cleanall:	cleanobjs cleanbin
 
