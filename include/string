@@ -468,7 +468,12 @@ public:
 		return find(basic_string<Ch, Tr, A>(s), pos);
 	}
 	size_type find (Ch c, size_type pos = 0) const{
-		return find(basic_string<Ch, Tr, A>(1,c), pos);
+		for(size_type i = pos; i < length(); ++i){
+			if(operator[](i) == c){
+				return i;
+			}
+		}
+		return npos;
 	}
 	size_type rfind(const basic_string& str, size_type pos = npos) const{
 		if(pos >= length()){

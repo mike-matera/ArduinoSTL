@@ -5,8 +5,15 @@
 
 class testClass{
 public:
-	void write(){
+	virtual void write(){
 		std::cout << "testClass::write()" << std::endl;
+	}
+};
+
+class testSubClass : public testClass{
+public:
+	virtual void write(){
+		std::cout << "testSubClass::write()" << std::endl;
 	}
 };
 
@@ -47,7 +54,6 @@ int main(){
 	for(j = temp.begin(); j!=temp.end(); j++){
 		std::cout << "j: " << *j << std::endl;
 	}
-
 
 	std::cout << "\nList multi-insert test\n";
 	i = temp.end();
@@ -110,6 +116,11 @@ int main(){
 		std::cout << *i << " ";
 	}
 	std::cout << std::endl;
+
+	std::cout << "\nTesting front() and back()\n";
+	std::cout << "Front (should be 21.2): " << temp.front() << std::endl;
+	std::cout << "Back (should be 12.8): " << temp.back() << std::endl;
+
 
 	std::cout << "\nTesting splice" << std::endl;
 
@@ -348,17 +359,18 @@ int main(){
 	std::cout << "\nTesting lists with pointer parameters" << std::endl;
 
 	testPointer.clear();
-//	testPointer.push_back(new testClass());
-	testPointer.push_back(new testClass());
+	
+	testPointer.insert(testPointer.end(), new testSubClass());
 
-	testPointerIterator = testPointer.begin();
-	while(testPointerIterator != testPointer.end()){
-		(*testPointerIterator)->write();
-		++testPointerIterator;
+	if(testPointer.size() > 0){
+
+		testPointerIterator = testPointer.begin();
+		while(testPointerIterator != testPointer.end()){
+			(*testPointerIterator)->write();
+			++testPointerIterator;
+		}
 	}
-//	delete testPointer.back();
-//	testPointer.pop_back();
-	delete testPointer.back();
+	delete (testPointer.back());
 	testPointer.pop_back();
 
 

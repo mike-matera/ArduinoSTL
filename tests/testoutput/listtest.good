@@ -54,6 +54,10 @@ The following two lines should be identical:
 12.8 22.4 37.9 48.5 21.2
 12.8 22.4 37.9 48.5 21.2 
 
+Testing front() and back()
+Front (should be 21.2): 21.2
+Back (should be 12.8): 12.8
+
 Testing splice
 The following two lines should be identical:
 12.8 85.4 24.6 69.7 22.4 37.9 48.5 21.2
@@ -89,7 +93,7 @@ The following three lines should be identical
 69.7 24.6 85.4 21.2 48.5 37.9 22.4 12.8 
 
 Testing lists with pointer parameters
-testClass::write()
+testSubClass::write()
 
 Testing sorting
 The following two lines should be identical:

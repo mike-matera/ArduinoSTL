@@ -10,3 +10,6 @@ Replace the IO stream library with an unbuffered version.  This should be
 	according to spec.
 
 Change ostream code so that it uses fill/width properly
+
+Clean up the list header - factor out common code of many of the function
+	to make everything smaller - maybe

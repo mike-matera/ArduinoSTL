@@ -371,16 +371,16 @@ namespace std{
 	}
 
 	template<class T, class Allocator> typename list<T, Allocator>::reference list<T, Allocator>::front(){
-		return *list_start->val;
+		return *(list_start->val);
 	}
 	template<class T, class Allocator> typename list<T, Allocator>::const_reference list<T, Allocator>::front() const{
-		return *list_start->val;
+		return *(list_start->val);
 	}
 	template<class T, class Allocator> typename list<T, Allocator>::reference list<T, Allocator>::back(){
-		return *list_end->previous->val;
+		return *(list_end->previous->val);
 	}
 	template<class T, class Allocator> typename list<T, Allocator>::const_reference list<T, Allocator>::back() const{
-		return *list_end->previous->val;
+		return *(list_end->previous->val);
 	}
 
 
@@ -442,25 +442,22 @@ namespace std{
 		list<T, Allocator>::insert(iterator position, const T& x)
 	{
 		node * temp = new node(x);
-/*		if(list_start == 0 && position == begin()){	//Deal with empty situation
+
+		temp->previous = position.link_struct()->previous;
+		temp->next = position.link_struct();
+
+		if(temp->previous == 0){
 			list_start = temp;
-			list_end = temp;
-			++elements;
-			return begin();
 		}else{
-*/			temp->previous = position.link_struct()->previous;
-			temp->next = position.link_struct();
-			if(position.link_struct()->previous !=0){
-				position.link_struct()->previous->next = temp;
-				position.link_struct()->previous = temp;
-			}
-			++elements;
-			--position;
-			return position;
-/*		}
-		//This should never happen
+			position.link_struct()->previous->next = temp;
+		}
+
+		position.link_struct()->previous = temp;
+
+		++elements;
+		--position;
 		return position;
-*/	}
+	}
 
 	template<class T, class Allocator> void list<T, Allocator>::insert(iterator position, size_type n, const T& x){
 		for(typename list<T, Allocator>::size_type i = 0; i < n; ++i){
