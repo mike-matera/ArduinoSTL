@@ -27,9 +27,11 @@
 //#include <iostream>
 
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 #include <wchar.h>
+#ifdef __UCLIBCXX_HAS_WCTYPE_H
 #include <wctype.h>
+#endif
 #endif
 
 #ifndef __HEADER_STD_STRING

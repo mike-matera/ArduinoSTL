@@ -21,9 +21,11 @@
 #include <exception>
 #include <memory>
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 #include <wchar.h>
+#ifdef __UCLIBCXX_HAS_WCTYPE_H
 #include <wctype.h>
+#endif
 #endif
 
 #ifndef __HEADER_CHAR_TRAITS
@@ -121,7 +123,7 @@ namespace std{
 	};
 
 
-#ifdef __USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	template<> struct char_traits<wchar_t> {
 		typedef wchar_t char_type;
 		typedef wint_t int_type;

@@ -50,7 +50,7 @@
 #include <cstddef>
 #include <ctime>
 
-#if _GLIBCPP_HAVE_WCHAR_H
+#ifdef __UCLIBCXX_HAS_WCHAR__
 #include <wchar.h>
 #endif
 
@@ -129,7 +129,7 @@ namespace std
 #undef wprintf
 #undef wscanf
 
-#if _GLIBCPP_USE_WCHAR_T
+#ifdef __UCLIBCXX_HAS_WCHAR__
 namespace std
 {
   using ::wint_t;
@@ -252,6 +252,6 @@ namespace std
 }
 #endif
 
-#endif //_GLIBCPP_USE_WCHAR_T
+#endif //__UCLIBCXX_HAS_WCHAR__
 
 #endif 

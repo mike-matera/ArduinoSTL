@@ -232,7 +232,7 @@ namespace std{
 
 
 	typedef basic_streambuf<char>     streambuf;
-#ifdef USE_WCHAR
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_streambuf<wchar_t> wstreambuf;
 #endif
 

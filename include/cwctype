@@ -48,8 +48,10 @@
 
 #include <bits/c++config.h>
 
-#if _GLIBCPP_HAVE_WCTYPE_H
+#ifdef __UCLIBCXX_HAS_WCHAR__
+#ifdef __UCLIBCXX_HAS_WCTYPE_H
 #include <wctype.h>
+#endif
 #endif
 
 // Get rid of those macros defined in <wctype.h> in lieu of real functions.
@@ -73,7 +75,7 @@
 #undef wctrans
 #undef wctype
 
-#if _GLIBCPP_USE_WCHAR_T
+#if __UCLIBCXX_HAS_WCHAR__
 namespace std
 {
   using ::wint_t; 	  // cwchar
@@ -101,6 +103,6 @@ namespace std
   using ::wctrans;
   using ::wctype;
 }
-#endif //_GLIBCPP_USE_WCHAR_T
+#endif //__ULIBCXX_HAS_WCHAR__
 
 #endif 

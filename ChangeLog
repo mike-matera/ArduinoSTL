@@ -1,3 +1,7 @@
+0.1.9
+Peter S. Mazinger:	wchar cleanups across the board
+
+
 0.1.8
 -	Fixed problem in <map> which returned this instead of *this for operator=
 -	Fixed an problem using . instead of ->  Oops.

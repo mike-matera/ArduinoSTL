@@ -425,7 +425,9 @@ namespace std{
 
 
 	typedef basic_filebuf<char>    filebuf;
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_filebuf<wchar_t> wfilebuf;
+#endif
 
 
 
