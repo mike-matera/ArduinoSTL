@@ -354,7 +354,7 @@ public:
 			++position;
 		}
 //		--vector<Ch, A>::elements;
-		pop_back();
+		vector<Ch, A>::pop_back();
 		return temp;
 	}
 
