@@ -5,6 +5,19 @@
 -	Moved operator+(string, string) into library binary.
 -	Added <iomanip> header.  Forgot that little thing.  Oops.
 -	Fixed insert for vector<int>.  Technique shamelessly stolen from glibc++
+-	fix problem in list which incorrectly handles pointers
+-	Create native std::string::find(Ch) instead of calling through string constructor.
+-	Fix of istream getline (only sets failbit if extracted 0 chars, not copied 0 chars)
+-	Fix string::find so we can scan the last character in the string.
+-	Fix map iterator overloading class definion
+-	Fix map iterator returning value not reference
+-	Change tests to check changes
+-	Change ios::operator() to return 1 instead of this
+-	Fix [i|o]stream to check open() return value
+-	Change fstream open functions to use the proper bitwise operators
+-	Change allocator functionality so that it works according to spec.
+-	Conversion of STL to use allocator::construct/destroy
+-	Make test suite nicer.
 
 
 0.1.7 - 2004-12-23

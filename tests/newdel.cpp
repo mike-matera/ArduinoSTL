@@ -1,4 +1,5 @@
 #include <new>
+#include <memory>
 #include <cstdio>
 
 struct test{
@@ -12,7 +13,7 @@ protected:
 
 public:
 	base() : a(0){
-		printf("Executing default base class constructor\n");
+		printf("Executing default base class constructor. a: %i\n", a);
 	}
 	
 	virtual ~base(){
@@ -30,7 +31,7 @@ protected:
 	float f;
 public:
 	sub() : f(0){
-		printf("Executing default sub class constructor\n");
+		printf("Executing default sub class constructor. a: %i, f: %f\n", base::a, f);
 	}
 	virtual ~sub(){
 		printf("Executing sub class destructor\n");
@@ -75,6 +76,15 @@ int main(){
 	b[0].print();
 	delete [] b;
 	b = 0;	
+
+	printf("Checking allocator\n");
+	std::allocator<base> al;
+	b = al.allocate(1);
+	al.construct(b, base());
+	b->print();
+	al.destroy(b);
+	al.deallocate(b, 1);
+	b = 0;
 
 	return 0;
 }

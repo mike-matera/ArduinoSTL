@@ -12,20 +12,27 @@ int main(){
 
 	i = test.begin();
 
+	std::cout << "\nTest of push_back():\n";
+	std::cout << "The following two lines should be identical.\n";
+
 	test.push_back(12);
 	test.push_back(13);
 	test.push_back(14);
 
-	std::cout << "Deque elements:\n";
+	std::cout << "12 13 14 " << std::endl;
+
 	for(i = test.begin(); i !=test.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Deque elements by subscript:\n";
+	std::cout << "\nTest of subscripting:\n";
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "12 13 14 " << std::endl;
 	for(k = 0; k < test.size(); ++k){
-		std::cout << test[k] << std::endl;
+		std::cout << test[k] << " ";
 	}
-
+	std::cout << std::endl;
 
 	std::cout << "Pushing many elements to the front:" << std::endl;
 	for(k = 1; k < 24; ++k){
@@ -34,86 +41,115 @@ int main(){
 		std::cout << " " << test.front() << std::endl;
 	}
 
-
-	std::cout << "Deque elements:\n";
+	std::cout << "Complete list of elements:\n";
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 \n";
 	for(k = 0; k < test.size(); ++k){
-		std::cout << test[k] << std::endl;
+		std::cout << test[k] << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Push back:" << std::endl;
+
+	std::cout << "\n Testing push_back():" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 2.5\n";
 	test.push_back(2.5);
 	for(k = 0; k < test.size(); ++k){
-		std::cout << test[k] << std::endl;
+		std::cout << test[k] << " ";
 	}
+	std::cout << std::endl;
 
-
-	std::cout << "Pop_front:" << std::endl;
+	std::cout << "\nTesting pop_front:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 2.5\n";
 	test.pop_front();
 	for(i = test.begin(); i !=test.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 	
 
-	std::cout << "Pop_back:" << std::endl;
+	std::cout << "\nTesting pop_back:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 \n";
 	test.pop_back();
 	for(i = test.begin(); i !=test.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Copy constructor:" << std::endl;
 
+	std::cout << "\nCopy constructor:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 \n";
 	std::deque<double> test2(test);
 	i = test2.begin();
 	while(i !=test2.end()){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 		++i;
 	}
+	std::cout << std::endl;
 
 
-	std::cout << "Assignement:" << std::endl;
+	std::cout << "\nAssignement:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 \n";
 	test2.clear();
 	test2 = test;
 	for(i = test2.begin(); i !=test2.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Insert near beginning:" << std::endl;
+	std::cout << "\nInsert near beginning:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 25 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 \n";
 	i = test.begin();
 	++i;
 	i++;
 	test.insert(i, 25);
 	for(i = test.begin(); i !=test.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Insert near end:" << std::endl;
+	std::cout << "\nInsert near end:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 25 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 \n";
 	i=test.end();
 	--i;
 	i--;
 	test.insert(i, 27);
 	for(i = test.begin(); i !=test.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Erase near begining:" << std::endl;
+	std::cout << "\nErase near begining:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 \n";
 	i = test.begin();
 	++i;
 	i++;
 	test.erase(i);
 	for(i = test.begin(); i !=test.end(); ++i){
-		std::cout << *i << std::endl;
+		std::cout << *i << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << "Erase near end:" << std::endl;
+	std::cout << "\nErase near end:" << std::endl;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 \n";
 	i = test.end();
 	i--;
 	--i;
 	i--;
 	i = test.erase(i);
 	for(j = test.begin(); j !=test.end(); ++j){
-		std::cout << *j << std::endl;
+		std::cout << *j << " ";
 	}
-	std::cout << "Returned iterator points to: " << *i << std::endl;
+	std::cout << std::endl;
+	std::cout << "Returned iterator points to: " << *i << " - should be 13" << std::endl;
 
 
 	return 0;

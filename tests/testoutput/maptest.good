@@ -1,11 +1,11 @@
 Start of map test
 Adding a few elements...
 Elements:
-test["b"] = 2
-test["a"] = 1
-test["k"] = 11
+test["b"] = 2 - should be 2
+test["a"] = 1 - should be 1
+test["k"] = 11 - should be 11
 Reasigning the value of a
-test["a"] = 65
+test["a"] = 65 - should be 65
 All of the contents of test:
 First element: a: 65
 First element: a: 65
@@ -31,6 +31,7 @@ b: 2
 c: 3
 g: 6
 k: 11
+Attempting to insert same element again: no insert - PASSED
 Erasing element "g"
 a: 65
 b: 2

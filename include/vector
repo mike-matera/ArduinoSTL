@@ -66,26 +66,31 @@ namespace std{
 		typedef std::reverse_iterator<iterator> reverse_iterator;
 		typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		explicit vector(const Allocator& al= Allocator()): data(0), defaultValue(T()), 
+		explicit vector(const Allocator& al= Allocator()): data(0), //defaultValue(T()), 
 			data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
 			data = a.allocate(data_size);
 		}
 
 		explicit vector(size_type n, const T& value = T(), const Allocator& al= Allocator()) : 
-			data(0), defaultValue(value), data_size(0), elements(0), a(al)
+			data(0), 
+//			defaultValue(value),
+			data_size(0), elements(0), a(al)
 		{
 			elements = n;
 			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
-				data[i] = value;
+//				data[i] = value;
+				a.construct( data+i, value);
 			}
 		}
 
 		template <class InputIterator> vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
-			data(0), defaultValue(T()), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
+			data(0),
+//			defaultValue(T()),
+			data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
 			data = a.allocate(data_size);
 			assign(first, last);
@@ -96,15 +101,19 @@ namespace std{
 
 			elements  = x.elements;
 			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
-			defaultValue = x.defaultValue;
+//			defaultValue = x.defaultValue;
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
-				data[i] = x.data[i];
+//				data[i] = x.data[i];
+				a.construct(data+i, x.data[i]);
 			}	
 		}
 
 		~vector(){
+			for(size_t i = 0; i < elements; ++i){
+				a.destroy(data + i);
+			}
 			a.deallocate(data, data_size);
 			data = 0;
 			elements = 0;
@@ -116,14 +125,44 @@ namespace std{
 				return *this;
 			}
 
-			delete [] data;
-			data = 0;
+/*			if(data_size < x.elements){
+				for(size_t i = 0; i < elements; ++i){
+					a.destroy(data + i);
+				}
+				a.deallocate(data);
+				data = 0;
 
-			elements = x.elements;
-			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
-			data = a.allocate(data_size);
+				data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
+				data = a.allocate(data_size);
+				elements = x.elements;
+				for(size_t i = 0; i< elements; ++i){
+					a.construct(data+i, x.data[i]);
+				}
+			}else{
+				size_t minElements = elements;
+				if(minElements > x.elements){
+					minElements = x.elements;
+				}
 
-			for(size_type i = 0; i < elements; i++){
+				//Construct extra needed elements (if aplicable)
+				for(size_t i = elements; i < x.elements; +i){
+					a.construct(data+i, x.data[i]);
+				}
+				//Destroy extra elements (if applicable)
+				for(size_t i = minElements; i < elements; ++i){
+					a.destroy(data+i);
+				}
+				//Copy over the rest of the elements
+				for(size_t i = 0; i < minElements; ++i){
+					data[i] = x.data[i];
+				}
+				elements = x.elements;
+			}*/
+
+//			resize(x.elements, defaultValue);
+			resize(x.elements);
+
+			for(size_t i = 0; i < elements; ++i){
 				data[i] = x.data[i];
 			}
 
@@ -135,8 +174,8 @@ namespace std{
 			insert(begin(), first, last);
 		}
 
-//		template <class Size, class U> void assign(Size n, const U& u = U()){
-		void assign(size_type n, const T& u ){
+		template <class Size, class U> void assign(Size n, const U& u = U()){
+//		void assign(size_type n, const T& u ){
 			clear();
 			resize(n, u);
 		}
@@ -240,11 +279,13 @@ namespace std{
 		}
 
 		inline void pop_back(){
+//			resize(size() - 1, defaultValue);
 			resize(size() - 1);
 		}
 
 		iterator insert(iterator position, const T& x = T()){
 			size_type index = position - data;
+//			resize(size() + 1, defaultValue);
 			resize(size() + 1);
 			for(size_type i = elements - 1; i > index; --i){
 				data[i] = data[i-1];
@@ -255,6 +296,7 @@ namespace std{
 
 		void _insert_fill(iterator position, size_type n, const T & x){
 			size_type index = position - data;
+//			resize(size() + n, defaultValue);
 			resize(size() + n);
 
 			for(size_type i = elements -1; (i > (index+n-1)); --i){
@@ -301,6 +343,7 @@ namespace std{
 			for(size_type i = index; i < (elements - 1); ++i){
 				data[i] = data[i+1];
 			}
+//			resize(size() - 1, defaultValue);
 			resize(size() - 1);
 			return (data + index);
 		}
@@ -311,6 +354,7 @@ namespace std{
 			for(size_type i = index; i < (elements - width) ;++i){
 				data[i] = data[i+width];
 			}
+//			resize(size() - width, defaultValue);
 			resize(size() - width);
 			return (data + index);
 		}
@@ -345,7 +389,7 @@ namespace std{
 
 	protected:
 		T* data;
-		T defaultValue;
+//		T defaultValue;
 		size_type data_size;
 		size_type elements;
 		Allocator a;
@@ -364,7 +408,8 @@ namespace std{
 			data = a.allocate(data_size);
 
 			for(size_type i = 0; i<elements; ++i){
-				data[i] = temp_ptr[i];
+				a.construct(data+i, temp_ptr[i]);
+				a.destroy(temp_ptr+i);
 			}
 			a.deallocate(temp_ptr, temp_size);
 		}
@@ -372,16 +417,16 @@ namespace std{
 
 	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, T c){
 		if(sz > elements){      //Need to actually call constructor
-			size_type temp_el = elements;
 			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
 
-			elements = sz;
-
-			for(size_type i = temp_el; i<elements;i++){
-				data[i] = c;
+			for(size_type i = elements; i<sz ; ++i){
+				a.construct(data+i, c);
 			}
+			elements = sz;
 		}else{
-			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
+			for(size_t i = sz; i< elements; ++i){
+				a.destroy(data+i);
+			}
 			elements = sz;
 		}
 	}

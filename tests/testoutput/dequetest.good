@@ -1,12 +1,14 @@
 deque test start
-Deque elements:
-12
-13
-14
-Deque elements by subscript:
-12
-13
-14
+
+Test of push_back():
+The following two lines should be identical.
+12 13 14 
+12 13 14 
+
+Test of subscripting:
+The following two lines should be identical
+12 13 14 
+12 13 14 
 Pushing many elements to the front:
 Pushing in: 1 1
 Pushing in: 2 2
@@ -31,272 +33,53 @@ Pushing in: 20 20
 Pushing in: 21 21
 Pushing in: 22 22
 Pushing in: 23 23
-Deque elements:
-23
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
-Push back:
-23
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
-2.5
-Pop_front:
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
-2.5
-Pop_back:
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
+Complete list of elements:
+The following two lines should be identical
+23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+
+ Testing push_back():
+The following two lines should be identical
+23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 2.5
+23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 2.5 
+
+Testing pop_front:
+The following two lines should be identical
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 2.5
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 2.5 
+
+Testing pop_back:
+The following two lines should be identical
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+
 Copy constructor:
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
+The following two lines should be identical
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+
 Assignement:
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
+The following two lines should be identical
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+
 Insert near beginning:
-22
-21
-25
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
+The following two lines should be identical
+22 21 25 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+22 21 25 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+
 Insert near end:
-22
-21
-25
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-27
-13
-14
+The following two lines should be identical
+22 21 25 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 
+22 21 25 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 
+
 Erase near begining:
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-27
-13
-14
+The following two lines should be identical
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 
+
 Erase near end:
-22
-21
-20
-19
-18
-17
-16
-15
-14
-13
-12
-11
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
-12
-13
-14
-Returned iterator points to: 13
+The following two lines should be identical
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
+Returned iterator points to: 13 - should be 13

@@ -613,7 +613,7 @@ protected:
 		typename map<Key, T, Compare, Allocator>::reference
 		map<Key, T, Compare, Allocator>::operator[](const key_type & k)
 	{
-		iterator i = ifind(k);
+/*		iterator i = ifind(k);
 		if( !c( i->first, k) && !c(k, i->first) ){
 			return i->second;
 		}
@@ -621,6 +621,9 @@ protected:
 		t.first = k;
 		t.second = T();
 		return insert(t).first->second;
+*/
+		//This is from the spec and is quite ugly.
+		return (*((insert(make_pair(k, T()))).first)).second;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

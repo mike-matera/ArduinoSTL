@@ -34,14 +34,14 @@ int main(){
 
 
 	std::cout << "Elements:" << std::endl;
-	std::cout << "test[\"b\"] = " << test["b"] << std::endl;
-	std::cout << "test[\"a\"] = " << test["a"] << std::endl;
-	std::cout << "test[\"k\"] = " << test["k"] << std::endl;
+	std::cout << "test[\"b\"] = " << test["b"] << " - should be 2" << std::endl;
+	std::cout << "test[\"a\"] = " << test["a"] << " - should be 1" << std::endl;
+	std::cout << "test[\"k\"] = " << test["k"] << " - should be 11" << std::endl;
 
 
 	std::cout << "Reasigning the value of a" << std::endl;
 	test["a"] = 65;
-	std::cout << "test[\"a\"] = " << test["a"] << std::endl;
+	std::cout << "test[\"a\"] = " << test["a"] << " - should be 65" << std::endl;
 
 	std::cout << "All of the contents of test:" << std::endl;
 
