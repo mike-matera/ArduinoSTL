@@ -77,13 +77,8 @@ include/system_configuration.h: .config
 headers: include/system_configuration.h
 
 install:
-	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	$(INSTALL) -m 644 src/lib*.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
-		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa src/*.so $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa src/*.so.$(MAJOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa src/*.so.$(MAJOR_VERSION).$(MINOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
 	$(MAKE) -C include install
+	$(MAKE) -C src install
 	$(MAKE) -C bin install
 
 
