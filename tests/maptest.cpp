@@ -101,6 +101,16 @@ int main(){
 		++i;
 	}
 
+	std::cout << "Attempting to insert same element again: ";
+	a.first="g";
+	a.second = 6;
+	c = test.insert(a);
+	if(c.second == true){
+		std::cout << "inserted  - FAILED\n";
+	}else{
+		std::cout << "no insert - PASSED\n";
+	}
+
 	j = test.find("g");
 	std::cout << "Erasing element \"g\"" << std::endl;
 	test.erase(j);
@@ -145,8 +155,6 @@ int main(){
 	std::cout << "map_char_myClass['z'] = " << map_char_myClass['z'] << std::endl; // Note default value is added.
 	
 
-
-	
 	return 0;
 }
 

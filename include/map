@@ -620,7 +620,6 @@ protected:
 		pair<Key, T> t;
 		t.first = k;
 		t.second = T();
-		
 		return insert(t).first->second;
 	}
 

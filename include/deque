@@ -490,6 +490,7 @@ namespace std{
 	template<class T, class Allocator> typename
 		deque<T, Allocator>::iterator deque<T, Allocator>::insert(iterator position, const T& x)
 	{
+		reserve(elements+1);
 		if(position.element > (elements/2)){
 			//Push all elements back 1
 			push_back(T());
@@ -510,13 +511,19 @@ namespace std{
 	template<class T, class Allocator> void deque<T, Allocator>::
 		insert(typename deque<T, Allocator>::iterator position, size_type n, const T& x)
 	{
-		
+		reserve(elements + n);
+		for(size_t i =0; i < n; ++i){
+			position = insert(position, x);
+		}
 	}
 
 	template<class T, class Allocator> template <class InputIterator> 
 		void deque<T, Allocator>::insert (iterator position, InputIterator first, InputIterator last)
 	{
-		
+		while(first != last){
+			position = insert(position, *first);
+			++first;
+		}
 	}
 
 	template<class T, class Allocator> void deque<T, Allocator>::pop_front(){
