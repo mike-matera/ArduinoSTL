@@ -7,10 +7,10 @@ int main(){
 	std::string stest;
 	ctest.push_back('t');
 
-	std::vector<unsigned int> test;
-	std::vector<unsigned int> test1;
+	std::vector<int> test;
+	std::vector<int> test1;
 	unsigned int temp;
-	std::vector<unsigned int>::iterator i,j;
+	std::vector<int>::iterator i,j;
 
 	test.push_back(1);
 	test.push_back(2);

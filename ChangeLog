@@ -4,6 +4,7 @@
 -	Added string find, rfind, find_first_of and find_last_of functions
 -	Moved operator+(string, string) into library binary.
 -	Added <iomanip> header.  Forgot that little thing.  Oops.
+-	Fixed insert for vector<int>.  Technique shamelessly stolen from glibc++
 
 
 0.1.7 - 2004-12-23

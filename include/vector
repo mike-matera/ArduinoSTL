@@ -23,6 +23,7 @@
 #include <iterator>
 #include <func_exception>
 #include <algorithm>
+#include <type_traits>
 
 
 #ifndef __STD_HEADER_VECTOR
@@ -251,8 +252,7 @@ namespace std{
 			return (data + index);
 		}
 
-		//FIXME - problems with x = typeof(int).  Works fine with uint
-		void insert(iterator position, size_type n, const T& x ){
+		void _insert_fill(iterator position, size_type n, const T & x){
 			size_type index = position - data;
 			resize(size() + n);
 
@@ -264,7 +264,7 @@ namespace std{
 			}
 		}
 
-		template <class InputIterator> void insert(iterator position, InputIterator first, InputIterator last){
+		template <class InputIterator> void _insert_from_iterator(iterator position, InputIterator first, InputIterator last){
 			T temp;
 			while(first !=last){
 				temp = *first;
@@ -272,6 +272,27 @@ namespace std{
 				++position;
 				++first;
 			}
+		}
+
+		template <class InputIterator>
+			void _dispatch_insert(iterator position, InputIterator first, InputIterator last, __true_type)
+		{
+			_insert_fill(position, first, last);
+		}
+
+		template <class InputIterator>
+			void _dispatch_insert(iterator position, InputIterator first, InputIterator last, __false_type)
+		{
+				_insert_from_iterator(position, first, last);
+		}
+
+		void insert(iterator position, size_type n, const T& x ){
+			_insert_fill(position, n, x);
+		}
+
+		template <class InputIterator> void insert(iterator position, InputIterator first, InputIterator last){
+			typedef typename __is_integer<InputIterator>::value __some_type;
+			_dispatch_insert(position, first, last, __some_type());
 		}
 
 		iterator erase(iterator position){

@@ -124,7 +124,7 @@ int main(){
 	b.insert(52);
 	b.insert(92);
 
-	c.assign(20, 0.0);
+	c.assign(20, 0);
 
 	std::cout << "The following two lines should be identical:\n";
 	std::cout << "10 12 19 22 32 38 52 72 92 " << std::endl;
@@ -155,7 +155,7 @@ int main(){
 	b.insert(52);
 	b.insert(92);
 
-	c.assign(20, 0.0);
+	c.assign(20, 0);
 	std::cout << "Size of c: " << c.size() << std::endl;
 
         std::cout << "The following two lines should be identical:\n";
@@ -188,7 +188,7 @@ int main(){
 	b.insert(52);
 	b.insert(92);
 
-	c.assign(20, 0.0);
+	c.assign(20, 0);
 
 	std::cout << "The following two lines should be identical:\n";
 	std::cout << "10 72 " << std::endl;
@@ -219,7 +219,7 @@ int main(){
 	b.insert(52);
 	b.insert(92);
 
-	c.assign(20, 0.0);
+	c.assign(20, 0);
 
 	std::cout << "The following two lines should be identical:\n";
 	std::cout << "10 19 22 38 72 92 " << std::endl;
