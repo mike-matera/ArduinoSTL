@@ -54,8 +54,6 @@ public:
 
 	typedef typename vector<Ch, A>::iterator iterator;
 	typedef typename vector<Ch, A>::const_iterator const_iterator;
-	typedef char * iterator;
-	typedef char * const_iterator;
 
 	typedef typename vector<Ch, A>::reverse_iterator reverse_iterator;
 	typedef typename vector<Ch, A>::const_reverse_iterator const_reverse_iterator;
