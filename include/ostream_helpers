@@ -28,7 +28,6 @@
 
 namespace std{
 
-
 	/* We are making the following template class for serveral reasons.  Firstly,
 	 * we want to keep the main ostream code neat and tidy.  Secondly, we want it
 	 * to be easy to do partial specialization of the ostream code so that it can
@@ -41,6 +40,8 @@ namespace std{
 	 * require different scanf functions
 	 */
 
+
+
 	template <class traits, class charT, class dataType> class __ostream_printout{
 	public:
 		static void printout(basic_ostream<charT,traits>& stream, const dataType n);
@@ -51,32 +52,46 @@ namespace std{
 		static void printout(basic_ostream<char, traits >& stream, const signed long int n)
 		{
 			char buffer[20];
+			const char * c_ld = "%ld";
+			const char * c_lo = "%lo";
+			const char * c_lX = "%lX";
+			const char * c_lx = "%lx";
+			const char * c_hashlo = "%#lo";
+			const char * c_hashlX = "%#lX";
+			const char * c_hashlx = "%#lx";
+
+			const char * formatString=0;
+
 			if( stream.flags() & ios_base::dec){
-				stream.write(buffer, snprintf(buffer, 20, "%ld", n));
+				formatString = c_ld;
 			}else if( stream.flags() & ios_base::oct){
 				if( stream.flags() & ios_base::showbase){
-					stream.write(buffer, snprintf(buffer, 20, "%#lo", n));
+					formatString = c_hashlo;
 				}else{
-					stream.write(buffer, snprintf(buffer, 20, "%lo", n) );
+					formatString = c_lo;
 				}
 			}else if (stream.flags() & ios_base::hex){
 				if(stream.flags() & ios_base::showbase){
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 20, "%#lX", n) );
+						formatString = c_hashlX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 20, "%#lx", n) );
+						formatString = c_hashlx;
 					}
 				}else{
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 20, "%lX", n) );
+						formatString = c_lX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 20, "%lx", n) );
+						formatString = c_lx;
 					}
 				}
 			}
+
+			stream.write(buffer, snprintf(buffer, 20, formatString, n) );
+
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
+
 		}
 	};
 
@@ -85,29 +100,40 @@ namespace std{
 		static void printout(basic_ostream<char, traits >& stream, const unsigned long int n)
 		{
 			char buffer[20];
+			const char * c_lo = "%lo";
+			const char * c_lu = "%lu";
+			const char * c_lX = "%lX";
+			const char * c_lx = "%lx";
+			const char * c_hashlo = "%#lo";
+			const char * c_hashlX = "%#lX";
+			const char * c_hashlx = "%#lx";
+			const char * formatString=0;
+
 			if( stream.flags() & ios_base::dec){
-				stream.write(buffer, snprintf(buffer, 20, "%lu", n));
+				formatString = c_lu;
 			}else if( stream.flags() & ios_base::oct){
 				if( stream.flags() & ios_base::showbase){
-					stream.write(buffer, snprintf(buffer, 20, "%#lo", n));
+					formatString = c_hashlo;
 				}else{
-					stream.write(buffer, snprintf(buffer, 20, "%lo", n) );
+					formatString = c_lo;
 				}
 			}else if (stream.flags() & ios_base::hex){
 				if(stream.flags() & ios_base::showbase){
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 20, "%#lX", n) );
+						formatString = c_hashlX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 20, "%#lx", n) );
+						formatString = c_hashlx;
 					}
 				}else{
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 20, "%lX", n) );
+						formatString = c_lX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 20, "%lx", n) );
+						formatString = c_lx;
 					}
 				}
 			}
+
+			stream.write(buffer, snprintf(buffer, 20, formatString, n));
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
@@ -121,29 +147,41 @@ namespace std{
 		static void printout(basic_ostream<char, traits >& stream, const signed long long int n)
 		{
 			char buffer[28];
+			const char * lld = "%lld";
+			const char * llo = "%llo";
+			const char * llX = "%llX";
+			const char * llx = "%llx";
+			const char * hashllo = "%#llo";
+			const char * hashllX = "%#llX";
+			const char * hashllx = "%#llx";
+			const char * formatString=0;
+
 			if( stream.flags() & ios_base::dec){
-				stream.write(buffer, snprintf(buffer, 27, "%lld", n));
+				formatString = lld;
 			}else if( stream.flags() & ios_base::oct){
 				if( stream.flags() & ios_base::showbase){
-					stream.write(buffer, snprintf(buffer, 27, "%#llo", n));
+					formatString = hashllo;
 				}else{
-					stream.write(buffer, snprintf(buffer, 27, "%llo", n) );
+					formatString = llo;
 				}
 			}else if (stream.flags() & ios_base::hex){
 				if(stream.flags() & ios_base::showbase){
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 27, "%#llX", n) );
+						formatString = hashllX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 27, "%#llx", n) );
+						formatString = hashllx;
 					}
 				}else{
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 27, "%llX", n) );
+						formatString = llX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 27, "%llx", n) );
+						formatString = llx;
 					}
 				}
 			}
+
+			stream.write(buffer, snprintf(buffer, 27, formatString, n) );
+
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
@@ -155,29 +193,41 @@ namespace std{
 		static void printout(basic_ostream<char, traits >& stream, const unsigned long long int n)
 		{
 			char buffer[28];
+			const char * llo = "%llo";
+			const char * llu = "%llu";
+			const char * llX = "%llX";
+			const char * llx = "%llx";
+			const char * hashllo = "%#llo";
+			const char * hashllX = "%#llX";
+			const char * hashllx = "%#llx";
+			const char * formatString=0;
+
 			if( stream.flags() & ios_base::dec){
-				stream.write(buffer, snprintf(buffer, 27, "%llu", n));
+				formatString = llu;
 			}else if( stream.flags() & ios_base::oct){
 				if( stream.flags() & ios_base::showbase){
-					stream.write(buffer, snprintf(buffer, 27, "%#llo", n));
+					formatString = hashllo;
 				}else{
-					stream.write(buffer, snprintf(buffer, 27, "%llo", n) );
+					formatString = llo;
 				}
 			}else if (stream.flags() & ios_base::hex){
 				if(stream.flags() & ios_base::showbase){
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 27, "%#llX", n) );
+						formatString = hashllX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 27, "%#llx", n) );
+						formatString = hashllx;
 					}
 				}else{
 					if(stream.flags() & ios_base::uppercase){
-						stream.write(buffer, snprintf(buffer, 27, "%llX", n) );
+						formatString = llX;
 					}else{
-						stream.write(buffer, snprintf(buffer, 27, "%llx", n) );
+						formatString = llx;
 					}
 				}
 			}
+
+			stream.write(buffer, snprintf(buffer, 27, formatString, n) );
+
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
@@ -192,19 +242,19 @@ namespace std{
 		static void printout(basic_ostream<char, traits >& stream, const double f)
 		{
 			char buffer[32];
-			char format_string[20];
+			int length;
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					snprintf(format_string, 20, "%%%ue", static_cast<unsigned int>(stream.width()));
+					length = snprintf(buffer, 32, "%*E", static_cast<unsigned int>(stream.width()), f);
 				}else{
-					snprintf(format_string, 20, "%%%ue", static_cast<unsigned int>(stream.width()));
+					length = snprintf(buffer, 32, "%*e", static_cast<unsigned int>(stream.width()), f);
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				snprintf(format_string, 20, "%%%uf", static_cast<unsigned int>(stream.width()));
+				length = snprintf(buffer, 32, "%*f", static_cast<unsigned int>(stream.width()), f);
 			} else {
-				snprintf(format_string, 20, "%%%ug", static_cast<unsigned int>(stream.width()));
+				length = snprintf(buffer, 32, "%*g", static_cast<unsigned int>(stream.width()), f);
 			}
-			stream.write(buffer, snprintf(buffer, 32, format_string, f) );
+			stream.write(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
@@ -216,22 +266,23 @@ namespace std{
 		static void printout(basic_ostream<char, traits >& stream, const long double f)
 		{
 			char buffer[32];
-			char format_string[20];
+			int length;
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					snprintf(format_string, 20, "%%%uLe", static_cast<unsigned int>(stream.width()));
+					length = snprintf(buffer, 32, "%*LE", static_cast<unsigned int>(stream.width()), f);
 				}else{
-					snprintf(format_string, 20, "%%%uLe", static_cast<unsigned int>(stream.width()));
+					length = snprintf(buffer, 32, "%*Le", static_cast<unsigned int>(stream.width()), f);
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				snprintf(format_string, 20, "%%%uLf", static_cast<unsigned int>(stream.width()));
+				length = snprintf(buffer, 32, "%*Lf", static_cast<unsigned int>(stream.width()), f);
 			} else {
-				snprintf(format_string, 20, "%%%uLg", static_cast<unsigned int>(stream.width()));
+				length = snprintf(buffer, 32, "%*Lg", static_cast<unsigned int>(stream.width()), f);
 			}
-			stream.write(buffer, snprintf(buffer, 32, format_string, f) );
+			stream.write(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
+
 		}
 	};
 
@@ -385,7 +436,7 @@ namespace std{
 			wchar_t format_string[20];
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					swprintf(format_string, 20, L"%%%ue", static_cast<unsigned int>(stream.width()));
+					swprintf(format_string, 20, L"%%%uE", static_cast<unsigned int>(stream.width()));
 				}else{
 					swprintf(format_string, 20, L"%%%ue", static_cast<unsigned int>(stream.width()));
 				}
@@ -409,7 +460,7 @@ namespace std{
 			wchar_t format_string[20];
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					swprintf(format_string, 20, L"%%%uLe", static_cast<unsigned int>(stream.width()));
+					swprintf(format_string, 20, L"%%%uLE", static_cast<unsigned int>(stream.width()));
 				}else{
 					swprintf(format_string, 20, L"%%%uLe", static_cast<unsigned int>(stream.width()));
 				}
