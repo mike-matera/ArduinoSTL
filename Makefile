@@ -80,9 +80,7 @@ install:
 	cp -fa src/*.so $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
 	cp -fa src/*.so.$(MAJOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
 	cp -fa src/*.so.$(MAJOR_VERSION).$(MINOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
-	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/include
-	$(INSTALL) -m 644 include/* \
-		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/include
+	$(MAKE) -C include install
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/bin
 	$(INSTALL) -m 755 bin/g++-uc $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/bin
 	

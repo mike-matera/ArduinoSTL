@@ -153,14 +153,18 @@ namespace std{
 		reverse_iterator  operator--(int) {reverse_iterator tmp = *this; ++current; return tmp; }
 
 		reverse_iterator  operator+ (typename iterator_traits<Iterator>::difference_type n) const{
-			return reverse_iterator(current-n);
+			reverse_iterator retval( *this );
+			retval+=n;
+			return retval;
 		}
 		reverse_iterator& operator+=(typename iterator_traits<Iterator>::difference_type n){
 			current -= n;
 			return *this;
 		}
-		reverse_iterator  operator- (typename iterator_traits<Iterator>::difference_type n) const{
-			return reverse_iterator(current+n);
+		reverse_iterator operator- (typename iterator_traits<Iterator>::difference_type n) const{
+			reverse_iterator retval( *this );
+			retval-=n;
+			return retval;
 		}
 		reverse_iterator& operator-=(typename iterator_traits<Iterator>::difference_type n){
 			current += n;

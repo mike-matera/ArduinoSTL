@@ -406,6 +406,52 @@ namespace std{
 
 
 
+	class slice {
+	protected:
+		size_t sta;
+		size_t siz;
+		size_t str;
+
+	public:
+		slice() : sta(0), siz(0), str(0){  }
+		slice(size_t a, size_t b, size_t c) : sta(a), siz(b), str(c) {  }
+		~slice() {  }
+		size_t start() const{
+			return sta;
+		}
+		size_t size() const{
+			return siz;
+		}
+		size_t stride() const{
+			return str;
+		}
+	};
+
+
+	template <class T> class slice_array {
+	public:
+		typedef T value_type;
+
+		void operator=  (const valarray<T>&) const;
+		void operator*= (const valarray<T>&) const;
+		void operator/= (const valarray<T>&) const;
+		void operator%= (const valarray<T>&) const;
+		void operator+= (const valarray<T>&) const;
+		void operator-= (const valarray<T>&) const;
+		void operator^= (const valarray<T>&) const;
+		void operator&= (const valarray<T>&) const;
+		void operator|= (const valarray<T>&) const;
+		void operator<<=(const valarray<T>&) const;
+		void operator>>=(const valarray<T>&) const;
+		void fill(const T&);
+		~slice_array();
+	private:
+		slice_array();
+		slice_array(const slice_array&);
+		slice_array& operator=(const slice_array&);
+	};
+
+
 }
 
 

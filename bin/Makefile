@@ -23,7 +23,7 @@ endif
 all:	wrapper
 
 clean:
-	rm $(WRAPPERNAME)
+	rm -f $(WRAPPERNAME)
 
 wrapper:
 	echo "#!/bin/bash" > $(WRAPPERNAME)

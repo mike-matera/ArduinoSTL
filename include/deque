@@ -179,6 +179,30 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator<(const deque_iter & d){
+			if(element < d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator<=(const deque_iter & d){
+			if(element <= d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator>(const deque_iter & d){
+			if(element > d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator>=(const deque_iter & d){
+			if(element >= d.element){
+				return true;
+			}
+			return false;
+		}
 		deque_iter & operator++(){
 			++element;
 			return *this;

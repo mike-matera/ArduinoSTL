@@ -191,6 +191,143 @@ int main(){
 
 
 
+	std::cout << "Push heap\n";
+
+	a.clear();
+	a.push_back(12.5);
+
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "12.5 " << std::endl;
+	i = a.begin();
+	while(i != a.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+	a.clear();
+	a.push_back(12.5);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(7.2);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(27.4);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(21.8);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(93.4);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(36.3);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(55.5);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(5.2);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(67.9);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "93.4 67.9 55.5 36.6 27.4 21.8 12.5 7.2 5.2 " << std::endl;
+	i = a.begin();
+	while(i != a.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+
+	std::cout << "Push heap\n";
+	a.clear();
+	a.push_back(12.5);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(7.2);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(27.4);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(21.8);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(93.4);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(36.3);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(55.5);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(5.2);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(67.9);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+
+	std::pop_heap<std::vector<double>::iterator>(a.begin(), a.end());
+
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "67.9 55.5 36.6 27.4 21.8 12.5 7.2 5.2 93.4 " << std::endl;
+	i = a.begin();
+	while(i != a.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+
+	std::cout << "Sort Heap\n";
+	a.clear();
+	a.push_back(12.5);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(7.2);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(27.4);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(21.8);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(93.4);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(36.3);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(55.5);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(5.2);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+	a.push_back(67.9);
+	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+
+	std::sort_heap<std::vector<double>::iterator, std::greater<double> >(a.begin(), a.end(), std::greater<double>() );
+
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "5.2 7.2 12.5 21.8 27.4 36.6 55.5 67.9 93.4" << std::endl;
+	i = a.begin();
+	while(i != a.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+
+
+	std::cout << "Partial sort test\n";
+	a.clear();
+	a.push_back(12.5);
+	a.push_back(32.7);
+	a.push_back(10.8);
+	a.push_back(92.7);
+	a.push_back(12.5);
+	a.push_back(22.7);
+	a.push_back(38.4);
+	a.push_back(52.9);
+	a.push_back(72.3);
+	a.push_back(19.6);
+
+	i = a.begin();
+	i+=4;
+
+	std::partial_sort<std::vector<double>::iterator>(a.begin(), i, a.end());
+
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "10.8 12.5 12.5 19.6 22.7 " << std::endl;
+
+	for(int k = 0; k < 5; ++k){
+		std::cout << a[k] << " ";
+	}
+	std::cout << std::endl;
+
+
 	return 0;
 }
-

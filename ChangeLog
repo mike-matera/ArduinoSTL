@@ -1,4 +1,11 @@
-0.1.3 - 2004.09.06
+0.1.4 - 2004-09-10
+-	Fixed minor previous errors
+-	Added <algorithm> heap functions.  Just treat as a descending sorted list
+-	Added more code to <valarray>
+-	Added <, <=, >, >= comparisons to deque iterators (don't kow why I missed them in the first place)
+-	Making Makefiles a little bit better.
+
+0.1.3 - 2004-09-06
 -	Compiles with gcc 3.4, thus it is far more "correct" than previously
 -	Started adding code for valarray
 
