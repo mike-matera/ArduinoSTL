@@ -227,9 +227,9 @@ namespace std{
 		}
 		void clear(iostate state = goodbit){
 			if(rdbuf()!=0){
-				minternalState = state;
+				mstate = state;
 			}else{
-				minternalState = state|ios_base::badbit;
+				mstate = state|ios_base::badbit;
 			}
 		}
 		void setstate(iostate state) {
@@ -262,7 +262,7 @@ namespace std{
 		iostate exceptions() const;
 		void exceptions(iostate except);
 
-		explicit basic_ios(basic_streambuf<charT,traits>* sb) : mtied(0), mstreambuf(0), minternalState(goodbit){
+		explicit basic_ios(basic_streambuf<charT,traits>* sb) : mtied(0), mstreambuf(0){
 			init(sb);
 		}
 		virtual ~basic_ios(){
@@ -301,13 +301,11 @@ namespace std{
 	protected:
 		basic_ostream<charT,traits>* mtied;
 		basic_streambuf<charT,traits>* mstreambuf;
-		iostate minternalState;
-		basic_ios() : mtied(0), mstreambuf(0), minternalState(goodbit){	}
+		basic_ios() : mtied(0), mstreambuf(0){  }
 		basic_ios(const basic_ios<charT,traits> &){ }
 		basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		void init(basic_streambuf<charT,traits>* sb){
 			mstreambuf = sb;
-			minternalState = goodbit;
 		}
 	};
 

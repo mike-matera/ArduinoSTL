@@ -1,0 +1,10 @@
+Things TODO.
+
+Write more tests.  Try to test every function with at least two valid and
+	one invalid value.  For templates test with at least two primitive
+	as well as one class data type.
+
+Replace the IO stream library with an unbuffered version.  This should be
+	both easier to maintain as well as result in smaller code.
+	Remember that pbackfail and similar functions must work properly
+	according to spec.

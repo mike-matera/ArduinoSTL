@@ -77,6 +77,7 @@ namespace std{
 			int_type retval = sbuffer->sgetc();
 			if(retval == traits::eof()){
 				count_last_ufmt_input = 0;
+				basic_ios<charT,traits>::setstate(ios_base::eofbit);
 			}else{
 				count_last_ufmt_input = 1;
 				sbuffer->sbumpc();

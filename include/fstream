@@ -157,7 +157,9 @@ namespace std{
 			basic_streambuf<charT,traits>::gbump(-offset);
 			//Fill rest of buffer
 			int retval = fscanf(fp, "%1c", (basic_streambuf<charT,traits>::gptr() + 1));
-			if(retval < 0){
+			if(retval == EOF || retval == 0){
+				return traits::eof();
+			}else if(retval < 0){
 				printf("Error trying to run scanf\n");
 				abort();
 			}
