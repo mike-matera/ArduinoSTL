@@ -8,6 +8,7 @@
 Peter S. Mazinger:	Added -z defs to $(CC) -shared
 -	Fixed wchar enhancements if wchar is not enabled
 -	Cleaned up tests system to be much easier to add additional tests
+-	Fixed problems in getline() code
 
 
 0.1.9
