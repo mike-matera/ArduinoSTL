@@ -82,7 +82,7 @@ objs:	$(ALLOBJS)
 
 libuClibc++:	$(ALLOBJS)
 ifeq ($(BUILD_STATIC_LIB),y)
-	ar rcs libuClibc++.a $(EXOBJS) $(SUPOBJS)
+	$(AR) rcs libuClibc++.a $(EXOBJS) $(SUPOBJS)
 endif
 
 ifeq ($(BUILD_ONLY_STATIC_LIB),y)
