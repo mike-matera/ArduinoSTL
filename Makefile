@@ -1,5 +1,5 @@
-MAKE	=	make
-SUBDIRS =	include src tests bin
+MAKE    = make
+SUBDIRS = include src tests bin
 
 # User defines:
 
@@ -10,16 +10,16 @@ noconfig_targets := menuconfig config oldconfig randconfig \
 TOPDIR=./
 include Rules.mak
 
-all:	headers
+all: headers
 	$(MAKE) -C include all
 	$(MAKE) -C src all
 	$(MAKE) -C bin all
 
 
-tests:	all
+tests: all
 	$(MAKE) -C tests all
 
-test:	all tests
+check test: all tests
 	$(MAKE) -C tests test
 
 
@@ -86,8 +86,7 @@ install:
 	$(MAKE) -C include install
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/bin
 	$(INSTALL) -m 755 bin/g++-uc $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/bin
-	
-	
+
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
