@@ -1,4 +1,7 @@
 LIBS	=	-lc -lgcc_s
+ifneq ($(IMPORT_LIBSUP),y)
+LIBS	+= -lsupc++
+endif
 
 TOPDIR=../
 include $(TOPDIR)Rules.mak
@@ -93,9 +96,9 @@ libuClibc++.a:
 	$(AR) rcs libuClibc++.a $(EXOBJS) $(SUPOBJS)
 
 libuClibc++.so:
-	$(CC) -shared $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS) \
+	$(CC) -shared -Wl,-z,defs $(CFLAGS) $(EXOBJS) $(SUPOBJS) \
 		-o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
-		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION)
+		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION) $(LIBS)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so

@@ -3,6 +3,9 @@
 -	Implemented wcout, wcin, wcerr and wclog
 -	Added functions to support conversion of wchar to appropriate types
 -	Cleanup of #includes in header files to reduce bloat and compilation time
+-	Added ostream support for wchar
+-	Fixed missing const declaration in functional causing problems with algorithms
+Peter S. Mazinger:	Added -z defs to $(CC) -shared
 
 
 0.1.9
