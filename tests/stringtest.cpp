@@ -175,7 +175,56 @@ int main(){
 	std::cout << "Position of \"This\": ";
 	std::cout << a.find_first_of("This") << " - should be 0\n";
 
-	
+
+
+	std::cout << "\nChecking find_last_of on string \"";
+	a = "This is the string we are searching through";
+	std::cout << a << "\"\n";
+
+	std::cout << "Position of \"the\": ";
+	b = "the";
+	std::cout << a.find_last_of(b) << " = should be 42\n";
+
+	std::cout << "Position of \'g\': ";
+	std::cout << a.find_last_of('g') << " - should be 41\n";
+
+	std::cout << "Position of \"search\": ";
+	std::cout << a.find_last_of("search") << " - should be 42\n";
+
+	std::cout << "Position of \"is\" starting at character 4: ";
+	std::cout << a.find_last_of("is", 4) << " - should be 3\n";
+
+	std::cout << "Position of \"q\": ";
+	std::cout << a.find_last_of("q") << " - should be " << a.npos << std::endl;
+
+	std::cout << "Position of \"This\": ";
+	std::cout << a.find_last_of("This") << " - should be 42\n";
+
+
+	std::cout << "\nChecking find_first_not_of on string \"";
+	a = "This is the string we are searching through";
+	std::cout << a << "\"\n";
+
+	std::cout << "Position of \"the\": ";
+	b = "the";
+	std::cout << a.find_first_not_of(b) << " = should be 0\n";
+
+	std::cout << "Position of \'g\': ";
+	std::cout << a.find_first_not_of('g') << " - should be 0\n";
+
+	std::cout << "Position of \"search\": ";
+	std::cout << a.find_first_not_of("search") << " - should be 0\n";
+
+	std::cout << "Position of \"is\" starting at character 5: ";
+	std::cout << a.find_first_not_of("is", 7) << " - should be 7\n";
+
+	std::cout << "Position of \"q\": ";
+	std::cout << a.find_first_not_of("q") << " - should be 0" << std::endl;
+
+	std::cout << "Position of \"This\": ";
+	std::cout << a.find_first_not_of("This") << " - should be 4\n";
+
+
 
 	return 0;
 }

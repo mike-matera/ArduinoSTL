@@ -253,7 +253,7 @@ public:
 
 //	template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
 
-	basic_string& insert(size_type pos1, const basic_string& str){
+/*	basic_string& insert(size_type pos1, const basic_string& str){
 		if(pos1 > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
@@ -267,7 +267,7 @@ public:
 		vector<Ch, A>::elements += str.elements;
 		return *this;
 	}
-
+*/
 	basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
 		if(pos1 > vector<Ch, A>::elements || pos2 > str.elements){
 			__throw_out_of_range();
@@ -534,7 +534,7 @@ public:
 		return find_last_of(basic_string<Ch, Tr, A>(s,n),pos);
 	}
 	size_type find_last_of (const Ch* s, size_type pos = npos) const{
-		return fidn_last_of(basic_string<Ch, Tr, A>(s),pos);
+		return find_last_of(basic_string<Ch, Tr, A>(s),pos);
 	}
 	size_type find_last_of (Ch c, size_type pos = npos) const{
 		if(pos > length()){
@@ -548,11 +548,37 @@ public:
 		return npos;
 	}
 
-/*	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const;
-	size_type find_first_not_of(const charT* s, size_type pos, size_type n) const;
-	size_type find_first_not_of(const charT* s, size_type pos = 0) const;
-	size_type find_first_not_of(charT c, size_type pos = 0) const;
-	size_type find_last_not_of (const basic_string& str, size_type pos = npos) const;
+	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const{
+		bool foundCharacter;
+		for(size_type i = pos; i < length(); ++i){
+			foundCharacter = false;
+                        for(size_type j = 0; j < str.length() ; ++j){
+                                if(str[j] == operator[](i) ){
+					foundCharacter = true;
+                                }
+                        }
+			if(foundCharacter == false){
+				return i;
+			}
+                }
+		return npos;
+	}
+
+	size_type find_first_not_of(const Ch* s, size_type pos, size_type n) const{
+		return find_first_not_of(basic_string<Ch, Tr, A>(s,n),pos);
+	}
+	size_type find_first_not_of(const Ch* s, size_type pos = 0) const{
+		return find_first_not_of(basic_string<Ch, Tr, A>(s),pos);
+	}
+	size_type find_first_not_of(Ch c, size_type pos = 0) const{
+		for(size_type i = pos; i < length() ; ++i){
+			if(operator[](i) != c){
+				return i;
+			}
+		}
+		return npos;
+	}
+/*	size_type find_last_not_of (const basic_string& str, size_type pos = npos) const;
 	size_type find_last_not_of (const charT* s, size_type pos, size_type n) const;
 	size_type find_last_not_of (const charT* s, size_type pos = npos) const;
 	size_type find_last_not_of (charT c, size_type pos = npos) const;
