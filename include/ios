@@ -391,6 +391,8 @@ namespace std{
 		return c;
 	}
 
+#ifdef __UCLIBCXX_HAS_WCHAR__
+
 	template <>
 		inline char basic_ios<wchar_t, char_traits<wchar_t> >::narrow(char_type c, char dfault) const
 	{
@@ -400,6 +402,8 @@ namespace std{
 		}
 		return retval;
 	}
+
+#endif	//__UCLIBCXX_HAS_WCHAR__
 
 	template <class charT, class traits> 
 		inline typename basic_ios<charT, traits>::char_type
@@ -415,6 +419,8 @@ namespace std{
 		return c;
 	}
 
+#ifdef __UCLIBCXX_HAS_WCHAR__
+
 	template <> 
 		inline basic_ios<wchar_t, char_traits<wchar_t> >::char_type
 		basic_ios<wchar_t, char_traits<wchar_t> >::widen(char c) const
@@ -422,6 +428,7 @@ namespace std{
 		return btowc(c);
 	}
 
+#endif //__UCLIBCXX_HAS_WCHAR__
 
 
 	template <class stateT> class fpos{

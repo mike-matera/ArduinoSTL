@@ -13,7 +13,8 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
-scott: 4 Points
+scott: 7 Points
+2005-02-01: 1+2: Found problem with wchar needing ifdefs.  Used bug system and provided partial solution
 2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
 

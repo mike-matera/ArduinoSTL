@@ -6,6 +6,8 @@
 -	Added ostream support for wchar
 -	Fixed missing const declaration in functional causing problems with algorithms
 Peter S. Mazinger:	Added -z defs to $(CC) -shared
+-	Fixed wchar enhancements if wchar is not enabled
+-	Cleaned up tests system to be much easier to add additional tests
 
 
 0.1.9

@@ -33,90 +33,23 @@ SRCS	=\
 	stacktest.cpp \
 	streamitertest.cpp \
 	fstreamtest.cpp \
-	wchartest.cpp
 
-
-EXOBJS	=\
-	listtest.o \
-	maptest.o \
-	mmaptest.o \
-	settest.o \
-	dequetest.o \
-	stringtest.o \
-	sstreamtest.o \
-	vectortest.o \
-	io.o \
-	newdel.o \
-	numerictest.o \
-	bitsettest.o \
-	algotest.o \
-	stacktest.o \
-	streamitertest.o \
-	fstreamtest.o \
-	wchartest.o
-
-ALLOBJS	=	$(EXOBJS) \
-		newdel.o-old \
-		io.o-old \
-		vectortest.o-old \
-		stringtest.o-old \
-		sstreamtest.o-old \
-		listtest.o-old \
-		dequetest.o-old \
-		maptest.o-old \
-		mmaptest.o-old \
-		settest.o-old \
-		numerictest.o-old \
-		bitsettest.o-old \
-		algotest.o-old \
-		stacktest.o-old \
-		streamitertest.o-old \
-		fstreamtest.o-old \
-		wchartest.o-old
-
-ALLBIN	=	newdel newdel-old \
-		io io-old \
-		vectortest vectortest-old \
-		stringtest stringtest-old \
-		sstreamtest sstreamtest-old \
-		dequetest dequetest-old \
-		maptest maptest-old \
-		mmaptest mmaptest-old \
-		settest settest-old \
-		listtest listtest-old \
-		numerictest numerictest-old \
-		bitsettest bitsettest-old \
-		algotest algotest-old \
-		stacktest stacktest-old \
-		streamitertest streamitertest-old \
-		fstreamtest fstreamtest-old \
-		wchartest wchartest-old
-
-ALLTGT	=	streamitertest \
-		stacktest \
-		algotest \
-		bitsettest \
-		sstreamtest \
-		numerictest \
-		settest \
-		mmaptest \
-		maptest \
-		dequetest \
-		listtest \
-		stringtest \
-		vectortest \
-		io \
-		newdel \
-		fstreamtest \
-		wchartest
+ifeq ($(UCLIBCXX_HAS_WCHAR),y)
+SRCS	+=	wchartest.cpp
+endif
 
 ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 SRCS    += excepttest.cpp
-EXOBJS	+= excepttest.o
-ALLOBJS	+= excepttest.o excepttest.o-old
-ALLBIN	+= excepttest excepttest-old
-ALLTGT	+= excepttest
 endif
+
+
+EXOBJS  =$(patsubst %.cpp,%.o, $(SRCS))
+
+ALLOBJS	=	$(EXOBJS) $(patsubst %.cpp,%.o-old, $(SRCS))
+
+ALLBIN	=	$(patsubst %.cpp,%, $(SRCS)) $(patsubst %.cpp,%-old, $(SRCS))
+
+ALLTGT	=	$(patsubst %.cpp,%, $(SRCS))
 
 
 # User defines:
