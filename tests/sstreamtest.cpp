@@ -36,8 +36,18 @@ int main(){
 	std::cout << "i (should be 5): " << i << std::endl;
 	std::cout << "s (should be Test): " << s << std::endl;
 
+	a.clear();
 	std::cout << "Buffer: " << a.str() << std::endl;
 
+	std::cout <<"Combining read and write activities\n";
+	a.str("Testing data");
+	s = "";
+	a << 2.5 << " ";// << 't' << "T";
+	a >> s;
+	std::cout << "Read out: " << "'" << s << "'" << std::endl;
+	a >> s;
+	std::cout << "Read out: " << "'" << s << "'" << std::endl;
+	std::cout << "Current buffer value: " << a.str() << std::endl;
 
 	return 0;
 }

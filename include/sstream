@@ -87,15 +87,16 @@ namespace std{
 
 		virtual int_type   pbackfail(int_type c = traits::eof()){
 			//Error possibilities
-			if(ielement == 0 || ielement == data.length() ){
+			if(ielement == 0){
 				return traits::eof();
 			}
 			if(ielement > data.length()){
-				--ielement;
+				ielement = data.length();
 				return traits::eof();
 			}
 			//eof passed in
 			if(traits::eq_int_type(c,traits::eof())==true){
+				--ielement;
 				return traits::not_eof(c);
 			}
 			if(traits::eq(traits::to_char_type(c),data[ielement-1]) == true){
@@ -144,7 +145,6 @@ namespace std{
 		}
 
 		virtual streamsize xsputn(const char_type* s, streamsize n){
-			streamsize i = 0;
 			data.append(s, n);
 			return n;
 		}
@@ -237,6 +237,7 @@ namespace std{
 		}
 		void str(const basic_string<charT,traits,Allocator>& s){
 			sb.str(s);
+			basic_istream<charT,traits>::clear();
 		}
 	private:
 		basic_stringbuf<charT,traits,Allocator> sb;
@@ -268,6 +269,7 @@ namespace std{
 		}
 		void str(const basic_string<charT,traits,Allocator>& s){
 			sb.str(s);
+			basic_ostream<charT,traits>::clear();
 		}
 	private:
 		basic_stringbuf<charT,traits,Allocator> sb;
@@ -299,6 +301,7 @@ namespace std{
 		}
 		void str(const basic_string<charT,traits,Allocator>& s){
 			sb.str(s);
+			basic_iostream<charT,traits>::clear();
 		}
 	private:
 		basic_stringbuf<charT, traits> sb;

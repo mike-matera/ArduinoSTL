@@ -63,6 +63,7 @@ template<class charT, class traits, class Allocator> basic_istream<charT,traits>
 	while(isspace(c)){
 		c = is.get();
 	}
+
 	is.putback(c);
 
 	do{

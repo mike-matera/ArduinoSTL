@@ -8,3 +8,7 @@ f (should be 2.35): 2.35
 i (should be 5): 5
 s (should be Test): Test
 Buffer: 2.35 5 Test
+Combining read and write activities
+Read out: 'Testing'
+Read out: 'data2.5'
+Current buffer value: Testing data2.5 
