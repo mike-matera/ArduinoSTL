@@ -157,9 +157,6 @@ namespace std{
 		}
 		~deque_iter() {  }
 		deque_iter & operator=(const deque_iter & d){
-//			if(this == &d){
-//				return *this;
-//			}
 			container = d.container;
 			element = d.element;
 			return *this;

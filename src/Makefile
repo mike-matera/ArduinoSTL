@@ -1,5 +1,5 @@
-CC  	=	distcc gcc
-CXX	=	distcc g++
+CC  	=	gcc
+CXX	=	g++
 #CFLAGS	=	-O2 -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -I../include -nostdinc++ -fPIC -Weffc++ -ansi
 CFLAGS	=	-Os -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -I../include -nostdinc++ -fPIC -ansi
 C_FLAGS	=	$(CFLAGS)
@@ -24,7 +24,10 @@ SRCS	=\
 	vector.cpp \
 	deque.cpp \
 	list.cpp \
-	map.cpp
+	map.cpp \
+	stack.cpp \
+	queue.cpp \
+	algorithm.cpp
 
 
 EXOBJS	=\
@@ -46,7 +49,10 @@ EXOBJS	=\
 	vector.o \
 	deque.o \
 	list.o \
-	map.o
+	map.o \
+	stack.o \
+	queue.o \
+	algorithm.o
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	libuClibc++.so libuClibc++.a

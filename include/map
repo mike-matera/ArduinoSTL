@@ -96,7 +96,7 @@ public:
 	void clear();
 
 	key_compare   key_comp() const;
-	value_compare value_comp() const;
+//	value_compare value_comp() const;
 
 	iterator       find(const key_type& x);
 	const_iterator find(const key_type& x) const;
@@ -128,6 +128,7 @@ protected:
 	{
 	protected:
 		friend class map<Key, T, Compare, Allocator>;
+		friend class map<Key, T, Compare, Allocator>::const_iterator;
 		map<Key, T, Compare, Allocator>::size_type element;
 		map<Key, T, Compare, Allocator> * container;
 	public:
@@ -392,6 +393,10 @@ protected:
 		high = data.end();
 		if(low == high){	//No elements
 			i = low;
+		}else if( c(k, low->first)){
+			i = low;
+		}else if( c(data.back().first, k) ){
+			i = high;
 		}else{
 			while(( high - low) > 1){
 				i = low + ((high - low) /2);
@@ -452,16 +457,78 @@ protected:
 	}
 
 
-//	iterator             insert(iterator position, const value_type& x);
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::iterator
+		map<Key, T, Compare, Allocator>::insert(iterator position, const value_type& x)
+	{
+		//Just reusing code.  It's hard to make improvements over existing algo.
+		insert(x);
+		return find(x.first);
+	}
 
-//	template <class InputIterator> void insert(InputIterator first, InputIterator last);
-//	void      erase(iterator position);
-//	size_type erase(const key_type& x);
-//	void      erase(iterator first, iterator last);
-//	void swap(map<Key,T,Compare,Allocator>&);
-//	void clear();
+	template <class Key, class T, class Compare, class Allocator>
+		template <class InputIterator> void 
+		map<Key, T, Compare, Allocator>::insert(InputIterator first, InputIterator last)
+	{
+		while(first !=last){
+			insert(*first);
+		}
+	}
 
-//	key_compare   key_comp() const;
+	template <class Key, class T, class Compare, class Allocator> void 
+		map<Key, T, Compare, Allocator>::erase(iterator position)
+	{
+		//Create a deque iterator from position information and then
+		//Use built in erase feature because it is handy.
+		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator pos(&data, position.element);
+		data.erase(pos);		
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::size_type
+		map<Key, T, Compare, Allocator>::erase(const key_type& x)
+	{
+		map<Key, T, Compare, Allocator>::iterator i = find(x);
+		if(i!=end()){
+			erase(i);
+			return 1;
+		}
+		return 0;
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		void map<Key, T, Compare, Allocator>::erase(iterator first, iterator last)
+	{
+		while(first !=last() ){
+			map<Key, T, Compare, Allocator>::iterator i(&data, first.element);
+		}
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		void map<Key, T, Compare, Allocator>::swap(map<Key,T,Compare,Allocator>& m)
+	{
+		Compare n = c;
+		c = m.c;
+		m.c = n;
+
+		data.swap(m.data);
+	}
+
+
+	template <class Key, class T, class Compare, class Allocator>
+		void map<Key, T, Compare, Allocator>::clear()
+	{
+		data.clear();
+	}
+
+
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::key_compare
+		map<Key, T, Compare, Allocator>::key_comp() const
+	{
+		return c;
+	}
+
 //	value_compare value_comp() const;
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -569,17 +636,74 @@ protected:
 		return 1;
 	}
 
-//	iterator       lower_bound(const key_type& x);
-//	const_iterator lower_bound(const key_type& x) const;
-//	iterator       upper_bound(const key_type& x);
-//	const_iterator upper_bound(const key_type& x) const;
-//	pair<iterator,iterator>             equal_range(const key_type& x);
-//	pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::iterator 
+		map<Key, T, Compare, Allocator>::lower_bound(const key_type& x)
+	{
+		return find(x);
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::const_iterator
+		map<Key, T, Compare, Allocator>::lower_bound(const key_type& x) const
+	{
+		return find(x);
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::iterator
+		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
+	{
+		typename map<Key, T, Compare, Allocator>::iterator i = find(x);
+		++i;
+		return i;
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		typename map<Key, T, Compare, Allocator>::const_iterator
+		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
+	{
+		typename map<Key, T, Compare, Allocator>::const_iterator i = find(x);
+		++i;
+		return i;
+	}
 
 
+	template <class Key, class T, class Compare, class Allocator>
+		pair<	typename map<Key, T, Compare, Allocator>::iterator,
+			typename map<Key, T, Compare, Allocator>::iterator
+		> map<Key, T, Compare, Allocator>::equal_range(const key_type& x)
+	{
+		pair<   typename map<Key, T, Compare, Allocator>::iterator,
+                        typename map<Key, T, Compare, Allocator>::iterator
+                > retval;
+		retval.first = lower_bound(x);
+		retval.second = upper_bound(x);
+		return retval;		
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		pair<	typename map<Key, T, Compare, Allocator>::const_iterator,
+			typename map<Key, T, Compare, Allocator>::const_iterator
+		> map<Key, T, Compare, Allocator>::equal_range(const key_type& x) const
+	{
+		pair<   typename map<Key, T, Compare, Allocator>::const_iterator,
+                        typename map<Key, T, Compare, Allocator>::const_iterator
+                > retval;
+		retval.first = lower_bound(x);
+		retval.second = upper_bound(x);
+		return retval;		
+	}
 
 	template <class Key, class T, class Compare, class Allocator> bool operator==
-		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
+		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
+	{
+		if(c == y.c && data = y.data){
+			return true;
+		}
+		return false;
+	}
+
 	template <class Key, class T, class Compare, class Allocator> bool operator< 
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
 	template <class Key, class T, class Compare, class Allocator>bool operator!=

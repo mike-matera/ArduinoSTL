@@ -116,7 +116,7 @@ namespace std{
 		typedef random_access_iterator_tag iterator_category;
 	};*/
 
-	template <class BidirectionalIterator> void reverse(BidirectionalIterator first, BidirectionalIterator last){
+/*	template <class BidirectionalIterator> void reverse(BidirectionalIterator first, BidirectionalIterator last){
 		typename iterator_traits<BidirectionalIterator>::difference_type n = distance(first, last);
 		--n;
 		while(n > 0){
@@ -125,7 +125,7 @@ namespace std{
 			*last = tmp;
 			n -= 2;
 		}
-	};
+	};*/
 
 
 	template<class Category, class T, class Distance, class Pointer, class Reference> 

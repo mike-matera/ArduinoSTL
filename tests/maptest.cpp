@@ -5,6 +5,7 @@
 int main(){
 	std::map<std::string, double> test;
 	std::map<std::string, double>::iterator i, j;
+	std::map<std::string, double>::const_iterator k;
 
 	std::cout << "Start of map test" << std::endl;
 
@@ -51,6 +52,7 @@ int main(){
 	std::cout << "Max size: " << test.max_size() << std::endl;
 
 	std::pair<std::string, double> q;
+
 	q.first = "Inserted value";
 	q.second = 1.0;
 
@@ -79,8 +81,36 @@ int main(){
 		++i;
 	}
 
+	j = test.find("g");
+	std::cout << "Erasing element \"g\"" << std::endl;
+	test.erase(j);
+
+	i=test.begin();
+	while(i != test.end() ){
+		std::cout << i->first << ": " << i->second << std::endl;
+		++i;
+	}
+
+	std::cout << "Erasing element \"c\"" << std::endl;
+	test.erase("c");
+
+	i=test.begin();
+	while(i != test.end() ){
+		std::cout << i->first << ": " << i->second << std::endl;
+		++i;
+	}
+
+	j = test.lower_bound("b");
+	std::cout << "This should read 2: " << j->second << std::endl;
+
+	k = test.lower_bound("b");
+	std::cout << "This should read 2: " << k->second << std::endl;
 
 
+	std::cout << "This should read 11: " << test.equal_range("k").first->second << std::endl;
+	
+
+	
 	return 0;
 }
 
