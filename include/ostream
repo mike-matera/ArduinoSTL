@@ -30,7 +30,10 @@
 namespace std {
 	template <class charT, class traits > class basic_ostream;
 	typedef basic_ostream<char> ostream;
+
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_ostream<wchar_t> wostream;
+#endif
 
 	template <class charT, class traits> basic_ostream<charT,traits>& endl(basic_ostream<charT,traits>& os);
 	template <class charT, class traits> basic_ostream<charT,traits>& ends(basic_ostream<charT,traits>& os);
@@ -327,6 +330,8 @@ namespace std {
 		return out;
 	}
 
+
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	template<class traits> basic_ostream<wchar_t,traits>& operator<<(basic_ostream<wchar_t,traits>& out, const char* c){
 		typename basic_ostream<wchar_t, traits>::sentry s(out);
 		size_t numChars = char_traits<char>::length(c);
@@ -339,6 +344,7 @@ namespace std {
 		out.write(temp, numChars);
 		return out;
 	}
+#endif
     
     //  signed and unsigned
 	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const signed char* c){

@@ -17,6 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <basic_definitions>
 #include <ios>
 #include <cctype>
 #include <string>
@@ -233,6 +234,198 @@ namespace std{
 			}
 		}
 	};
+
+#ifdef __UCLIBCXX_HAS_WCHAR__
+	template <class traits> class __ostream_printout<traits, wchar_t, signed long int>{
+	public:
+		static void printout(basic_ostream<wchar_t, traits >& stream, const signed long int n)
+		{
+			wchar_t buffer[20];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, swprintf(buffer, 20, L"%ld", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, swprintf(buffer, 20, L"%#lo", n));
+				}else{
+					stream.write(buffer, swprintf(buffer, 20, L"%lo", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 20, L"%#lX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 20, L"%#lx", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 20, L"%lX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 20, L"%lx", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, wchar_t, unsigned long int>{
+	public:
+		static void printout(basic_ostream<wchar_t, traits >& stream, const unsigned long int n)
+		{
+			wchar_t buffer[20];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, swprintf(buffer, 20, L"%lu", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, swprintf(buffer, 20, L"%#lo", n));
+				}else{
+					stream.write(buffer, swprintf(buffer, 20, L"%lo", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 20, L"%#lX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 20, L"%#lx", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 20, L"%lX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 20, L"%lx", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+#ifndef __STRICT_ANSI__
+
+	template <class traits> class __ostream_printout<traits, wchar_t, signed long long int>{
+	public:
+		static void printout(basic_ostream<wchar_t, traits >& stream, const signed long long int n)
+		{
+			wchar_t buffer[28];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, swprintf(buffer, 27, L"%lld", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, swprintf(buffer, 27, L"%#llo", n));
+				}else{
+					stream.write(buffer, swprintf(buffer, 27, L"%llo", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 27, L"%#llX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 27, L"%#llx", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 27, L"%llX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 27, L"%llx", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, wchar_t, unsigned long long int>{
+	public:
+		static void printout(basic_ostream<wchar_t, traits >& stream, const unsigned long long int n)
+		{
+			wchar_t buffer[28];
+			if( stream.flags() & ios_base::dec){
+				stream.write(buffer, swprintf(buffer, 27, L"%llu", n));
+			}else if( stream.flags() & ios_base::oct){
+				if( stream.flags() & ios_base::showbase){
+					stream.write(buffer, swprintf(buffer, 27, L"%#llo", n));
+				}else{
+					stream.write(buffer, swprintf(buffer, 27, L"%llo", n) );
+				}
+			}else if (stream.flags() & ios_base::hex){
+				if(stream.flags() & ios_base::showbase){
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 27, L"%#llX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 27, L"%#llx", n) );
+					}
+				}else{
+					if(stream.flags() & ios_base::uppercase){
+						stream.write(buffer, swprintf(buffer, 27, L"%llX", n) );
+					}else{
+						stream.write(buffer, swprintf(buffer, 27, L"%llx", n) );
+					}
+				}
+			}
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+
+#endif	//__STRICT_ANSI__
+
+	template <class traits> class __ostream_printout<traits, wchar_t, double>{
+	public:
+		static void printout(basic_ostream<wchar_t, traits >& stream, const double f)
+		{
+			wchar_t buffer[32];
+			wchar_t format_string[20];
+			if(stream.flags() & ios_base::scientific){
+				if(stream.flags() & ios_base::uppercase){
+					swprintf(format_string, 20, L"%%%ue", static_cast<unsigned int>(stream.width()));
+				}else{
+					swprintf(format_string, 20, L"%%%ue", static_cast<unsigned int>(stream.width()));
+				}
+			} else if(stream.flags() & ios_base::fixed){
+				swprintf(format_string, 20, L"%%%uf", static_cast<unsigned int>(stream.width()));
+			} else {
+				swprintf(format_string, 20, L"%%%ug", static_cast<unsigned int>(stream.width()));
+			}
+			stream.write(buffer, swprintf(buffer, 32, format_string, f) );
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+	template <class traits> class __ostream_printout<traits, wchar_t, long double>{
+	public:
+		static void printout(basic_ostream<wchar_t, traits >& stream, const long double f)
+		{
+			wchar_t buffer[32];
+			wchar_t format_string[20];
+			if(stream.flags() & ios_base::scientific){
+				if(stream.flags() & ios_base::uppercase){
+					swprintf(format_string, 20, L"%%%uLe", static_cast<unsigned int>(stream.width()));
+				}else{
+					swprintf(format_string, 20, L"%%%uLe", static_cast<unsigned int>(stream.width()));
+				}
+			} else if(stream.flags() & ios_base::fixed){
+				swprintf(format_string, 20, L"%%%uLf", static_cast<unsigned int>(stream.width()));
+			} else {
+				swprintf(format_string, 20, L"%%%uLg", static_cast<unsigned int>(stream.width()));
+			}
+			stream.write(buffer, swprintf(buffer, 32, format_string, f) );
+			if(stream.flags() & ios_base::unitbuf){
+				stream.flush();
+			}
+		}
+	};
+
+#endif //__UCLIBCXX_HAS_WCHAR__
 
 }
 
