@@ -32,8 +32,7 @@ SRCS	=\
 	numeric.cpp \
 	sstream.cpp \
 	bitset.cpp \
-	valarray.cpp \
-	linux_calls.c
+	valarray.cpp
 
 
 EXOBJS	=\
@@ -65,8 +64,7 @@ EXOBJS	=\
 	numeric.o \
 	sstream.o \
 	bitset.o \
-	valarray.o \
-	linux_calls.o
+	valarray.o
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	

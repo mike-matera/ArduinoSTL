@@ -148,9 +148,9 @@ namespace std{
 		}
 
 		reverse_iterator& operator++(){ --current; return *this;	}
-		reverse_iterator  operator++(int) {reverse_iterator tmp = current; --current; return tmp; }
+		reverse_iterator  operator++(int) {reverse_iterator tmp = *this; --current; return tmp; }
 		reverse_iterator& operator--() { ++ current; return *this; }
-		reverse_iterator  operator--(int) {reverse_iterator tmp = current; ++current; return tmp; }
+		reverse_iterator  operator--(int) {reverse_iterator tmp = *this; ++current; return tmp; }
 
 		reverse_iterator  operator+ (typename iterator_traits<Iterator>::difference_type n) const{
 			reverse_iterator retval( *this );
