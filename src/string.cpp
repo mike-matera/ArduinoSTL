@@ -38,6 +38,10 @@ namespace std{
 	template basic_string<char, char_traits<char>, allocator<char> >
 		operator+(const char* lhs, const basic_string<char, char_traits<char>, allocator<char> >& rhs);
 
+	template basic_string<char, char_traits<char>, allocator<char> >
+		operator+(const basic_string<char, char_traits<char> , allocator<char> >& lhs,
+			const basic_string<char, char_traits<char>, allocator<char> >& rhs);
+
 
 //Functions dependent upon OSTREAM
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__

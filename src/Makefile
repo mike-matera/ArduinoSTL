@@ -20,6 +20,7 @@ SRCS	=\
 	ostream.cpp \
 	iterator.cpp \
 	fstream.cpp \
+	iomanip.cpp \
 	vector.cpp \
 	deque.cpp \
 	list.cpp \
@@ -51,6 +52,7 @@ EXOBJS	=\
 	ostream.o \
 	iterator.o \
 	fstream.o \
+	iomanip.o \
 	vector.o \
 	deque.o \
 	list.o \

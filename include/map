@@ -601,7 +601,7 @@ protected:
 		map<Key, T, Compare, Allocator>::operator=(const map<Key,T,Compare,Allocator>& x)
 	{
 		if( &x == this){
-			return this;
+			return *this;
 		}
 		c = x.c;
 		data = x.data;

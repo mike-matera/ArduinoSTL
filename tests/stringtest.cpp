@@ -106,7 +106,8 @@ int main(){
 	std::cout << "\"is th\"" << std::endl;
 	std::cout << "\"" << a.substr(5, 5) << "\""  << std::endl;
 
-	std::cout << "\nChecking find on string \"" << std::endl;
+
+	std::cout << "\nChecking find on string \"" ;
 	a = "This is the string we are searching through";
 	std::cout << a << "\"\n";
 
@@ -126,10 +127,12 @@ int main(){
 	std::cout << "Position of \"q\": ";
 	std::cout << a.find("q") << " - should be " << a.npos << std::endl;
 
-	std::cout << "\nChecking rfind on string \"" << std::endl;
+
+	std::cout << "\nChecking rfind on string \"";
 	a = "This is the string we are searching through";
 	std::cout << a << "\"\n";
 
+	std::cout << "Position of \"the\": ";
 	b = "the";
 	std::cout << a.rfind(b) << " = should be 8\n";
 
@@ -144,6 +147,33 @@ int main(){
 
 	std::cout << "Position of \"q\": ";
 	std::cout << a.rfind("q") << " - should be " << a.npos << std::endl;
+
+	std::cout << "Position of \"This\": ";
+	std::cout << a.rfind("This") << " - should be 0\n";
+
+
+	std::cout << "\nChecking find_first_of on string \"";
+	a = "This is the string we are searching through";
+	std::cout << a << "\"\n";
+
+	std::cout << "Position of \"the\": ";
+	b = "the";
+	std::cout << a.find_first_of(b) << " = should be 1\n";
+
+	std::cout << "Position of \'g\': ";
+	std::cout << a.find_first_of('g') << " - should be 17\n";
+
+	std::cout << "Position of \"search\": ";
+	std::cout << a.find_first_of("search") << " - should be 1\n";
+
+	std::cout << "Position of \"is\" starting at character 4: ";
+	std::cout << a.find_first_of("is", 5) << " - should be 5\n";
+
+	std::cout << "Position of \"q\": ";
+	std::cout << a.find_first_of("q") << " - should be " << a.npos << std::endl;
+
+	std::cout << "Position of \"This\": ";
+	std::cout << a.find_first_of("This") << " - should be 0\n";
 
 	
 

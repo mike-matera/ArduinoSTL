@@ -593,7 +593,7 @@ protected:
 		set<Key, Compare, Allocator>::operator=(const set<Key, Compare, Allocator>& x)
 	{
 		if( &x == this){
-			return this;
+			return *this;
 		}
 		c = x.c;
 		data = x.data;

@@ -490,16 +490,65 @@ public:
 	size_type rfind(Ch c, size_type pos = npos) const{
 		return rfind(basic_string<Ch, Tr, A>(1,c),pos);
 	}
-/*	size_type find_first_of(const basic_string& str, size_type pos = 0) const;
-	size_type find_first_of(const charT* s, size_type pos, size_type n) const;
-	size_type find_first_of(const charT* s, size_type pos = 0) const;
-	size_type find_first_of(charT c, size_type pos = 0) const;
-	size_type find_last_of (const basic_string& str, size_type pos = npos) const;
-	size_type find_last_of (const charT* s, size_type pos, size_type n) const;
-	size_type find_last_of (const charT* s, size_type pos = npos) const;
-	size_type find_last_of (charT c, size_type pos = npos) const;
 
-	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const;
+	size_type find_first_of(const basic_string& str, size_type pos = 0) const{
+		for(size_type i = pos; i < length(); ++i){
+			for(size_type j = 0; j < str.length() ; ++j){
+				if(str[j] == operator[](i) ){
+					return i;
+				}
+			}
+		}
+		return npos;
+	}
+
+	size_type find_first_of(const Ch* s, size_type pos, size_type n) const{
+		return find_first_of(basic_string<Ch, Tr, A>(s,n),pos);
+	}
+	size_type find_first_of(const Ch* s, size_type pos = 0) const{
+		return find_first_of(basic_string<Ch, Tr, A>(s),pos);
+	}
+	size_type find_first_of(Ch c, size_type pos = 0) const{
+		for(size_type i = pos; i< length(); ++i){
+			if(operator[](i) == c){
+				return i;
+			}
+		}
+		return npos;
+	}
+
+	size_type find_last_of (const basic_string& str, size_type pos = npos) const{
+		if(pos > length()){
+			pos = length();
+		}
+		for(size_type i = pos; i >0 ; --i){
+			for(size_type j = 0 ; j < str.length(); ++j){
+				if(operator[](i-1) == str[j]){
+					return i-1;
+				}
+			}
+		}
+		return npos;
+	}
+	size_type find_last_of (const Ch* s, size_type pos, size_type n) const{
+		return find_last_of(basic_string<Ch, Tr, A>(s,n),pos);
+	}
+	size_type find_last_of (const Ch* s, size_type pos = npos) const{
+		return fidn_last_of(basic_string<Ch, Tr, A>(s),pos);
+	}
+	size_type find_last_of (Ch c, size_type pos = npos) const{
+		if(pos > length()){
+			pos = length();
+		}
+		for(size_type i = pos; i >0 ; --i){
+			if(operator[](i-1) == c){
+				return i-1;
+			}
+		}
+		return npos;
+	}
+
+/*	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const;
 	size_type find_first_not_of(const charT* s, size_type pos, size_type n) const;
 	size_type find_first_not_of(const charT* s, size_type pos = 0) const;
 	size_type find_first_not_of(charT c, size_type pos = 0) const;
@@ -673,7 +722,12 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 
 
 template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
-	operator+(charT lhs, const basic_string<charT,traits,Allocator>& rhs);
+	operator+(charT lhs, const basic_string<charT,traits,Allocator>& rhs)
+{
+	basic_string<charT,traits,Allocator> temp(lhs);
+	temp.append(rhs);
+	return temp;
+}
 
 template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
 	operator+(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
@@ -684,7 +738,12 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 }
 
 template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
-	operator+(const basic_string<charT,traits,Allocator>& lhs, charT rhs);
+	operator+(const basic_string<charT,traits,Allocator>& lhs, charT rhs)
+{
+	basic_string<charT,traits,Allocator> temp(lhs);
+	temp+=rhs;
+	return temp;
+}
 
 template<class charT, class traits, class Allocator> bool 
 	operator==(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
@@ -873,81 +932,13 @@ template<> basic_string<char, char_traits<char>, allocator<char> >
 template<> basic_string<char, char_traits<char>, allocator<char> >
         operator+(const char* lhs, const basic_string<char, char_traits<char>, allocator<char> >& rhs);
 
-//#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
-//template<> basic_ostream<char, char_traits<char> >&
-//	operator<<(basic_ostream<char, char_traits<char> >& os, 
-//	const basic_string<char,char_traits<char>, std::allocator<char> >& str);
-//#endif
+
+template<> basic_string<char, char_traits<char>, allocator<char> >
+        operator+(const basic_string<char, char_traits<char> , allocator<char> >& lhs,
+		const basic_string<char, char_traits<char>, allocator<char> >& rhs);
+
 #endif
 #endif
-
-/*template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
-	operator>>(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str)
-{
-
-	typename basic_istream<charT, traits>::sentry s(is);
-	if(s == false){
-		return is;
-	}
-
-	str.clear();
-
-	typename basic_istream<charT, traits>::int_type c;
-	typename Allocator::size_type n = is.width();
-	bool exitnow = false;
-	if(n == 0){
-		n = str.max_size();
-	}
-	do{
-		c = is.get();
-		if(c == traits::eof() || isspace(c) || n == 0){
-			exitnow = true;
-		}else{
-			str.append(1, traits::to_char_type(c) );
-			--n;
-		}
-	}while(exitnow == false);
-	return is;
-}
-
-template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
-	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str, charT delim)
-{
-	typename basic_istream<charT,traits>::sentry s;
-	streamsize i = 0;
-	typename basic_istream<charT,traits>::int_type c_i;
-	charT c;
-	unsigned int n = str.max_size();
-	for(i=0;i<n;++i){
-		c_i=is.get();
-		if(c_i == traits::eof() ){
-			return is;
-		}
-		c = traits::to_char_type(c_i);
-		if(c == delim){
-			return is;
-		}
-		str.append(c);
-	}
-	return is;	
-}
-
-template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
-	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str)
-{
-	return getline(is, str, '\n');
-}
-
-#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
-#ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
-#ifndef __UCLIBCXX_COMPILE_STRING__
-template<> basic_istream<char, char_traits<char> >& operator>>(
-	basic_istream<char,char_traits<char> >& is,
-	basic_string<char, char_traits<char>, allocator<char> >& str);
-#endif
-#endif
-#endif
-*/
 
 typedef basic_string<char> string;
 typedef basic_string<wchar_t> wstring;

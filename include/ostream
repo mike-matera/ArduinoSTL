@@ -366,6 +366,33 @@ namespace std {
 #endif
 
 
+#ifndef __STRICT_ANSI__
+
+//Support for output of long long data types
+
+template<class Ch, class Tr> basic_ostream<Ch, Tr>& 
+	operator<<(basic_ostream<Ch, Tr>& os, signed long long int i)
+{
+	typename basic_ostream<Ch, Tr>::sentry s(os);
+	__ostream_printout<Tr, Ch, signed long long int>::printout(os, i);
+	return os;
+}
+
+
+template<class Ch, class Tr> basic_ostream<Ch, Tr>& 
+	operator<<(basic_ostream<Ch, Tr>& os, unsigned long long int i)
+{
+	typename basic_ostream<Ch, Tr>::sentry s(os);
+	__ostream_printout<Tr, Ch, unsigned long long int>::printout(os, i);
+	return os;
+}
+
+
+#endif	//__STRICT_ANSI__
+
+
+
+
 }
 
 

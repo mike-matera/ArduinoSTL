@@ -1,3 +1,11 @@
+0.1.8
+-	Fixed problem in <map> which returned this instead of *this for operator=
+-	Fixed an problem using . instead of ->  Oops.
+-	Added string find, rfind, find_first_of and find_last_of functions
+-	Moved operator+(string, string) into library binary.
+-	Added <iomanip> header.  Forgot that little thing.  Oops.
+
+
 0.1.7 - 2004-12-23
 -	Significant changes to the library
 -	Converted a lot of forced instanteation from double definitions to ifdef tricks

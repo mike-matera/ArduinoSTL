@@ -375,8 +375,8 @@ namespace std{
 	template<class T, class Allocator> void list<T, Allocator>::push_front(const T& x){
 		node * temp = new node(x);
 		list_start->previous = temp;
-		temp.previous = 0;
-		temp.next = list_start;
+		temp->previous = 0;
+		temp->next = list_start;
 		list_start = temp;
 		++elements;
 	}
