@@ -174,28 +174,28 @@ namespace std{
 			}
 
 			//Fill rest of buffer
-			int retval;
-			retval = fscanf(fp, "%1c",
-				(basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr() +
-					basic_streambuf<charT,traits>::eback() )
+			size_t retval;
+			retval = fread(basic_streambuf<charT,traits>::egptr() - 
+				basic_streambuf<charT,traits>::gptr() + basic_streambuf<charT,traits>::eback(),
+				sizeof(charT),
+//				offset,
+				1,
+				fp
 			);
 
-			size_t u_retval = retval;
-			if(retval < 0 ){
-				u_retval = 0;
-			}
-			if(u_retval !=offset){ //Slide buffer forward again
-				for(size_t i = 0; i < amountData + u_retval; ++i){
+			if(retval !=offset){ //Slide buffer forward again
+				for(size_t i = 0; i < amountData + retval; ++i){
 					*(basic_streambuf<charT,traits>::egptr() - i - 1) =
 						*(basic_streambuf<charT,traits>::eback() + amountData + retval - i - 1);
 				}
 			}
 
-			basic_streambuf<charT,traits>::gbump(-((long)u_retval));
+			basic_streambuf<charT,traits>::mgnext -= retval;
 
-			if(retval == EOF){
+			if(feof(fp)){
 				return traits::eof();
-			}else if(retval < 0){
+			}
+			if(ferror(fp)){
 				printf("Error trying to run scanf\n");
 				abort();
 			}
