@@ -75,6 +75,9 @@ check_gcc=$(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; 
 TARGET_ARCH:=$(strip $(subst ",, $(strip $(TARGET_ARCH))))
 #RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(RUNTIME_PREFIX))))))
 UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX))))))
+UCLIBCXX_RUNTIME_LIB_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_LIB_SUBDIR))))))
+UCLIBCXX_RUNTIME_BIN_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_BIN_SUBDIR))))))
+UCLIBCXX_RUNTIME_INCLUDE_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR))))))
 export UCLIBCXX_RUNTIME_PREFIX
 
 ARFLAGS:=r

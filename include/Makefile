@@ -8,8 +8,9 @@ clean:
 distclean: clean
 
 install:
-	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/include
-	$(INSTALL) -m 644 `ls --color=never --ignore="CVS"` $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/include
+	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR)
+	$(INSTALL) -m 644 `ls --color=never --ignore="CVS"` \
+		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR)
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) -o $@ $<

@@ -281,8 +281,8 @@ endmenu
 menu "Library Installation Options"
 
 config UCLIBCXX_RUNTIME_PREFIX
-	string "uClibc++ runtime library directory"
-	default "/usr/$(TARGET_ARCH)-linux-uclibc/usr"
+	string "uClibc++ runtime prefix directory"
+	default "/usr/$(TARGET_ARCH)-linux-uclibc"
 	help
 	 UCLIBCXX_ RUNTIME_PREFIX is the directory into which the uClibc++
 	  runtime libraries will be installed.
@@ -290,6 +290,36 @@ config UCLIBCXX_RUNTIME_PREFIX
 	  For a typical target system this should be set to "/usr", such
 	  that'make install' will install
 	  /usr/lib/libuClibc++.so
+
+config UCLIBCXX_RUNTIME_INCLUDE_SUBDIR
+	string "uClibc++ header file subdirectory"
+	default "/include"
+	help
+	 UCLIBCXX_RUNTIME_INCLUDE_SUBDIR is the subdirectory of
+	 UCLIBCXX_RUNTIME_PREFIX in which the header files for the library
+	 are installed.  If you set the prefix to /usr, set this to /include
+	 to install the headers into /include
+
+config UCLIBCXX_RUNTIME_LIB_SUBDIR
+	string "uClibc++ library subdirectory"
+	default "/lib"
+	help
+	 UCLIBCXX_RUNTIME_LIB_SUBDIR is the subdirectory of
+	 UCLIBCXX_RUNTIME_PREFIX in which the library binaries are installed.
+	 If you set the prefix to /usr, set this to /lib to install the
+	 headers into /lib
+
+config UCLIBCXX_RUNTIME_BIN_SUBDIR
+	string "uClibc++ application file subdirectory"
+	default "/bin"
+	help
+	 UCLIBCXX_RUNTIME_BIN_SUBDIR is the subdirectory of
+	 UCLIBCXX_RUNTIME_PREFIX in which the binary applicatons for the
+	 library are installed - right now this is just the g++ wrapper.  If
+	 you set the prefix to /usr, set this to /bin to install the
+	 applications headers into /bin
+
+
 
 config UCLIBCXX_EXCEPTION_SUPPORT
 	bool "Exception and RTTI support"
