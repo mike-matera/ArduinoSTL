@@ -2,6 +2,15 @@
 #include <iostream>
 
 
+struct Int {
+	Int(int x = 0) : val(x) { };
+	int val;
+};
+
+std::ostream& operator<<(std::ostream& s, Int x)
+  { return s << x.val; }
+
+
 int main(){
 	std::map<std::string, double> test;
 	std::map<std::string, double>::iterator i, j;
@@ -108,6 +117,21 @@ int main(){
 
 
 	std::cout << "This should read 11: " << test.equal_range("k").first->second << std::endl;
+
+
+
+	typedef std::map<char, Int, std::less<char> > maptype;
+
+	maptype map_char_myClass;
+	// Store mappings between roman numerals and decimals.
+	map_char_myClass['l'] = 50;
+	map_char_myClass['x'] = 20; // Deliberate mistake.
+	map_char_myClass['v'] = 5;
+	map_char_myClass['i'] = 1;
+	std::cout << "map_char_myClass['x'] = " << map_char_myClass['x'] << std::endl;
+	map_char_myClass['x'] = 10; // Correct mistake.
+	std::cout << "map_char_myClass['x'] = " << map_char_myClass['x'] << std::endl;
+	std::cout << "map_char_myClass['z'] = " << map_char_myClass['z'] << std::endl; // Note default value is added.
 	
 
 

@@ -220,6 +220,16 @@ namespace std{
 				return traits::not_eof(c);
 			}
 			size_t r = basic_streambuf<charT,traits>::pptr() - basic_streambuf<charT,traits>::pbase();
+
+			if( r == 0 && traits::eq_int_type(c,traits::eof()) ){
+				return traits::not_eof(c);
+			}else if (r == 0 ){
+				if(fputc(c, fp) == EOF){
+					return traits::eof();
+				}
+				return c;
+			}
+
 			size_t s = r;
 
 			char_type *buffer = 0;

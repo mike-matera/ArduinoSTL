@@ -10,6 +10,16 @@ int main(){
 	std::list<double> a;
 	std::list<double>::iterator i, j;
 
+
+	int array1 [] = { 1, 2};
+	int array2 [] = { 3, 4};
+
+	std::list<int> list_int_1( array1, array1 + 2);
+	std::list<int> list_int_2( array2, array2 + 2);
+	std::list<int>::iterator list_iter_1;
+	std::list<int>::iterator list_iter_2;
+
+
 	test = "Begining of list test";
 
 	std::cout << test << std::endl;
@@ -19,7 +29,7 @@ int main(){
 
 
 
-	std::cout << "List insert test\n";
+	std::cout << "\nList insert test\n";
 	i = temp.begin();
 	i++;
 	++i;
@@ -30,7 +40,7 @@ int main(){
 	}
 
 
-	std::cout << "List multi-insert test\n";
+	std::cout << "\nList multi-insert test\n";
 	i = temp.end();
 	--i;
 	i--;
@@ -56,14 +66,14 @@ int main(){
 	i--;
 	i--;
 	i--;
-	temp.erase(i,temp.end());
+	i = temp.erase(i,temp.end());
 	std::cout << "First element in list: " << *i << std::endl;
 	for(j = temp.begin(); j!=temp.end(); j++){
 		std::cout << "j: " << *j << std::endl;
 	}
 
 
-	std::cout << "Testing reverse\n";
+	std::cout << "\nTesting reverse\n";
 	temp.clear();
 	temp.push_back(12.8);
 	temp.push_back(22.4);
@@ -91,7 +101,7 @@ int main(){
 	}
 	std::cout << std::endl;
 
-	std::cout << "Testing splice" << std::endl;
+	std::cout << "\nTesting splice" << std::endl;
 
 	temp.clear();
 	temp.push_back(12.8);
@@ -264,8 +274,40 @@ int main(){
 	std::cout << std::endl;
 
 
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "1 2 3 4 \n";
 
-	std::cout << "Testing sorting\n";
+	list_iter_1 = list_int_1.begin();
+	while(list_iter_1 != list_int_1.end()){
+		std::cout << *list_iter_1 << " ";
+		++list_iter_1;
+	}
+	list_iter_1 = list_int_2.begin();
+	while(list_iter_1 != list_int_2.end()){
+		std::cout << *list_iter_1 << " ";
+		++list_iter_1;
+	}
+	std::cout << std::endl;
+
+	list_iter_1 = list_int_1.begin();
+	list_iter_1++;
+
+
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "1 3 4 2 \n";
+	
+	list_int_1.splice(list_iter_1, list_int_2, list_int_2.begin(), list_int_2.end());
+
+	list_iter_1 = list_int_1.begin();
+	while(list_iter_1 != list_int_1.end()){
+		std::cout << *list_iter_1 << " ";
+		++list_iter_1;
+	}
+	std::cout << std::endl;
+	
+
+
+	std::cout << "\nTesting sorting\n";
 
 	temp.clear();
 	temp.push_back(12.8);
@@ -289,7 +331,7 @@ int main(){
 
 
 
-	std::cout << "Testing merging\n";
+	std::cout << "\nTesting merging\n";
 
 	temp.clear();
 	temp.push_back(12.8);
@@ -316,7 +358,7 @@ int main(){
 	
 
 
-	std::cout << "Testing remove\n";
+	std::cout << "\nTesting remove\n";
 
 	temp.clear();
 	temp.push_back(12.8);
@@ -340,7 +382,7 @@ int main(){
 
 
 
-	std::cout << "Testing unique\n";
+	std::cout << "\nTesting unique\n";
 
 	temp.clear();
 	temp.push_back(11.7);

@@ -142,11 +142,12 @@ namespace std{
 		ForwardIterator
 		adjacent_find(ForwardIterator first, ForwardIterator last)
 	{
+		ForwardIterator temp;
 		while(first != last){
-			ForwardIterator temp(first);
+			temp = first;
 			++temp;
 			if(*temp == *first){
-				break;
+				return first;
 			}
 			++first;
 		}
@@ -157,11 +158,12 @@ namespace std{
 		ForwardIterator
 		adjacent_find(ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
 	{
+		ForwardIterator temp;
 		while(first != last){
-			ForwardIterator temp(first);
+			temp = first;
 			++temp;
 			if( pred(*temp, *first)){
-				break;
+				return first;
 			}
 			++first;
 		}
@@ -266,7 +268,7 @@ namespace std{
 		ForwardIterator1 search(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2)
 	{
-		while(first1 != last1){
+/*		while(first1 != last1){
 			ForwardIterator1 temp1(first1);
 			ForwardIterator2 temp2(first2);
 			while(temp2 != last2 && temp1 != last1){
@@ -279,8 +281,12 @@ namespace std{
 					return first1;
 				}
 			}
+			++first1;
 		}
 		return last1;
+*/
+		equal_to<typename iterator_traits<ForwardIterator1>::value_type> c;
+                return search(first1, last1, first2, last2, c);
 	}
 
 
@@ -303,6 +309,7 @@ namespace std{
 					return first1;
 				}
 			}
+			++first1;
 		}
 		return last1;
 	}
@@ -520,7 +527,7 @@ namespace std{
 		while(n != 0){
 			*first = value;
 			--n;
-			--first;
+			++first;
 		}
 	}
 
@@ -894,7 +901,7 @@ namespace std{
 			RandomAccessIterator result_first, RandomAccessIterator result_last)
 	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
-		partial_sort_copy(first, last, result_first, result_last, c);
+		return partial_sort_copy(first, last, result_first, result_last, c);
 	}
 	template<class InputIterator, class RandomAccessIterator, class Compare>
 		RandomAccessIterator
@@ -902,8 +909,9 @@ namespace std{
 			RandomAccessIterator result_first, RandomAccessIterator result_last, Compare comp)
 	{
 		size_t output_size = last-first;
-		if(result_last - result_first < output_size){
-			output_size = result_last - result_first;
+		size_t temp_size = result_last - result_first;
+		if(temp_size < output_size){
+			output_size = temp_size;
 		}
 		RandomAccessIterator middle = first;
 		first += output_size;
@@ -911,6 +919,7 @@ namespace std{
 		for(size_t i =0; i < output_size; ++i){
 			result_first[i] = first[i];
 		}
+		return (result_first + output_size);
 	}
 	template<class RandomAccessIterator>
 		void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last)
@@ -1033,7 +1042,7 @@ namespace std{
 		pair<ForwardIterator, ForwardIterator> retval;
 		retval.first = lower_bound(first, last, value, comp);
 		//Reuse retval.first in order to (possibly) save a few comparisons
-		retval.second = lower_bound(retval.first, last, value, comp);
+		retval.second = upper_bound(retval.first, last, value, comp);
 		return retval;
 
 	}
@@ -1050,7 +1059,7 @@ namespace std{
 		bool binary_search(ForwardIterator first, ForwardIterator last,
 			const T& value, Compare comp)
 	{
-		if(last - first == 0){
+		if( distance(first, last) == 0){
 			return false;
 		}
 
@@ -1529,7 +1538,7 @@ namespace std{
 			InputIterator2 first2, InputIterator2 last2)
 	{
 		less<typename iterator_traits<InputIterator1>::value_type> c;
-		return lexicographical_compare(first1, last1, first2, last2);
+		return lexicographical_compare(first1, last1, first2, last2, c);
 	}
 
 	template<class InputIterator1, class InputIterator2, class Compare>
@@ -1550,10 +1559,141 @@ namespace std{
 	}
 
 	// _lib.alg.permutation.generators_, permutations
-	template<class BidirectionalIterator> bool next_permutation(BidirectionalIterator first, BidirectionalIterator last);
-	template<class BidirectionalIterator, class Compare> bool next_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp);
-	template<class BidirectionalIterator> bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last);
-	template<class BidirectionalIterator, class Compare> bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp);
+	template<class BidirectionalIterator>
+		bool next_permutation(BidirectionalIterator first, BidirectionalIterator last)
+	{
+		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
+		return next_permutation(first, last, c);
+	}
+
+	template<class BidirectionalIterator, class Compare>
+		bool next_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp)
+	{
+		if(first == last){
+			return false;	// No data
+		}
+		BidirectionalIterator i = last;
+		--i;
+		if(i == first){
+			return false;	//Only one element
+		}
+		BidirectionalIterator ii = i;
+		--ii;
+		//If the last two items are in order, swap them and call it done
+		if( comp(*ii, *i) ){
+			iter_swap(ii, i);
+			return true;
+		}
+
+
+/*		temp = i;
+		--temp;
+		while( comp(*i, *temp) && first < i){
+			--i;
+			--temp;
+		}
+
+		BidirectionalIterator j = last;
+
+		--j;
+
+		--i;
+		--j;
+		while( comp(*j, *i) && first < j){
+			--j;
+		}
+
+		iter_swap(i, j);
+
+		++i;
+		++i;
+
+		j = last;
+
+		--i;
+		while(i < j && first < j && i < last){
+			--j;
+			iter_swap(i, j);
+			++i;
+		}*/
+
+		//This part of the algorithm copied from G++ header files ver. 3.4.2
+		i = last;
+		--i;
+		for(;;){
+			ii = i;
+			--i;
+			if ( comp(*i, *ii) ){
+				BidirectionalIterator j = last;
+				--j;
+				while ( !comp(*i, *j)){
+					--j;
+				}
+				iter_swap(i, j);
+				reverse(ii, last);
+				return true;
+			}
+			if (i == first){
+				reverse(first, last);
+				return false;
+			}
+		}
+		
+
+	}
+
+	template<class BidirectionalIterator>
+		bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last)
+	{
+		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
+		return prev_permutation(first, last, c);
+	}
+	
+	template<class BidirectionalIterator, class Compare>
+		bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp)
+	{
+		if(first == last){
+			return false;	// No data
+		}
+		BidirectionalIterator i = last;
+		--i;
+		if(i == first){
+			return false;	//Only one element
+		}
+		BidirectionalIterator ii = i;
+		--ii;
+		//If the last two items are in reverse order, swap them and call it done
+		if( comp(*i, *ii) ){
+			iter_swap(ii, i);
+			return true;
+		}
+
+		//Copied from GNU GCC header files version 3.4.2
+		i = last;
+		--i;
+
+//		BidirectionalIterator ii;
+
+		for(;;){
+			ii = i;
+			--i;
+			if ( comp(*ii, *i)){
+				BidirectionalIterator j = last;
+				--j;
+				while ( !comp(*j, *i)){
+					--j;
+				}
+				iter_swap(i, j);
+				reverse(ii, last);
+				return true;
+			}
+			if (i == first){
+				reverse(first, last);
+				return false;
+			}
+		}
+
+	}
 
 }
 

@@ -290,7 +290,7 @@ namespace std{
 		data_size = x.elements + __UCLIBCXX_STL_BUFFER_SIZE__;
 		data = a.allocate(data_size);
 		first_element = (data_size - x.elements) / 2;
-		last_element = first_element + 1;
+		last_element = first_element;
 		for(size_type i=0; i < x.elements; ++i){
 			push_back(x[i]);
 		}
@@ -560,7 +560,6 @@ namespace std{
 		erase(typename deque<T, Allocator>::iterator first, typename deque<T, Allocator>::iterator last)
 	{
 		//Shift backwards
-		printf("First element number: %i\nSecond element number: %i\n", first.element, last.element);
 		size_type num_move = last.element - first.element;
 		if( first.element > (elements - last.element) ){
 			for(size_type i = last.element; i < elements ; ++i){

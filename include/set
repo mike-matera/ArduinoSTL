@@ -487,6 +487,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -662,6 +663,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -908,6 +910,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -1093,6 +1096,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 

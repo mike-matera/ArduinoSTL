@@ -63,8 +63,10 @@ int main(){
 	std::cout << "Copy constructor:" << std::endl;
 
 	std::deque<double> test2(test);
-	for(i = test2.begin(); i !=test2.end(); ++i){
+	i = test2.begin();
+	while(i !=test2.end()){
 		std::cout << *i << std::endl;
+		++i;
 	}
 
 

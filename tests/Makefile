@@ -23,7 +23,8 @@ SRCS	=\
 	settest.cpp \
 	numerictest.cpp \
 	bitsettest.cpp \
-	algotest.cpp
+	algotest.cpp \
+	stacktest.cpp
 
 
 EXOBJS	=\
@@ -39,7 +40,8 @@ EXOBJS	=\
 	newdel.o \
 	numerictest.o \
 	bitsettest.o \
-	algotest.o
+	algotest.o \
+	stacktest.o
 
 ALLOBJS	=	$(EXOBJS) \
 		newdel.o-old \
@@ -54,7 +56,8 @@ ALLOBJS	=	$(EXOBJS) \
 		settest.o-old \
 		numerictest.o-old \
 		bitsettest.o-old \
-		algotest.o-old
+		algotest.o-old \
+		stacktest.o-old
 
 ALLBIN	=	newdel newdel-old \
 		io io-old \
@@ -68,9 +71,11 @@ ALLBIN	=	newdel newdel-old \
 		listtest listtest-old \
 		numerictest numerictest-old \
 		bitsettest bitsettest-old \
-		algotest algotest-old
+		algotest algotest-old \
+		stacktest stacktest-old
 
-ALLTGT	=	algotest \
+ALLTGT	=	stacktest \
+		algotest \
 		bitsettest \
 		sstreamtest \
 		numerictest \
@@ -164,6 +169,10 @@ mmaptest: $(EXOBJS)
 algotest: $(EXOBJS)
 	$(CXX) -o algotest algotest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o algotest-old algotest.o-old $(COFLAGS)
+
+stacktest: $(EXOBJS)
+	$(CXX) -o stacktest stacktest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o stacktest-old stacktest.o-old $(COFLAGS)
 
 
 .cpp.o:

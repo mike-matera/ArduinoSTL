@@ -1,3 +1,14 @@
+0.1.5 - PRE
+-	Added code for all algorithms
+-	Fixed map/set code to prevent infinite loops.  Oops.
+-	Fixed list code to prevent most memory leaks.  1 still remains, but unknown location
+-	stlport v 1.00 test suite now compiles, links and runs.  Some issues remain
+-	Fix deque constructor using the wrong end_pointer value
+-	Added erase capability to vector
+-	Changed multimap::find to point to first matching element instead of any matching element
+-	Added more tests to test suite based upon problems from stlport test suite
+
+
 0.1.4 - 2004-09-10
 -	Fixed minor previous errors
 -	Added <algorithm> heap functions.  Just treat as a descending sorted list
@@ -11,7 +22,7 @@
 
 
 0.1.2 - 2004-09-05
--	Completed all core code for set, multiset, map and multimap.  Rewrote to use inheritence to cut code duplication
+-	Completed all core code for set, multiset, map and multimap.  Rewrote to use inheritance to cut code duplication
 -	Added more algorithms
 -	Now compiles the stlport 1.0 testsuite (some minor changes to not test extensions needed)
 -	Does not yet link stlport testsuite - missing implementations of a number of functions
@@ -27,8 +38,8 @@
 
 -	Removed semicolons on the closing of namespaces.  My compiler doesn't warn, so I may have missed one or two
 -       Fixed a problem with the istream code which caused it to fail to read in the first character of input.
--       Changed compiler flags to not geenrate some warnings on >=GCC 3.4
--       Changed build process to prevent mis-configuration under certain circumstances
+-       Changed compiler flags to not generate some warnings on >=GCC 3.4
+-       Changed build process to prevent misconfiguration under certain circumstances
 -       Added stringstream and all of it's incarnations
 -       Added <bitset>
 -       Added <set> - code is considered 'under development' - not finished

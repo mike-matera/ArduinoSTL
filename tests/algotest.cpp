@@ -485,5 +485,46 @@ int main(){
 	std::cout << std::endl;
 
 
+	std::cout << "Permutation test\n";
+
+	a.clear();
+	a.push_back(1);
+	a.push_back(2);
+	a.push_back(3);
+	a.push_back(4);
+
+	i = a.begin();
+	while(i != a.end() ){
+		std::cout << *i << " " ;
+		++i;
+	}
+	std::cout << std::endl;
+
+
+	for(int x = 0; x < 24; ++x){
+		std::next_permutation(a.begin(), a.end());
+		i = a.begin();
+		while(i != a.end() ){
+			std::cout << *i << " " ;
+			++i;
+		}
+		std::cout << std::endl;
+
+	}
+
+	std::cout << "Previous permutation:\n";
+
+	for(int x = 0; x < 24; ++x){
+		std::prev_permutation(a.begin(), a.end());
+		i = a.begin();
+		while(i != a.end() ){
+			std::cout << *i << " " ;
+			++i;
+		}
+		std::cout << std::endl;
+
+	}
+
+
 	return 0;
 }

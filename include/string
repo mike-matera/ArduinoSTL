@@ -340,8 +340,37 @@ public:
 		return *this;
 	}
 
-//	iterator erase(iterator position);
-//	iterator erase(iterator first, iterator last);
+	iterator erase(iterator position){
+		if(position == end()){
+			return position;
+		}
+
+		++position;
+
+		iterator temp = position;
+
+		while(position != end()){
+			*(position-1) = *position;
+			++position;
+		}
+		--vector<Ch, A>::elements;
+		return temp;
+	}
+
+	iterator erase(iterator first, iterator last){
+		size_t count = last - first;
+
+		iterator temp = last;
+
+		while(last != end()){
+			*(last - count) = *last;
+			++last;
+		}
+
+		vector<Ch, A>::elements-= count;
+
+		return temp;
+	}
 
 //	basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
 

@@ -495,6 +495,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -685,6 +686,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -932,6 +934,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -1117,6 +1120,7 @@ protected:
 	{
 		while(first !=last){
 			insert(*first);
+			++first;
 		}
 	}
 
@@ -1163,8 +1167,19 @@ protected:
 
 		iterator retval = ifind(x);
 
+		if(retval == end()){
+			return retval;
+		}
+
 		if( c(x, retval->first) || c(retval->first, x) ){
 			return end();
+		}
+
+		while( retval.element > 0 && !c(retval->first, x) && !c(x, retval->first) ){
+			--retval;
+		}
+		if( c(retval->first, x)){
+			++retval;
 		}
 
 		return retval;
@@ -1180,9 +1195,21 @@ protected:
 		}
 		const_iterator retval = ifind(x);
 
+		if(retval == end()){
+			return retval;
+		}
+
 		if( c(x, retval->first) || c(retval->first, x) ){
 			return end();
 		}
+
+		while( retval.element > 0 && !c(retval->first, x) && !c(x, retval->first) ){
+			--retval;
+		}
+		if( c(retval->first, x)){
+			++retval;
+		}
+
 
 		return retval;
 	}
@@ -1205,9 +1232,8 @@ protected:
 		typename multimap<Key, T, Compare, Allocator>::iterator 
 		multimap<Key, T, Compare, Allocator>::lower_bound(const key_type& x)
 	{
-		//FIXME - linear search - can we do any better?
 		typename multimap<Key, T, Compare, Allocator>::iterator i = find(x);
-		if(i == end()){
+/*		if(i == end()){
 			return i;
 		}
 		while( i.element > 0 && !c(i->first, x) && !c(x, i->first) ){
@@ -1216,7 +1242,7 @@ protected:
 		if( c(i->first, x)){
 			++i;
 		}
-		return i;
+*/		return i;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -1225,7 +1251,7 @@ protected:
 	{
 		//FIXME - linear search - can we do any better?
 		typename multimap<Key, T, Compare, Allocator>::const_iterator i = find(x);
-		if(i == end()){
+/*		if(i == end()){
 			return i;
 		}
 		while( i.element >0 && !c(i->first, x) && !c(x, i->first) ){
@@ -1234,14 +1260,19 @@ protected:
 		if( c(i->first, x)){
 			++i;
 		}
-		return i;
+*/		return i;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 		typename multimap<Key, T, Compare, Allocator>::iterator
 		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
 	{
-		typename multimap<Key, T, Compare, Allocator>::iterator i = find(x);
+		typename multimap<Key, T, Compare, Allocator>::iterator i = ifind(x);
+
+		if( c(x, i->first) || c(i->first, x) ){
+			return end();
+		}
+
 		if(i != end()){
 			++i;
 		}
@@ -1252,7 +1283,12 @@ protected:
 		typename multimap<Key, T, Compare, Allocator>::const_iterator
 		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
-		typename multimap<Key, T, Compare, Allocator>::const_iterator i = find(x);
+		typename multimap<Key, T, Compare, Allocator>::const_iterator i = ifind(x);
+
+		if( c(x, i->first) || c(i->first, x) ){
+			return end();
+		}
+
 		if(i != end()){
 			++i;
 		}

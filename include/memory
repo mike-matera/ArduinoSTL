@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <iterator_base>
 #include <utility>
+#include <cstdio>
 
 #ifndef HEADER_STD_MEMORY
 #define HEADER_STD_MEMORY 1
