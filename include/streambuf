@@ -118,7 +118,7 @@ namespace std{
 		}
 
 		int_type sputc(char_type c){
-			overflow(c);
+			overflow( traits::to_int_type(c) );
 			return traits::to_int_type(c);
 		}
 

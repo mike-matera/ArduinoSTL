@@ -26,8 +26,10 @@
 #include <ios>
 #include <istream>
 #include <ostream>
-//#include <fstream>
+#include <iostream>
 #include <string>
+#include <assert.h>
+#include <unistd.h>
 
 namespace std{
 
@@ -42,14 +44,14 @@ namespace std{
 		typedef typename Allocator::size_type size_type;
 
 		explicit basic_stringbuf(ios_base::openmode which = ios_base::in | ios_base::out)
-			: data(), ielement(0)
+			: data(), ielement(0), oelement(0)
 		{
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
 
 		explicit basic_stringbuf(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::in | ios_base::out)
-			: data(str), ielement(0)
+			: data(str), ielement(0), oelement(str.length())
 		{
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
@@ -63,13 +65,13 @@ namespace std{
 		void str(const basic_string<charT,traits,Allocator>& s){
 			data = s;
 			ielement = 0;
+			oelement = data.length();
 		}
 
 	protected:
-		/* From basic_streambuf
-		   ios_base::openmode openedFor; - holds the modes we are supporting
-		*/
-		
+		virtual int sync(){
+			return 0;
+		}
 		virtual int_type underflow(){
 			if(ielement >= data.length()){
 				return traits::eof();
@@ -132,7 +134,12 @@ namespace std{
 
 			//Actually add character, if possible
 			if(basic_streambuf<charT,traits>::openedFor & ios_base::out){
-				data.push_back(c);
+				if(oelement >= data.length()){
+					data.push_back(c);
+				}else{
+					data[oelement] = c;
+				}
+				++oelement;
 				return c;
 			}
 			//Not possible
@@ -145,7 +152,20 @@ namespace std{
 		}
 
 		virtual streamsize xsputn(const char_type* s, streamsize n){
-			data.append(s, n);
+			streamsize alen = n;
+			streamsize rlen = data.length() - oelement;
+			if(alen < rlen){
+				rlen = alen;
+			}
+			if( rlen > 0 ){
+				data.replace(oelement, rlen, s);
+				oelement += rlen;
+				alen -= rlen;
+			}
+			if(alen > 0){
+				data.append(s + rlen, alen);
+				oelement += alen;
+			}
 			return n;
 		}
 
@@ -202,6 +222,7 @@ namespace std{
 
 		basic_string<charT,traits,Allocator> data;
 		size_type ielement;
+		size_type oelement;
 	};
 
 

@@ -6,6 +6,9 @@ Peter S. Mazinger:	wchar cleanups across the board
 -	Have max string length test aginst proper variable (oops)
 -	Change sstream to use append instead of push_back all of the time
 -	Make string::append start reading at the correct location
+-	Convert sstream to allow seeking on write stream without truncation
+-	Convert sstream xsputn to use either append or replace
+-	Elliminate duplicate size_t definition - now use C library version
 
 
 0.1.8
