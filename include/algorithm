@@ -887,8 +887,30 @@ namespace std{
 			++first;
 		}
 	}
-	template<class InputIterator, class RandomAccessIterator> RandomAccessIterator partial_sort_copy(InputIterator first, InputIterator last, RandomAccessIterator result_first, RandomAccessIterator result_last);
-	template<class InputIterator, class RandomAccessIterator, class Compare> RandomAccessIterator partial_sort_copy(InputIterator first, InputIterator last, RandomAccessIterator result_first, RandomAccessIterator result_last, Compare comp);
+	template<class InputIterator, class RandomAccessIterator>
+		RandomAccessIterator
+		partial_sort_copy(InputIterator first, InputIterator last,
+			RandomAccessIterator result_first, RandomAccessIterator result_last)
+	{
+		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
+		partial_sort_copy(first, last, result_first, result_last, c);
+	}
+	template<class InputIterator, class RandomAccessIterator, class Compare>
+		RandomAccessIterator
+		partial_sort_copy(InputIterator first, InputIterator last,
+			RandomAccessIterator result_first, RandomAccessIterator result_last, Compare comp)
+	{
+		size_t output_size = last-first;
+		if(result_last - result_first < output_size){
+			output_size = result_last - result_first;
+		}
+		RandomAccessIterator middle = first;
+		first += output_size;
+		partial_sort(first, middle, last, comp);
+		for(size_t i =0; i < output_size; ++i){
+			result_first[i] = first[i];
+		}
+	}
 	template<class RandomAccessIterator>
 		void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last)
 	{
@@ -1056,10 +1078,69 @@ namespace std{
 	}
 
 	// _lib.alg.merge_, merge:
-	template<class InputIterator1, class InputIterator2, class OutputIterator> OutputIterator merge(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, OutputIterator result);
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> OutputIterator merge(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp);
-	template<class BidirectionalIterator> void inplace_merge(BidirectionalIterator first, BidirectionalIterator middle, BidirectionalIterator last);
-	template<class BidirectionalIterator, class Compare> void inplace_merge(BidirectionalIterator first, BidirectionalIterator middle, BidirectionalIterator last, Compare comp);
+	template<class InputIterator1, class InputIterator2, class OutputIterator>
+		OutputIterator
+		merge(InputIterator1 first1, InputIterator1 last1,
+			InputIterator2 first2, InputIterator2 last2, OutputIterator result)
+	{
+		less<typename iterator_traits<InputIterator1>::value_type> c;
+		return merge(first1, last1, first2, last2, result, c);
+	}
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare>
+		OutputIterator
+		merge(InputIterator1 first1, InputIterator1 last1,
+			InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp)
+	{
+		while(first1 != last1 || first2 != last2){
+			while( first1 != last1 && first2 != last2){
+				//If in this order so first1 elements which are equal come first
+				if( comp(*first2, *first1) ){
+					*result = *first2;
+					++first2;
+				}else{
+					*result = *first1;
+					++fisrt1;
+				}
+				++result;
+			}
+			//Clean up remaining elements
+			while(first1 != last1){
+				*result = *first1;
+				++first1;
+				++result;
+			}
+			while(first2 != last2){
+				*result = *first2;
+				++first2;
+				++result;
+			}
+		}
+		return result;
+	}
+	template<class BidirectionalIterator>
+		void inplace_merge(BidirectionalIterator first,
+			BidirectionalIterator middle, BidirectionalIterator last)
+	{
+		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
+		inplace_merge(first, middle, last, c);
+	}
+	template<class BidirectionalIterator, class Compare>
+		void inplace_merge(BidirectionalIterator first,
+			BidirectionalIterator middle, BidirectionalIterator last, Compare comp)
+	{
+		//FIXME - using a bubble exchange method
+		while(first != middle && middle !=last){
+			if( comp(*middle, *first) ){
+				BidirectionalIterator temp(middle);
+				while( temp != first){
+					iter_swap(temp, temp-1);
+					--temp;
+				}
+				++middle;
+			}
+			++first;
+		}
+	}
 
 	// _lib.alg.set.operations_, set operations:
 	template<class InputIterator1, class InputIterator2> 

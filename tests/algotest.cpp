@@ -329,5 +329,36 @@ int main(){
 	std::cout << std::endl;
 
 
+
+
+	std::cout << "Merge test\n";
+	a.clear();
+	a.push_back(10.8);
+	a.push_back(12.5);
+	a.push_back(32.7);
+	a.push_back(72.3);
+
+	i = a.end();
+
+	a.push_back(12.5);
+	a.push_back(19.6);
+	a.push_back(22.7);
+	a.push_back(38.4);
+	a.push_back(52.9);
+	a.push_back(92.7);
+
+	std::inplace_merge<std::vector<double>::iterator>(a.begin(), i, a.end());
+
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << "10.8 12.5 12.5 19.6 22.7 32.7 38.4 52.9 72.3 92.7 " << std::endl;
+
+	j = a.begin();
+	while(j != a.end()){
+		std::cout << *j << " ";
+		++j;
+	}
+	std::cout << std::endl;
+
+
 	return 0;
 }
