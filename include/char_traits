@@ -104,6 +104,7 @@ namespace std{
 
 		static const char_type* find(const char_type* s, int n, const char_type& a);
 
+		inline static char_type eos() { return 0; }
 		inline static int_type eof() { return -1; }
 		inline static int_type not_eof(const int_type & i) {
 			if(i == -1){
@@ -165,6 +166,7 @@ namespace std{
 
 		static const char_type* find(const char_type* s, int n, const char_type& a);
 
+		inline static char_type eos() { return 0; }
 		inline static int_type eof() { return WEOF; }
 		inline static int_type not_eof(const int_type & i) {
 			if(i == WEOF){

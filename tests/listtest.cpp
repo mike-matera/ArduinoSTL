@@ -3,12 +3,21 @@
 #include <vector>
 #include <string>
 
+class testClass{
+public:
+	void write(){
+		std::cout << "testClass::write()" << std::endl;
+	}
+};
+
 
 int main(){
 	std::string test;
 	std::list<double>temp(5, 12.0);
 	std::list<double> a;
 	std::list<double>::iterator i, j;
+	std::list<testClass *> testPointer;
+	std::list<testClass *>::iterator testPointerIterator;
 
 
 	int array1 [] = { 1, 2};
@@ -328,13 +337,29 @@ int main(){
 	}
 	std::cout << std::endl;
 
-	i = a.begin();
-	while(i != a.end()){
+	i = a.end();
+	while(i != a.begin()){
+		--i;
 		std::cout << *i << " ";
-		++i;
 	}
 	std::cout << std::endl;
 
+
+	std::cout << "\nTesting lists with pointer parameters" << std::endl;
+
+	testPointer.clear();
+//	testPointer.push_back(new testClass());
+	testPointer.push_back(new testClass());
+
+	testPointerIterator = testPointer.begin();
+	while(testPointerIterator != testPointer.end()){
+		(*testPointerIterator)->write();
+		++testPointerIterator;
+	}
+//	delete testPointer.back();
+//	testPointer.pop_back();
+	delete testPointer.back();
+	testPointer.pop_back();
 
 
 	std::cout << "\nTesting sorting\n";

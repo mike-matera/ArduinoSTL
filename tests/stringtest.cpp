@@ -107,6 +107,19 @@ int main(){
 	std::cout << "\"" << a.substr(5, 5) << "\""  << std::endl;
 
 
+	std::cout << "\nChecking char constructor\n";
+	a = std::string(1, 'w');
+	b = "w";
+	std::cout << "The following two lines should be identical:\n";
+	std::cout << a << std::endl << b << std::endl;
+
+	std::cout << "\nChecking operator[]()\n";
+	std::cout << "The following two lines should be identical\n";
+	a = "abcdefg";
+	std::cout << "abcdefg\n";
+	std::cout << a[0] << a[1] << a[2] << a[3] << a[4] << a[5] << a[6] << std::endl;
+
+
 	std::cout << "\nChecking find on string \"" ;
 	a = "This is the string we are searching through";
 	std::cout << a << "\"\n";
@@ -121,11 +134,26 @@ int main(){
 	std::cout << "Position of \"search\": ";
 	std::cout << a.find("search") << " - should be 26\n";
 
+	std::cout << "Position of \"through\": ";
+	std::cout << a.find("through") << " - should be 36\n";
+
+
 	std::cout << "Position of \"is\" starting at character 3: ";
 	std::cout << a.find("is", 3) << " - should be 5\n";
 
 	std::cout << "Position of \"q\": ";
 	std::cout << a.find("q") << " - should be " << a.npos << std::endl;
+	std::cout << "Making sure return value can be casted - ";
+	if( (long)a.find("q") >= 0){
+		std::cout << "error\n";
+	}else{
+		if((long)a.find("q") < 0){
+			std::cout << "OK\n";
+		}else{
+			std::cout << "error\n";
+		}
+	}
+	std::cout << std::endl;
 
 
 	std::cout << "\nChecking rfind on string \"";

@@ -24,12 +24,25 @@ Checking substr.  The following two lines should be identical:
 "is th"
 "is th"
 
+Checking char constructor
+The following two lines should be identical:
+w
+w
+
+Checking operator[]()
+The following two lines should be identical
+abcdefg
+abcdefg
+
 Checking find on string "This is the string we are searching through"
 Position of "the": 8 - should be 8
 Position of 'g': 17 - should be 17
 Position of "search": 26 - should be 26
+Position of "through": 36 - should be 36
 Position of "is" starting at character 3: 5 - should be 5
 Position of "q": 4294967295 - should be 4294967295
+Making sure return value can be casted - OK
+
 
 Checking rfind on string "This is the string we are searching through"
 Position of "the": 8 = should be 8

@@ -171,7 +171,7 @@ namespace std{
 		basic_istream<charT,traits>& getline(char_type* s, streamsize n, char_type delim){
 			streamsize i = 0;
 			int_type c;
-			for(i=0;i<n;++i){
+			for(i=0;i<n-1;++i){
 				c= sbuffer->sgetc();
 				if(c == traits::eof() ){
 					if(i==0){
@@ -180,20 +180,20 @@ namespace std{
 						basic_ios<charT,traits>::setstate(ios_base::eofbit);
 					}
 					count_last_ufmt_input = i;
+					s[i] = traits::eos();
 					return *this;
 				}
 				if(sbuffer->sbumpc()==traits::eof() ){
 					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 				}
 				if(c == delim){
-					if(i==0){
-						basic_ios<charT,traits>::setstate(ios_base::failbit);
-					}
 					count_last_ufmt_input = i+1;
+					s[i] = traits::eos();
 					return *this;
 				}
 				s[i] = c;
 			}
+			s[n] = traits::eos();
 			return *this;
 		}
 		
