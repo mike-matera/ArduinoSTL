@@ -141,16 +141,16 @@ namespace std{
 
 		Iterator base() const { return current; }        // explicit
 
-		typename iterator_traits<Iterator>::reference operator*() const { Iterator tmp = current; return *--tmp;}
-		typename iterator_traits<Iterator>::pointer   operator->() const { Iterator tmp = current; return *--tmp;}
+		typename iterator_traits<Iterator>::reference operator*() const { Iterator tmp = current; return *--tmp; }
+		typename iterator_traits<Iterator>::pointer   operator->() const { return &(operator*()); }
 		typename iterator_traits<Iterator>::reference operator[](typename iterator_traits<Iterator>::difference_type n) const{
 			return current[-n-1];
 		}
 
 		reverse_iterator& operator++(){ --current; return *this;	}
-		reverse_iterator  operator++(int) {reverse_iterator tmp = *this; --current; return tmp; }
+		reverse_iterator  operator++(int) {reverse_iterator tmp = current; --current; return tmp; }
 		reverse_iterator& operator--() { ++ current; return *this; }
-		reverse_iterator  operator--(int) {reverse_iterator tmp = *this; ++current; return tmp; }
+		reverse_iterator  operator--(int) {reverse_iterator tmp = current; ++current; return tmp; }
 
 		reverse_iterator  operator+ (typename iterator_traits<Iterator>::difference_type n) const{
 			reverse_iterator retval( *this );

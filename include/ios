@@ -290,7 +290,7 @@ namespace std{
 			if(fail() ){
 				return 0;
 			}
-			return this;	//Must return a non-NULL pointer (though it can be *any* pointer)
+			return (void *)(1);	//Must return a non-NULL pointer (though it can be *any* pointer)
 		}
 
 		bool operator!() const{

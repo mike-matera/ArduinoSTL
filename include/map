@@ -114,10 +114,10 @@ protected:
 	template<class Key, class T, class Compare, class Allocator> class __map_iter
 		: public std::iterator<
 			bidirectional_iterator_tag,
-			T,
+			std::pair<Key, T>,
 			typename Allocator::difference_type,
-			typename Allocator::pointer,
-			typename Allocator::reference
+			std::pair<Key, T>*,
+			std::pair<Key, T>&
 		>
 	{
 	protected:
@@ -140,7 +140,7 @@ protected:
 			: element(e), container(c) {  }
 		~__map_iter() {  }
 		
-		typename Map::value_type operator*(){
+		typename Map::value_type & operator*(){
 			return container->data[element];
 		}
 		typename Map::value_type * operator->(){
@@ -182,10 +182,10 @@ protected:
 	template<class Key, class T, class Compare, class Allocator> class __map_citer
 		: public std::iterator<
 			bidirectional_iterator_tag,
-			T,
+			std::pair<Key, T>,
 			typename Allocator::difference_type,
-			typename Allocator::pointer,
-			typename Allocator::reference
+			std::pair<Key, T>*,
+			std::pair<Key, T>&
 		>
 	{
 	protected:
@@ -208,7 +208,7 @@ protected:
 			: element(e), container(c) {  }
 		~__map_citer() {  }
 		
-		typename Map::value_type operator*(){
+		typename Map::value_type & operator*(){
 			return container->data[element];
 		}
 		const typename Map::value_type * operator->(){
