@@ -58,6 +58,10 @@ SHARED_FULLNAME:=libuClibc++-$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL).so
 SHARED_MAJORNAME:=libuClibc++.so.$(MAJOR_VERSION)
 LIBC:=$(TOPDIR)libc/$(LIBNAME)
 
+# Make sure DESTDIR and PREFIX can be used to install
+# PREFIX is a uClibcism while DESTDIR is a common GNUism
+PREFIX = $(DESTDIR)
+
 # Pull in the user's uClibc++ configuration
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(TOPDIR).config
@@ -147,6 +151,3 @@ endif
 LIBGCC_CFLAGS ?= $(CFLAGS) $(CPU_CFLAGS-y)
 LIBGCC:=$(shell $(CC) $(LIBGCC_CFLAGS) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
-
-
-
