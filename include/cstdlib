@@ -17,6 +17,7 @@
 */
 
 #include <stdlib.h>
+#include <basic_definitions>
 
 #ifndef __HEADER_CSTDLIB
 #define __HEADER_CSTDLIB 1
@@ -35,9 +36,6 @@ namespace std{
 	using ::getenv;
 	using ::labs;
 	using ::ldiv;
-	using ::mblen;
-	using ::mbstowcs;
-	using ::mbtowc;
 	using ::srand;
 	using ::strtod;
 	using ::strtol;
@@ -45,8 +43,13 @@ namespace std{
 	using ::system;
 	using ::qsort;
 	using ::rand;
+#ifdef __UCLIBCXX_HAS_WCHAR__
+	using ::mblen;
+	using ::mbstowcs;
+	using ::mbtowc;
 	using ::wctomb;
 	using ::wcstombs;
+#endif
 
 	inline long abs(long i){
 		return labs(i);
