@@ -145,11 +145,7 @@ namespace std{
 
 		virtual streamsize xsputn(const char_type* s, streamsize n){
 			streamsize i = 0;
-			data.reserve(data.length() + n);
-			while(i < n){
-				data.push_back(s[i]);
-				++i;
-			} 
+			data.append(s, n);
 			return n;
 		}
 

@@ -79,7 +79,6 @@ public:
 			rlen = n;
 		}
 		resize(rlen);
-//		vector<Ch, A>::elements = rlen;
 		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, vector<Ch, A>::elements);
 	}
 
@@ -91,7 +90,6 @@ public:
 		}
 		if(s > 0){
 			resize(n);
-//			vector<Ch, A>::elements = n;
 			Tr::copy(vector<Ch, A>::data, s, vector<Ch, A>::elements);
 		}
 	}
@@ -135,7 +133,7 @@ public:
 
 	basic_string& operator=(Ch c){
 		vector<Ch, A>::clear();
-		push_back(c);
+		vector<Ch, A>::push_back(c);
 		return *this;
 	}
 
@@ -154,7 +152,7 @@ public:
 	}
 
 	basic_string& operator+=(Ch c){
-		push_back(c);
+		vector<Ch, A>::push_back(c);
 		return *this;
 	}
 
@@ -162,7 +160,6 @@ public:
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + str.elements);
 		Tr::copy( vector<Ch, A>::data + temp, str.vector<Ch, A>::data, str.elements);
-//		vector<Ch, A>::elements += str.elements;
 
 		return *this;
 	}
@@ -181,8 +178,7 @@ public:
 		}
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + rlen);
-//		vector<Ch, A>::elements += rlen;
-		Tr::copy( vector<Ch, A>::data + temp, str.vector<Ch, A>::data, rlen);
+		Tr::copy( vector<Ch, A>::data + temp, str.vector<Ch, A>::data + pos, rlen);
 		return *this;
 	}
 		
@@ -190,15 +186,14 @@ public:
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
 		Tr::copy( vector<Ch, A>::data + temp, s, n);
-//		vector<Ch, A>::elements+=n;
 		return *this;
 	}
+
 	basic_string& append(const Ch* s){
 		size_type strLen = Tr::length(s);
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + strLen);
 		Tr::copy( vector<Ch, A>::data + temp, s, strLen);
-//		vector<Ch, A>::elements+=strLen;
 		return *this;
 	}
 
@@ -209,7 +204,6 @@ public:
 
 	basic_string& assign(const basic_string& str){
 		operator=(str);
-//		*this = str;
 		return *this;
 	}
 
@@ -295,7 +289,7 @@ public:
 		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		if(vector<Ch, A>::elements > pos - n){
+		if(vector<Ch, A>::elements > npos - n){
 			__throw_length_error();
 		}
 		resize(vector<Ch, A>::elements + n);
@@ -314,7 +308,7 @@ public:
 		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
-		if(vector<Ch, A>::elements > pos - n){
+		if(vector<Ch, A>::elements > npos - n){
 			__throw_length_error();
 		}
 		resize(vector<Ch, A>::elements + n);
@@ -729,10 +723,7 @@ template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::basic_string(const Ch
 {
 	if(s!=0){
 		size_type temp = Tr::length(s);
-		reserve(temp);
-		for(size_type i = 0; i< temp; ++i){
-			push_back(s[i]);
-		}
+		append(s, temp);
 	}
 }
 
