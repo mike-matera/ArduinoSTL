@@ -138,6 +138,7 @@ namespace std{
 			if(elements < x.elements){
 				for(size_t i = elements; i< x.elements; ++i){
 					a.construct(data+i, x.data[i]);
+					++elements;
 				}
 			}
 
