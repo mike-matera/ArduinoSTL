@@ -368,17 +368,8 @@ namespace std{
 			//Check to see if we can buffer the data
 			streamsize buffer_avail = basic_streambuf<charT,traits>::epptr() - basic_streambuf<charT,traits>::pptr();
 
-//			streamsize len = traits::length(s);
-//			if(len > n){
-//				len = n;
-//			}
-//			streamsize len = n;		//FIXME by ellimination
-
 			if(n > buffer_avail){		//Flush buffer and write directly
 				overflow();	//Flush the buffer
-//				char buffer[30];
-//				snprintf(buffer, 29, "%%.%ds", static_cast<unsigned int>(len) );
-//				return fprintf(fp, buffer, s);
 				return fwrite(s, sizeof(charT), n, fp);
 			}
 

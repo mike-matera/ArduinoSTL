@@ -9,6 +9,9 @@ Peter S. Mazinger:	wchar cleanups across the board
 -	Convert sstream to allow seeking on write stream without truncation
 -	Convert sstream xsputn to use either append or replace
 -	Elliminate duplicate size_t definition - now use C library version
+-	Make sure string assign(size_type n, Ch c) clears the string before resizing
+-	Fix string insert functions to move the correct amount of data
+-	Reimplemented cstring, cassert, cerrno, cstdlib
 
 
 0.1.8

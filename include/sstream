@@ -28,8 +28,6 @@
 #include <ostream>
 #include <iostream>
 #include <string>
-#include <assert.h>
-#include <unistd.h>
 
 namespace std{
 

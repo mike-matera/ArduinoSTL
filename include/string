@@ -24,7 +24,6 @@
 #include <func_exception>
 #include <memory>
 #include <vector>
-//#include <iostream>
 
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
@@ -61,8 +60,8 @@ public:
 	typedef char * iterator;
 	typedef char * const_iterator;
 
-	typedef typename vector<Ch, A>::reverse_iterator iterator;
-	typedef typename vector<Ch, A>::const_reverse_iterator const_iterator;
+	typedef typename vector<Ch, A>::reverse_iterator reverse_iterator;
+	typedef typename vector<Ch, A>::const_reverse_iterator const_reverse_iterator;
 
 	static const size_type npos = -1;
 
@@ -222,10 +221,6 @@ public:
 	}
 
 	basic_string& assign(const Ch* s, size_type n){
-//		if( n > vector<Ch, A>::data_size ){
-//			vector<Ch, A>::a.deallocate(vector<Ch, A>::data, vector<Ch, A>::data_size);
-//			vector<Ch, A>::data = vector<Ch, A>::a.allocate(vector<Ch, A>::data_size);
-//		}
 		resize(n);
 //		vector<Ch, A>::elements = n;
 		Tr::copy(vector<Ch, A>::data, s, n);
@@ -238,35 +233,13 @@ public:
 	}
 
 	basic_string& assign(size_type n, Ch c){
-//		if(n > vector<Ch, A>::data_size){
-//			vector<Ch, A>::a.deallocate(vector<Ch, A>::data, vector<Ch, A>::data_size);
-//			vector<Ch, A>::data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
-//			vector<Ch, A>::data = vector<Ch, A>::a.allocate(vector<Ch, A>::data_size);
-//		}
-//		Tr::assign( vector<Ch, A>::data, n ,c);
-//		vector<Ch, A>::elements = n;
+		vector<Ch, A>::clear();
 		resize(n, c);
 		return *this;
 	}
 
 //	template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
 
-/*	basic_string& insert(size_type pos1, const basic_string& str){
-		if(pos1 > vector<Ch, A>::elements){
-			__throw_out_of_range();
-		}
-		if(vector<Ch, A>::elements > npos - str.elements){
-			__throw_length_error();
-		}
-		size_t temp = vector<Ch, A>::elements
-		resize(str.elements + temp);
-
-		Tr::move(vector<Ch, A>::data + pos1 + str.elements, vector<Ch, A>::data + pos1, str.elements);
-		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data, str.elements);
-//		vector<Ch, A>::elements += str.elements;
-		return *this;
-	}
-*/
 	basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
 		if(pos1 > vector<Ch, A>::elements || pos2 > str.elements){
 			__throw_out_of_range();
@@ -278,8 +251,9 @@ public:
 		if(vector<Ch, A>::elements > npos - r){
 			__throw_length_error();
 		}
+		size_type temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + r);
-		Tr::move(vector<Ch, A>::data + pos1 + r, vector<Ch, A>::data + pos1, r);
+		Tr::move(vector<Ch, A>::data + pos1 + r, vector<Ch, A>::data + pos1, temp - pos1);
 		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, r);
 //		vector<Ch, A>::elements+=r;
 		return *this;
@@ -292,8 +266,9 @@ public:
 		if(vector<Ch, A>::elements > npos - n){
 			__throw_length_error();
 		}
+		size_type temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
-		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, n);
+		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, temp - pos);
 		Tr::copy(vector<Ch, A>::data + pos, s, n);
 //		vector<Ch, A>::elements+=n;
 		return *this;
@@ -311,8 +286,9 @@ public:
 		if(vector<Ch, A>::elements > npos - n){
 			__throw_length_error();
 		}
+		size_type temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
-		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, n);
+		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, temp - pos);
 		Tr::assign(vector<Ch, A>::data + pos, n, c);
 //		vector<Ch, A>::elements+=n;
 		return *this;
@@ -327,12 +303,9 @@ public:
 		if(xlen > n){
 			xlen = n;
 		}
-		if( (vector<Ch, A>::elements - pos) > n){		//Deleteing past the end
-			resize(pos);
-		}else{				//Deleting from the middle
-			Tr::move(vector<Ch, A>::data + pos, vector<Ch, A>::data + pos + xlen, xlen);
-			resize(pos + xlen);
-		}
+		size_type temp = vector<Ch, A>::elements;
+		Tr::move(vector<Ch, A>::data + pos, vector<Ch, A>::data + pos + xlen, temp - pos - xlen);
+		resize(pos + xlen);
 		return *this;
 	}
 
@@ -369,8 +342,6 @@ public:
 		return temp;
 	}
 
-//	basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
-
 	basic_string& replace(size_type pos1, size_type n1, const basic_string& str, size_type pos2=0, size_type n2=npos){
 		if(pos1 > vector<Ch, A>::elements){
 			__throw_out_of_range();
@@ -388,7 +359,7 @@ public:
 		}
 
 		size_t temp = vector<Ch, A>::elements;
-		//FIXME - use resize to change size of everything
+
 		if(rlen > xlen){		//Only if making larger
 			resize(temp - xlen + rlen);
 		}
@@ -981,5 +952,3 @@ typedef basic_string<wchar_t> wstring;
 }
 
 #endif
-
-//#include <string_iostream>
