@@ -20,6 +20,7 @@
 
 #include <exception>
 
+#ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
 
 namespace std{
 	static char * __std_exception_what_value = "exception";
@@ -42,3 +43,5 @@ namespace std{
 
 };
 
+
+#endif

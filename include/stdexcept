@@ -24,6 +24,9 @@
 #ifndef HEADER_STD_EXCEPTIONS
 #define HEADER_STD_EXCEPTIONS 1
 
+//Don't include support if not needed
+#ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
+
 namespace std{
 
 //typedef basic_string<char> string;
@@ -106,4 +109,5 @@ public:
 
 };
 
+#endif
 #endif

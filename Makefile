@@ -5,7 +5,7 @@ CFLAGS	=	-O2 -g -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic -march=at
 C_FLAGS	=	$(CFLAGS)
 CXXFLAGS=	$(CFLAGS)
 LIBS	=
-SUBDIRS =	include src tests
+SUBDIRS =	include src tests bin
 SRCS	=
 EXOBJS	=
 ALLOBJS	=	$(EXOBJS)
@@ -48,6 +48,7 @@ distclean: clean
 	rm -f .config
 	rm -f .config.cmd
 	rm -f .config.old
+	rm -f include/system_configuration.h
 
 
 #Menu configuration system
@@ -89,13 +90,18 @@ headers: include/system_configuration.h
 	echo "headers"
 
 install:
-	$(INSTALL) -d $(PREFIX)$(RUNTIME_PREFIX)lib
+	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
 	$(INSTALL) -m 644 src/lib*.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
-		$(PREFIX)$(RUNTIME_PREFIX)lib
-	cp -fa lib/*.so* $(PREFIX)$(RUNTIME_PREFIX)lib
-	$(INSTALL) -d $(PREFIX)$(RUNTIME_PREFIX)include
+		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
+	cp -fa src/*.so $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
+	cp -fa src/*.so.$(MAJOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
+	cp -fa src/*.so.$(MAJOR_VERSION).$(MINOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/lib
+	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/include
 	$(INSTALL) -m 644 include/* \
-		$(PREFIX)$(RUNTIME_PREFIX)include
+		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/include
+	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/bin
+	$(INSTALL) -m 755 bin/g++-uc $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)/bin
+	
 	
 
 .cpp.o:

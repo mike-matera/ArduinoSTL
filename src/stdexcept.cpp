@@ -20,6 +20,8 @@
 #include <exception>
 #include <stdexcept>
 
+#ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
+
 namespace std{
 
 	logic_error::logic_error() throw() : mstring(){
@@ -69,4 +71,6 @@ namespace std{
 	}
 
 };
+
+#endif
 

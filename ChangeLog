@@ -1,0 +1,8 @@
+
+0.1.0 - 2004-08-28
+-	Nearly done all algorithms
+-	Added some SGI extensions
+-	Completed numerics libraries
+-	Only multimap has yet to be started of containers
+-	Lots of bug fixes
+-	Coompiles all of the stlport C++ STL tests up to mmap1.cpp (no multimap)

@@ -247,7 +247,7 @@ namespace std{
 
 	template<class T, class Allocator> template <class InputIterator> 
 		deque<T, Allocator>::deque(InputIterator first, InputIterator last, const Allocator& al)
-		: data(0), data_size(0), elements(n), first_element(0), last_element(0), a(al)
+		: data(0), data_size(0), elements(0), first_element(0), last_element(0), a(al)
 	{
 		data_size = __UCLIBCXX_STL_BUFFER_SIZE__;
 		data = a.allocate(data_size);

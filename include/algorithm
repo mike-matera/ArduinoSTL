@@ -144,7 +144,7 @@ namespace std{
 		while(first != last){
 			ForwardIterator temp(first);
 			++temp;
-			if(temp == first){
+			if(*temp == *first){
 				break;
 			}
 			++first;
@@ -159,7 +159,7 @@ namespace std{
 		while(first != last){
 			ForwardIterator temp(first);
 			++temp;
-			if( pred(temp, first)){
+			if( pred(*temp, *first)){
 				break;
 			}
 			++first;
@@ -187,7 +187,7 @@ namespace std{
 	{
 		typename iterator_traits<InputIterator>::difference_type i = 0;
 		while(first!=last){
-			if( pred(*first, value) ){
+			if( pred(*first) ){
 				++i;
 			}
 			++first;

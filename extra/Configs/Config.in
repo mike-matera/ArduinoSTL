@@ -339,7 +339,7 @@ endmenu
 
 menu "Library Installation Options"
 
-config RUNTIME_PREFIX
+config UCLIBCXX_RUNTIME_PREFIX
 	string "uClibc++ runtime library directory"
 	default "/usr/$(TARGET_ARCH)-linux-uclibc/usr"
 	help

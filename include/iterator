@@ -74,12 +74,12 @@ namespace std{
 	template <class Container, class Iterator>
 		insert_iterator<Container> inserter(Container& x, Iterator i);
   // subclause _lib.stream.iterators_, stream iterators:
-	template <class T, class charT, class traits = char_traits<charT>, class Distance = ptrdiff_t> class istream_iterator;
+	template <class T, class charT = char, class traits = char_traits<charT>, class Distance = ptrdiff_t> class istream_iterator;
 	template <class T, class charT, class traits, class Distance> bool 
 		operator==(const istream_iterator<T,charT,traits,Distance>& x, const istream_iterator<T,charT,traits,Distance>& y);
 	template <class T, class charT, class traits, class Distance> bool 
 		operator!=(const istream_iterator<T,charT,traits,Distance>& x, const istream_iterator<T,charT,traits,Distance>& y);
-	template <class T, class charT, class traits = char_traits<charT> > class ostream_iterator;
+	template <class T, class charT = char, class traits = char_traits<charT> > class ostream_iterator;
 	template<class charT, class traits = char_traits<charT> > class istreambuf_iterator;
 	template <class charT, class traits> bool 
 		operator==(const istreambuf_iterator<charT,traits>& a, const istreambuf_iterator<charT,traits>& b);
@@ -145,6 +145,9 @@ namespace std{
 	{
 	protected:
 		Iterator current;
+		friend bool operator== <Iterator>(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y);
+		friend bool operator< <Iterator>(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y);
+
 	public:
 		typedef Iterator iterator_type;
 
@@ -186,21 +189,20 @@ namespace std{
 	template <class Iterator> bool operator==(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
 		return x.current == y.current;
 	}
-
 	template <class Iterator> bool operator<(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
 		return x.current < y.current;
 	}
 	template <class Iterator> bool operator!=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
-		return x.current != y.current;
+		return !(x == y);
 	}
 	template <class Iterator> bool operator>(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
 		return x.current > y.current;
 	}
 	template <class Iterator> bool operator>=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
-		return x.current >= y.current;
+		return x > y || x == y;
 	}
 	template <class Iterator> bool operator<=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
-		return x.current <= y.current;
+		return x < y || x == y.current;;
 	}
 	template <class Iterator> typename reverse_iterator<Iterator>::difference_type operator-
 		( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
@@ -289,7 +291,7 @@ namespace std{
 		typedef traits traits_type;
 		typedef basic_istream<charT,traits> istream_type;
 		istream_iterator() : in_stream(0), value() {}
-		istream_iterator(istream_type& s) : in_stream(s), value() { }
+		istream_iterator(istream_type& s) : in_stream(&s), value() { }
 		istream_iterator(const istream_iterator<T,charT,traits,Distance>& x) : in_stream(x.in_stream), value(x.value) { }
 		~istream_iterator() { }
 		const T& operator*() const{
@@ -307,6 +309,9 @@ namespace std{
 			*in_stream >> value;
 			return (tmp);
 		}
+		bool m_equal(const istream_iterator<T,charT,traits,Distance>& x) const{
+			return (in_stream == x.in_stream);
+		}
 	private:
 		basic_istream<charT,traits>* in_stream;
 		T value;
@@ -316,14 +321,14 @@ namespace std{
 		bool operator==(const istream_iterator<T,charT,traits,Distance>& x,
 		const istream_iterator<T,charT,traits,Distance>& y)
 	{
-		return (x.in_stream == y.in_stream);
+		return x.m_equal(y);
 	}
 
 	template <class T, class charT, class traits, class Distance>
 		bool operator!=(const istream_iterator<T,charT,traits,Distance>& x,
 		const istream_iterator<T,charT,traits,Distance>& y)
 	{
-		return (x.in_stream != y.in_stream);
+		return !(x == y);
 	}
 
 	template <class T, class charT, class traits> 
@@ -334,8 +339,8 @@ namespace std{
 		typedef traits traits_type;
 		typedef basic_ostream<charT,traits> ostream_type;
 
-		ostream_iterator(ostream_type& s) : out_stream(s), delim(0) { }
-		ostream_iterator(ostream_type& s, const charT* delimiter) : out_stream(s), delim(delimiter) { }
+		ostream_iterator(ostream_type& s) : out_stream(&s), delim(0) { }
+		ostream_iterator(ostream_type& s, const charT* delimiter) : out_stream(&s), delim(delimiter) { }
 		ostream_iterator(const ostream_iterator<T,charT,traits>& x) : out_stream(x.out_stream), delim(x.delim) { }
 		~ostream_iterator() { }
 		ostream_iterator<T,charT,traits>& operator=(const T& value){
@@ -373,9 +378,9 @@ namespace std{
 		};
 
 		istreambuf_iterator() throw() : sbuf(0) { }
-		istreambuf_iterator(istream_type& s) throw() : sbuf(s.rdbuf()) { }
+		istreambuf_iterator(istream_type& s) throw() : sbuf(&s.rdbuf()) { }
 		istreambuf_iterator(streambuf_type* s) throw() : sbuf(s) { }
-		istreambuf_iterator(const proxy& p) throw() : sbuf(p.buf) { }
+		istreambuf_iterator(const proxy& p) throw() : sbuf(&p.buf) { }
 
 		charT operator*() const{
 			return sbuf->sgetc();

@@ -17,42 +17,4 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <exception>
-#include <func_exception>
-#include <stdexcept>
-#include <cstdlib>
-
-namespace std{
-
-#ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
-
-void __throw_out_of_range( const char * message){
-	if(message == 0){
-		throw out_of_range();
-	}
-	throw out_of_range(message);
-}
-
-void __throw_length_error(const char * message){
-	if(message == 0){
-		throw length_error();
-	}
-	throw length_error(message);
-}
-
-
-#else
-
-void __throw_out_of_range( const char * ){
-	abort();
-}
-
-void __throw_length_error(const char * ){
-	abort();
-}
-
-#endif
-
-
-
-};
+#include <numeric>

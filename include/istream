@@ -428,24 +428,24 @@ namespace std{
 #endif
 	
 	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT& c){
-		typename basic_istream<charT,traits>::sentry s;
+		typename basic_istream<charT,traits>::sentry s(is);
 		is.get(c);
 		return is;
 	}
 
 	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char& c){
-		typename basic_istream<char,traits>::sentry s;
+		typename basic_istream<char,traits>::sentry s(is);
 		is.get(c);
 		return is;
 	}
 	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char& c){
-		typename basic_istream<char,traits>::sentry s;
+		typename basic_istream<char,traits>::sentry s(is);
 		is.get(c);
 		return is;
 	}
 
 	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT* c){
-		typename basic_istream<charT,traits>::sentry s;
+		typename basic_istream<charT,traits>::sentry s(is);
 		int n = is.width();
 		if(n == 0){
 			n = __STRING_MAX_UNITS;
@@ -455,7 +455,7 @@ namespace std{
 
 	}
 	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char* c){
-		typename basic_istream<char,traits>::sentry s;
+		typename basic_istream<char,traits>::sentry s(is);
 		int n = is.width();
 		if(n == 0){
 			n = __STRING_MAX_UNITS;
@@ -464,7 +464,7 @@ namespace std{
 		return is;
 	}
 	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char* c){
-		typename basic_istream<char,traits>::sentry s;
+		typename basic_istream<char,traits>::sentry s(is);
 		int n = is.width();
 		if(n == 0){
 			n = __STRING_MAX_UNITS;

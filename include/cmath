@@ -46,7 +46,7 @@
 
 #pragma GCC system_header
 
-#include <bits/c++config.h>
+//#include <bits/c++config.h>
 
 #include <math.h>
 

@@ -1,10 +1,6 @@
-CC  	=	gcc
-CXX	=	g++
-CFLAGS	=	-Os -g -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic
-COFLAGS =	-Os -g -Wall -Wpointer-arith -Wstrict-prototypes -W -pedantic
-C_FLAGS	=	$(CFLAGS)
-CXXFLAGS=	$(CFLAGS)
-CXXOFLAGS=	$(COFLAGS)
+TOPDIR=../
+include $(TOPDIR)Rules.mak
+
 INCDIRS	=	-I../include/
 
 UFLAGS	=	-nodefaultlibs -nostdinc++ -fno-builtin -L../src
@@ -15,9 +11,6 @@ else
 ULIBS	=	-luClibc++ -lc -lsupc++
 endif
 
-TOPDIR=../
-include $(TOPDIR)Rules.mak
-
 SRCS	=\
 	newdel.cpp \
 	io.cpp \
@@ -26,12 +19,11 @@ SRCS	=\
 	dequetest.cpp \
 	listtest.cpp \
 	maptest.cpp \
-	excepttest.cpp \
-	hello.cpp
+	numerictest.cpp \
+	hello.cpp 
 
 
 EXOBJS	=\
-	excepttest.o \
 	listtest.o \
 	maptest.o \
 	dequetest.o \
@@ -39,6 +31,7 @@ EXOBJS	=\
 	vectortest.o \
 	io.o \
 	newdel.o \
+	numerictest.o \
 	hello.o
 
 ALLOBJS	=	$(EXOBJS) \
@@ -47,9 +40,9 @@ ALLOBJS	=	$(EXOBJS) \
 		vectortest.o-old \
 		stringtest.o-old \
 		listtest.o-old \
-		excepttest.o-old \
 		dequetest.o-old \
-		maptest.o-old
+		maptest.o-old \
+		numerictest.o-old
 
 ALLBIN	=	newdel newdel-old \
 		io io-old \
@@ -58,9 +51,18 @@ ALLBIN	=	newdel newdel-old \
 		dequetest dequetest-old \
 		maptest maptest-old \
 		listtest listtest-old \
-		excepttest excepttest-old
+		numerictest numerictest-old
 
-ALLTGT	=	maptest dequetest excepttest listtest stringtest vectortest io newdel
+ALLTGT	=	numerictest maptest dequetest listtest stringtest vectortest io newdel
+
+ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
+SRCS    += excepttest.cpp
+EXOBJS	+= excepttest.o
+ALLOBJS	+= excepttest.o excepttest.o-old
+ALLBIN	+= excepttest excepttest-old
+ALLTGT	+= excepttest
+endif
+
 
 # User defines:
 
@@ -113,6 +115,10 @@ dequetest: $(EXOBJS)
 maptest: $(EXOBJS)
 	$(CXX) -o maptest maptest.o $(CFLAGS) $(UFLAGS) $(INCDIRS) $(ULIBS)
 	$(CXX) -o maptest-old maptest.o-old $(COFLAGS)
+
+numerictest: $(EXOBJS)
+	$(CXX) -o numerictest numerictest.o $(CFLAGS) $(UFLAGS) $(INCDIRS) $(ULIBS)
+	$(CXX) -o numerictest-old numerictest.o-old $(COFLAGS)
 
 
 .cpp.o:

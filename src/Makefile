@@ -7,6 +7,7 @@ include $(TOPDIR)Rules.mak
 SRCS	=\
 	new.cpp \
 	exception.cpp \
+	abi/abi.cpp \
 	char_traits.cpp \
 	string.cpp \
 	iostream.cpp \
@@ -26,12 +27,14 @@ SRCS	=\
 	map.cpp \
 	stack.cpp \
 	queue.cpp \
-	algorithm.cpp
+	algorithm.cpp \
+	numeric.cpp
 
 
 EXOBJS	=\
 	new.o \
 	exception.o \
+	abi/abi.o \
 	char_traits.o \
 	string.o \
 	iostream.o \
@@ -51,7 +54,8 @@ EXOBJS	=\
 	map.o \
 	stack.o \
 	queue.o \
-	algorithm.o
+	algorithm.o \
+	numeric.o
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.a
@@ -70,11 +74,11 @@ all:	$(ALLOBJS) $(ALLTGT)
 objs:	$(ALLOBJS)
 
 libuClibc++:	$(ALLOBJS)
-#	ar rcs libuClibc++.a $(EXOBJS)
+	ar rcs libuClibc++.a $(EXOBJS)
 	gcc -shared -o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) $(CFLAGS) $(LIBS) $(EXOBJS) $(SUPOBJS)
-	ln -s libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
-	ln -s libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
-	ln -s libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
+	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
+	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
+	ln -s -f libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
 
 cleanobjs:
 	rm -f $(ALLOBJS)

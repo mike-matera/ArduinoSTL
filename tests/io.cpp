@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <iterator>
 
 int main(){
 	std::basic_string<char> temp("Test string");
@@ -21,6 +22,10 @@ int main(){
 	std::cin >> i >> j;
 
 	std::cout << "You entered: " << i << " " << j << std::endl;
+
+
+	std::cout << "Checking ostream_iterator\n";
+	std::ostream_iterator<double> a(std::cout, " ");
 
 	return 0;
 }
