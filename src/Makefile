@@ -7,7 +7,14 @@ TOPDIR=../
 include $(TOPDIR)Rules.mak
 
 SRCS	=\
-	new.cpp \
+	new_op.cpp \
+	new_opv.cpp \
+	new_opnt.cpp \
+	new_opvnt.cpp \
+	del_op.cpp \
+	del_opv.cpp \
+	del_opnt.cpp \
+	del_opvnt.cpp \
 	exception.cpp \
 	abi/abi.cpp \
 	char_traits.cpp \
@@ -39,37 +46,7 @@ SRCS	=\
 	complex.cpp
 
 
-EXOBJS	=\
-	new.o \
-	exception.o \
-	abi/abi.o \
-	char_traits.o \
-	string.o \
-	iostream.o \
-	ios.o \
-	utility.o \
-	stdexcept.o \
-	func_exception.o \
-	locale.o \
-	streambuf.o \
-	istream.o \
-	ostream.o \
-	iterator.o \
-	fstream.o \
-	iomanip.o \
-	vector.o \
-	deque.o \
-	list.o \
-	map.o \
-	set.o \
-	stack.o \
-	queue.o \
-	algorithm.o \
-	numeric.o \
-	sstream.o \
-	bitset.o \
-	valarray.o \
-	complex.o
+EXOBJS	=$(patsubst %.cpp,%.o, $(SRCS))
 
 ALLOBJS	=	$(EXOBJS)
 ALLBIN	=	
@@ -80,22 +57,41 @@ ifneq ($(BUILD_ONLY_STATIC_LIB),y)
 ALLBIN	+=	libuClibc++.so
 endif
 
+# User defines:
+
+all:	libgcc_eh libsupc $(ALLOBJS) $(ALLBIN)
+
+objs:	$(ALLOBJS)
+
+libgcc_eh:
+	rm -rf libgcc_eh
+	mkdir libgcc_eh
+	rm -f *.o
+	$(AR) x $(shell $(CC) -print-file-name=libgcc_eh.a)
+	mv *.o libgcc_eh/
+
+GCCOBJS = $(wildcard libgcc_eh/*.o)
+
+libsupc:
+	rm -rf libsupc
+	mkdir libsupc
+	rm -f *.o
+	$(AR) x $(shell $(CXX) -print-file-name=libsupc++.a)
 ifeq ($(IMPORT_LIBSUP),y)
-SUPOBJS	=	$(shell $(CXX) -print-file-name=libsupc++.a)
+	rm -f new_op*.o del_op*.o pure.o
+endif
+	mv *.o libsupc/
+ifeq ($(IMPORT_LIBSUP),y)
+SUPOBJS = $(wildcard libsupc/*.o)
 else
 SUPOBJS =
 endif
 
-# User defines:
 
-all:	$(ALLOBJS) $(ALLBIN)
+libuClibc++.a: libgcc_eh libsupc
+	$(AR) rcs libuClibc++.a $(EXOBJS) $(GCCOBJS) $(SUPOBJS)
 
-objs:	$(ALLOBJS)
-
-libuClibc++.a:
-	$(AR) rcs libuClibc++.a $(EXOBJS) $(SUPOBJS)
-
-libuClibc++.so:
+libuClibc++.so: libsupc
 	$(CC) -shared -Wl,-z,defs $(CFLAGS) $(EXOBJS) $(SUPOBJS) \
 		-o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
 		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION) $(LIBS)
@@ -111,20 +107,10 @@ cleanbin:
 
 clean:	cleanobjs cleanbin
 	rm -f libuClibc++*
+	rm -rf libsupc libgcc_eh
+	
 
 cleanall:	cleanobjs cleanbin
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.cc.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.cxx.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.C.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.c.o:
-	$(CC) -c $(CFLAGS) -o $@ $<

@@ -41,7 +41,7 @@ $(WRAPPER):
 	echo 'done' >> $(WRAPPER)
 	echo 'if [ "$$INCLIB" == "Y" ]' >> $(WRAPPER)
 	echo 'then' >> $(WRAPPER)
-	echo '	OPTIONS="$$OPTIONS -luClibc++ -lc $(EXTRALIBS)"' >> $(WRAPPER)
+	echo '	OPTIONS="$$OPTIONS -luClibc++ $(EXTRALIBS) -lc"' >> $(WRAPPER)
 	echo 'fi' >> $(WRAPPER)
 	echo -n "exec $(CXX) " >> $(WRAPPER)
 	echo -n ' -fno-builtin -nostdinc++ -nodefaultlibs' >> $(WRAPPER)

@@ -139,7 +139,7 @@ config UCLIBCXX_IOSTREAM_BUFSIZE
 	  iostream subsystem as the default buffer size for a file, and
 	  affects cin, cout, fstream, etc.  This is independent of the 
 	  buffering provided by the underlying C library.  This must be a
-	  multiple of 2
+	  multiple of 2.
 
 	  NOTE: Setting this to '0' will disable buffering completely.
 	  This may break applications which extend the I/O stream
@@ -329,9 +329,9 @@ config UCLIBCXX_RUNTIME_PREFIX
 	 UCLIBCXX_ RUNTIME_PREFIX is the directory into which the uClibc++
 	  runtime libraries will be installed.
 
-	  For a typical target system this should be set to "/usr", such
-	  that'make install' will install
-	  /usr/lib/libuClibc++.so
+	  For a typical target system this should be set to "/usr", so
+	  that 'make install' will install libuClibc++.so into
+	  /usr/lib.
 
 config UCLIBCXX_RUNTIME_INCLUDE_SUBDIR
 	string "uClibc++ header file subdirectory"
@@ -373,8 +373,8 @@ config UCLIBCXX_EXCEPTION_SUPPORT
 	  the library.
 
 	  RTTI support is used for exceptions as well as operators such
-	  as dynamic_cast<>() and others.  This must be disabled to support
-	  static linking.  Using this increases the size of the library.
+	  as dynamic_cast<>() and others.
+	  Using this increases the size of the library.
 
 	  Most people will answer Y.
 
@@ -389,8 +389,8 @@ config IMPORT_LIBSUP
 	  the C++ ABI.  This is largely compiler dependent.
 
 	  Since the library is statically compiled, this code would normally
-	  need to be compiled into each executible.  However, it can also be
-	  imported into this library and shared. GNU libc++ imports this code.
+	  need to be compiled into each executable.  However, it can also be
+	  imported into this library and shared. uClibc++ imports this code.
 
 	  There is no point in importing this if you disable exception and rtti
 	  support above.
@@ -399,12 +399,11 @@ config IMPORT_LIBSUP
 
 config BUILD_STATIC_LIB
 	bool "Build static library"
-	depends on !UCLIBCXX_EXCEPTION_SUPPORT
 	default y
 	help
 	  By default, libuClibc++ is built only as a shared library.  Choosing
 	  'y' here will also build a static library which can be used to build
-	  statically linked executibles.
+	  statically linked executables.
 
 	  There is little reason to say 'no' here.
 
@@ -415,10 +414,10 @@ config BUILD_ONLY_STATIC_LIB
 	depends on BUILD_STATIC_LIB
 	default n
 	help
-	  By default, libuClibc++ is builds a shared library.  Choosing
-	  'y' here will disable the building of the shared library.  You
-	  should only choose 'y' here if you are on a system which does
-	  not support shared libraries
+	  By default, libuClibc++ is built as a shared library.  Choosing
+	  'y' here will disable building the shared library.  You should
+	  only choose 'y' here if you are on a system which does not
+	  support shared libraries.
 
 	  You should say no.
 
