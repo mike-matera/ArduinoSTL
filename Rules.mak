@@ -135,9 +135,11 @@ DYNAMIC_LINKER:=/lib/$(strip $(subst ",, $(notdir $(SYSTEM_LDSO))))
 
 
 CFLAGS_NOPIC:=$(CFLAGS)
-#ifeq ($(DOPIC),y)
+CXXFLAGS_NOPIC:=$(CFLAGS)
+
+ifneq ($(BUILD_ONLY_STATIC_LIB),y)
     CFLAGS += $(PICFLAG)
-#endif
+endif
 
 CXXFLAGS=$(CFLAGS)
 
