@@ -306,6 +306,7 @@ namespace std{
 		basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		void init(basic_streambuf<charT,traits>* sb){
 			mstreambuf = sb;
+			mstate = goodbit;
 		}
 	};
 

@@ -182,7 +182,9 @@ namespace std{
 					count_last_ufmt_input = i;
 					return *this;
 				}
-				sbuffer->sbumpc();
+				if(sbuffer->sbumpc()==traits::eof() ){
+					basic_ios<charT,traits>::setstate(ios_base::eofbit);
+				}
 				if(c == delim){
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
