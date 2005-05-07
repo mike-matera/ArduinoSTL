@@ -41,7 +41,7 @@ namespace std{
 		};
 #endif
 
-		public:
+	public:
 
 		typedef unsigned short int fmtflags;
 
@@ -96,9 +96,7 @@ namespace std{
 		fmtflags flags(fmtflags fmtfl);
 
 		fmtflags setf(fmtflags fmtfl);
-		fmtflags setf(fmtflags fmtfl, fmtflags mask ){
-			return flags( (flags()& ~mask) | (fmtfl & mask));
-		}
+		fmtflags setf(fmtflags fmtfl, fmtflags mask );
 
 		void unsetf(fmtflags mask){
 			mformat&= ~mask;
@@ -108,27 +106,15 @@ namespace std{
 			return mprecision;
 		}
 
-		streamsize precision(streamsize prec){
-			streamsize temp = mprecision;
-			mprecision = prec;
-			return temp;
-		}
+		streamsize precision(streamsize prec);
 
 		streamsize width() const{
 			return mwidth;
 		}
 
-		streamsize width(streamsize wide){
-			streamsize temp = mwidth;
-			mwidth = wide;
-			return temp;
-		}
+		streamsize width(streamsize wide);
 
-		locale imbue(const locale& loc){
-			locale retval = mLocale;
-			mLocale = loc;
-			return retval;
-		}
+		locale imbue(const locale& loc);
 
 		locale getloc() const{
 			return mLocale;
@@ -378,6 +364,15 @@ namespace std{
 			mstate = goodbit;
 		}
 	};
+
+#ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
+#ifndef __UCLIBCXX_COMPILE_IOS__
+	
+	template <> void basic_ios<char, char_traits<char> >::clear(iostate state);
+
+#endif
+#endif
+
 
 	template <class charT, class traits>
 		inline char basic_ios<charT, traits>::narrow(char_type c, char dfault) const

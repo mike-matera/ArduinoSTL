@@ -10,6 +10,10 @@ Peter S. Mazinger:	Added -z defs to $(CC) -shared
 -	Cleaned up tests system to be much easier to add additional tests
 -	Fixed problems in getline() code
 -	Major performance increase on fstream input code (4.5X, approximately)
+-	Move libgcc_eh and libsupc++ code into separate directories
+-	More code expansion into the library to make executibles much smaller
+-	Remove unneeded typedefs to clean up the code and make it easier to understand
+-	<complex> nearly complete - only need to implement pow()
 
 
 0.1.9

@@ -444,28 +444,6 @@ namespace std{
 		return *this;
 	}
 
-#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
-#ifndef __UCLIBCXX_COMPILE_ISTREAM__
-
-
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::get(char & c);
-	template <> basic_istream<char,char_traits<char> >::int_type basic_istream<char, char_traits<char> >::get();
-
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(bool &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(short &n);
-	template <> basic_istream<char,char_traits<char> > & 
-		basic_istream<char, char_traits<char> >::operator>>(unsigned short &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(int &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(unsigned int &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long unsigned &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long int &n);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(float &f);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(double &f);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(long double &f);
-	template <> basic_istream<char,char_traits<char> > & basic_istream<char, char_traits<char> >::operator>>(void *& p);
-#endif
-#endif
-	
 	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT& c){
 		typename basic_istream<charT,traits>::sentry s(is);
 		is.get(c);
@@ -513,6 +491,36 @@ namespace std{
 		is.get(c, n);
 		return is;
 	}
+
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_ISTREAM__
+
+
+	template <> istream & basic_istream<char, char_traits<char> >::get(char & c);
+	template <> istream::int_type basic_istream<char, char_traits<char> >::get();
+
+	template <> istream & istream::operator>>(bool &n);
+	template <> istream & istream::operator>>(short &n);
+	template <> istream & istream::operator>>(unsigned short &n);
+	template <> istream & istream::operator>>(int &n);
+	template <> istream & istream::operator>>(unsigned int &n);
+	template <> istream & istream::operator>>(long unsigned &n);
+	template <> istream & istream::operator>>(long int &n);
+	template <> istream & istream::operator>>(float &f);
+	template <> istream & istream::operator>>(double &f);
+	template <> istream & istream::operator>>(long double &f);
+	template <> istream & istream::operator>>(void *& p);
+
+
+	template <> istream & operator>>(istream & is, char & c);
+
+
+
+#endif
+#endif
+	
+
+
 
 
 }

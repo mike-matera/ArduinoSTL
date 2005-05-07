@@ -28,7 +28,12 @@
 #include <ios>
 
 namespace std{
-//	template class basic_streambuf<char, char_traits<char> >;
+
+#ifdef __UCLIBCXX_EXPAND_STREAMBUF_CHAR__
+#ifndef __UCLIBCXX_COMPILE_STREAMBUF__
+//	template <> class basic_streambuf<char, char_traits<char> >;
+#endif
+#endif
 
 	template <class charT, class traits>  class basic_streambuf{
 	public:
@@ -41,14 +46,11 @@ namespace std{
 		typedef typename traits::pos_type	pos_type;
 		typedef typename traits::off_type	off_type;
 		typedef traits				traits_type;
-		virtual ~basic_streambuf(){
 
-		}
-		locale pubimbue(const locale &loc){
-			locale temp = myLocale;
-			myLocale = loc;
-			return temp;
-		}
+		virtual ~basic_streambuf();
+
+		locale pubimbue(const locale &loc);
+
 		locale getloc() const{
 			return myLocale;
 		}
@@ -71,56 +73,23 @@ namespace std{
 			return sync();
 		}
 
-		streamsize in_avail(){
-			if(mgend !=0 && mgnext !=0){
-				return mgend - mgnext;
-			}
-			return showmanyc();
-		}
-		int_type snextc(){
-			if(sbumpc() == traits::eof() ){
-				return traits::eof() ;
-			}
-			return sgetc();
-		}
-		int_type sbumpc(){
-			if(mgbeg == 0 || mgnext == mgend){
-				return uflow();
-			}
-			int_type retval = traits::to_int_type(*gptr());
-			gbump(1);
-			return retval;
-		}
-		int_type sgetc(){
-			if(mgbeg == 0 || mgnext == mgend){
-				return underflow();
-			}
-			return traits::to_int_type(*gptr());
-		}
+		streamsize in_avail();
+
+		int_type snextc();
+
+		int_type sbumpc();
+
+		int_type sgetc();
+
 		streamsize sgetn(char_type* s, streamsize n){
 			return xsgetn(s,n);
 		}
 
-		int_type sputbackc(char_type c){
-			if(mgbeg == 0 || mgnext == mgbeg || !traits::eq(c, gptr()[-1] )){
-//				return ios_base::failbit;
-				return pbackfail(traits::to_int_type(c));
-			}
-			gbump(-1);
-			return traits::to_int_type(*gptr());
-		}
-		int_type sungetc(){
-			if(mgbeg == 0 || mgnext == mgbeg){
-				return ios_base::failbit;
-			}
-			gbump(-1);
-			return traits::to_int_type(*gptr());
-		}
+		int_type sputbackc(char_type c);
 
-		int_type sputc(char_type c){
-			overflow( traits::to_int_type(c) );
-			return traits::to_int_type(c);
-		}
+		int_type sungetc();
+
+		int_type sputc(char_type c);
 
 		streamsize sputn(const char_type* s, streamsize n){
 			return xsputn(s, n);
@@ -141,9 +110,7 @@ namespace std{
 		//In the event of null buffers Lets us know what the buffer is opened for
 		ios_base::openmode openedFor;
 		
-		basic_streambuf() : myLocale(), mgbeg(0), mgnext(0), mgend(0), mpbeg(0), mpnext(0), mpend(0), openedFor(0){
-
-		}
+		basic_streambuf();
 
 		basic_streambuf(const basic_streambuf<char, char_traits<char> > &){ }
 		basic_streambuf<char, char_traits<char> > & operator=(const basic_streambuf<char, char_traits<char> > &){
@@ -231,11 +198,100 @@ namespace std{
 		}
 	};
 
-
 	typedef basic_streambuf<char>     streambuf;
 #ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_streambuf<wchar_t> wstreambuf;
 #endif
+
+
+//Definitions put below to allow for easy expansion of code
+
+	template <class C, class T> basic_streambuf<C, T>::~basic_streambuf(){  }
+
+	template <class C, class T> locale basic_streambuf<C, T>::pubimbue(const locale &loc){
+		locale temp = myLocale;
+		myLocale = loc;
+		return temp;
+	}
+
+	template <class C, class T> streamsize basic_streambuf<C, T>::in_avail(){
+		if(mgend !=0 && mgnext !=0){
+			return mgend - mgnext;
+		}
+		return showmanyc();
+	}
+
+	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sbumpc(){
+		if(mgbeg == 0 || mgnext == mgend){
+			return uflow();
+		}
+		int_type retval = T::to_int_type(*gptr());
+		gbump(1);
+		return retval;
+	}
+
+	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::snextc(){
+		if(sbumpc() == T::eof() ){
+			return T::eof() ;
+		}
+		return sgetc();
+	}
+
+	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sgetc(){
+		if(mgbeg == 0 || mgnext == mgend){
+			return underflow();
+		}
+		return T::to_int_type(*gptr());
+	}
+
+	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sputbackc(char_type c){
+		if(mgbeg == 0 || mgnext == mgbeg || !T::eq(c, gptr()[-1] )){
+			return pbackfail(T::to_int_type(c));
+		}
+		gbump(-1);
+		return T::to_int_type(*gptr());
+	}
+
+	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sungetc(){
+		if(mgbeg == 0 || mgnext == mgbeg){
+			return ios_base::failbit;
+		}
+		gbump(-1);
+		return T::to_int_type(*gptr());
+	}
+
+	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sputc(char_type c){
+		overflow( T::to_int_type(c) );
+		return T::to_int_type(c);
+	}
+
+	template <class C, class T> basic_streambuf<C, T>::basic_streambuf() 
+		: myLocale(), mgbeg(0), mgnext(0), mgend(0), mpbeg(0), mpnext(0), mpend(0), openedFor(0){ }
+
+
+
+
+
+
+#ifdef __UCLIBCXX_EXPAND_STREAMBUF_CHAR__
+#ifndef __UCLIBCXX_COMPILE_STREAMBUF__
+	template <> streambuf::~basic_streambuf();
+	template <> locale streambuf::pubimbue(const locale &loc);
+	template <> streamsize streambuf::in_avail();
+	template <> streambuf::int_type streambuf::sbumpc();
+	template <> streambuf::int_type streambuf::snextc();
+	template <> streambuf::int_type streambuf::sgetc();
+	template <> streambuf::int_type streambuf::sputbackc(char_type c);
+	template <> streambuf::int_type streambuf::sungetc();
+	template <> streambuf::int_type streambuf::sputc(char_type c);
+	template <> streambuf::basic_streambuf();
+
+#endif
+#endif
+
+
+
+
 
 }
 

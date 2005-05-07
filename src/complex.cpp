@@ -22,6 +22,7 @@
 namespace std{
 
 
+	template class complex<float>;
 
 
 }

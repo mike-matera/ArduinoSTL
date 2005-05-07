@@ -33,9 +33,11 @@ namespace std{
 	using ::bsearch;
 	using ::div;
 	using ::exit;
+	using ::free;
 	using ::getenv;
 	using ::labs;
 	using ::ldiv;
+	using ::malloc;
 	using ::srand;
 	using ::strtod;
 	using ::strtol;

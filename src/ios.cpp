@@ -17,6 +17,8 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define __UCLIBCXX_COMPILE_IOS__ 1
+
 #include <ios>
 #include <ostream>
 #include <istream>
@@ -24,6 +26,14 @@
 #include <fstream>
 
 namespace std{
+
+
+#ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
+
+	template void basic_ios<char, char_traits<char> >::clear(iostate state);
+
+#endif
+
 
 
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
@@ -140,6 +150,7 @@ namespace std{
 	}
 #endif
 
+
 	ios_base::fmtflags ios_base::flags(fmtflags fmtfl){
 		fmtflags temp = mformat;
 		mformat = fmtfl;
@@ -150,6 +161,27 @@ namespace std{
 		return flags(flags() | fmtfl);
 	}
 
+	ios_base::fmtflags ios_base::setf(fmtflags fmtfl, fmtflags mask ){
+		return flags( (flags()& ~mask) | (fmtfl & mask));
+	}
+
+	streamsize ios_base::precision(streamsize prec){
+		streamsize temp = mprecision;
+		mprecision = prec;
+		return temp;
+	}
+
+	streamsize ios_base::width(streamsize wide){
+		streamsize temp = mwidth;
+		mwidth = wide;
+		return temp;
+	}
+
+	locale ios_base::imbue(const locale& loc){
+		locale retval = mLocale;
+		mLocale = loc;
+		return retval;
+	}	
 
 }
 

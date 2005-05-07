@@ -3,7 +3,7 @@ include $(TOPDIR)Rules.mak
 
 #COFLAGS = -fno-rtti -fno-exceptions -static
 
-CXXOFLAGS = -O0
+CXXOFLAGS = -Os -O0 -g3 -ansi -fPIC
 
 ifeq ($(IMPORT_LIBSUP),y)
 ULIBS = -luClibc++ -lc
@@ -12,7 +12,6 @@ ULIBS = -luClibc++ -lc -lsupc++
 endif
 
 UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src
-#UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src -fno-default-inline
 
 UFLAGS	=	-L../src
 

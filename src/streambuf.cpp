@@ -17,10 +17,26 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define __UCLIBCXX_COMPILE_STREAMBUF__ 1
+
 #include <streambuf>
 
 namespace std{
 
+#ifdef __UCLIBCXX_EXPAND_STREAMBUF_CHAR__
+
+	template streambuf::~basic_streambuf();
+	template locale streambuf::pubimbue(const locale &loc);
+	template streamsize streambuf::in_avail();
+	template streambuf::int_type streambuf::sbumpc();
+	template streambuf::int_type streambuf::snextc();
+	template streambuf::int_type streambuf::sgetc();
+	template streambuf::int_type streambuf::sputbackc(char_type c);
+	template streambuf::int_type streambuf::sungetc();
+	template streambuf::int_type streambuf::sputc(char_type c);
+	template streambuf::basic_streambuf();
+
+#endif
 
 
 }

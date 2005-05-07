@@ -17,8 +17,8 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include<istream>
-#include<ostream>
+#include <istream>
+#include <ostream>
 
 #ifndef __STD_HEADER_COMPLEX
 #define __STD_HEADER_COMPLEX 1
@@ -248,33 +248,76 @@ namespace std {
 	template<class T> T abs(const complex<T>& v){
 		return sqrt(v.real() * v.real() + v.imag() * v.imag());
 	}
+
 	template<class T> T arg(const complex<T>& v){
 		return atan2(v.imag(), v.real());
 	}
+
 	template<class T> complex<T> polar(const T& rho, const T& theta){
 		return complex<T>(rho * cos(theta), rho * sin(theta));
 	}
 
-	template<class T> complex<T> cos  (const complex<T>& v);
-	template<class T> complex<T> cosh (const complex<T>&);
-	template<class T> complex<T> exp  (const complex<T>&);
-	template<class T> complex<T> log  (const complex<T>&);
-	template<class T> complex<T> log10(const complex<T>&);
+	template<class T> complex<T> cos  (const complex<T>& v){
+		return complex<T>(cos(v.real()) * cosh(v.imag()), -sin(v.real()) * sinh(v.imag()));
+	}
+
+	template<class T> complex<T> cosh (const complex<T>& v){
+		return complex<T>(cosh(v.real()) * cos(v.imag()), sinh(v.real()) * sin(v.imag()));
+	}
+
+	template<class T> complex<T> exp  (const complex<T>& v){
+		return polar(exp(v.real()), v.imag());
+	}
+
+	template<class T> complex<T> log  (const complex<T>& v){
+		return complex<T>(log(abs(v)), arg(v));
+	}
+
+	template<class T> complex<T> log10(const complex<T>& v){
+		return (log(v) / log(T(10.0)));
+	}
+
 	template<class T> complex<T> pow(const complex<T>& v, int p){
 		T rho = pow(abs(v), p);
 		T theta = arg(v);
 		return complex<T>(rho * cos(p * theta), rho * sin(p * theta) );
 	}
+
 	template<class T> complex<T> pow(const complex<T>& v, const T& p){
 		return polar( pow(abs(v),p), arg(v)*p );
 	}
-	template<class T> complex<T> pow(const complex<T>&, const complex<T>&);
-	template<class T> complex<T> pow(const T&, const complex<T>&);
-	template<class T> complex<T> sin  (const complex<T>&);
-	template<class T> complex<T> sinh (const complex<T>&);
+
+	template<class T> complex<T> pow(const complex<T>& v, const complex<T>& p){
+		if(v == T()){
+			//We are using "0" as the value
+			return T();
+		}
+		return exp(p * log(v));
+	}
+
+	template<class T> complex<T> pow(const T& v, const complex<T>& p){
+		if(v == T()){
+			return T();
+		}
+		return polar(pow(v,p.real()), y.imag() * log(x) );
+	}
+
+	template<class T> complex<T> sin  (const complex<T>& v){
+		return complex<T>(sin(v.real()) * cosh(v.imag()), cosh(v.real()) * sin(v.imag()));
+	}
+
+	template<class T> complex<T> sinh (const complex<T>& v){
+		return complext<T>(sinh(v.real()) * cos(v.imag()), cosh(v.real()) * sin(v.imag()) );
+	}
+
 	template<class T> complex<T> sqrt (const complex<T>&);
-	template<class T> complex<T> tan  (const complex<T>&);
-	template<class T> complex<T> tanh (const complex<T>&);
+	template<class T> complex<T> tan  (const complex<T>& v){
+		return sin(v) / cos(v);
+	}
+
+	template<class T> complex<T> tanh (const complex<T>& v){
+		return sinh(v) / cosh(v);
+	}
 
 #endif
 

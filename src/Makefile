@@ -19,6 +19,7 @@ SRCS	=\
 	abi/abi.cpp \
 	char_traits.cpp \
 	string.cpp \
+	fstream.cpp \
 	iostream.cpp \
 	ios.cpp \
 	utility.cpp \
@@ -29,7 +30,6 @@ SRCS	=\
 	istream.cpp \
 	ostream.cpp \
 	iterator.cpp \
-	fstream.cpp \
 	iomanip.cpp \
 	vector.cpp \
 	deque.cpp \
@@ -78,25 +78,13 @@ endif
 
 
 libgcc_eh:
-	rm -rf libgcc_eh
-	mkdir libgcc_eh
-	rm -f *.o
-	$(AR) x $(shell $(CC) -print-file-name=libgcc_eh.a)
-	mv *.o libgcc_eh/
-
-GCCOBJS = $(wildcard libgcc_eh/*.o)
+	$(MAKE) -C abi/libgcc_eh all
+GCCOBJS = $(wildcard abi/libgcc_eh/*.o)
 
 libsupc:
-	rm -rf libsupc
-	mkdir libsupc
-	rm -f *.o
-	$(AR) x $(shell $(CXX) -print-file-name=libsupc++.a)
 ifeq ($(IMPORT_LIBSUP),y)
-	rm -f new_op*.o del_op*.o pure.o
-endif
-	mv *.o libsupc/
-ifeq ($(IMPORT_LIBSUP),y)
-SUPOBJS = $(wildcard libsupc/*.o)
+	$(MAKE) -C abi/libsupc all
+SUPOBJS = $(wildcard abi/libsupc/*.o)
 else
 SUPOBJS =
 endif
@@ -114,6 +102,8 @@ libuClibc++.so: libsupc
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
 
 cleanobjs:
+	$(MAKE) -C abi/libgcc_eh clean
+	$(MAKE) -C abi/libsupc clean
 	rm -f $(ALLOBJS)
 
 cleanbin:

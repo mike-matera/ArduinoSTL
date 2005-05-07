@@ -110,7 +110,7 @@ OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 #OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 
 # Add a bunch of extra pedantic annoyingly strict checks
-XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -W -pedantic
+XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -pedantic
 XARCH_CFLAGS=$(subst ",, $(strip $(ARCH_CFLAGS)))
 CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
@@ -120,8 +120,6 @@ CFLAGS=$(XWARNINGS) $(OPTIMIZATION) $(XARCH_CFLAGS) $(CPU_CFLAGS) \
         -fno-builtin -nostdinc++ -ansi -I$(TOPDIR)include
 
 ifeq ($(DODEBUG),y)
-    #CFLAGS += -g3
-#    CFLAGS = $(XWARNINGS) -O0 -g3 $(CPU_CFLAGS) -fno-builtin -nostdinc -D_LIBC -I$(TOPDIR)include -I.
     CFLAGS += -O0 -g3 
     LDFLAGS:= $(CPU_LDFLAGS-y) -shared --warn-common --warn-once -z combreloc
     STRIPTOOL:= true -Since_we_are_debugging

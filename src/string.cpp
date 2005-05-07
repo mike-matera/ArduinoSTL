@@ -30,23 +30,62 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
 
-	typedef basic_string<char, char_traits<char> , allocator<char> > char_string;
+	template string::basic_string(const allocator<char> &);
+	template string::basic_string(size_type n, char c, const allocator<char> & );
+	template string::basic_string(const char* s, const allocator<char>& al);
+	template string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
+	template string::~basic_string();
 
-	template char_string::basic_string(const char* s, const allocator<char>& al);
-	template char_string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
-	template char_string& char_string::operator=(const char_string & str);
-	template char_string char_string::substr(size_type pos, size_type n) const;
-	template char_string::size_type char_string::find(const char_string & str, size_type pos) const;
-	template char_string operator+(const char_string & lhs, const char* rhs);
-	template char_string operator+(const char* lhs, const char_string & rhs);
-	template char_string operator+(const char_string & lhs,	const char_string & rhs);
+	template string::size_type string::find(const string & str, size_type pos) const;
+	template string::size_type string::find(const char* s, size_type pos) const;
+	template string::size_type string::find (char c, size_type pos) const;
+	template string::size_type string::rfind(const string & str, size_type pos) const;
+	template string::size_type string::rfind(char c, size_type pos) const;
+	template string::size_type string::rfind(const char* s, size_type pos) const;
+
+	template string::size_type string::find_first_of(const string &, size_type) const;
+	template string::size_type string::find_first_of(const char *, size_type pos, size_type n) const;
+	template string::size_type string::find_first_of(const char*, size_type pos) const;
+	template string::size_type string::find_first_of(char c, size_type pos) const;
+
+	template string::size_type string::find_last_of (const string & , size_type pos) const;
+	template string::size_type string::find_last_of (const char* s, size_type pos, size_type n) const;
+	template string::size_type string::find_last_of (const char* s, size_type pos) const;
+	template string::size_type string::find_last_of (char c, size_type pos) const;
+
+	template string::size_type string::find_first_not_of(const string &, size_type) const;
+	template string::size_type string::find_first_not_of(const char*, size_type, size_type) const;
+	template string::size_type string::find_first_not_of(const char*, size_type) const;
+	template string::size_type string::find_first_not_of(char c, size_type) const;
+
+	template int string::compare(const string & str) const;
+	template int string::compare(size_type pos1, size_type n1, const string & str) const;
+
+	template string string::substr(size_type pos, size_type n) const;
+
+	template string & string::operator=(const string & str);
+	template string & string::operator=(const char * s);
+
+	template bool operator==(const string & lhs, const string & rhs);
+	template bool operator==(const char * lhs, const string & rhs);
+	template bool operator==(const string & rhs, const char * rhs);
+
+	template bool operator!=(const string & lhs, const string & rhs);
+	template bool operator!=(const char * lhs, const string & rhs);
+	template bool operator!=(const string & rhs, const char * rhs);
+
+	template string operator+(const string & lhs, const char* rhs);
+	template string operator+(const char* lhs, const string & rhs);
+	template string operator+(const string & lhs,	const string & rhs);
+
+	template bool operator> (const string & lhs, const string & rhs);
+	template bool operator< (const string & lhs, const string & rhs);
 
 
 //Functions dependent upon OSTREAM
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 
-template basic_ostream<char, char_traits<char> >&
-	operator<<(basic_ostream<char, char_traits<char> >& os,	const char_string & str);
+template ostream & operator<<(ostream & os, const string & str);
 
 #endif
 
@@ -54,8 +93,7 @@ template basic_ostream<char, char_traits<char> >&
 //Functions dependent upon ISTREAM
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
-template basic_istream<char, char_traits<char> >& operator>>(
-	basic_istream<char,char_traits<char> >& is, char_string & str);
+template istream & operator>>(istream & is, string & str);
 
 
 #endif

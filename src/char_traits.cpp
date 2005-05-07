@@ -18,6 +18,9 @@
 
 */
 
+#define __UCLIBCXX_COMPILE_CHAR_TRAITS__ 1
+
+
 #include <basic_definitions>
 #include <char_traits>
 
@@ -29,6 +32,22 @@ const char_traits<char>::char_type* char_traits<char>::find(const char_type* s, 
 			return (s+i);
 		}
 	}
+	return 0;
+}
+
+bool char_traits<char>::eq(const char_type& c1, const char_type& c2){
+	if(strncmp(&c1, &c2, 1) == 0){
+		return true;
+	}
+	return false;
+}
+
+char_traits<char>::char_type char_traits<char>::to_char_type(const int_type & i){
+	if(i > 0 && i <= 255){
+		return i;
+	}
+
+	//Out of range
 	return 0;
 }
 

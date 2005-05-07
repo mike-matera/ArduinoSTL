@@ -76,13 +76,9 @@ namespace std{
 			data(0), 
 			data_size(0), elements(0), a(al)
 		{
-//			elements = n;
 			data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
 			data = a.allocate(data_size);
 
-//			for(size_type i = 0; i < elements; i++){
-//				a.construct( data+i, value);
-//			}
 			resize(n, value);
 		}
 
@@ -358,7 +354,6 @@ namespace std{
 
 	protected:
 		T* data;
-//		T defaultValue;
 		size_type data_size;
 		size_type elements;
 		Allocator a;
@@ -420,6 +415,9 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 #ifndef __UCLIBCXX_COMPILE_VECTOR__
+
+	template<> vector<char, allocator<char> >::vector(const allocator<char>& al);
+	template<> vector<char, allocator<char> >::vector(size_type n, const char & value, const allocator<char> & al);
 
 	template<> vector<char, allocator<char> >::~vector();
 	template<> vector<unsigned char, allocator<unsigned char> >::~vector();

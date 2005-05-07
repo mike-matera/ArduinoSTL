@@ -288,14 +288,9 @@ namespace std{
 
 
 	template<class T, class Allocator> void list<T, Allocator>::swap_nodes(node * x, node * y){
-		if(x == y){
-			return;
-		}
-
 		T * v = x->val;
 		x->val = y->val;
 		y->val = v;
-
 	}
 
 	template<class T, class Allocator> typename list<T, Allocator>::iterator 
@@ -358,16 +353,16 @@ namespace std{
 		return ((size_type)(-1)) / (sizeof(T) + sizeof(node));
 	}
 	template<class T, class Allocator> void list<T, Allocator>::resize(typename Allocator::size_type sz, T c){
-		if(sz > elements){
+//		if(sz > elements){
 			for(typename Allocator::size_type i = elements; i < sz; ++i){
 				push_back(c);
 			}
-		}
-		if(sz < elements){
+//		}
+//		if(sz < elements){
 			for(typename Allocator::size_type i = elements; i > sz; --i){
 				pop_back();
 			}
-		}
+//		}
 	}
 
 	template<class T, class Allocator> typename list<T, Allocator>::reference list<T, Allocator>::front(){
@@ -624,7 +619,7 @@ namespace std{
 			temp = first;
 			++first;
 			splice(position, x, temp);
-	}		
+		}
 	}
 
 

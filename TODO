@@ -13,3 +13,6 @@ Change ostream code so that it uses fill/width properly
 
 Clean up the list header - factor out common code of many of the function
 	to make everything smaller - maybe
+
+Convert bitset code to a common code-base to factor out code.  This should
+	cut down code size at the cost of additional performance overhead.

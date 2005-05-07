@@ -289,6 +289,24 @@ config UCLIBCXX_EXPAND_VECTOR_BASIC
 	  always a good idea.  This will expand std::vector for all
 	  primitive data types, shrinking executables.
 
+config UCLIBCXX_EXPAND_IOS_CHAR
+	bool "Expand ios core code for char"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  Much of the STL code uses core ios classes.  These classes,
+	  though small, are used frequently and will use a lot of space
+	  in your executibles.  Expanding this code will save space.
+
+
+config UCLIBCXX_EXPAND_STREAMBUF_CHAR
+	bool "Expand std::streambuf for char"
+	default y
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  std::streambuf is used extensively throughout the C++ library.
+	  Expanding this code will shrink the size of your executables.
+
 config UCLIBCXX_EXPAND_ISTREAM_CHAR
 	bool "Expand std::istream for <char>"
 	default y

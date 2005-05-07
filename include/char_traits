@@ -47,23 +47,11 @@ namespace std{
 		
 		inline static void assign(char_type & c, char_type & d) { c = d; }
 
-		inline static bool eq(const char_type& c1, const char_type& c2){
-			if(strncmp(&c1, &c2, 1) == 0){
-				return true;
-			}
-			return false;
-		}
+		static bool eq(const char_type& c1, const char_type& c2);
 
-		static char_type to_char_type(const int_type & i){
-			if(i > 0 && i <= 255){
-				return i;
-			}
+		static char_type to_char_type(const int_type & i);
 
-			//Out of range
-			return 0;
-		}
-
-		static int_type to_int_type(const char_type & c){
+		inline static int_type to_int_type(const char_type & c){
 			return c;
 		}
 

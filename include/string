@@ -37,7 +37,15 @@ namespace std{
 
 	//Basic basic_string
 
-template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class basic_string
+	template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class basic_string;
+
+	typedef basic_string<char> string;
+	typedef basic_string<wchar_t> wstring;
+
+
+
+//template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class basic_string
+template<class Ch, class Tr, class A> class basic_string
 	: public std::vector<Ch, A>
 {
 public:
@@ -99,7 +107,6 @@ public:
 			size_type len = Tr::length(s);
 			resize(len);
 			Tr::copy( vector<Ch, A>::data, s, len);
-//			vector<Ch, A>::elements = len;
 		}
 		return *this;
 	}
@@ -715,17 +722,44 @@ template<class Ch,class Tr,class A>
 
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
 #ifndef __UCLIBCXX_COMPILE_STRING__
-	template<> basic_string<char,char_traits<char>, allocator<char> >::basic_string(const char* s, const allocator<char>& al);
-	template<> basic_string<char,char_traits<char>, allocator<char> >::
-		basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
-	template<> basic_string<char,char_traits<char>, allocator<char> > &
-		basic_string<char,char_traits<char>, allocator<char> >::operator=
-			(const basic_string<char, char_traits<char>, allocator<char> > & str);
-	template<> basic_string<char, char_traits<char>, allocator<char> >::size_type
-		basic_string<char, char_traits<char>, allocator<char> >::
-			find (const basic_string<char, char_traits<char>, allocator<char> >& str, size_type pos) const;
-	template<> basic_string<char,char_traits<char>, allocator<char> >
-		basic_string<char,char_traits<char>, allocator<char> >::substr(size_type pos, size_type n) const;
+
+	template <> string::basic_string(const allocator<char> &);
+	template <> string::basic_string(size_type n, char c, const allocator<char> & );
+	template <> string::basic_string(const char* s, const allocator<char>& al);
+	template <> string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
+	template <> string::~basic_string();
+
+	template <> string::size_type string::find(const string & str, size_type pos) const;
+	template <> string::size_type string::find(const char* s, size_type pos) const;
+	template <> string::size_type string::find (char c, size_type pos) const;
+
+	template <> string::size_type string::rfind(const string & str, size_type pos) const;
+	template <> string::size_type string::rfind(char c, size_type pos) const;
+	template <> string::size_type string::rfind(const char* s, size_type pos) const;
+
+	template <> string::size_type string::find_first_of(const string &, size_type) const;
+	template <> string::size_type string::find_first_of(const char *, size_type pos, size_type n) const;
+	template <> string::size_type string::find_first_of(const char*, size_type pos) const;
+	template <> string::size_type string::find_first_of(char c, size_type pos) const;
+
+	template <> string::size_type string::find_last_of (const string & , size_type pos) const;
+	template <> string::size_type string::find_last_of (const char* s, size_type pos, size_type n) const;
+	template <> string::size_type string::find_last_of (const char* s, size_type pos) const;
+	template <> string::size_type string::find_last_of (char c, size_type pos) const;
+
+	template <> string::size_type string::find_first_not_of(const string &, size_type) const;
+	template <> string::size_type string::find_first_not_of(const char*, size_type, size_type) const;
+	template <> string::size_type string::find_first_not_of(const char*, size_type) const;
+	template <> string::size_type string::find_first_not_of(char c, size_type) const;
+
+
+	template <> int string::compare(const string & str) const;
+	template <> int string::compare(size_type pos1, size_type n1, const string & str) const;
+
+	template <> string string::substr(size_type pos, size_type n) const;
+
+	template <> string & string::operator=(const string & str);
+	template <> string & string::operator=(const char * s);
 
 #endif
 #endif
@@ -957,22 +991,24 @@ template<class charT, class traits, class Allocator> void
 
 //Operators we can avoid duplication of
 
-template<> basic_string<char, char_traits<char>, allocator<char> >
-	operator+(const basic_string<char, char_traits<char> , allocator<char> >& lhs, const char* rhs);
+template <> bool operator==(const string & lhs, const string & rhs);
+template <> bool operator==(const char * lhs, const string & rhs);
+template <> bool operator==(const string & rhs, const char * rhs);
 
-template<> basic_string<char, char_traits<char>, allocator<char> >
-        operator+(const char* lhs, const basic_string<char, char_traits<char>, allocator<char> >& rhs);
+template <> bool operator!=(const string & lhs, const string & rhs);
+template <> bool operator!=(const char * lhs, const string & rhs);
+template <> bool operator!=(const string & rhs, const char * rhs);
 
+template <> string operator+(const string & lhs, const char* rhs);
+template <> string operator+(const char* lhs, const string & rhs);
+template <> string operator+(const string & lhs, const string & rhs);
 
-template<> basic_string<char, char_traits<char>, allocator<char> >
-        operator+(const basic_string<char, char_traits<char> , allocator<char> >& lhs,
-		const basic_string<char, char_traits<char>, allocator<char> >& rhs);
+template <> bool operator> (const string & lhs, const string & rhs);
+template <> bool operator< (const string & lhs, const string & rhs);
+
 
 #endif
 #endif
-
-typedef basic_string<char> string;
-typedef basic_string<wchar_t> wstring;
 
 
 }

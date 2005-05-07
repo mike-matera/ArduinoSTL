@@ -60,7 +60,6 @@ public:
 	~allocator() throw(){}
 
 	//Space for n Ts
-//	pointer allocate(size_type n, typename allocator<void>::const_pointer hint=0){
 	pointer allocate(size_type n, typename allocator<void>::const_pointer = 0){
 		return (T*)(::operator new( n * sizeof(T) ));
 	}

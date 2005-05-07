@@ -33,6 +33,14 @@
 
 namespace std{
 
+	template <class C, class T> class basic_filebuf;
+
+	typedef basic_filebuf<char>    filebuf;
+#ifdef __UCLIBCXX_HAS_WCHAR__
+	typedef basic_filebuf<wchar_t> wfilebuf;
+#endif
+
+
 	template <class charT, class traits> class basic_filebuf : public basic_streambuf<charT,traits> {
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 		friend ios_base::Init::Init();	//Needed for cout/cin stuff
@@ -47,7 +55,8 @@ namespace std{
 
 		//Constructors/destructor:
 
-		basic_filebuf() : basic_streambuf<charT,traits>(), fp(0), pbuffer(0), gbuffer(0) {
+		basic_filebuf()	: basic_streambuf<charT, traits>(), fp(0), pbuffer(0), gbuffer(0)
+		{
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
@@ -57,7 +66,15 @@ namespace std{
 				gbuffer + __UCLIBCXX_IOSTREAM_BUFSIZE__);
 		}
 
-		virtual ~basic_filebuf();
+
+		virtual ~basic_filebuf(){
+			close();
+			delete [] pbuffer;
+			delete [] gbuffer;
+			pbuffer = 0;
+			gbuffer = 0;
+		}
+
 
 		//Members:
 
@@ -413,49 +430,23 @@ namespace std{
 		char_type * gbuffer;
 	};
 
-	template <class charT, class traits> basic_filebuf<charT, traits>::~basic_filebuf()
-	{
-		close();
-		delete [] pbuffer;
-		delete [] gbuffer;
-		pbuffer = 0;
-		gbuffer = 0;
-	}
-
-
 
 #ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_FSTREAM__
 
-	template <> basic_filebuf<char, char_traits<char> >::~basic_filebuf();
+	template <> filebuf::basic_filebuf();
+	template <> filebuf::~basic_filebuf();
+	template <> filebuf::int_type filebuf::pbackfail(filebuf::int_type c);
+	template <> filebuf * filebuf::open(const char* s, ios_base::openmode mode);
+	template <> filebuf * filebuf::close();
+	template <> filebuf::int_type filebuf::overflow(filebuf::int_type c);
+	template <> filebuf::int_type filebuf::underflow ();
 
-	template <> basic_filebuf<char, char_traits<char> >::int_type basic_filebuf<char, char_traits<char> >::
-		pbackfail(basic_filebuf<char, char_traits<char> >::int_type c);
-
-	template <> basic_filebuf<char, char_traits<char> > * basic_filebuf<char, char_traits<char> >::
-		open(const char* s, ios_base::openmode mode);
-
-	template <> basic_filebuf<char, char_traits<char> >::int_type basic_filebuf<char, char_traits<char> >::
-		overflow (basic_filebuf<char, char_traits<char> >::int_type c);
-
-	template <> basic_filebuf<char, char_traits<char> >::int_type
-		basic_filebuf<char, char_traits<char> >::underflow ();
-
-	template <> basic_streambuf<char, char_traits<char> >*
-		basic_filebuf<char, char_traits<char> >::
-		setbuf(char * s, streamsize n);
-
-	template <> streamsize basic_filebuf<char, char_traits<char> >::xsputn(const char* s, streamsize n);
+	template <> basic_streambuf<char, char_traits<char> > * filebuf::setbuf(char * s, streamsize n);
+	template <> streamsize filebuf::xsputn(const char* s, streamsize n);
 
 #endif
 #endif
-
-
-	typedef basic_filebuf<char>    filebuf;
-#ifdef __UCLIBCXX_HAS_WCHAR__
-	typedef basic_filebuf<wchar_t> wfilebuf;
-#endif
-
 
 
 	template <class charT, class traits>
@@ -475,6 +466,11 @@ namespace std{
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 			}
 		}
+
+		virtual ~basic_ifstream(){
+
+		}
+
 		basic_filebuf<charT,traits>* rdbuf() const{
 			return &sb;
 		}
@@ -535,17 +531,6 @@ namespace std{
 	}
 
 
-#ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
-#ifndef __UCLIBCXX_COMPILE_FSTREAM__
-
-	template <> basic_ofstream<char, char_traits<char> >::~basic_ofstream();
-
-
-#endif
-#endif
-
-
-
 	template <class charT, class traits> class basic_fstream : public basic_iostream<charT,traits> {
 	public:
 		typedef charT char_type;
@@ -575,6 +560,25 @@ namespace std{
 	private:
 		basic_filebuf<charT,traits> sb;
 	};
+
+
+
+#ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_FSTREAM__
+
+	template <> basic_ofstream<char, char_traits<char> >::basic_ofstream();
+	template <> basic_ofstream<char, char_traits<char> >::basic_ofstream(const char* s, ios_base::openmode mode);
+	template <> basic_ofstream<char, char_traits<char> >::~basic_ofstream();
+
+	template <> basic_ifstream<char, char_traits<char> >::basic_ifstream();
+	template <> basic_ifstream<char, char_traits<char> >::basic_ifstream(const char* s, ios_base::openmode mode);
+	template <> basic_ifstream<char, char_traits<char> >::~basic_ifstream();
+
+#endif
+#endif
+
+
+
 
 }
 

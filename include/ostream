@@ -239,22 +239,22 @@ namespace std {
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_OSTREAM__
 
-	template <> basic_ostream<char, char_traits<char> >::~basic_ostream();
+	template <> ostream::~basic_ostream();
 
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(bool n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(short int n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::
-		operator<<(unsigned short int n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(int n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(unsigned int n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(long n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(unsigned long n);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(float f);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(double f);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(long double f);
-	template <> basic_ostream<char,char_traits<char> > & basic_ostream<char, char_traits<char> >::operator<<(void* p);
-	template <> basic_ostream<char,char_traits<char> > & 
-		basic_ostream<char, char_traits<char> >::operator<<(basic_streambuf<char, char_traits<char> >* sb);
+	template <> ostream & ostream::flush();
+
+	template <> ostream & ostream::operator<<(bool n);
+	template <> ostream & ostream::operator<<(short int n);
+	template <> ostream & ostream::operator<<(unsigned short int n);
+	template <> ostream & ostream::operator<<(int n);
+	template <> ostream & ostream::operator<<(unsigned int n);
+	template <> ostream & ostream::operator<<(long n);
+	template <> ostream & ostream::operator<<(unsigned long n);
+	template <> ostream & ostream::operator<<(float f);
+	template <> ostream & ostream::operator<<(double f);
+	template <> ostream & ostream::operator<<(long double f);
+	template <> ostream & ostream::operator<<(void* p);
+	template <> ostream & ostream::operator<<(basic_streambuf<char, char_traits<char> >* sb);
 #endif
 #endif
 
@@ -275,6 +275,17 @@ namespace std {
 			return ok;
 		}
 	};
+
+
+#ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
+#ifndef __UCLIBCXX_COMPILE_OSTREAM__
+
+	template <> ostream::sentry::sentry(ostream & os);
+	template <> ostream::sentry::~sentry();
+
+
+#endif
+#endif
 
 
 	//Non - class functions
@@ -330,7 +341,6 @@ namespace std {
 		return out;
 	}
 
-
 #ifdef __UCLIBCXX_HAS_WCHAR__
 	template<class traits> basic_ostream<wchar_t,traits>& operator<<(basic_ostream<wchar_t,traits>& out, const char* c){
 		typename basic_ostream<wchar_t, traits>::sentry s(out);
@@ -355,7 +365,7 @@ namespace std {
 	
 	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const unsigned char* c){
 		typename basic_ostream<char,traits>::sentry s(out);
-		out.write(c, traits::length(c));
+		out.write(reinterpret_cast<const char *>(c), traits::length( reinterpret_cast<const char *>(c)));
 		return out;
 	}
 
@@ -375,12 +385,12 @@ namespace std {
 
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_OSTREAM__
-	template <> basic_ostream<char,char_traits<char> >& endl(basic_ostream<char,char_traits<char> >& os);
-	template <> basic_ostream<char,char_traits<char> >& flush(basic_ostream<char,char_traits<char> >& os);
-	template <> basic_ostream<char,char_traits<char> >&
-		operator<<(basic_ostream<char,char_traits<char> >& out, char c);
-	template <> basic_ostream<char,char_traits<char> >& 
-		operator<<(basic_ostream<char,char_traits<char> >& out, const char* c);
+	template <> ostream & endl(ostream & os);
+	template <> ostream & flush(ostream & os);
+	template <> ostream & operator<<(ostream & out, char c);
+	template <> ostream & operator<<(ostream & out, const char* c);
+	template <> ostream & operator<<(ostream & out, unsigned char c);
+	template <> ostream & operator<<(ostream & out, unsigned const char* c);
 
 #endif
 #endif

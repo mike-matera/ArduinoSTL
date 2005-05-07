@@ -27,23 +27,24 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
-	typedef basic_istream<char,char_traits<char> > char_istream;
-
-	template char_istream::int_type char_istream::get();
-	template char_istream & char_istream::get(char &c);
+	template istream::int_type istream::get();
+	template istream & istream::get(char &c);
 
 
-	template char_istream & char_istream::operator>>(bool &n);
-	template char_istream & char_istream::operator>>(short &n);
-	template char_istream & char_istream::operator>>(unsigned short &n);
-	template char_istream & char_istream::operator>>(int &n);
-	template char_istream & char_istream::operator>>(unsigned int &n);
-	template char_istream & char_istream::operator>>(long unsigned &n);
-	template char_istream & char_istream::operator>>(long int &n);
-	template char_istream & char_istream::operator>>(float &f);
-	template char_istream & char_istream::operator>>(double &f);
-	template char_istream & char_istream::operator>>(long double &f);
-	template char_istream & char_istream::operator>>(void *& p);
+	template istream & istream::operator>>(bool &n);
+	template istream & istream::operator>>(short &n);
+	template istream & istream::operator>>(unsigned short &n);
+	template istream & istream::operator>>(int &n);
+	template istream & istream::operator>>(unsigned int &n);
+	template istream & istream::operator>>(long unsigned &n);
+	template istream & istream::operator>>(long int &n);
+	template istream & istream::operator>>(float &f);
+	template istream & istream::operator>>(double &f);
+	template istream & istream::operator>>(long double &f);
+	template istream & istream::operator>>(void *& p);
+
+	template istream & operator>>(istream & is, char & c);
+
 
 #endif
 
