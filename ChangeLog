@@ -14,6 +14,9 @@ Peter S. Mazinger:	Added -z defs to $(CC) -shared
 -	More code expansion into the library to make executibles much smaller
 -	Remove unneeded typedefs to clean up the code and make it easier to understand
 -	<complex> nearly complete - only need to implement pow()
+-	Fixed problem with failing to handle end-of-file notification
+-	Removed certain enhancements until I can figure out why they are spewing warnings
+
 
 
 0.1.9
