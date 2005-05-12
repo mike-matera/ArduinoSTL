@@ -151,7 +151,7 @@ namespace std{
 			for(i=0;i<n-1;++i){
 				c= sbuffer->sgetc();
 				if(c == traits::eof() ){
-					if(i==0){
+					if( basic_ios<charT,traits>::eof() ){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
 					}else{
 						basic_ios<charT,traits>::setstate(ios_base::eofbit);

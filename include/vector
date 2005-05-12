@@ -416,8 +416,8 @@ namespace std{
 #ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 #ifndef __UCLIBCXX_COMPILE_VECTOR__
 
-	template<> vector<char, allocator<char> >::vector(const allocator<char>& al);
-	template<> vector<char, allocator<char> >::vector(size_type n, const char & value, const allocator<char> & al);
+//	template<> vector<char, allocator<char> >::vector(const allocator<char>& al);
+//	template<> vector<char, allocator<char> >::vector(size_type n, const char & value, const allocator<char> & al);
 
 	template<> vector<char, allocator<char> >::~vector();
 	template<> vector<unsigned char, allocator<unsigned char> >::~vector();
