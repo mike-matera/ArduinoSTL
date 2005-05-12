@@ -43,8 +43,8 @@ namespace std{
 	template ostream & ostream::operator<<(void* p);
 	template ostream & ostream::operator<<(basic_streambuf<char, char_traits<char> >* sb);
 
-	template ostream::sentry::sentry(ostream & os);
-	template ostream::sentry::~sentry();
+//	template ostream::sentry::sentry(ostream & os);
+//	template ostream::sentry::~sentry();
 
 	template ostream & endl(ostream & os);
 	template ostream & flush(ostream & os);

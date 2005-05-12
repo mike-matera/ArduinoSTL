@@ -333,8 +333,8 @@ namespace std{
 #ifdef __UCLIBCXX_EXPAND_SSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_SSTREAM__
 
-	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::basic_stringbuf(ios_base::openmode which);
-	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::~basic_stringbuf();
+//	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::basic_stringbuf(ios_base::openmode which);
+//	template <> basic_stringbuf<char, char_traits<char>, allocator<char> >::~basic_stringbuf();
 
 	template <> basic_string<char, char_traits<char>, allocator<char> >
 		basic_stringbuf<char, char_traits<char>, allocator<char> >::str() const;
@@ -359,10 +359,10 @@ namespace std{
 
 	template <> streamsize basic_stringbuf<char, char_traits<char>, allocator<char> >::xsputn(const char* s, streamsize n);
 
-	template <> basic_stringstream<char, char_traits<char>, allocator<char> >::basic_stringstream(ios_base::openmode which);
-	template <> basic_stringstream<char, char_traits<char>, allocator<char> >::~basic_stringstream();
-	template <> basic_istringstream<char, char_traits<char>, allocator<char> >::~basic_istringstream();
-	template <> basic_ostringstream<char, char_traits<char>, allocator<char> >::~basic_ostringstream();
+//	template <> basic_stringstream<char, char_traits<char>, allocator<char> >::basic_stringstream(ios_base::openmode which);
+//	template <> basic_stringstream<char, char_traits<char>, allocator<char> >::~basic_stringstream();
+//	template <> basic_istringstream<char, char_traits<char>, allocator<char> >::~basic_istringstream();
+//	template <> basic_ostringstream<char, char_traits<char>, allocator<char> >::~basic_ostringstream();
 
 #endif
 #endif
