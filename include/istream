@@ -62,11 +62,14 @@ namespace std{
 		basic_istream<charT,traits>& operator>>(unsigned int& n);
 		basic_istream<charT,traits>& operator>>(long& n);
 		basic_istream<charT,traits>& operator>>(unsigned long& n);
+		basic_istream<charT,traits>& operator>>(void*& p);
+		basic_istream<charT,traits>& operator>>(basic_streambuf<char_type,traits>* sb);
+
+#ifdef __UCLIBCXX_HAS_FLOATS__
 		basic_istream<charT,traits>& operator>>(float& f);
 		basic_istream<charT,traits>& operator>>(double& f);
 		basic_istream<charT,traits>& operator>>(long double& f);
-		basic_istream<charT,traits>& operator>>(void*& p);
-		basic_istream<charT,traits>& operator>>(basic_streambuf<char_type,traits>* sb);
+#endif
 	
 		streamsize gcount() const{
 			return count_last_ufmt_input;
@@ -415,6 +418,7 @@ namespace std{
 		return *this;
 	}
 
+#ifdef __UCLIBCXX_HAS_FLOATS__
 	template <class charT, class traits> basic_istream<charT,traits>& 
 		basic_istream<charT,traits>::operator>>(float& n)
 	{
@@ -436,6 +440,7 @@ namespace std{
 		__istream_readin<traits, charT, long double>::readin(*this, n);
 		return *this;
 	}
+#endif
 	template <class charT, class traits> basic_istream<charT,traits>& 
 		basic_istream<charT,traits>::operator>>(void *& n)
 	{
@@ -506,11 +511,13 @@ namespace std{
 	template <> istream & istream::operator>>(unsigned int &n);
 	template <> istream & istream::operator>>(long unsigned &n);
 	template <> istream & istream::operator>>(long int &n);
+	template <> istream & istream::operator>>(void *& p);
+
+#ifdef __UCLIBCXX_HAS_FLOATS__
 	template <> istream & istream::operator>>(float &f);
 	template <> istream & istream::operator>>(double &f);
 	template <> istream & istream::operator>>(long double &f);
-	template <> istream & istream::operator>>(void *& p);
-
+#endif
 
 	template <> istream & operator>>(istream & is, char & c);
 

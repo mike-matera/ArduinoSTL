@@ -1,3 +1,9 @@
+0.1.11
+-	Expanding basic_string<char> automatically expands vector<char>, even if not
+	explicitly expanding vector for other data types.  No cost and may save space.
+-	Explicitly share istream code for tokenizing stream
+
+
 0.1.10
 -	Implemented clog and changed cerr to meet spec (unbuffered)
 -	Implemented wcout, wcin, wcerr and wclog

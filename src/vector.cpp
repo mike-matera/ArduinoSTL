@@ -27,8 +27,8 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_VECTOR_BASIC__
 
-//	template vector<char, allocator<char> >::vector(const allocator<char>& al);
-//	template vector<char, allocator<char> >::vector(size_type n, const char & value, const allocator<char> & al);
+	template vector<char, allocator<char> >::vector(const allocator<char>& al);
+	template vector<char, allocator<char> >::vector(size_type n, const char & value, const allocator<char> & al);
 
 	template vector<char, allocator<char> >::~vector();
 	template vector<unsigned char, allocator<unsigned char> >::~vector();
@@ -57,6 +57,14 @@ namespace std{
 	template void vector<double, allocator<double> >::resize(size_type sz, const double & c);
 	template void vector<bool, allocator<bool> >::resize(size_type sz, const bool & c);
 
+#elif defined __UCLIBCXX_EXPAND_STRING_CHAR__
+
+	template vector<char, allocator<char> >::vector(const allocator<char>& al);
+	template vector<char, allocator<char> >::vector(size_type n, const char & value, const allocator<char> & al);
+
+	template vector<char, allocator<char> >::~vector();
+	template void vector<char, allocator<char> >::reserve(size_type n);
+	template void vector<char, allocator<char> >::resize(size_type sz, const char & c);
 
 #endif
 

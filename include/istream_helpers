@@ -41,27 +41,42 @@ namespace std{
 	 * require different scanf functions
 	 */
 
+	template <class C, class traits>
+		basic_string<C, traits> _readToken(basic_istream<C, traits>& stream)
+	{
+		basic_string<C, traits> temp;
+		typename traits::int_type c;
+		int exitnow = 0;
+		while(exitnow == 0){
+			c = stream.get();
+			if(c != traits::eof() && isspace(c) == false){
+				temp.append(1, c);
+			}else{
+				exitnow = 1;
+			}
+		}
+
+		return temp;
+	}
+
+#ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
+
+	template <> string _readToken<char, char_traits<char> >(istream & stream);
+
+#endif
+
+
 	template <class traits, class charT, class dataType> class __istream_readin{
 	public:
 		static void readin(basic_istream<charT,traits>& stream, dataType & var);
 	};
-
 
 	template <class traits> class __istream_readin<traits, char, bool>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, bool & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
 			if(temp == "true" || temp == "True" || temp == "TRUE" || temp == "1"){
 				var = true;
 			}else{
@@ -76,16 +91,8 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, short & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			if(stream.flags() & ios_base::dec){
 				sscanf(temp.c_str(), "%hd", &var );
 			}else if( stream.flags() & ios_base::oct){
@@ -107,16 +114,8 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, unsigned short & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			if(stream.flags() & ios_base::dec){
 				sscanf(temp.c_str(), "%hu", &var );
 			}else if( stream.flags() & ios_base::oct){
@@ -138,16 +137,8 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, int & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			if(stream.flags() & ios_base::dec){
 				sscanf(temp.c_str(), "%d", &var );
 			}else if( stream.flags() & ios_base::oct){
@@ -169,16 +160,8 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, unsigned int & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			if(stream.flags() & ios_base::dec){
 				sscanf(temp.c_str(), "%u", &var );
 			}else if( stream.flags() & ios_base::oct){
@@ -202,16 +185,8 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, long int & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			if(stream.flags() & ios_base::dec){
 				sscanf(temp.c_str(), "%ld", &var );
 			}else if( stream.flags() & ios_base::oct){
@@ -235,16 +210,8 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, unsigned long int & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			if(stream.flags() & ios_base::dec){
 				sscanf(temp.c_str(), "%lu", &var );
 			}else if( stream.flags() & ios_base::oct){
@@ -261,21 +228,16 @@ namespace std{
 		}
 	};
 
+
+#ifdef __UCLIBCXX_HAS_FLOATS__
+
 	template <class traits> class __istream_readin<traits, char, float>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, float & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
+
 			sscanf(temp.c_str(), "%g", &var);
 		}
 	};
@@ -285,16 +247,7 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, double & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
 			sscanf(temp.c_str(), "%lg", &var);
 		}
 	};
@@ -304,36 +257,19 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, long double & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
 			sscanf(temp.c_str(), "%Lg", &var);
 		}
 	};
 
+#endif	// ifdef __UCLIBCXX_HAS_FLOATS__
 
 	template <class traits> class __istream_readin<traits, char, void*>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, void* & var)
 		{
 			basic_string<char, traits > temp;
-			typename traits::int_type c;
-			int exitnow = 0;
-			while(exitnow == 0){
-				c = stream.get();
-				if(c != traits::eof() && isspace(c) == false){
-					temp.append(1, c);
-				}else{
-					exitnow = 1;
-				}
-			}
+			temp = _readToken( stream);
 			sscanf(temp.c_str(), "%p", &var);
 		}
 	};

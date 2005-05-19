@@ -27,6 +27,22 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
+	template <> string _readToken<char, char_traits<char> >(istream & stream)
+	{
+		string temp;
+		char_traits<char>::int_type c;
+		int exitnow = 0;
+		while(exitnow == 0){
+			c = stream.get();
+			if(c != char_traits<char>::eof() && isspace(c) == false){
+				temp.append(1, c);
+			}else{
+				exitnow = 1;
+			}
+		}
+		return temp;
+        }
+
 	template istream::int_type istream::get();
 	template istream & istream::get(char &c);
 
@@ -38,12 +54,16 @@ namespace std{
 	template istream & istream::operator>>(unsigned int &n);
 	template istream & istream::operator>>(long unsigned &n);
 	template istream & istream::operator>>(long int &n);
+	template istream & istream::operator>>(void *& p);
+	template istream & operator>>(istream & is, char & c);
+
+
+#ifdef __UCLIBCXX_HAS_FLOATS__
 	template istream & istream::operator>>(float &f);
 	template istream & istream::operator>>(double &f);
 	template istream & istream::operator>>(long double &f);
-	template istream & istream::operator>>(void *& p);
+#endif
 
-	template istream & operator>>(istream & is, char & c);
 
 
 #endif
