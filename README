@@ -4,3 +4,10 @@ A few notes:
 	without the use of either rtti or exceptions.  The library should be compiled
 	likewise.  Since the application will be statically compiled, you may run a 
 	dynamic library with exception support.
+
+-	As of version 0.1.11 uClibc+ throws LOTS of warnings when compiling about inline
+	functions used but never defined.  There warnings are known errors in GCC
+	versions 3.3.3 3.4.0 4.0.0 4.1.0 [Bug #21627].  Either ignore these warnings or
+	upgrade your compiler.  Note that these warnings will exist when compiling software
+	as well as the library itself.
+

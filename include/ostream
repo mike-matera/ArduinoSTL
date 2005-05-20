@@ -280,8 +280,8 @@ namespace std {
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_OSTREAM__
 
-//	template <> ostream::sentry::sentry(ostream & os);
-//	template <> ostream::sentry::~sentry();
+	template <> ostream::sentry::sentry(ostream & os);
+	template <> ostream::sentry::~sentry();
 
 
 #endif
