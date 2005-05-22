@@ -18,6 +18,9 @@ scott: 7 Points
 2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
 
+Ted Schroeder: 2 Points
+2005-05-20: 1+1: Foudn error in functional.  Provided fix.
+
 thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
 
@@ -25,6 +28,6 @@ Thomas Giesel: 2 Points
 2005-03-02: 2  :  Found problems in getline code with minimal test case.
 
 Anthony Lee: 1 Point
-2005-01-24: 1: Found problem in functional which had const missing causing havok
+2005-01-24: 1  : Found problem in functional which had const missing causing havok
 
 

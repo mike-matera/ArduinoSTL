@@ -397,6 +397,9 @@ namespace std{
 					return -1;
 				}
 			}
+			if(0 != fp && 0 != fflush(fp)){
+				return -1;
+			}
 			return 0;
 		}
 		virtual void imbue(const locale&){

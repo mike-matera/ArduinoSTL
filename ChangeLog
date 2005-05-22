@@ -2,6 +2,8 @@
 -	Expanding basic_string<char> automatically expands vector<char>, even if not
 	explicitly expanding vector for other data types.  No cost and may save space.
 -	Explicitly share istream code for tokenizing stream
+-	Fix of bind2nd in function (Thanks to Ted Schroeder)
+-	Properly implement fstream::sync() - now works
 
 
 0.1.10
