@@ -26,6 +26,8 @@
 #define __HEADER_STD_IOS 1
 
 namespace std{
+	typedef signed long int streamoff;
+
 	template <class stateT> class fpos;
 
 	class ios_base {
@@ -437,6 +439,25 @@ namespace std{
 		void state(stateT s){
 			st = s;
 		}
+		bool operator==(const fpos &rhs){
+			return st == rhs.st;
+		}
+		bool operator!=(const fpos &rhs){
+			return st == rhs.st;
+		}
+		fpos & operator+(const streamoff & o){
+			st += o;
+			return *this;
+		}
+		fpos & operator-(const streamoff & o){
+			st -= o;
+			return *this;
+		}
+		streamoff operator-(const fpos & rhs){
+			return st - rhs.st;
+		}
+
+		
 	private:
 		stateT st;
 	};
