@@ -392,7 +392,9 @@ namespace std{
 
 	template<class T, class Allocator> void vector<T, Allocator>::resize(size_type sz, const T & c){
 		if(sz > elements){      //Need to actually call constructor
-			reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
+			if(sz > data_size){
+				reserve(sz + __UCLIBCXX_STL_BUFFER_SIZE__);
+			}
 
 			for(size_type i = elements; i<sz ; ++i){
 				a.construct(data+i, c);

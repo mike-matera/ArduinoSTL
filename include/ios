@@ -138,7 +138,7 @@ namespace std{
 		inline static bool sync_with_stdio(bool = true) { return true; }
 
 	protected:
-		ios_base() : mLocale(), mformat(dec | showbase | unitbuf ), mstate(goodbit), 
+		ios_base() : mLocale(), mformat(dec | unitbuf ), mstate(goodbit), 
 			mmode(), mdir(), mprecision(6), mwidth(0)
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 			,mInit()

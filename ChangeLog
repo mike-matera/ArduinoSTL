@@ -6,6 +6,10 @@
 -	Properly implement fstream::sync() - now works
 -	Added std::streamoff
 -	Added operators for fpos in ios
+-	Fix resize() call in string wrapping non-existant resize() call
+-	Fix operator >= in string
+-	Performance speedup in vector/string (now *use* preallocated buffer space)
+-	Showbase is no longer on by default
 
 
 0.1.10

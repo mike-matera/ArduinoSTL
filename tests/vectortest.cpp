@@ -2,6 +2,29 @@
 #include <string>
 #include <iostream>
 
+class myclass{
+private:
+	int num;
+public:
+	myclass() : num(0) {  }
+	myclass(int i): num(i) {  }
+	~myclass() {
+		std::cout << "Calling destructor with num: " << num << std::endl;
+		num = -1;
+	}
+	
+	void printout() const {
+		std::cout << num << std::endl;
+	}
+	int getNum() const {
+		return num;
+	}
+	void setNum(int i){
+		num = i;
+	}
+};
+
+
 int main(){
 	std::vector<char, std::allocator<char> > ctest;
 	std::string stest;
@@ -84,7 +107,89 @@ int main(){
 	}
 
 
+	std::cout << std::endl << "Testing vectors of pointers\n";
 
+	myclass m1(1);
+	myclass m2(2);
+	myclass m3(3);
+	myclass m4(4);
+	myclass m5(5);
+
+	std::vector<myclass *> mcp;
+	mcp.push_back(&m1);
+	mcp.push_back(&m2);
+	mcp.push_back(&m3);
+	mcp.push_back(&m4);
+	mcp.push_back(&m5);
+
+	mcp[0]->printout();
+	mcp[1]->printout();
+	mcp[2]->printout();
+	mcp[3]->printout();
+	mcp[4]->printout();
+
+	std::vector<myclass *>::iterator mcpi;
+	mcpi = mcp.end();
+	while(mcpi != mcp.begin()){
+		--mcpi;
+		(*mcpi)->printout();
+	}
+
+	mcp.pop_back();
+	mcpi = mcp.end();
+	while(mcpi != mcp.begin()){
+		--mcpi;
+		(*mcpi)->printout();
+	}
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 4" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+	std::cout << "Testing resize()" << std::endl;
+	mcp.resize(1, &m5);
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 1" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+	mcp.resize(95, &m4);
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 95" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+
+	mcp.resize(1, &m4);
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 1" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+	mcp.push_back(&m3);
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 2" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+	for(int j = 0; j < 100; ++j){
+		mcp.push_back(&m2);
+	}
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 102" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+	myclass * m6 = new myclass(6);
+
+	mcp.push_back(m6);
+
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::cout << "Vector size: 103" << std::endl;
+	std::cout << "Vector size: " << mcp.size() << std::endl;
+
+	mcp.clear();
+	delete m6;
 
 	return 0;
 }

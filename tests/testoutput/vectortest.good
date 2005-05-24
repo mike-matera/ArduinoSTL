@@ -49,3 +49,47 @@ Element: 23
 Element: 12
 Element: 3
 Element: 4
+
+Testing vectors of pointers
+1
+2
+3
+4
+5
+5
+4
+3
+2
+1
+4
+3
+2
+1
+The following two lines should be identical:
+Vector size: 4
+Vector size: 4
+Testing resize()
+The following two lines should be identical:
+Vector size: 1
+Vector size: 1
+The following two lines should be identical:
+Vector size: 95
+Vector size: 95
+The following two lines should be identical:
+Vector size: 1
+Vector size: 1
+The following two lines should be identical:
+Vector size: 2
+Vector size: 2
+The following two lines should be identical:
+Vector size: 102
+Vector size: 102
+The following two lines should be identical:
+Vector size: 103
+Vector size: 103
+Calling destructor with num: 6
+Calling destructor with num: 5
+Calling destructor with num: 4
+Calling destructor with num: 3
+Calling destructor with num: 2
+Calling destructor with num: 1

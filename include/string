@@ -215,7 +215,7 @@ public:
 
 	basic_string& assign(size_type n, Ch c){
 		vector<Ch, A>::clear();
-		resize(n, c);
+		vector<Ch, A>::resize(n, Ch() );
 		return *this;
 	}
 
@@ -932,7 +932,7 @@ template<class charT, class traits, class Allocator> bool
 	operator<=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
-	if(lhs.compare(temp <=0)){
+	if(lhs.compare(temp) <=0 ){
 		return true;
 	}
 	return false;
@@ -942,7 +942,7 @@ template<class charT, class traits, class Allocator> bool
 	operator<=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
-	if(temp.compare(rhs) <0){
+	if(temp.compare(rhs) <= 0){
 		return true;
 	}
 	return false;
@@ -961,7 +961,7 @@ template<class charT, class traits, class Allocator> bool
 	operator>=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
-	if(lhs.compare(temp)>=0){
+	if(lhs.compare(temp) >=0 ){
 		return true;
 	}
 	return false;
@@ -971,7 +971,7 @@ template<class charT, class traits, class Allocator> bool
 	operator>=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
-	if(temp.compare(rhs)>=0){
+	if(temp.compare(rhs) >=0 ){
 		return true;
 	}
 	return false;
