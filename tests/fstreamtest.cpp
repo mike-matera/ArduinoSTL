@@ -1,6 +1,9 @@
 #include <fstream>
 #include <iostream>
 
+unsigned char correctValue(unsigned long int pos);
+
+
 int main()
 {
 	std::ofstream outFile("fstreamtest.out", std::ios::out);
@@ -72,8 +75,34 @@ int main()
 		std::cout << "Error reading character i, was instead: " << a << std::endl;
 	}
 	inFile.close();
+	inFile.clear();
+
+
+	std::cout << "Now reading other input file to see what wonderful goodness we can discover" << std::endl;
+
+	inFile.open("fstreamtest.input", std::ios::in | std::ios::binary );
+	inFile.seekg(27);
+	inFile.read(&a, 1);
+	b = a;
+	if(correctValue(27) != b){
+		std::cout << "Read in invalid value.  Read in " << (int)b << ", expected " << (int)correctValue(27) << std::endl;
+	}else{
+		std::cout << "Character 27 read in correctly\n";
+	}
+
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "Current position: 27\n";
+	std::cout << "Current position: " << inFile.tellg() << std::endl;
 
 
 	return 0;
 }
 
+
+unsigned char correctValue(unsigned long int pos){
+	if(pos < 16){
+		return 0;
+	}
+	return (pos - 16);
+
+}

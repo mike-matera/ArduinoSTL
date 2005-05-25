@@ -49,7 +49,9 @@ namespace std {
 		typedef traits traits_type;
 
 
-		basic_ostream(basic_streambuf<charT,traits>* sb): sbuffer(sb){
+		basic_ostream(basic_streambuf<charT,traits>* sb)
+			: basic_ios<charT, traits>(sb), sbuffer(sb)
+		{
 			basic_ios<charT,traits>::init(sb);
 		}
 		virtual ~basic_ostream();
@@ -359,7 +361,7 @@ namespace std {
     //  signed and unsigned
 	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const signed char* c){
 		typename basic_ostream<char,traits>::sentry s(out);
-		out.write(c, traits::length(c));
+		out.write((const char *)c, traits::length(c));
 		return out;
 	}
 	

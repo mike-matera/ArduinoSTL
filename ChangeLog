@@ -10,6 +10,11 @@
 -	Fix operator >= in string
 -	Performance speedup in vector/string (now *use* preallocated buffer space)
 -	Showbase is no longer on by default
+-	i|ostream now call the constructor for basic_ios properly
+-	Fixes to how snextc() works.  Code now fixed
+-	seekoff() and thus tellg now returns ftell to give useful information
+-	General iostream cleanups
+-	Additions to io and other tests
 
 
 0.1.10

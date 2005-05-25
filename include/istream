@@ -45,7 +45,9 @@ namespace std{
 		typedef typename traits::off_type off_type;
 		typedef traits                    traits_type;
     	
-		explicit basic_istream(basic_streambuf<charT,traits>* sb) : sbuffer(0), count_last_ufmt_input(0){
+		explicit basic_istream(basic_streambuf<charT,traits>* sb)
+			: basic_ios<charT, traits>(sb), sbuffer(0), count_last_ufmt_input(0)
+		{
 			sbuffer = sb;
 		}
 		virtual ~basic_istream() { }
@@ -83,11 +85,13 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& get(char_type* s, streamsize n, char_type delim){
+			sentry(*this, true);
 			streamsize i = 0;
 			int_type c;
 			for(i=0;i<n;++i){
-				c= sbuffer->sgetc();
-				sbuffer->sbumpc();
+//				c= sbuffer->sgetc();
+//				sbuffer->sbumpc();
+				c = sbuffer->snextc();
 				if(c == traits::eof() ){
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -115,10 +119,12 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& get(basic_streambuf<char_type,traits>& sb, char_type delim){
+			sentry(*this, true);
 			streamsize i = 0;
 			int_type c;
 			while(1){		//We will exit internally based upon error conditions
-				c = sbuffer->sgetc();
+//				c = sbuffer->sgetc();
+				c= sbuffer->snextc();
 				if(c == traits::eof()){
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -140,7 +146,7 @@ namespace std{
 					return *this;
 				}
 				++i;
-				sbuffer->sbumpc();
+//				sbuffer->sbumpc();
 			}		
 		}
 		
@@ -149,10 +155,12 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& getline(char_type* s, streamsize n, char_type delim){
+			sentry(*this, true);
 			streamsize i = 0;
 			int_type c;
 			for(i=0;i<n-1;++i){
-				c= sbuffer->sgetc();
+//				c= sbuffer->sgetc();
+				c= sbuffer->snextc();
 				if(c == traits::eof() ){
 					if( basic_ios<charT,traits>::eof() ){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -163,9 +171,9 @@ namespace std{
 					s[i] = traits::eos();
 					return *this;
 				}
-				if(sbuffer->sbumpc()==traits::eof() ){
-					basic_ios<charT,traits>::setstate(ios_base::eofbit);
-				}
+//				if(sbuffer->sbumpc()==traits::eof() ){
+//					basic_ios<charT,traits>::setstate(ios_base::eofbit);
+//				}
 				if(c == delim){
 					count_last_ufmt_input = i+1;
 					s[i] = traits::eos();
@@ -178,15 +186,17 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& ignore (streamsize n = 1, int_type delim = traits::eof()){
+			sentry(*this, true);
 			streamsize i;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
+//				c = sbuffer->sgetc();
+				c = sbuffer->snextc();
 				if(c == traits::eof()){
 					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 					return *this;
 				}
-				sbuffer->sbumpc();
+//				sbuffer->sbumpc();
 				if(c == delim){
 					return *this;
 				}
@@ -203,22 +213,26 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& read (char_type* s, streamsize n){
+			sentry(*this, true);
 			streamsize i;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
+//				c = sbuffer->sgetc();
+				c = sbuffer->snextc();
+
 				if(c == traits::eof()){
 					basic_ios<charT,traits>::setstate(ios_base::failbit);
 					count_last_ufmt_input = i;
 					return *this;
 				}
-				sbuffer->sbumpc();
+//				sbuffer->sbumpc();
 				s[i] = c;
 			}				
 			return *this;
 		}
 		
 		streamsize readsome(char_type* s, streamsize n){
+			sentry(*this, true);
 			if(basic_ios<charT,traits>::good()){
 				count_last_ufmt_input = 0;
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -239,8 +253,9 @@ namespace std{
 			int_type c;
 			
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
-				sbuffer->sbumpc();
+//				c = sbuffer->sgetc();
+//				sbuffer->sbumpc();
+				c = sbuffer->snextc();
 				s[i] = c;
 			}
 			count_last_ufmt_input = n;
@@ -248,6 +263,7 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& putback(char_type c){
+			sentry(*this, true);
 			if(!basic_ios<charT,traits>::good()){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 				return *this;
@@ -264,6 +280,7 @@ namespace std{
 		}
 		
 		basic_istream<charT,traits>& unget(){
+			sentry(*this, true);
 			if(!basic_ios<charT,traits>::good()){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 				return *this;
@@ -279,6 +296,7 @@ namespace std{
 		}
 		
 		int sync(){
+			sentry(*this, true);
 			if(sbuffer == 0){
 				return -1;
 			}
@@ -321,7 +339,7 @@ namespace std{
 	template <class charT,class traits = char_traits<charT> > class basic_istream<charT,traits>::sentry {
 		bool ok;
 	public:
-		explicit sentry(basic_istream<charT,traits>& os){
+		explicit sentry(basic_istream<charT,traits>& os, bool noskipws = false){
 			if(os.good() !=0){		//Prepare for output
 			}
 
@@ -329,6 +347,16 @@ namespace std{
 			if(os.tie() != 0){
 				os.tie()->flush();
 			}
+			int_type c;
+			if(!noskipws){
+				while ( (c = os.rdbuf()->snextc()) != traits::eof()) {
+					if (0 == isspace(c) ) {
+						os.rdbuf()->sputbackc (c);
+						break;
+					}
+				}
+			}
+
 			ok = true;
 		}
 		~sentry() { }
@@ -342,27 +370,31 @@ namespace std{
 
 	template <class charT, class traits>
 	typename basic_istream<charT,traits>::int_type basic_istream<charT,traits>::get(){
-		int_type retval = sbuffer->sgetc();
+		sentry(*this, true);
+//		int_type retval = sbuffer->sgetc();
+		int_type retval = sbuffer->snextc();
 		if(retval == traits::eof()){
 			count_last_ufmt_input = 0;
 			basic_ios<charT,traits>::setstate(ios_base::eofbit);
 		}else{
 			count_last_ufmt_input = 1;
-			sbuffer->sbumpc();
+//			sbuffer->sbumpc();
 		}
 		return retval;
 	}
 
 	template <class charT, class traits>
 	basic_istream<charT,traits>& basic_istream<charT,traits>::get(char_type& c){
-		int_type retval = sbuffer->sgetc();
+		sentry(*this, true);
+//		int_type retval = sbuffer->sgetc();
+		int_type retval = sbuffer->snextc();
 		if(retval == traits::eof()){
 			count_last_ufmt_input = 0;
 			basic_ios<charT,traits>::setstate(ios_base::failbit);
 		}else{
 			count_last_ufmt_input = 1;
 			c = retval;
-			sbuffer->sbumpc();
+//			sbuffer->sbumpc();
 		}
 		return *this;
 	}

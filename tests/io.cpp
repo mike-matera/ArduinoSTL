@@ -4,7 +4,7 @@
 #include <fstream>
 #include <istream>
 
-using namespace std;
+//using namespace std;
 
 int main(){
 //	double q;
@@ -35,6 +35,17 @@ int main(){
 
 	std::cout << "Checking ostream_iterator\n";
 	std::ostream_iterator<double> a(std::cout, " ");
+
+	std::cout << std::endl << "Checking length of remaining input" << std::flush << std::endl;
+	std::istream::pos_type cur;
+	std::istream::pos_type end;
+	cur = std::cin.tellg();
+	std::cout << "Current position in stream: " << cur << std::endl;
+	std::cin.seekg(0, std::ios::end);
+	end = std::cin.tellg();
+	std::cin.seekg(cur);
+
+	std::cout << "Remaining bytes: " << end-cur << std::endl;
 
 	return 0;
 }

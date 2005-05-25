@@ -46,7 +46,7 @@ namespace std{
 	{
 		basic_string<C, traits> temp;
 		typename traits::int_type c;
-		int exitnow = 0;
+		int exitnow(0);
 		while(exitnow == 0){
 			c = stream.get();
 			if(c != traits::eof() && isspace(c) == false){
@@ -55,7 +55,6 @@ namespace std{
 				exitnow = 1;
 			}
 		}
-
 		return temp;
 	}
 

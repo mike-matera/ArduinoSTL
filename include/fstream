@@ -369,10 +369,20 @@ namespace std{
 
 			sync();
 
-			int retval = fseek(fp,sizeof(charT)*(off - (basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr())),whence);
+			int retval = fseek(
+				fp,
+				sizeof(charT)*(off - (basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr())),
+				whence
+			);
 
 			//Invalidate read buffer
-			basic_streambuf<charT,traits>::gbump(basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr());
+			basic_streambuf<charT,traits>::gbump(
+				basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr()
+			);
+
+			if(-1 != retval){
+				retval = ftell(fp);
+			}
 
 			return retval;
 		}
