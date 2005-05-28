@@ -16,3 +16,6 @@ Clean up the list header - factor out common code of many of the function
 
 Convert bitset code to a common code-base to factor out code.  This should
 	cut down code size at the cost of additional performance overhead.
+
+Clean up istream code so that a lot of the checking for stuff is put into
+	the sentry class.

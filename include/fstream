@@ -558,7 +558,8 @@ namespace std{
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		basic_fstream(): basic_iostream<charT,traits>(&sb){ }
+		basic_fstream(): basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb){ }
+
 		explicit basic_fstream(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out):
 			basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb)
 		{
