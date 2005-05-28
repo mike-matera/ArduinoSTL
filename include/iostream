@@ -66,7 +66,7 @@ namespace std{
 	};
 
 	template <class charT, class traits> basic_iostream<charT, traits>:: basic_iostream(basic_streambuf<charT,traits>* sb)
-		:basic_istream<charT,traits>(sb), basic_ostream<charT,traits>(sb)
+		: basic_ios<charT, traits>(sb), basic_istream<charT,traits>(sb), basic_ostream<charT,traits>(sb)
 	{
 		return;
 	}

@@ -69,9 +69,11 @@ namespace std{
 		}
 		virtual int_type underflow(){
 			if(ielement >= data.length()){
+//			if(ielement > data.length()){
 				return traits::eof();
 			}
 			return traits::to_int_type(data[ielement]);
+//			return traits::to_int_type(data[ielement-1]);
 		}
 
 		virtual int_type uflow(){
@@ -85,10 +87,12 @@ namespace std{
 		virtual int_type   pbackfail(int_type c = traits::eof()){
 			//Error possibilities
 			if(ielement == 0){
+//			if(ielement < 2){
 				return traits::eof();
 			}
 			if(ielement > data.length()){
 				ielement = data.length();
+//				ielement = data.length() + 1;
 				return traits::eof();
 			}
 			//eof passed in
@@ -97,12 +101,14 @@ namespace std{
 				return traits::not_eof(c);
 			}
 			if(traits::eq(traits::to_char_type(c),data[ielement-1]) == true){
+//			if(traits::eq(traits::to_char_type(c),data[ielement - 2]) == true){
 				--ielement;
 				return c;
 			}
 			if(basic_streambuf<charT,traits>::openedFor & ios_base::out){
 				--ielement;
 				data[ielement] = c;
+//				data[ielement - 1] = c;
 				return c;
 			}
 			return traits::eof();
@@ -110,11 +116,14 @@ namespace std{
 
 		virtual int showmanyc(){
 			return data.length() - ielement;
+//			return data.length() + 1 - ielement;
 		}
 		virtual streamsize xsgetn(char_type* c, streamsize n){
 			streamsize i = 0;
 			while(ielement < data.length() && i < n ){
+//			while(ielement <= data.length() && i < n ){
 				c[i] = data[ielement];
+//				c[i] = data[ielement - 1];
 				++i;
 				++ielement;
 			}
@@ -183,6 +192,7 @@ namespace std{
 				}
 				if(which & ios_base::in){
 					newpos = ielement + off;
+//					newpos = ielement + off - 1;
 				}
 				
 			}else{
@@ -198,6 +208,7 @@ namespace std{
 
 			if(which & ios_base::in){
 				ielement = newpos;
+//				ielement = newpos + 1;
 			}
 			if(which & ios_base::out){
 				data.resize(newpos);
@@ -240,10 +251,10 @@ namespace std{
 
 
 		explicit basic_istringstream(ios_base::openmode m = ios_base::in) 
-			: basic_istream<charT,traits>(&sb), sb(m) {  }
+			: basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb), sb(m) {  }
 		explicit basic_istringstream( const basic_string<charT,traits,Allocator>& str, 
 			ios_base::openmode which = ios_base::in) 
-			: basic_istream<charT,traits>(&sb), sb(str, which) {  }
+			: basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb), sb(str, which) {  }
 		virtual ~basic_istringstream() {  }
 		basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
 			return &sb;
@@ -271,10 +282,10 @@ namespace std{
 		typedef typename traits::off_type off_type;
 
 		explicit basic_ostringstream(ios_base::openmode m = ios_base::out)
-			: basic_ostream<charT,traits>(&sb), sb(m) {  }
+			: basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb), sb(m) {  }
 		explicit basic_ostringstream(const basic_string<charT,traits,Allocator>& str, 
 			ios_base::openmode which = ios_base::out)
-			: basic_ostream<charT,traits>(&sb), sb(str, which) {  }
+			: basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb), sb(str, which) {  }
 		virtual ~basic_ostringstream() {  }
 
 		basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
@@ -305,7 +316,7 @@ namespace std{
 		explicit basic_stringstream(ios_base::openmode which = ios_base::out|ios_base::in);	//Below
 		explicit basic_stringstream(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::out|ios_base::in)
-			: basic_iostream<charT,traits>(&sb), sb(str, which) {  }
+			: basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb), sb(str, which) {  }
 		virtual ~basic_stringstream();		//Below
 
 		basic_stringbuf<charT,traits,Allocator>* rdbuf(){
@@ -324,7 +335,7 @@ namespace std{
 
 	template <class charT, class traits, class Allocator> basic_stringstream<charT, traits, Allocator>::
 		basic_stringstream(ios_base::openmode which)
-			: basic_iostream<charT,traits>(&sb), sb(which) {  }
+			: basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb), sb(which) {  }
 
 	template <class charT, class traits, class Allocator>
 		basic_stringstream<charT, traits, Allocator>::~basic_stringstream() {  }

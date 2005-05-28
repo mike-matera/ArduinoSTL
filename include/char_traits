@@ -52,7 +52,7 @@ namespace std{
 		static char_type to_char_type(const int_type & i);
 
 		inline static int_type to_int_type(const char_type & c){
-			return c;
+			return (short int)(unsigned char)c;
 		}
 
 		inline static bool eq_int_type(const int_type & a, const int_type & b){

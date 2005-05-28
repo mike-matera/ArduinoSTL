@@ -44,7 +44,6 @@ int main(){
 	std::cin.seekg(0, std::ios::end);
 	end = std::cin.tellg();
 	std::cin.seekg(cur);
-
 	std::cout << "Remaining bytes: " << end-cur << std::endl;
 
 	return 0;

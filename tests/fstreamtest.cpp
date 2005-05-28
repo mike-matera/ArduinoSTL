@@ -20,22 +20,22 @@ int main()
 	for(int i = 0 ; i < 28; ++i){
 		inFile >> a;
 	}
-	for(unsigned char c = 0; c < 255; ++c){
+	while (!inFile.eof()){
 		inFile.get(a);
-		b = a;
-		if(c != b){
-			std::cout << "Error reading in character #" << (int)(c);
-			std::cout << ": read instead #" << (int)(b) << std::endl;
-		}
+		std::cout << "Read in character: " << (unsigned int)(unsigned char)a << " " << a << std::endl;
 	}
+
+
 	inFile.close();
 
+	outFile.clear();
 	outFile.open("fstreamtest2.out", std::ios::out);
 	outFile.write("abcd", 4);
 	outFile.put('e');
 	outFile.write("fghi", 4);
 	outFile.close();
 
+	inFile.clear();
 	inFile.open("fstreamtest2.out", std::ios::in | std::ios::binary);
 
 	inFile >> a;
@@ -91,7 +91,7 @@ int main()
 	}
 
 	std::cout << "The following two lines should be identical\n";
-	std::cout << "Current position: 27\n";
+	std::cout << "Current position: 28\n";
 	std::cout << "Current position: " << inFile.tellg() << std::endl;
 
 

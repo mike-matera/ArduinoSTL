@@ -44,7 +44,7 @@ bool char_traits<char>::eq(const char_type& c1, const char_type& c2){
 
 char_traits<char>::char_type char_traits<char>::to_char_type(const int_type & i){
 	if(i > 0 && i <= 255){
-		return i;
+		return (char)(unsigned char)i;
 	}
 
 	//Out of range

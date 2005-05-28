@@ -137,6 +137,8 @@ namespace std{
 				return 0;
 			}
 
+			basic_streambuf<charT,traits>::mgnext = basic_streambuf<charT,traits>::mgend;
+
 			return this;
 		}
 		basic_filebuf<charT,traits>* close(){
@@ -183,7 +185,7 @@ namespace std{
 				if(retval == 0 || feof(fp) || ferror(fp) ){
 					return traits::eof();
 				}
-				return c;
+				return traits::to_int_type(c);
 			}
 
 			if(basic_streambuf<charT,traits>::eback() == basic_streambuf<charT,traits>::gptr()){	//Buffer is full
@@ -200,6 +202,8 @@ namespace std{
 			size_t retval = 0;
 			//Save operating flags from file descriptor
 			int fcntl_flags = fcntl(fileno(fp), F_GETFL);
+			retval = 0;
+
 			//Set to non_blocking mode
 			fcntl(fileno(fp), F_SETFL, fcntl_flags | O_NONBLOCK);
 
@@ -253,7 +257,7 @@ namespace std{
 			return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 		}
 		virtual int_type uflow(){
-			bool dobump = (basic_streambuf<charT,traits>::gptr() != basic_streambuf<charT,traits>::egptr());
+			bool dobump = (basic_streambuf<charT,traits>::gptr() != 0);
 			int_type retval = underflow();
 			if(dobump){
 				basic_streambuf<charT,traits>::gbump(1);
@@ -472,10 +476,12 @@ namespace std{
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		basic_ifstream(): basic_istream<charT,traits>(&sb){
+		basic_ifstream(): basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb){
 			//Passing the address of sb
 		}
-		explicit basic_ifstream(const char* s, ios_base::openmode mode = ios_base::in) : basic_istream<charT,traits>(&sb){
+		explicit basic_ifstream(const char* s, ios_base::openmode mode = ios_base::in)
+			: basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb)
+		{
 			if(sb.open(s, mode) == 0){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 			}
@@ -509,14 +515,14 @@ namespace std{
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		basic_ofstream() : basic_ostream<charT,traits>(&sb){
+		basic_ofstream() : basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb){
 
 		}
 
 		virtual ~basic_ofstream();
 
 		explicit basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc) :
-			basic_ostream<charT,traits>(&sb)
+			basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb)
 		{
 			if(sb.open(s, mode) == 0){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -554,7 +560,7 @@ namespace std{
 
 		basic_fstream(): basic_iostream<charT,traits>(&sb){ }
 		explicit basic_fstream(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out):
-			basic_iostream<charT,traits>(&sb)
+			basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb)
 		{
 			sb.open(s, mode);
 		}

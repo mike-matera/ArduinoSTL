@@ -52,6 +52,7 @@ namespace std{
 			if(c != traits::eof() && isspace(c) == false){
 				temp.append(1, c);
 			}else{
+				stream.putback(c);
 				exitnow = 1;
 			}
 		}

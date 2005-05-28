@@ -112,7 +112,11 @@ namespace std{
 		
 		basic_streambuf();
 
-		basic_streambuf(const basic_streambuf<char, char_traits<char> > &){ }
+		basic_streambuf(const basic_streambuf<char, char_traits<char> > &)
+			: myLocale(),
+			mgbeg(0), mgnext(0), mgend(0), mpbeg(0), mpnext(0), mpend(0),
+			openedFor(0)
+		{ }
 		basic_streambuf<char, char_traits<char> > & operator=(const basic_streambuf<char, char_traits<char> > &){
 			return *this;
 		}
@@ -266,7 +270,10 @@ namespace std{
 	}
 
 	template <class C, class T> basic_streambuf<C, T>::basic_streambuf() 
-		: myLocale(), mgbeg(0), mgnext(0), mgend(0), mpbeg(0), mpnext(0), mpend(0), openedFor(0){ }
+		: myLocale(),
+		mgbeg(0), mgnext(0), mgend(0), mpbeg(0), mpnext(0), mpend(0),
+		openedFor(0)
+	{ }
 
 
 

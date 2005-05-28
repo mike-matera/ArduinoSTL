@@ -14,6 +14,19 @@ else
 fi
 
 
+#Test of streambuf
+
+LD_LIBRARY_PATH="../../src" ../streambuftest < streambuftest.input > streambuftest.test
+cmp streambuftest.good streambuftest.test
+if [ "$?" -eq "1" ]
+then
+	echo "streambuf test        FAILED"
+	exit 1;
+else
+	echo "streambuf test        OK"
+fi
+
+
 #Test of io
 
 LD_LIBRARY_PATH="../../src" ../io < io.input > io.test

@@ -20,6 +20,7 @@ SRCS	=\
 	io.cpp \
 	vectortest.cpp \
 	stringtest.cpp \
+	streambuftest.cpp \
 	sstreamtest.cpp \
 	dequetest.cpp \
 	listtest.cpp \
@@ -108,6 +109,10 @@ maptest: $(EXOBJS)
 numerictest: $(EXOBJS)
 	$(UCXX) -o numerictest numerictest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
 	$(CXX) -o numerictest-old numerictest.o-old $(COFLAGS)
+
+streambuftest: $(EXOBJS)
+	$(UCXX) -o streambuftest streambuftest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
+	$(CXX) -o streambuftest-old streambuftest.o-old $(COFLAGS)
 
 sstreamtest: $(EXOBJS)
 	$(UCXX) -o sstreamtest sstreamtest.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)

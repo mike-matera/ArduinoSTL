@@ -37,6 +37,7 @@ namespace std{
 			if(c != char_traits<char>::eof() && isspace(c) == false){
 				temp.append(1, c);
 			}else{
+				stream.putback(c);
 				exitnow = 1;
 			}
 		}

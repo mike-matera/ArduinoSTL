@@ -321,7 +321,6 @@ namespace std{
 			init(sb);
 		}
 		virtual ~basic_ios(){
-
 		}
 
 		basic_ostream<charT,traits>* tie() const{
@@ -358,7 +357,10 @@ namespace std{
 		char_type fill_char;
 		basic_ostream<charT,traits>* mtied;
 		basic_streambuf<charT,traits>* mstreambuf;
-		basic_ios() : mtied(0), mstreambuf(0){  }
+//		basic_ios() : mtied(0), mstreambuf(0){
+//			fprintf(stderr, "Called basic_ios with no streambuf\n");
+//			abort();
+//		}
 		basic_ios(const basic_ios<charT,traits> &){ }
 		basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		void init(basic_streambuf<charT,traits>* sb){
