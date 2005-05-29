@@ -3,7 +3,7 @@ include $(TOPDIR)Rules.mak
 
 #COFLAGS = -fno-rtti -fno-exceptions -static
 
-CXXOFLAGS = -Os -O0 -g3 -ansi -fPIC
+CXXOFLAGS = -O0 -g3 -ansi -fPIC
 
 ifeq ($(IMPORT_LIBSUP),y)
 ULIBS = -luClibc++ -lc
