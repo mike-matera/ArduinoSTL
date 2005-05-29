@@ -492,9 +492,9 @@ namespace std{
 		}
 
 		basic_filebuf<charT,traits>* rdbuf() const{
-			return &sb;
+			return (basic_filebuf<charT,traits>*)&sb;
 		}
-		bool is_open(){
+		bool is_open() const{
 			return sb.is_open();
 		}
 		void open(const char* s, ios_base::openmode mode = ios_base::in){
@@ -530,10 +530,10 @@ namespace std{
 		}
 
 		basic_filebuf<charT,traits>* rdbuf() const{
-			return &sb;
+			return (basic_filebuf<charT,traits>*)&sb;
 		}
 
-		bool is_open(){
+		bool is_open() const{
 			return sb.is_open();
 		}
 		void open(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc){
@@ -567,9 +567,9 @@ namespace std{
 		}
 
 		basic_filebuf<charT,traits>* rdbuf() const{
-			return &sb;
+			return (basic_filebuf<charT,traits>*)&sb;
 		}
-		bool is_open(){
+		bool is_open() const{
 			return sb.is_open();
 		}
 		void open(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out){

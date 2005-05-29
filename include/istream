@@ -221,12 +221,14 @@ namespace std{
 
 				if(c == traits::eof()){
 					basic_ios<charT,traits>::setstate(ios_base::failbit);
+					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 					count_last_ufmt_input = i;
 					return *this;
 				}
 				sbuffer->sbumpc();
 				s[i] = c;
-			}				
+			}
+			count_last_ufmt_input = n;
 			return *this;
 		}
 		

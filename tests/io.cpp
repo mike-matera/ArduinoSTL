@@ -39,11 +39,14 @@ int main(){
 	std::cout << std::endl << "Checking length of remaining input" << std::flush << std::endl;
 	std::istream::pos_type cur;
 	std::istream::pos_type end;
-	cur = std::cin.tellg();
+
+	std::istream & s_r = std::cin;
+
+	cur = s_r.tellg();
 	std::cout << "Current position in stream: " << cur << std::endl;
-	std::cin.seekg(0, std::ios::end);
-	end = std::cin.tellg();
-	std::cin.seekg(cur);
+	s_r.seekg(0, std::ios::end);
+	end = s_r.tellg();
+	s_r.seekg(cur);
 	std::cout << "Remaining bytes: " << end-cur << std::endl;
 
 	return 0;
