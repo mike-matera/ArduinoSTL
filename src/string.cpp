@@ -30,11 +30,15 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_STRING_CHAR__
 
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
 	template string::basic_string(const allocator<char> &);
 	template string::basic_string(size_type n, char c, const allocator<char> & );
 	template string::basic_string(const char* s, const allocator<char>& al);
 	template string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
 	template string::~basic_string();
+
+#endif // __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
 	template string::size_type string::find(const string & str, size_type pos) const;
 	template string::size_type string::find(const char* s, size_type pos) const;

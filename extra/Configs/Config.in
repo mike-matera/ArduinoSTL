@@ -270,6 +270,16 @@ config UCLIBCXX_CODE_EXPANSION
 
 	  Almost everybody will want to answer Y
 
+config UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS
+	bool "Expand constructors and destructors"
+	default n
+	depends on UCLIBCXX_CODE_EXPANSION
+	help
+	  Some compilers will produce warnings or errors if some
+	  techniques are used for code expansion.  Say yes to 
+	  minimize the size of compiled applications.  Say no to
+	  avoid these errors and warnings.  You should say N.
+
 config UCLIBCXX_EXPAND_STRING_CHAR
 	bool "Expand std::basic_string for <char>"
 	default y

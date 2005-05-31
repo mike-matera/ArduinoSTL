@@ -18,6 +18,7 @@
 -	Added test for streambuf
 -	Made changes to iostream - now reads first and last character!
 -	Update istream::read to list amount of data last read successfully
+-	Add configuration option to avoid expanding pesky [con|de]structors
 
 
 0.1.10

@@ -29,12 +29,6 @@
 
 namespace std{
 
-#ifdef __UCLIBCXX_EXPAND_STREAMBUF_CHAR__
-#ifndef __UCLIBCXX_COMPILE_STREAMBUF__
-//	template <> class basic_streambuf<char, char_traits<char> >;
-#endif
-#endif
-
 	template <class charT, class traits>  class basic_streambuf{
 	public:
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
@@ -282,7 +276,14 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_STREAMBUF_CHAR__
 #ifndef __UCLIBCXX_COMPILE_STREAMBUF__
+
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
+	template <> streambuf::basic_streambuf();
 	template <> streambuf::~basic_streambuf();
+
+#endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
 	template <> locale streambuf::pubimbue(const locale &loc);
 	template <> streamsize streambuf::in_avail();
 	template <> streambuf::int_type streambuf::sbumpc();
@@ -291,7 +292,6 @@ namespace std{
 	template <> streambuf::int_type streambuf::sputbackc(char_type c);
 	template <> streambuf::int_type streambuf::sungetc();
 	template <> streambuf::int_type streambuf::sputc(char_type c);
-	template <> streambuf::basic_streambuf();
 
 #endif
 #endif

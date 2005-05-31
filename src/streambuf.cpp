@@ -25,7 +25,13 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_STREAMBUF_CHAR__
 
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
+	template streambuf::basic_streambuf();
 	template streambuf::~basic_streambuf();
+
+#endif
+
 	template locale streambuf::pubimbue(const locale &loc);
 	template streamsize streambuf::in_avail();
 	template streambuf::int_type streambuf::sbumpc();
@@ -34,7 +40,6 @@ namespace std{
 	template streambuf::int_type streambuf::sputbackc(char_type c);
 	template streambuf::int_type streambuf::sungetc();
 	template streambuf::int_type streambuf::sputc(char_type c);
-	template streambuf::basic_streambuf();
 
 #endif
 

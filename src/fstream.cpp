@@ -25,8 +25,12 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
 
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
 	template filebuf::basic_filebuf();
 	template filebuf::~basic_filebuf();
+
+#endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
 	template filebuf::int_type filebuf::pbackfail(filebuf::int_type c);
 	template filebuf * filebuf::open(const char* s, ios_base::openmode mode);
@@ -39,6 +43,8 @@ namespace std{
 		filebuf::setbuf(char * s, streamsize n);
 
 
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
 	template basic_ofstream<char, char_traits<char> >::basic_ofstream();
 	template basic_ofstream<char, char_traits<char> >::basic_ofstream(const char* s, ios_base::openmode mode);
 	template basic_ofstream<char, char_traits<char> >::~basic_ofstream();
@@ -46,6 +52,8 @@ namespace std{
 	template basic_ifstream<char, char_traits<char> >::basic_ifstream();
 	template basic_ifstream<char, char_traits<char> >::basic_ifstream(const char* s, ios_base::openmode mode);
 	template basic_ifstream<char, char_traits<char> >::~basic_ifstream();
+
+#endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
 
 #endif
