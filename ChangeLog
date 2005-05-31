@@ -19,6 +19,7 @@
 -	Made changes to iostream - now reads first and last character!
 -	Update istream::read to list amount of data last read successfully
 -	Add configuration option to avoid expanding pesky [con|de]structors
+-	Implemented std::auto_ptr - don't know how I missed that one
 
 
 0.1.10

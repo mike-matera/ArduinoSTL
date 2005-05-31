@@ -113,8 +113,56 @@ template <class T> void return_temporary_buffer(T* p){
 }
 
 
+	template <class T> class auto_ptr{
 
-}
+	private:
+		T * object;
+
+	public:
+
+		typedef T element_type;
+
+		explicit auto_ptr(T* p =0) throw() : object(p){  }
+		auto_ptr(const auto_ptr& p) throw() : object(p.release()){ }
+		template<class Y> auto_ptr(const auto_ptr<Y>& p) throw() : object(p.release()){ }
+		auto_ptr& operator=(const auto_ptr& p) throw(){
+			if(&p == this){
+				return *this;
+			}
+			delete get();
+			object = p.release();
+			return *this;
+		}
+		template<class Y> auto_ptr& operator=(const auto_ptr<Y>& p) throw(){
+			if(&p == this){
+				return *this;
+			}
+			delete get();
+			object = p.release();
+			return *this;
+		}
+		~auto_ptr(){
+			delete get();
+		}
+
+		T& operator*() const throw(){
+			return *get();
+		}
+		T* operator->() const throw(){
+			return get();
+		}
+		T* get() const throw(){
+			return object;
+		}
+		T* release() const throw(){
+			T * temp(object);
+			object = 0;
+			return temp;
+		}
+
+	};
+
+}	//namespace std
 
 #endif
 
