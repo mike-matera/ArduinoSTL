@@ -26,7 +26,9 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 	
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 	template ostream::~basic_ostream();
+#endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
 	template ostream & ostream::flush();
 
@@ -43,8 +45,12 @@ namespace std{
 	template ostream & ostream::operator<<(void* p);
 	template ostream & ostream::operator<<(basic_streambuf<char, char_traits<char> >* sb);
 
+#ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
+
 	template ostream::sentry::sentry(ostream & os);
 	template ostream::sentry::~sentry();
+
+#endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
 	template ostream & endl(ostream & os);
 	template ostream & flush(ostream & os);
