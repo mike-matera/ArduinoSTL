@@ -159,6 +159,12 @@ template <class T> void return_temporary_buffer(T* p){
 			object = 0;
 			return temp;
 		}
+		void reset(T * p=0) throw(){
+			if(p != object){
+				delete object;
+				object = p;
+			}
+		}
 
 	};
 
