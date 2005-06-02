@@ -28,16 +28,8 @@
 namespace std{
 
 
-#ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
-
-	template void basic_ios<char, char_traits<char> >::clear(iostate state);
-
-#endif
-
-
-
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-	int ios_base::Init::init_cnt;	//Needed to ensure the static value is created
+	int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
 
 //Create buffers first
 #ifdef __UCLIBCXX_SUPPORT_COUT__
@@ -151,6 +143,13 @@ namespace std{
 #endif
 
 
+#ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
+
+	template void basic_ios<char, char_traits<char> >::clear(iostate state);
+
+#endif
+
+
 	ios_base::fmtflags ios_base::flags(fmtflags fmtfl){
 		fmtflags temp = mformat;
 		mformat = fmtfl;
@@ -184,5 +183,6 @@ namespace std{
 	}	
 
 }
+
 
 

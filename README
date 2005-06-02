@@ -11,3 +11,9 @@ A few notes:
 	upgrade your compiler.  Note that these warnings will exist when compiling software
 	as well as the library itself.
 
+-	uClibc++ is not capable of bootstrapping itself.  The library depends upon some
+	of the gcc support files and libstdc++ for exception support.  Linking in libsupc++
+	moves all of the required code into the library so that the GNU library is no
+	longer required AFTER COMPILATION.  Thus you can build uClibc++ on a development
+	system against libstdc++, but when deployed you will not need any of the GNU library
+	files.

@@ -116,20 +116,18 @@ CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
 
 # Some nice CFLAGS to work with
-CFLAGS=$(XWARNINGS) $(OPTIMIZATION) $(XARCH_CFLAGS) $(CPU_CFLAGS) \
+CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) \
         -fno-builtin -nostdinc++ -ansi -I$(TOPDIR)include
+
+LDFLAGS:= $(CPU_LDFLAGS-y) -shared -Wl,--warn-common -Wl,--warn-once -Wl,-z,combreloc -Wl,-z,defs
 
 ifeq ($(DODEBUG),y)
     CFLAGS += -O0 -g3 
-    LDFLAGS:= $(CPU_LDFLAGS-y) -shared --warn-common --warn-once -z combreloc
     STRIPTOOL:= true -Since_we_are_debugging
 else
-    LDFLAGS := $(CPU_LDFLAGS-y) -shared --warn-common --warn-once -z combreloc
+    CFLAGS += $(OPTIMIZATION) $(XARCH_CFLAGS)
+    LDFLAGS += -Wl,-s
 endif
-
-# Sigh, some stupid versions of gcc can't seem to cope with '-iwithprefix include'
-#CFLAGS+=-iwithprefix include
-#CFLAGS+=$(shell $(CC) -print-search-dirs | sed -ne "s/install: *\(.*\)/-I\1include/gp")
 
 LDSO:=$(SYSTEM_LDSO)
 DYNAMIC_LINKER:=/lib/$(strip $(subst ",, $(notdir $(SYSTEM_LDSO))))
@@ -144,9 +142,7 @@ endif
 
 CXXFLAGS=$(CFLAGS)
 
-ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
-
-else
+ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
     CXXFLAGS+= -fno-exceptions -fno-rtti
 endif
 

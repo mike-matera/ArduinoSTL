@@ -1,50 +1,15 @@
+TOPDIR=../
+include $(TOPDIR)Rules.mak
+
 LIBS	=	-lc -lgcc_s
 ifneq ($(IMPORT_LIBSUP),y)
 LIBS	+= -lsupc++
 endif
 
-TOPDIR=../
-include $(TOPDIR)Rules.mak
-
-SRCS	=\
-	new_op.cpp \
-	new_opv.cpp \
-	new_opnt.cpp \
-	new_opvnt.cpp \
-	del_op.cpp \
-	del_opv.cpp \
-	del_opnt.cpp \
-	del_opvnt.cpp \
-	exception.cpp \
-	abi/abi.cpp \
-	char_traits.cpp \
-	string.cpp \
-	fstream.cpp \
-	iostream.cpp \
-	ios.cpp \
-	utility.cpp \
-	stdexcept.cpp \
-	func_exception.cpp \
-	locale.cpp \
-	streambuf.cpp \
-	istream.cpp \
-	ostream.cpp \
-	iterator.cpp \
-	iomanip.cpp \
-	vector.cpp \
-	deque.cpp \
-	list.cpp \
-	map.cpp \
-	set.cpp \
-	stack.cpp \
-	queue.cpp \
-	algorithm.cpp \
-	numeric.cpp \
-	sstream.cpp \
-	bitset.cpp \
-	valarray.cpp \
-	complex.cpp
-
+SRCS =	$(wildcard *.cpp)
+SRCS += abi/abi.cpp
+SRCS := $(filter-out support.cpp,$(SRCS))
+SRCS := $(filter-out typeinfo.cpp,$(SRCS))
 
 EXOBJS	=$(patsubst %.cpp,%.o, $(SRCS))
 
@@ -94,7 +59,7 @@ libuClibc++.a: libgcc_eh libsupc
 	$(AR) rcs libuClibc++.a $(EXOBJS) $(GCCOBJS) $(SUPOBJS)
 
 libuClibc++.so: libsupc
-	$(CC) -shared -Wl,-z,defs $(CFLAGS) $(EXOBJS) $(SUPOBJS) \
+	$(CC) $(LDFLAGS) $(EXOBJS) $(SUPOBJS) \
 		-o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
 		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION) $(LIBS)
 	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
@@ -118,3 +83,5 @@ cleanall:	cleanobjs cleanbin
 
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+

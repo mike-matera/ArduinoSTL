@@ -15,31 +15,14 @@ UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I../include -L../src
 
 UFLAGS	=	-L../src
 
-SRCS	=\
-	newdel.cpp \
-	io.cpp \
-	vectortest.cpp \
-	stringtest.cpp \
-	streambuftest.cpp \
-	sstreamtest.cpp \
-	dequetest.cpp \
-	listtest.cpp \
-	maptest.cpp \
-	mmaptest.cpp \
-	settest.cpp \
-	numerictest.cpp \
-	bitsettest.cpp \
-	algotest.cpp \
-	stacktest.cpp \
-	streamitertest.cpp \
-	fstreamtest.cpp \
+SRCS	= $(wildcard *.cpp)
 
-ifeq ($(UCLIBCXX_HAS_WCHAR),y)
-SRCS	+=	wchartest.cpp
+ifneq ($(UCLIBCXX_HAS_WCHAR),y)
+SRCS	:= $(filter-out wchartest.cpp,$(SRCS))
 endif
 
-ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
-SRCS    += excepttest.cpp
+ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
+SRCS    := $(filter-out excepttest.cpp,$(SRCS))
 endif
 
 
