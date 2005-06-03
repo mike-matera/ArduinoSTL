@@ -43,9 +43,9 @@ $(ALLBIN): $(EXOBJS)
 $(OLDBIN): $(OLDOBJS)
 	$(HOSTCXX) $(LDFLAGS) -o $@ $<
 
-.cpp.o:
+$(EXOBJS): %.o : %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-.cpp.o-old:
+$(OLDOBJS): %.o-old : %.cpp
 	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
 
