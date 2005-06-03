@@ -3,10 +3,8 @@ include $(TOPDIR)Rules.mak
 
 all:
 
-
 clean:
-	rm -f *.test
-	rm -f *.out
+	$(RM) *.test *.out
 
 test:
 	./runtests.sh

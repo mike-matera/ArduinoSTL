@@ -1,22 +1,11 @@
 TOPDIR=../../../
 include $(TOPDIR)Rules.mak
 
-SRCS	=
-
-EXOBJS	=$(patsubst %.cpp,%.o, $(SRCS))
-
-ALLOBJS	=       $(EXOBJS)
-ALLBIN	=
-
-
-GCC_VERSION = $(shell $(CXX) -dumpversion | cut -c1-3)
+#GCC_VERSION = $(shell $(CXX) -dumpversion | cut -c1-3)
 
 # User defines:
 
 all:	libgcc_eh
-
-objs:	$(ALLOBJS)
-
 
 libgcc_eh: unwind-c.o
 
@@ -35,16 +24,6 @@ unwind-c.o:
 #endif
 #endif
 
-cleanobjs:
-	rm -f $(ALLOBJS)
+clean:
+	$(RM) *.o
 
-cleanbin:
-	rm -f $(ALLBIN)
-
-clean:  cleanobjs cleanbin
-	rm -rf *.o
-
-cleanall:	cleanobjs cleanbin
-
-.cpp.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<

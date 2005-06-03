@@ -29,11 +29,14 @@ CXX= $(CROSS)g++
 AR= $(CROSS)ar
 LD= $(CROSS)ld
 NM= $(CROSS)nm
+RANLIB= $(CROSS)ranlib
 STRIPTOOL= $(CROSS)strip
 
 INSTALL= install
-LN= ln
+LN= ln -s -f
 RM= rm -f
+
+ARFLAGS:= rcs
 
 # Select the compiler needed to build binaries for your development system
 HOSTCC=gcc
@@ -54,9 +57,10 @@ VERSION:=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL)
 # export MAJOR_VERSION MINOR_VERSION SUBLEVEL VERSION LC_ALL
 export MAJOR_VERSION MINOR_VERSION SUBLEVEL VERSION 
 
-SHARED_FULLNAME:=libuClibc++-$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL).so
-SHARED_MAJORNAME:=libuClibc++.so.$(MAJOR_VERSION)
-LIBC:=$(TOPDIR)libc/$(LIBNAME)
+LNAME:=uClibc++
+LIBNAME:=libuClibc++
+SHARED_FULLNAME:=$(LIBNAME)-$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL).so
+SHARED_MAJORNAME:=$(LIBNAME).so.$(MAJOR_VERSION)
 
 # Make sure DESTDIR and PREFIX can be used to install
 # PREFIX is a uClibcism while DESTDIR is a common GNUism
@@ -71,16 +75,16 @@ endif
 check_gcc=$(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; \
         then echo "$(1)"; else echo "$(2)"; fi)
 
+check_as_needed=$(shell if $(LD) --help | grep -q 'as-needed' ; \
+	then echo "-Wl,--as-needed -lgcc_s -Wl,--no-as-needed"; else echo "-lgcc_s"; fi)
+
 # Make certain these contain a final "/", but no "//"s.
 TARGET_ARCH:=$(strip $(subst ",, $(strip $(TARGET_ARCH))))
-#RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(RUNTIME_PREFIX))))))
 UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX))))))
 UCLIBCXX_RUNTIME_LIB_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_LIB_SUBDIR))))))
 UCLIBCXX_RUNTIME_BIN_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_BIN_SUBDIR))))))
 UCLIBCXX_RUNTIME_INCLUDE_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR))))))
-export UCLIBCXX_RUNTIME_PREFIX
-
-ARFLAGS:=r
+export UCLIBCXX_RUNTIME_PREFIX UCLIBCXX_RUNTIME_LIB_SUBDIR UCLIBCXX_RUNTIME_BIN_SUBDIR UCLIBCXX_RUNTIME_INCLUDE_SUBDIR
 
 OPTIMIZATION:=
 PICFLAG:=-fPIC
@@ -104,7 +108,6 @@ PICFLAG:=-fPIC
 #	CPU_CFLAGS-$(CONFIG_CYRIXIII)+=$(call check_gcc,-march=c3,-march=i586)
 #endif
 
-
 # use '-Os' optimization if available, else use -O2, allow Config to override
 OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 
@@ -113,39 +116,40 @@ XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -pedantic
 XARCH_CFLAGS=$(subst ",, $(strip $(ARCH_CFLAGS)))
 CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
-
 # Some nice CFLAGS to work with
-CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) \
-        -fno-builtin -nostdinc++ -ansi -I$(TOPDIR)include
+GEN_CFLAGS:=-fno-builtin
+CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) $(GEN_CFLAGS) -ansi -I$(TOPDIR)include
 
-LDFLAGS:= $(CPU_LDFLAGS-y) -shared -Wl,--warn-common -Wl,--warn-once -Wl,-z,combreloc -Wl,-z,defs
+LDFLAGS:=-Wl,--warn-common -Wl,--warn-once -Wl,-z,combreloc -Wl,-z,defs
 
 ifeq ($(DODEBUG),y)
     CFLAGS += -O0 -g3 
     STRIPTOOL:= true -Since_we_are_debugging
 else
     CFLAGS += $(OPTIMIZATION) $(XARCH_CFLAGS)
-    LDFLAGS += -Wl,-s
 endif
-
-LDSO:=$(SYSTEM_LDSO)
-DYNAMIC_LINKER:=/lib/$(strip $(subst ",, $(notdir $(SYSTEM_LDSO))))
-
-
-CFLAGS_NOPIC:=$(CFLAGS)
-CXXFLAGS_NOPIC:=$(CFLAGS)
 
 ifneq ($(BUILD_ONLY_STATIC_LIB),y)
     CFLAGS += $(PICFLAG)
 endif
 
-CXXFLAGS=$(CFLAGS)
-
+EH_CXXFLAGS:=
 ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
-    CXXFLAGS+= -fno-exceptions -fno-rtti
+    EH_CXXFLAGS += -fno-exceptions -fno-rtti
 endif
 
+GEN_CXXFLAGS:=-nostdinc++
+CXXFLAGS:=$(CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS)
 
-LIBGCC_CFLAGS ?= $(CFLAGS) $(CPU_CFLAGS-y)
-LIBGCC:=$(shell $(CC) $(LIBGCC_CFLAGS) -print-libgcc-file-name)
+LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
+
+GEN_LIBS:=-nodefaultlibs -L$(LIBGCC_DIR)
+ifneq ($(IMPORT_LIBSUP),y)
+GEN_LIBS += -lsupc++
+endif
+GEN_LIBS += -lc
+
+STATIC_LIBS:=$(GEN_LIBS) -lgcc
+LIBS:=$(GEN_LIBS) $(call check_as_needed)
+

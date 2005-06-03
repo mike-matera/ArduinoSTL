@@ -1,5 +1,5 @@
 MAKE    = make
-SUBDIRS = include src tests bin
+SUBDIRS = include src bin
 
 # User defines:
 
@@ -8,33 +8,36 @@ noconfig_targets := menuconfig config oldconfig randconfig \
 	release tags TAGS
 
 TOPDIR=./
-include Rules.mak
+include $(TOPDIR)Rules.mak
 
 all: headers
-	$(MAKE) -C include all
-	$(MAKE) -C src all
-	$(MAKE) -C bin all
-
+	for dir in $(SUBDIRS) ; do \
+		$(MAKE) -C $$dir all; \
+	done
 
 tests: all
 	$(MAKE) -C tests all
 
-check test: all tests
+check test: tests
 	$(MAKE) -C tests test
 
-
 clean:
-	for dir in $(SUBDIRS); do \
+	for dir in $(SUBDIRS) tests ; do \
 		$(MAKE) -C $$dir clean; \
 	done
-	$(MAKE) -C extra/locale clean
+	#$(MAKE) -C extra/locale clean
 
 distclean: clean
 	$(MAKE) -C extra clean
-	rm -f .config
-	rm -f .config.cmd
-	rm -f .config.old
-	rm -f include/system_configuration.h
+	$(RM) .config .config.cmd .config.old
+	$(RM) include/system_configuration.h
+
+headers: include/system_configuration.h
+
+install:
+	for dir in $(SUBDIRS) ; do \
+		$(MAKE) -C $$dir install; \
+	done
 
 
 #Menu configuration system
@@ -72,25 +75,3 @@ include/system_configuration.h: .config
 	fi;
 	@./extra/config/conf -o extra/Configs/Config.in
 
-headers: include/system_configuration.h
-
-install:
-	$(MAKE) -C include install
-	$(MAKE) -C src install
-	$(MAKE) -C bin install
-
-
-.cpp.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.cc.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.cxx.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.C.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-.c.o:
-	$(CC) -c $(CFLAGS) -o $@ $<

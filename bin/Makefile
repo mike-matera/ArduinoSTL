@@ -3,23 +3,10 @@ include $(TOPDIR)Rules.mak
 
 WRAPPER	= g++-uc
 
-INITIALOPTIONS	=
-EXTRALIBS	=
-
-ifneq ($(IMPORT_LIBSUP),y)
-EXTRALIBS += -lsupc++
-endif
-
-ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
-INITIALOPTIONS	+= -fno-exceptions -fno-rtti
-endif
-
-# User defines:
-
 all: $(WRAPPER)
 
 clean:
-	rm -f $(WRAPPER)
+	$(RM) $(WRAPPER)
 
 install:
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_BIN_SUBDIR)
@@ -28,35 +15,30 @@ install:
 $(WRAPPER):
 	echo "#!/bin/bash" > $(WRAPPER)
 	echo "" >> $(WRAPPER)
-	echo "OPTIONS=\"$(INITIALOPTIONS)\"" >> $(WRAPPER)
-	echo "if $(LD) --help | grep -q \"as-needed\"" >> $(WRAPPER)
-	echo 'then' >> $(WRAPPER)
-	echo '  LIBGCC_LIB="-Wl,--as-needed -lgcc_s -Wl,--no-as-needed"' >> $(WRAPPER)
-	echo 'else' >> $(WRAPPER)
-	echo '  LIBGCC_LIB="-lgcc_s"' >> $(WRAPPER)
-	echo 'fi' >> $(WRAPPER)
+	echo 'WRAPPER_OPTIONS=""' >> $(WRAPPER)
+	echo "WRAPPER_LIBS=\"$(LIBS)\"" >> $(WRAPPER)
 	echo "" >> $(WRAPPER)
-	echo 'INCLIB="Y"' >> $(WRAPPER)
+	echo 'WRAPPER_INCLIB="Y"' >> $(WRAPPER)
 	echo 'while [ -n "$$1" ]' >> $(WRAPPER)
 	echo 'do' >> $(WRAPPER)
-	echo '	OPTIONS="$$OPTIONS $$1"' >> $(WRAPPER)
+	echo '	WRAPPER_OPTIONS="$$WRAPPER_OPTIONS $$1"' >> $(WRAPPER)
 	echo '	if [ "$$1" == "-c" ]' >> $(WRAPPER)
 	echo '	then' >> $(WRAPPER)
-	echo '		INCLIB="N"' >> $(WRAPPER)
+	echo '		WRAPPER_INCLIB="N"' >> $(WRAPPER)
 	echo '	fi' >> $(WRAPPER)
 	echo '	if [ "$$1" == "-static" ]' >> $(WRAPPER)
 	echo '	then' >> $(WRAPPER)
-	echo '		LIBGCC_LIB="-lgcc"' >> $(WRAPPER)
+	echo "		WRAPPER_LIBS=\"$(STATIC_LIBS)\"" >> $(WRAPPER)
 	echo '	fi' >> $(WRAPPER)
 	echo '	shift' >> $(WRAPPER)
 	echo 'done' >> $(WRAPPER)
-	echo 'if [ "$$INCLIB" == "Y" ]' >> $(WRAPPER)
+	echo 'if [ "$$WRAPPER_INCLIB" == "Y" ]' >> $(WRAPPER)
 	echo 'then' >> $(WRAPPER)
-	echo '	OPTIONS="$$OPTIONS -luClibc++ $(EXTRALIBS) -lc $$LIBGCC_LIB"' >> $(WRAPPER)
+	echo '	WRAPPER_OPTIONS="$$WRAPPER_OPTIONS -l$(LNAME) $$WRAPPER_LIBS"' >> $(WRAPPER)
 	echo 'fi' >> $(WRAPPER)
-	echo -n "exec $(CXX) " >> $(WRAPPER)
-	echo -n ' -fno-builtin -nostdinc++ -nodefaultlibs' >> $(WRAPPER)
+	echo "" >> $(WRAPPER)
+	echo -n "exec $(CXX) $(GEN_CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS)" >> $(WRAPPER)
 	echo -n ' -I$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR)' >> $(WRAPPER)
 	echo -n ' -L$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)' >> $(WRAPPER)
-	echo ' $$OPTIONS' >> $(WRAPPER)
+	echo ' $$WRAPPER_OPTIONS' >> $(WRAPPER)
 	chmod 755 $(WRAPPER)

@@ -1,19 +1,11 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-CXXOFLAGS = -O0 -g3 -ansi -fPIC
+ULIBS := -L$(TOPDIR)/src -l$(LNAME)
 
-ifeq ($(IMPORT_LIBSUP),y)
-ULIBS = -luClibc++ -lc
-else
-ULIBS = -luClibc++ -lc -lsupc++
-endif
+CXXOFLAGS := -O0 -g3 -ansi $(EH_CXXFLAGS)
 
-UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I$(TOPDIR)/include -L$(TOPDIR)/src
-
-UFLAGS	= -L$(TOPDIR)/src
-
-SRCS	= $(wildcard *.cpp)
+SRCS	:= $(wildcard *.cpp)
 
 ifneq ($(UCLIBCXX_HAS_WCHAR),y)
 SRCS	:= $(filter-out wchartest.cpp,$(SRCS))
@@ -23,41 +15,37 @@ ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 SRCS    := $(filter-out excepttest.cpp,$(SRCS))
 endif
 
+EXOBJS	:= $(patsubst %.cpp,%.o, $(SRCS))
 
-EXOBJS  =$(patsubst %.cpp,%.o, $(SRCS))
+OLDOBJS	:= $(patsubst %.cpp,%.o-old, $(SRCS))
 
-ALLOBJS	=	$(EXOBJS) $(patsubst %.cpp,%.o-old, $(SRCS))
+ALLBIN	:= $(patsubst %.cpp,%, $(SRCS))
 
-ALLBIN	=	$(patsubst %.cpp,%, $(SRCS)) $(patsubst %.cpp,%-old, $(SRCS))
+OLDBIN	:= $(patsubst %.cpp,%-old, $(SRCS))
 
-ALLTGT	=	$(patsubst %.cpp,%, $(SRCS))
+ifeq ($(DODEBUG),y)
+all:	$(ALLBIN) $(OLDBIN)
+else
+all:	$(ALLBIN)
+endif
 
-
-# User defines:
-
-all:	$(ALLTGT)
-
-objs:	$(ALLOBJS)
-
-cleanobjs:
-	rm -f $(ALLOBJS)
-
-cleanbin:
-	rm -f $(ALLBIN)
-
-clean:	cleanobjs cleanbin
+clean:
+	$(RM) $(ALLBIN) $(OLDBIN)
+	$(RM) *.o *.o-old core
 	$(MAKE) -C testoutput clean
-	rm -f fstreamtest.out
-	rm -f fstreamtest2.out
 
 test:	all
 	$(MAKE) -C testoutput test
 
+$(ALLBIN): $(EXOBJS)
+	$(CXX) $(LDFLAGS) -o $@ $@.o $(ULIBS) $(LIBS)
 
-$(ALLTGT): $(EXOBJS)
-	$(UCXX) -o $@ $@.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
-	$(CXX) -o $@-old $@.o-old $(CXXOFLAGS)
+$(OLDBIN): $(OLDOBJS)
+	$(HOSTCXX) $(LDFLAGS) -o $@ $<
 
 .cpp.o:
-	$(UCXX) -c $(CXXFLAGS) -o $@ $<
-	$(CXX) -c $(CXXOFLAGS) -o $@-old $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+.cpp.o-old:
+	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
+

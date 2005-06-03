@@ -1,9 +1,9 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-LIBS	= -lc -L$(LIBGCC_DIR) -lgcc_s
-ifneq ($(IMPORT_LIBSUP),y)
-LIBS	+= -lsupc++
+LDFLAGS += -shared -Wl,-soname,$(SHARED_MAJORNAME)
+ifneq ($(DODEBUG),y)
+LDFLAGS += -Wl,-s
 endif
 
 SRCS =	$(wildcard *.cpp)
@@ -11,40 +11,34 @@ SRCS += abi/abi.cpp
 SRCS := $(filter-out support.cpp,$(SRCS))
 SRCS := $(filter-out typeinfo.cpp,$(SRCS))
 
-EXOBJS	=$(patsubst %.cpp,%.o, $(SRCS))
+EXOBJS	:= $(patsubst %.cpp,%.o, $(SRCS))
 
-ALLOBJS	=	$(EXOBJS)
-ALLBIN	=	
+ALLBIN :=
 ifeq ($(BUILD_STATIC_LIB),y)
-ALLBIN	+=	libuClibc++.a
+ALLBIN	+=	$(LIBNAME).a
 endif
 ifneq ($(BUILD_ONLY_STATIC_LIB),y)
-ALLBIN	+=	libuClibc++.so
+ALLBIN	+=	$(SHARED_FULLNAME)
 endif
 
-# User defines:
-
-all:	libgcc_eh libsupc $(ALLOBJS) $(ALLBIN)
-
-objs:	$(ALLOBJS)
+all:	libgcc_eh libsupc $(EXOBJS) $(ALLBIN)
 
 install:
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
 ifneq ($(BUILD_ONLY_STATIC_LIB),y)
-	$(INSTALL) -m 644 lib*.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
+	$(INSTALL) -m 755 $(SHARED_FULLNAME) \
 		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa *.so $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa *.so.$(MAJOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa *.so.$(MAJOR_VERSION).$(MINOR_VERSION) $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
+	cp -fa $(SHARED_MAJORNAME) $(LIBNAME).so $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
 endif
 ifeq ($(BUILD_STATIC_LIB),y)
-	$(INSTALL) -m 644 libuClibc++.a $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
+	$(INSTALL) -m 644 $(LIBNAME).a $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
 endif
 
-
 libgcc_eh:
+ifeq ($(BUILD_STATIC_LIB),y)
 	$(MAKE) -C abi/libgcc_eh all
-GCCOBJS = $(wildcard abi/libgcc_eh/*.o)
+GCCOBJS := $(wildcard abi/libgcc_eh/*.o)
+endif
 
 libsupc:
 ifeq ($(IMPORT_LIBSUP),y)
@@ -54,33 +48,20 @@ else
 SUPOBJS =
 endif
 
+$(LIBNAME).a: libgcc_eh libsupc
+	$(AR) $(ARFLAGS) $@ $(EXOBJS) $(GCCOBJS) $(SUPOBJS)
+	$(RANLIB) $@
 
-libuClibc++.a: libgcc_eh libsupc
-	$(AR) rcs libuClibc++.a $(EXOBJS) $(GCCOBJS) $(SUPOBJS)
+$(SHARED_FULLNAME): libsupc
+	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(SUPOBJS) $(LIBS)
+	$(LN) $@ $(SHARED_MAJORNAME)
+	$(LN) $(SHARED_MAJORNAME) $(LIBNAME).so
 
-libuClibc++.so: libsupc
-	$(CC) $(LDFLAGS) $(EXOBJS) $(SUPOBJS) \
-		-o libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) \
-		-Wl,-soname,libuClibc++.so.$(MAJOR_VERSION) $(LIBS)
-	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL) libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION)
-	ln -s -f libuClibc++.so.$(MAJOR_VERSION).$(MINOR_VERSION) libuClibc++.so.$(MAJOR_VERSION)
-	ln -s -f libuClibc++.so.$(MAJOR_VERSION) libuClibc++.so
-
-cleanobjs:
+clean:
 	$(MAKE) -C abi/libgcc_eh clean
 	$(MAKE) -C abi/libsupc clean
-	rm -f $(ALLOBJS)
-
-cleanbin:
-	rm -f $(ALLBIN)
-
-clean:	cleanobjs cleanbin
-	rm -f libuClibc++*
-	
-
-cleanall:	cleanobjs cleanbin
+	$(RM) *.o abi/*.o libuClibc++* core
 
 .cpp.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
-
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(STRIPTOOL) -x -R .note -R .comment $@

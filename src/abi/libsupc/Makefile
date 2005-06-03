@@ -1,19 +1,9 @@
 TOPDIR=../../../
 include $(TOPDIR)Rules.mak
 
-GCC_VERSION = $(shell $(CXX) -dumpversion | cut -c1-3)
+#GCC_VERSION = $(shell $(CXX) -dumpversion | cut -c1-3)
 
-SRCS	=
-
-EXOBJS	=$(patsubst %.cpp,%.o, $(SRCS))
-
-ALLOBJS	=       $(EXOBJS)
-ALLBIN	=
-# User defines:
-
-all:	libsupc $(ALLOBJS) $(ALLBIN)
-
-objs:	$(ALLOBJS)
+all:	libsupc
 
 libsupc:
 #ifeq ($(GCC_VERSION),3.3)
@@ -27,24 +17,11 @@ libsupc:
 #else
 #	echo Binary
 	$(AR) x $(shell $(CXX) -print-file-name=libsupc++.a)
-	rm -f new_op*.o del_op*.o pure.o
+	$(RM) new_op*.o del_op*.o pure.o
 #
 #endif
 #endif
 
+clean:
+	$(RM) *.o
 
-
-cleanobjs:
-	rm -f *.o
-	rm -f $(ALLOBJS)
-
-cleanbin:
-	rm -f $(ALLBIN)
-
-clean:	cleanobjs cleanbin
-
-
-cleanall:	cleanobjs cleanbin
-
-.cpp.o:
-	$(CXX) -c $(CXXFLAGS) -o $@ $<
