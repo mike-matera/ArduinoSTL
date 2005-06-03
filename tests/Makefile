@@ -11,7 +11,7 @@ endif
 
 UCXX	= $(CXX) -nodefaultlibs -nostdinc++ -fno-builtin -I$(TOPDIR)/include -L$(TOPDIR)/src
 
-UFLAGS	=	-L$(TOPDIR)/src
+UFLAGS	= -L$(TOPDIR)/src
 
 SRCS	= $(wildcard *.cpp)
 
@@ -56,7 +56,7 @@ test:	all
 
 $(ALLTGT): $(EXOBJS)
 	$(UCXX) -o $@ $@.o $(CXXFLAGS) $(UFLAGS) $(ULIBS)
-	$(CXX) -o $@-old $@.o-old $(COFLAGS)
+	$(CXX) -o $@-old $@.o-old $(CXXOFLAGS)
 
 .cpp.o:
 	$(UCXX) -c $(CXXFLAGS) -o $@ $<

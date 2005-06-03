@@ -29,8 +29,6 @@ clean:
 	done
 	$(MAKE) -C extra/locale clean
 
-cleanall:	cleanobjs cleanbin
-
 distclean: clean
 	$(MAKE) -C extra clean
 	rm -f .config

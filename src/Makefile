@@ -1,7 +1,7 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-LIBS	=	-lc -lgcc_s
+LIBS	= -lc -L$(LIBGCC_DIR) -lgcc_s
 ifneq ($(IMPORT_LIBSUP),y)
 LIBS	+= -lsupc++
 endif
@@ -76,7 +76,6 @@ cleanbin:
 
 clean:	cleanobjs cleanbin
 	rm -f libuClibc++*
-	rm -rf libsupc libgcc_eh
 	
 
 cleanall:	cleanobjs cleanbin
