@@ -144,12 +144,17 @@ CXXFLAGS:=$(CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS)
 LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
 
-GEN_LIBS:=-nodefaultlibs -L$(LIBGCC_DIR)
+LIBS:=-nodefaultlibs
 ifneq ($(IMPORT_LIBSUP),y)
-GEN_LIBS += -lsupc++
+  LIBS += -L$(LIBGCC_DIR) -lsupc++
 endif
-GEN_LIBS += -lc
+LIBS += -lc
 
-STATIC_LIBS:=$(GEN_LIBS) -lgcc
-LIBS:=$(GEN_LIBS) $(call check_as_needed)
+ifneq ($(IMPORT_LIBGCC_EH),y)
+ifeq ($(IMPORT_LIBSUP),y)
+    LIBS += -L$(LIBGCC_DIR)
+endif
+  STATIC_LIBS = $(LIBS) -lgcc_eh
+  LIBS += $(call check_as_needed)
+endif
 

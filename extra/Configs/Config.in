@@ -433,6 +433,18 @@ config IMPORT_LIBSUP
 
 	  You should say yes.
 
+config IMPORT_LIBGCC_EH
+	bool "Import libgcc_eh.a"
+	depends on UCLIBCXX_EXCEPTION_SUPPORT
+	default y
+	help
+	  libgcc_eh.a is a file which comes with the g++ compiler and provides
+	  unwind support for static apps (the dynamically linked apps use libgcc_s.so
+	  instead).
+	  This code is largely compiler dependent.
+	  
+	  Importing it allows uClibc++ to become independent of libgcc_s.so.
+
 config BUILD_STATIC_LIB
 	bool "Build static library"
 	default y

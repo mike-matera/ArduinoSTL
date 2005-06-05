@@ -35,9 +35,11 @@ ifeq ($(BUILD_STATIC_LIB),y)
 endif
 
 libgcc_eh:
-ifeq ($(BUILD_STATIC_LIB),y)
+ifeq ($(IMPORT_LIBGCC_EH),y)
 	$(MAKE) -C abi/libgcc_eh all
-GCCOBJS := $(wildcard abi/libgcc_eh/*.o)
+GCCOBJS = $(wildcard abi/libgcc_eh/*.o)
+else
+GCCOBJS =
 endif
 
 libsupc:
@@ -52,8 +54,8 @@ $(LIBNAME).a: libgcc_eh libsupc
 	$(AR) $(ARFLAGS) $@ $(EXOBJS) $(GCCOBJS) $(SUPOBJS)
 	$(RANLIB) $@
 
-$(SHARED_FULLNAME): libsupc
-	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(SUPOBJS) $(LIBS)
+$(SHARED_FULLNAME): libgcc_eh libsupc
+	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(GCCOBJS) $(SUPOBJS) $(LIBS)
 	$(LN) $@ $(SHARED_MAJORNAME)
 	$(LN) $(SHARED_MAJORNAME) $(LIBNAME).so
 

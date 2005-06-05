@@ -20,6 +20,7 @@
 -	Update istream::read to list amount of data last read successfully
 -	Add configuration option to avoid expanding pesky [con|de]structors
 -	Implemented std::auto_ptr - don't know how I missed that one
+-	Now able to have all support libraries imported (libgcc_eh)
 
 
 0.1.10
