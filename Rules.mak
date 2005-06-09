@@ -81,10 +81,10 @@ check_as_needed=$(shell if $(LD) --help | grep -q 'as-needed' ; \
 # Make certain these contain a final "/", but no "//"s.
 TARGET_ARCH:=$(strip $(subst ",, $(strip $(TARGET_ARCH))))
 UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX))))))
-UCLIBCXX_RUNTIME_LIB_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_LIB_SUBDIR))))))
-UCLIBCXX_RUNTIME_BIN_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_BIN_SUBDIR))))))
-UCLIBCXX_RUNTIME_INCLUDE_SUBDIR:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR))))))
-export UCLIBCXX_RUNTIME_PREFIX UCLIBCXX_RUNTIME_LIB_SUBDIR UCLIBCXX_RUNTIME_BIN_SUBDIR UCLIBCXX_RUNTIME_INCLUDE_SUBDIR
+UCLIBCXX_RUNTIME_LIBDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)))))))
+UCLIBCXX_RUNTIME_BINDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_BIN_SUBDIR)))))))
+UCLIBCXX_RUNTIME_INCLUDEDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR)))))))
+export UCLIBCXX_RUNTIME_PREFIX UCLIBCXX_RUNTIME_LIBDIR UCLIBCXX_RUNTIME_BINDIR UCLIBCXX_RUNTIME_INCLUDEDIR
 
 OPTIMIZATION:=
 PICFLAG:=-fPIC
@@ -118,7 +118,7 @@ CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
 # Some nice CFLAGS to work with
 GEN_CFLAGS:=-fno-builtin
-CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) $(GEN_CFLAGS) -ansi -I$(TOPDIR)include
+CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) $(GEN_CFLAGS) -ansi
 
 LDFLAGS:=-Wl,--warn-common -Wl,--warn-once -Wl,-z,combreloc -Wl,-z,defs
 
@@ -144,17 +144,17 @@ CXXFLAGS:=$(CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS)
 LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
 
-LIBS:=-nodefaultlibs
+GEN_LIBS:=
+ifneq ($(LIBGCC_DIR),$(UCLIBCXX_RUNTIME_LIBDIR))
+GEN_LIBS += -L$(LIBGCC_DIR)
+endif
 ifneq ($(IMPORT_LIBSUP),y)
-  LIBS += -L$(LIBGCC_DIR) -lsupc++
+  GEN_LIBS += -lsupc++
 endif
-LIBS += -lc
+GEN_LIBS += -lc
 
+LIBS := $(GEN_LIBS) $(call check_as_needed)
+STATIC_LIBS := $(GEN_LIBS) -lgcc
 ifneq ($(IMPORT_LIBGCC_EH),y)
-ifeq ($(IMPORT_LIBSUP),y)
-    LIBS += -L$(LIBGCC_DIR)
+  STATIC_LIBS += -lgcc_eh
 endif
-  STATIC_LIBS = $(LIBS) -lgcc_eh
-  LIBS += $(call check_as_needed)
-endif
-

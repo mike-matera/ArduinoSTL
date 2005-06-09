@@ -1,9 +1,9 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-ULIBS := -L$(TOPDIR)/src -l$(LNAME)
+WR_CXX := WRAPPER_INCLUDEDIR=-I$(TOPDIR)include WRAPPER_LIBDIR=-L$(TOPDIR)src $(TOPDIR)bin/g++-uc
 
-CXXOFLAGS := -O0 -g3 -ansi $(EH_CXXFLAGS)
+CXXOFLAGS := -Wall -pedantic -O0 -g3 -ansi $(EH_CXXFLAGS)
 
 SRCS	:= $(wildcard *.cpp)
 
@@ -38,13 +38,13 @@ test:	all
 	$(MAKE) -C testoutput test
 
 $(ALLBIN): $(EXOBJS)
-	$(CXX) $(LDFLAGS) -o $@ $@.o $(ULIBS) $(LIBS)
+	$(WR_CXX) $(LDFLAGS) -o $@ $@.o
 
 $(OLDBIN): $(OLDOBJS)
 	$(HOSTCXX) $(LDFLAGS) -o $@ $<
 
 $(EXOBJS): %.o : %.cpp
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(OLDOBJS): %.o-old : %.cpp
 	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<

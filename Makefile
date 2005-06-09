@@ -1,5 +1,5 @@
 MAKE    = make
-SUBDIRS = include src bin
+SUBDIRS = bin include src
 
 # User defines:
 

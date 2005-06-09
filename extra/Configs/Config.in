@@ -443,7 +443,8 @@ config IMPORT_LIBGCC_EH
 	  instead).
 	  This code is largely compiler dependent.
 	  
-	  Importing it allows uClibc++ to become independent of libgcc_s.so.
+	  Currently it is only imported to libuClibc++.a, libuClibc++.so will depend
+	  on libgcc_s.so (gcc-4.0.0 fails if imported into libuClibc++.so too).
 
 config BUILD_STATIC_LIB
 	bool "Build static library"

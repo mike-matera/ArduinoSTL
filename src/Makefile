@@ -1,7 +1,9 @@
 TOPDIR=../
 include $(TOPDIR)Rules.mak
 
-LDFLAGS += -shared -Wl,-soname,$(SHARED_MAJORNAME)
+WR_CXX := WRAPPER_INCLUDEDIR=-I$(TOPDIR)include $(TOPDIR)bin/g++-uc
+
+LDFLAGS += -nodefaultlibs -shared -Wl,-soname,$(SHARED_MAJORNAME)
 ifneq ($(DODEBUG),y)
 LDFLAGS += -Wl,-s
 endif
@@ -24,14 +26,14 @@ endif
 all:	libgcc_eh libsupc $(EXOBJS) $(ALLBIN)
 
 install:
-	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
+	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
 ifneq ($(BUILD_ONLY_STATIC_LIB),y)
 	$(INSTALL) -m 755 $(SHARED_FULLNAME) \
-		$(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
-	cp -fa $(SHARED_MAJORNAME) $(LIBNAME).so $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
+		$(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
+	cp -fa $(SHARED_MAJORNAME) $(LIBNAME).so $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
 endif
 ifeq ($(BUILD_STATIC_LIB),y)
-	$(INSTALL) -m 644 $(LIBNAME).a $(PREFIX)$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)
+	$(INSTALL) -m 644 $(LIBNAME).a $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
 endif
 
 libgcc_eh:
@@ -55,7 +57,7 @@ $(LIBNAME).a: libgcc_eh libsupc
 	$(RANLIB) $@
 
 $(SHARED_FULLNAME): libgcc_eh libsupc
-	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(GCCOBJS) $(SUPOBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(SUPOBJS) $(LIBS)
 	$(LN) $@ $(SHARED_MAJORNAME)
 	$(LN) $(SHARED_MAJORNAME) $(LIBNAME).so
 
@@ -65,5 +67,5 @@ clean:
 	$(RM) *.o abi/*.o libuClibc++* core
 
 .cpp.o:
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 	$(STRIPTOOL) -x -R .note -R .comment $@
