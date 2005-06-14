@@ -16,6 +16,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#ifndef __STD_HEADER_FSTREAM 
+#define __STD_HEADER_FSTREAM 1
+
+
 #include<basic_definitions>
 
 #include <cstdio>
@@ -23,13 +27,17 @@
 #include <streambuf>
 #include <istream>
 #include <ostream>
+#include <char_traits>
 
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 
-#ifndef __STD_HEADER_FSTREAM 
-#define __STD_HEADER_FSTREAM 1
+#ifdef __UCLIBCXX_HAS_WCHAR__
+#include <cwchar>
+#include <cwctype>
+#endif //__UCLIBCXX_HAS_WCHAR__
+
 
 namespace std{
 
@@ -283,6 +291,7 @@ namespace std{
 				return traits::not_eof(c);
 			}
 		}
+
 		virtual int_type overflow (int_type c = traits::eof()){
 			if(is_open() == false){
 				//Can't do much
@@ -339,6 +348,7 @@ namespace std{
 			delete [] buffer;
 			return traits::not_eof(c);
 		}
+
 		virtual basic_streambuf<charT,traits>* setbuf(char_type* s, streamsize n){
 			if(s == 0 && n == 0){	//Unbuffered
 				if(pbuffer !=0){
@@ -447,6 +457,98 @@ namespace std{
 		char_type * pbuffer;
 		char_type * gbuffer;
 	};
+
+
+#ifdef __UCLIBCXX_HAS_WCHAR__
+
+template <> basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
+	basic_filebuf<wchar_t, char_traits<wchar_t> >::overflow(int_type c);
+
+//Specialization of code to handle wchar code
+
+/*	template <> basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
+		basic_filebuf<wchar_t, char_traits<wchar_t> >::overflow(int_type c)
+	{
+		typedef basic_streambuf<wchar_t, char_traits<wchar_t> > wstreambuf;
+		typedef char_traits<wchar_t> wtraits;
+
+		if(is_open() == false){
+			//Can't do much
+			return wtraits::eof();
+		}
+		if( wstreambuf::pbase() == 0 ){		//Unbuffered - elliminate dupe code below
+			mbstate_t ps;
+			char out_array[32];
+			size_t out_size = wcrtomb(out_array, c, &ps);
+			if(out_size == (size_t)(-1) || fwrite(out_array, out_size, 1, fp) == 0){
+				return wtraits::eof();
+			}
+			return c;
+		}
+		if( wstreambuf::pbase() == 0 && wtraits::eq_int_type(c, wtraits::eof()) ){
+			//Nothing to flush
+			return wtraits::not_eof(c);
+		}
+		size_t r = wstreambuf::pptr() - wstreambuf::pbase();
+
+		if( r == 0 && wtraits::eq_int_type(c, wtraits::eof()) ){
+			return wtraits::not_eof(c);
+		}else if (r == 0 ){
+			mbstate_t ps;
+			char out_array[32];
+			int out_size = wcrtomb(out_array, c, &ps);
+
+			if(out_size == (size_t)(-1) || fwrite(out_array, out_size, 1, fp) == 0){
+				return wtraits::eof();
+			}
+			return c;
+		}
+
+		size_t s = r;
+
+		char *buffer = 0;
+		size_t out_length=0;
+		mbstate_t ps;
+
+		char_type * p = wstreambuf::pbase();
+
+		if(wtraits::eq_int_type(c, wtraits::eof())){
+			buffer = new char[r*6];
+			out_length = wcsnrtombs(buffer, (const wchar_t**)(&p), r, r*6, &ps);
+		}else{
+			buffer = new char[(r+1) * 6];
+			out_length = wcsnrtombs(buffer, (const wchar_t**)(&p), r, r*6, &ps);
+
+			if(out_length != (size_t)(-1)){
+				wchar_t temp = wtraits::to_char_type(c);
+				p = &temp;
+
+				if(wcsnrtombs(buffer + out_length, (const wchar_t**)(&p), 1, 6, &ps) == (size_t)(-1)){
+					out_length = (size_t)(-1);
+				}
+			}
+		}
+	
+		size_t retval = fwrite(buffer, 1, out_length, fp);
+		if(retval != out_length){
+			if(retval == 0){
+				delete [] buffer;
+				return wtraits::eof();
+			}
+			wstreambuf::pbump(-retval);
+			fprintf(stderr, "***** Did not write the full buffer out.  Should be: %d, actually: %d\n",
+				 s, retval);
+		}else{
+			wstreambuf::pbump(-r);
+		}
+
+		delete [] buffer;
+		return wtraits::not_eof(c);
+	}
+
+*/
+#endif //__UCLIBCXX_HAS_WCHAR__
+
 
 
 #ifdef __UCLIBCXX_EXPAND_FSTREAM_CHAR__
@@ -606,7 +708,6 @@ namespace std{
 
 #endif
 #endif
-
 
 
 

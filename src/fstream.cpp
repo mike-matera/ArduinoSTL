@@ -59,4 +59,62 @@ namespace std{
 #endif
 
 
+
+#ifdef __UCLIBCXX_HAS_WCHAR__
+
+template <> basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
+	basic_filebuf<wchar_t, char_traits<wchar_t> >::overflow(int_type c)
+{
+	typedef basic_streambuf<wchar_t, char_traits<wchar_t> > wstreambuf;
+	typedef char_traits<wchar_t> wtraits;
+
+	if(is_open() == false){
+		//Can't do much
+		return wtraits::eof();
+	}
+
+	mbstate_t ps = { 0 };
+	char out_array[8];
+	size_t out_size;
+
+
+	if( wstreambuf::pbase() != 0 ){
+
+		//Write all possible character from the existing array first
+		size_t chars_written = 0;
+		while(wstreambuf::pbase() && (wstreambuf::pbase() + chars_written !=wstreambuf::pptr()) ){
+			out_size = wcrtomb(out_array, wstreambuf::pbase()[chars_written], &ps);
+			if(out_size == (size_t)(-1) || fwrite(out_array, out_size, 1, fp) == 0){
+				break;
+			}
+			++chars_written;
+		}
+
+		if( wstreambuf::pbase() + chars_written == wstreambuf::pptr() ){
+			wstreambuf::pbump(-chars_written);
+		}else{
+			//Shuffle data back into order
+			size_t chars_left = wstreambuf::pptr() - wstreambuf::pbase() - chars_written;
+			for(size_t i = 0; i < chars_left; ++i){
+				wstreambuf::pbase()[i] = (wstreambuf::pptr() - chars_written)[i];
+			}
+			return wtraits::eof();
+		}
+	}
+
+	if( !wtraits::eq_int_type(c, wtraits::eof()) ){
+		out_size = wcrtomb(out_array, c, &ps);
+		if(out_size == (size_t)(-1) || fwrite(out_array, out_size, 1, fp) == 0){
+			return wtraits::eof();
+		}
+		return c;
+	}
+
+	return wtraits::not_eof(c);
+}
+
+
+#endif // __UCLIBCXX_HAS_WCHAR__
+
+
 }
