@@ -118,7 +118,7 @@ CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
 # Some nice CFLAGS to work with
 GEN_CFLAGS:=-fno-builtin
-CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) $(GEN_CFLAGS) -ansi
+CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) -ansi
 
 LDFLAGS:=-Wl,--warn-common -Wl,--warn-once -Wl,-z,combreloc -Wl,-z,defs
 
@@ -139,10 +139,12 @@ ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 endif
 
 GEN_CXXFLAGS:=-nostdinc++
-CXXFLAGS:=$(CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS)
+CXXFLAGS:=$(CFLAGS)
 
 LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
+
+GCC_VERSION:=$(shell $(CC) -dumpversion | cut -c1-3)
 
 GEN_LIBS:=
 ifneq ($(LIBGCC_DIR),$(UCLIBCXX_RUNTIME_LIBDIR))
@@ -151,10 +153,18 @@ endif
 ifneq ($(IMPORT_LIBSUP),y)
   GEN_LIBS += -lsupc++
 endif
-GEN_LIBS += -lc
+GEN_LIBS += -lc -lgcc
 
-LIBS := $(GEN_LIBS) $(call check_as_needed)
-STATIC_LIBS := $(GEN_LIBS) -lgcc
+LIBS := $(GEN_LIBS)
+STATIC_LIBS := $(GEN_LIBS)
+#ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
+ifeq ($(GCC_VERSION),4.0)
+LIBS += $(call check_as_needed)
+endif
 ifneq ($(IMPORT_LIBGCC_EH),y)
   STATIC_LIBS += -lgcc_eh
+ifneq ($(GCC_VERSION),4.0)
+  LIBS += -lgcc_eh
 endif
+endif
+#endif

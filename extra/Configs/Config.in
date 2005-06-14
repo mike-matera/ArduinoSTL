@@ -443,8 +443,8 @@ config IMPORT_LIBGCC_EH
 	  instead).
 	  This code is largely compiler dependent.
 	  
-	  Currently it is only imported to libuClibc++.a, libuClibc++.so will depend
-	  on libgcc_s.so (gcc-4.0.0 fails if imported into libuClibc++.so too).
+	  Currently for gcc-4.0.0 it is imported only into libuClibc++.a, the shared
+	  library will depend on libgcc_s.so.
 
 config BUILD_STATIC_LIB
 	bool "Build static library"

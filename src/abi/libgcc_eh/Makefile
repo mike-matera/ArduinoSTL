@@ -1,10 +1,6 @@
 TOPDIR=../../../
 include $(TOPDIR)Rules.mak
 
-#GCC_VERSION = $(shell $(CXX) -dumpversion | cut -c1-3)
-
-# User defines:
-
 all:	libgcc_eh
 
 libgcc_eh: unwind-c.o

@@ -1,14 +1,12 @@
 TOPDIR=../../../
 include $(TOPDIR)Rules.mak
 
-#GCC_VERSION = $(shell $(CXX) -dumpversion | cut -c1-3)
-
 all:	libsupc
 
 libsupc:
 #ifeq ($(GCC_VERSION),3.3)
 #	echo Version 3.3
-#	$(CXX) -c $(CXXFLAGS) -o eh_allocQ.o GCC_3.3/eh_alloc.cc
+#	$(WR_CXX) -c $(CXXFLAGS) -o eh_allocQ.o GCC_3.3/eh_alloc.cc
 #
 #else
 #ifeq ($(GCC_VERSION),3.4)

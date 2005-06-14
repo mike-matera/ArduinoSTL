@@ -39,7 +39,11 @@ endif
 libgcc_eh:
 ifeq ($(IMPORT_LIBGCC_EH),y)
 	$(MAKE) -C abi/libgcc_eh all
+ifneq ($(GCC_VERSION),4.0)
 GCCOBJS = $(wildcard abi/libgcc_eh/*.o)
+else
+GCCOBJS =
+endif
 else
 GCCOBJS =
 endif
@@ -57,7 +61,7 @@ $(LIBNAME).a: libgcc_eh libsupc
 	$(RANLIB) $@
 
 $(SHARED_FULLNAME): libgcc_eh libsupc
-	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(SUPOBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(SUPOBJS) $(GCCOBJS) $(LIBS)
 	$(LN) $@ $(SHARED_MAJORNAME)
 	$(LN) $(SHARED_MAJORNAME) $(LIBNAME).so
 

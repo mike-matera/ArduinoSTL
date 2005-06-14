@@ -29,10 +29,12 @@ $(WRAPPER):
 	echo '	then' >> $(WRAPPER)
 	echo '		WRAPPER_INCLIB="N"' >> $(WRAPPER)
 	echo '	fi' >> $(WRAPPER)
+ifneq ($(strip $(LIBS)),$(strip $(STATIC_LIBS)))
 	echo '	if [ "$$1" == "-static" ]' >> $(WRAPPER)
 	echo '	then' >> $(WRAPPER)
 	echo "		WRAPPER_LIBS=\"$(STATIC_LIBS)\"" >> $(WRAPPER)
 	echo '	fi' >> $(WRAPPER)
+endif
 	echo '	shift' >> $(WRAPPER)
 	echo 'done' >> $(WRAPPER)
 	echo 'if [ "$$WRAPPER_INCLIB" == "Y" ]' >> $(WRAPPER)
