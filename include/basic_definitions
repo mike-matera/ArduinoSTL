@@ -20,6 +20,21 @@
 
 #include <system_configuration.h>
 
+//The following is used to support GCC symbol visibility patch
+
+#ifdef GCC_HASCLASSVISIBILITY
+	#define DLLEXPORT __attribute__ ((visibility("default")))
+	#define DLLLOCAL __attribute__ ((visibility("hidden")))
+#else
+	#define DLLEXPORT
+	#define DLLLOCAL
+
+#endif
+
+
+
+
+
 //Testing purposes
 #define __STRING_MAX_UNITS 65535
 
