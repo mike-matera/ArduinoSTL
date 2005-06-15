@@ -35,10 +35,10 @@ namespace std{
 	typedef signed int char_traits_off_type;
 
 	//Generic char_traits
-	template<class charT> struct char_traits { };
+	template<class charT> struct _UCXXEXPORT char_traits { };
 
 	//Specialize for char
-	template<> struct char_traits<char> {
+	template<> struct _UCXXEXPORT char_traits<char> {
 		typedef char char_type;
 		typedef short int int_type;
 		typedef char_traits_off_type off_type;
@@ -110,7 +110,7 @@ namespace std{
 
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-	template<> struct char_traits<wchar_t> {
+	template<> struct _UCXXEXPORT char_traits<wchar_t> {
 		typedef wchar_t char_type;
 		typedef wint_t int_type;
 		typedef char_traits_off_type off_type;

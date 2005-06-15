@@ -44,7 +44,7 @@ namespace std{
 
 
 
-//template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class basic_string
+//template<class Ch, class Tr = char_traits<Ch>, class A = allocator<Ch> > class _UCXXEXPORT basic_string
 template<class Ch, class Tr, class A> class basic_string
 	: public std::vector<Ch, A>
 {
@@ -725,45 +725,44 @@ template<class Ch,class Tr,class A>
 
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template <> string::basic_string(const allocator<char> &);
-	template <> string::basic_string(size_type n, char c, const allocator<char> & );
-	template <> string::basic_string(const char* s, const allocator<char>& al);
-	template <> string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
-	template <> string::~basic_string();
+	template <> _UCXXEXPORT string::basic_string(const allocator<char> &);
+	template <> _UCXXEXPORT string::basic_string(size_type n, char c, const allocator<char> & );
+	template <> _UCXXEXPORT string::basic_string(const char* s, const allocator<char>& al);
+	template <> _UCXXEXPORT string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
+	template <> _UCXXEXPORT string::~basic_string();
 
 #endif
 
-	template <> string::size_type string::find(const string & str, size_type pos) const;
-	template <> string::size_type string::find(const char* s, size_type pos) const;
-	template <> string::size_type string::find (char c, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find(const string & str, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find(const char* s, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find (char c, size_type pos) const;
 
-	template <> string::size_type string::rfind(const string & str, size_type pos) const;
-	template <> string::size_type string::rfind(char c, size_type pos) const;
-	template <> string::size_type string::rfind(const char* s, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::rfind(const string & str, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::rfind(char c, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::rfind(const char* s, size_type pos) const;
 
-	template <> string::size_type string::find_first_of(const string &, size_type) const;
-	template <> string::size_type string::find_first_of(const char *, size_type pos, size_type n) const;
-	template <> string::size_type string::find_first_of(const char*, size_type pos) const;
-	template <> string::size_type string::find_first_of(char c, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_of(const string &, size_type) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_of(const char *, size_type pos, size_type n) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_of(const char*, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_of(char c, size_type pos) const;
 
-	template <> string::size_type string::find_last_of (const string & , size_type pos) const;
-	template <> string::size_type string::find_last_of (const char* s, size_type pos, size_type n) const;
-	template <> string::size_type string::find_last_of (const char* s, size_type pos) const;
-	template <> string::size_type string::find_last_of (char c, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find_last_of (const string & , size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find_last_of (const char* s, size_type pos, size_type n) const;
+	template <> _UCXXEXPORT string::size_type string::find_last_of (const char* s, size_type pos) const;
+	template <> _UCXXEXPORT string::size_type string::find_last_of (char c, size_type pos) const;
 
-	template <> string::size_type string::find_first_not_of(const string &, size_type) const;
-	template <> string::size_type string::find_first_not_of(const char*, size_type, size_type) const;
-	template <> string::size_type string::find_first_not_of(const char*, size_type) const;
-	template <> string::size_type string::find_first_not_of(char c, size_type) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_not_of(const string &, size_type) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_not_of(const char*, size_type, size_type) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_not_of(const char*, size_type) const;
+	template <> _UCXXEXPORT string::size_type string::find_first_not_of(char c, size_type) const;
 
+	template <> _UCXXEXPORT int string::compare(const string & str) const;
+	template <> _UCXXEXPORT int string::compare(size_type pos1, size_type n1, const string & str) const;
 
-	template <> int string::compare(const string & str) const;
-	template <> int string::compare(size_type pos1, size_type n1, const string & str) const;
+	template <> _UCXXEXPORT string string::substr(size_type pos, size_type n) const;
 
-	template <> string string::substr(size_type pos, size_type n) const;
-
-	template <> string & string::operator=(const string & str);
-	template <> string & string::operator=(const char * s);
+	template <> _UCXXEXPORT string & string::operator=(const string & str);
+	template <> _UCXXEXPORT string & string::operator=(const char * s);
 
 #endif
 #endif
@@ -773,7 +772,7 @@ template<class Ch,class Tr,class A>
 
 //typedef basic_string<char> string;
 
-template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator> 
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_string<charT,traits,Allocator> 
 	operator+(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -781,7 +780,7 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 	return temp;
 }
 
-template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_string<charT,traits,Allocator>
 	operator+(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -790,7 +789,7 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 }
 
 
-template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_string<charT,traits,Allocator>
 	operator+(charT lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -798,7 +797,7 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 	return temp;
 }
 
-template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_string<charT,traits,Allocator>
 	operator+(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -806,7 +805,7 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 	return temp;
 }
 
-template<class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_string<charT,traits,Allocator>
 	operator+(const basic_string<charT,traits,Allocator>& lhs, charT rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -814,7 +813,7 @@ template<class charT, class traits, class Allocator> basic_string<charT,traits,A
 	return temp;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator==(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(lhs.compare(rhs) == 0){
@@ -823,7 +822,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator==(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(rhs.compare(lhs) == 0){
@@ -832,7 +831,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator==(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	if(lhs.compare(rhs)==0){
@@ -841,7 +840,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator!=(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(lhs.compare(rhs) !=0){
@@ -850,21 +849,21 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator!=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
 	return (temp != rhs);
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator!=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
 	return (lhs != temp);
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator< (const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(lhs.compare(rhs) < 0){
@@ -873,7 +872,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator< (const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
@@ -883,7 +882,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator< (const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -894,7 +893,7 @@ template<class charT, class traits, class Allocator> bool
 }
 
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator> (const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(lhs.compare(rhs) > 0){
@@ -903,7 +902,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator> (const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
@@ -913,7 +912,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator> (const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -923,7 +922,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator<=(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(lhs.compare(rhs) <=0){
@@ -932,7 +931,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator<=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
@@ -942,7 +941,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator<=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -952,7 +951,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator>=(const basic_string<charT,traits,Allocator>& lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	if(lhs.compare(rhs) >=0){
@@ -961,7 +960,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator>=(const basic_string<charT,traits,Allocator>& lhs, const charT* rhs)
 {
 	basic_string<charT,traits,Allocator> temp(rhs);
@@ -971,7 +970,7 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> bool 
+template<class charT, class traits, class Allocator> _UCXXEXPORT bool 
 	operator>=(const charT* lhs, const basic_string<charT,traits,Allocator>& rhs)
 {
 	basic_string<charT,traits,Allocator> temp(lhs);
@@ -981,10 +980,10 @@ template<class charT, class traits, class Allocator> bool
 	return false;
 }
 
-template<class charT, class traits, class Allocator> void 
+template<class charT, class traits, class Allocator> _UCXXEXPORT void 
 	swap(basic_string<charT,traits,Allocator>& lhs, basic_string<charT,traits,Allocator>& rhs);
 
-/*template<class charT, class traits, class Allocator> basic_ostream<charT, traits>&
+/*template<class charT, class traits, class Allocator> _UCXXEXPORT basic_ostream<charT, traits>&
 	operator<<(basic_ostream<charT, traits>& os, const basic_string<charT,traits,Allocator>& str)
 {
 	return os.write(str.data(), str.length());
@@ -995,20 +994,20 @@ template<class charT, class traits, class Allocator> void
 
 //Operators we can avoid duplication of
 
-template <> bool operator==(const string & lhs, const string & rhs);
-template <> bool operator==(const char * lhs, const string & rhs);
-template <> bool operator==(const string & rhs, const char * rhs);
+template <> _UCXXEXPORT bool operator==(const string & lhs, const string & rhs);
+template <> _UCXXEXPORT bool operator==(const char * lhs, const string & rhs);
+template <> _UCXXEXPORT bool operator==(const string & rhs, const char * rhs);
 
-template <> bool operator!=(const string & lhs, const string & rhs);
-template <> bool operator!=(const char * lhs, const string & rhs);
-template <> bool operator!=(const string & rhs, const char * rhs);
+template <> _UCXXEXPORT bool operator!=(const string & lhs, const string & rhs);
+template <> _UCXXEXPORT bool operator!=(const char * lhs, const string & rhs);
+template <> _UCXXEXPORT bool operator!=(const string & rhs, const char * rhs);
 
-template <> string operator+(const string & lhs, const char* rhs);
-template <> string operator+(const char* lhs, const string & rhs);
-template <> string operator+(const string & lhs, const string & rhs);
+template <> _UCXXEXPORT string operator+(const string & lhs, const char* rhs);
+template <> _UCXXEXPORT string operator+(const char* lhs, const string & rhs);
+template <> _UCXXEXPORT string operator+(const string & lhs, const string & rhs);
 
-template <> bool operator> (const string & lhs, const string & rhs);
-template <> bool operator< (const string & lhs, const string & rhs);
+template <> _UCXXEXPORT bool operator> (const string & lhs, const string & rhs);
+template <> _UCXXEXPORT bool operator< (const string & lhs, const string & rhs);
 
 
 #endif

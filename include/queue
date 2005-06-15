@@ -25,7 +25,7 @@
 
 namespace std{
 	
-	template <class T, class Container = deque<T> > class queue{
+	template <class T, class Container = deque<T> > class _UCXXEXPORT queue{
 	protected:
 		Container c;
 	public:
@@ -46,32 +46,32 @@ namespace std{
 	};
 
 
-	template <class T, class Container> bool
+	template <class T, class Container> _UCXXEXPORT bool
 		operator==(const queue<T, Container>& x, const queue<T, Container>& y)
 	{
 		return (x.c == y.c);
 	}
-	template <class T, class Container> bool
+	template <class T, class Container> _UCXXEXPORT bool
 		operator< (const queue<T, Container>& x, const queue<T, Container>& y)
 	{
 		return (x.c < y.c);
 	}
-	template <class T, class Container> bool
+	template <class T, class Container> _UCXXEXPORT bool
 		operator!=(const queue<T, Container>& x, const queue<T, Container>& y)
 	{
 		return (x.c != y.c);
 	}
-	template <class T, class Container> bool
+	template <class T, class Container> _UCXXEXPORT bool
 		operator> (const queue<T, Container>& x, const queue<T, Container>& y)
 	{
 		return (x.c > y.c);
 	}
-	template <class T, class Container> bool
+	template <class T, class Container> _UCXXEXPORT bool
 		operator>=(const queue<T, Container>& x, const queue<T, Container>& y)
 	{
 		return (x.c >= y.c);
 	}
-	template <class T, class Container> bool
+	template <class T, class Container> _UCXXEXPORT bool
 		operator<=(const queue<T, Container>& x, const queue<T, Container>& y)
 	{
 		return (x.c <= y.c);
@@ -81,7 +81,7 @@ namespace std{
 	template <class T,
 		class Container = vector<T>,
 		class Compare = less<typename Container::value_type>
-	> class priority_queue {
+	> class _UCXXEXPORT priority_queue {
 	protected:
 		Container c;
 		Compare comp;

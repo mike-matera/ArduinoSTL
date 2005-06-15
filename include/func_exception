@@ -17,6 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <basic_definitions>
 #include <exception>
 
 
@@ -25,12 +26,11 @@
 
 namespace std{
 
-	void __throw_bad_alloc();
-	void __throw_out_of_range(const char * message = 0);
-	void __throw_overflow_error(const char * message = 0);
-	void __throw_length_error(const char * message = 0);
-	void __throw_invalid_argument(const char * message = 0);
-
+	_UCXXEXPORT void __throw_bad_alloc();
+	_UCXXEXPORT void __throw_out_of_range(const char * message = 0);
+	_UCXXEXPORT void __throw_overflow_error(const char * message = 0);
+	_UCXXEXPORT void __throw_length_error(const char * message = 0);
+	_UCXXEXPORT void __throw_invalid_argument(const char * message = 0);
 }
 
 #endif

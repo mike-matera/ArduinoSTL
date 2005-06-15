@@ -89,7 +89,7 @@ namespace std{
 	}
 
 
-	template <class T1, class T2> struct pair {
+	template <class T1, class T2> struct _UCXXEXPORT pair {
 		typedef T1 first_type;
 		typedef T2 second_type;
 

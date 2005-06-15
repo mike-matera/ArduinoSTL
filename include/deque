@@ -37,7 +37,7 @@ namespace std{
 	template <class T, class Allocator> bool operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> void swap(deque<T,Allocator>& x, deque<T,Allocator>& y);
 
-	template <class T, class Allocator> class deque {
+	template <class T, class Allocator> _UCXXEXPORT class deque {
 	public:
 		friend class deque_iter;
 		class deque_iter;
@@ -128,7 +128,7 @@ namespace std{
 	};
 
 
-	template<class T, class Allocator> class deque<T, Allocator>::deque_iter
+	template<class T, class Allocator> _UCXXEXPORT class deque<T, Allocator>::deque_iter
 		: public std::iterator<
 			random_access_iterator_tag,
 			T,
@@ -632,7 +632,10 @@ namespace std{
 	}
 
 
-	template <class T, class Allocator> bool operator==(const deque<T,Allocator>& x, const deque<T,Allocator>& y){
+	template <class T, class Allocator> _UCXXEXPORT 
+		bool
+		operator==(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
+	{
 		if(x.elements != y.elements){
 			return false;
 		}
@@ -645,7 +648,10 @@ namespace std{
 	}
 
 	template <class T, class Allocator> bool operator< (const deque<T,Allocator>& x, const deque<T,Allocator>& y);
-	template <class T, class Allocator> bool operator!=(const deque<T,Allocator>& x, const deque<T,Allocator>& y){
+	template <class T, class Allocator> _UCXXEXPORT
+		bool
+		operator!=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
+	{
 		if(x == y){
 			return false;
 		}
@@ -654,7 +660,7 @@ namespace std{
 	template <class T, class Allocator> bool operator> (const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> bool operator>=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> bool operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
-	template <class T, class Allocator> void swap(deque<T,Allocator>& x, deque<T,Allocator>& y){
+	template <class T, class Allocator> _UCXXEXPORT void swap(deque<T,Allocator>& x, deque<T,Allocator>& y){
 		T * temp_data;
 //		T temp_value;
 		typename deque<T,Allocator>::size_type temp_size;

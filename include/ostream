@@ -39,7 +39,9 @@ namespace std {
 	template <class charT, class traits> basic_ostream<charT,traits>& ends(basic_ostream<charT,traits>& os);
 	template <class charT, class traits> basic_ostream<charT,traits>& flush(basic_ostream<charT,traits>& os);
 
-	template <class charT, class traits > class basic_ostream : virtual public basic_ios<charT,traits> {
+	template <class charT, class traits > class _UCXXEXPORT basic_ostream
+		: virtual public basic_ios<charT,traits>
+	{
 	public:
 
 		typedef charT char_type;
@@ -243,28 +245,30 @@ namespace std {
 
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template <> ostream::~basic_ostream();
+	template <> _UCXXEXPORT ostream::~basic_ostream();
 
 #endif // __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template <> ostream & ostream::flush();
+	template <> _UCXXEXPORT ostream & ostream::flush();
 
-	template <> ostream & ostream::operator<<(bool n);
-	template <> ostream & ostream::operator<<(short int n);
-	template <> ostream & ostream::operator<<(unsigned short int n);
-	template <> ostream & ostream::operator<<(int n);
-	template <> ostream & ostream::operator<<(unsigned int n);
-	template <> ostream & ostream::operator<<(long n);
-	template <> ostream & ostream::operator<<(unsigned long n);
-	template <> ostream & ostream::operator<<(float f);
-	template <> ostream & ostream::operator<<(double f);
-	template <> ostream & ostream::operator<<(long double f);
-	template <> ostream & ostream::operator<<(void* p);
-	template <> ostream & ostream::operator<<(basic_streambuf<char, char_traits<char> >* sb);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(bool n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(short int n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(unsigned short int n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(int n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(unsigned int n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(long n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(unsigned long n);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(float f);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(double f);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(long double f);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(void* p);
+	template <> _UCXXEXPORT ostream & ostream::operator<<(basic_streambuf<char, char_traits<char> >* sb);
 #endif
 #endif
 
-	template <class charT,class traits = char_traits<charT> > class basic_ostream<charT,traits>::sentry {
+	template <class charT,class traits = char_traits<charT> >
+		class _UCXXEXPORT basic_ostream<charT,traits>::sentry
+	{
 		bool ok;
 	public:
 		explicit sentry(basic_ostream<charT,traits>& os): ok(true){
@@ -287,8 +291,8 @@ namespace std {
 #ifndef __UCLIBCXX_COMPILE_OSTREAM__
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template <> ostream::sentry::sentry(ostream & os);
-	template <> ostream::sentry::~sentry();
+	template <> _UCXXEXPORT ostream::sentry::sentry(ostream & os);
+	template <> _UCXXEXPORT ostream::sentry::~sentry();
 
 #endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 #endif
@@ -298,58 +302,76 @@ namespace std {
 	//Non - class functions
 
 
-	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, charT c){
+	template<class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>&
+		operator<<(basic_ostream<charT,traits>& out, charT c)
+	{
 		typename basic_ostream<charT,traits>::sentry s(out);
 		out.put(c);
 		return out;
 	}
 	
-	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, char c){
+	template<class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>&
+		operator<<(basic_ostream<charT,traits>& out, char c)
+	{
 		typename basic_ostream<charT,traits>::sentry s(out);
 		out.put(c);
 		return out;
 	}
     
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, char c){
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, char c)
+	{
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.put(c);
 		return out;
 	}
     
     // signed and unsigned
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, signed char c){
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, signed char c)
+	{
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.put(c);
 		return out;
 	}
 	
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, unsigned char c){
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, unsigned char c)
+	{
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.put(c);
 		return out;
 	}
 	
-	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, const charT* c){
+	template<class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>&
+		operator<<(basic_ostream<charT,traits>& out, const charT* c)
+	{
 		typename basic_ostream<charT,traits>::sentry s(out);
 		out.write(c, traits::length(c) );
 		return out;
 	}
 	
-	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>& out, const char* c){
+	template<class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>&
+		operator<<(basic_ostream<charT,traits>& out, const char* c)
+	{
 		typename basic_ostream<charT,traits>::sentry s(out);
 		out.write(c, char_traits<char>::length(c) );
 		return out;
 	}
 
     // partial specializations
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const char* c){
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, const char* c)
+	{
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.write(c, traits::length(c));
 		return out;
 	}
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-	template<class traits> basic_ostream<wchar_t,traits>& operator<<(basic_ostream<wchar_t,traits>& out, const char* c){
+	template<class traits> _UCXXEXPORT basic_ostream<wchar_t,traits>&
+		operator<<(basic_ostream<wchar_t,traits>& out, const char* c)
+	{
 		typename basic_ostream<wchar_t, traits>::sentry s(out);
 		size_t numChars = char_traits<char>::length(c);
 		wchar_t * temp = new wchar_t[numChars];
@@ -364,19 +386,25 @@ namespace std {
 #endif
     
     //  signed and unsigned
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const signed char* c){
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, const signed char* c)
+	{
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.write((const char *)c, traits::length(c));
 		return out;
 	}
 	
-	template<class traits> basic_ostream<char,traits>& operator<<(basic_ostream<char,traits>& out, const unsigned char* c){
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, const unsigned char* c)
+	{
 		typename basic_ostream<char,traits>::sentry s(out);
 		out.write(reinterpret_cast<const char *>(c), traits::length( reinterpret_cast<const char *>(c)));
 		return out;
 	}
 
-	template <class charT, class traits> basic_ostream<charT,traits>& endl(basic_ostream<charT,traits>& os){
+	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>&
+		endl(basic_ostream<charT,traits>& os)
+	{
 		typename basic_ostream<charT,traits>::sentry s(os);
 		os.put('\n');
 		os.flush();
@@ -392,12 +420,12 @@ namespace std {
 
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_OSTREAM__
-	template <> ostream & endl(ostream & os);
-	template <> ostream & flush(ostream & os);
-	template <> ostream & operator<<(ostream & out, char c);
-	template <> ostream & operator<<(ostream & out, const char* c);
-	template <> ostream & operator<<(ostream & out, unsigned char c);
-	template <> ostream & operator<<(ostream & out, unsigned const char* c);
+	template <> _UCXXEXPORT ostream & endl(ostream & os);
+	template <> _UCXXEXPORT ostream & flush(ostream & os);
+	template <> _UCXXEXPORT ostream & operator<<(ostream & out, char c);
+	template <> _UCXXEXPORT ostream & operator<<(ostream & out, const char* c);
+	template <> _UCXXEXPORT ostream & operator<<(ostream & out, unsigned char c);
+	template <> _UCXXEXPORT ostream & operator<<(ostream & out, unsigned const char* c);
 
 #endif
 #endif
@@ -407,7 +435,7 @@ namespace std {
 
 //Support for output of long long data types
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>& 
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>& 
 	operator<<(basic_ostream<Ch, Tr>& os, signed long long int i)
 {
 	typename basic_ostream<Ch, Tr>::sentry s(os);
@@ -416,7 +444,7 @@ template<class Ch, class Tr> basic_ostream<Ch, Tr>&
 }
 
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>& 
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>& 
 	operator<<(basic_ostream<Ch, Tr>& os, unsigned long long int i)
 {
 	typename basic_ostream<Ch, Tr>::sentry s(os);

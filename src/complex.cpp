@@ -22,7 +22,7 @@
 namespace std{
 
 
-	template class complex<float>;
+	template class _UCXXEXPORT complex<float>;
 
 
 }

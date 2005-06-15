@@ -32,64 +32,64 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template string::basic_string(const allocator<char> &);
-	template string::basic_string(size_type n, char c, const allocator<char> & );
-	template string::basic_string(const char* s, const allocator<char>& al);
-	template string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
-	template string::~basic_string();
+	template _UCXXEXPORT string::basic_string(const allocator<char> &);
+	template _UCXXEXPORT string::basic_string(size_type n, char c, const allocator<char> & );
+	template _UCXXEXPORT string::basic_string(const char* s, const allocator<char>& al);
+	template _UCXXEXPORT string::basic_string(const basic_string& str, size_type pos, size_type n, const allocator<char>& al);
+	template _UCXXEXPORT string::~basic_string();
 
 #endif // __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template string::size_type string::find(const string & str, size_type pos) const;
-	template string::size_type string::find(const char* s, size_type pos) const;
-	template string::size_type string::find (char c, size_type pos) const;
-	template string::size_type string::rfind(const string & str, size_type pos) const;
-	template string::size_type string::rfind(char c, size_type pos) const;
-	template string::size_type string::rfind(const char* s, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find(const string & str, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find(const char* s, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find (char c, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::rfind(const string & str, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::rfind(char c, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::rfind(const char* s, size_type pos) const;
 
-	template string::size_type string::find_first_of(const string &, size_type) const;
-	template string::size_type string::find_first_of(const char *, size_type pos, size_type n) const;
-	template string::size_type string::find_first_of(const char*, size_type pos) const;
-	template string::size_type string::find_first_of(char c, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find_first_of(const string &, size_type) const;
+	template _UCXXEXPORT string::size_type string::find_first_of(const char *, size_type pos, size_type n) const;
+	template _UCXXEXPORT string::size_type string::find_first_of(const char*, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find_first_of(char c, size_type pos) const;
 
-	template string::size_type string::find_last_of (const string & , size_type pos) const;
-	template string::size_type string::find_last_of (const char* s, size_type pos, size_type n) const;
-	template string::size_type string::find_last_of (const char* s, size_type pos) const;
-	template string::size_type string::find_last_of (char c, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find_last_of (const string & , size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find_last_of (const char* s, size_type pos, size_type n) const;
+	template _UCXXEXPORT string::size_type string::find_last_of (const char* s, size_type pos) const;
+	template _UCXXEXPORT string::size_type string::find_last_of (char c, size_type pos) const;
 
-	template string::size_type string::find_first_not_of(const string &, size_type) const;
-	template string::size_type string::find_first_not_of(const char*, size_type, size_type) const;
-	template string::size_type string::find_first_not_of(const char*, size_type) const;
-	template string::size_type string::find_first_not_of(char c, size_type) const;
+	template _UCXXEXPORT string::size_type string::find_first_not_of(const string &, size_type) const;
+	template _UCXXEXPORT string::size_type string::find_first_not_of(const char*, size_type, size_type) const;
+	template _UCXXEXPORT string::size_type string::find_first_not_of(const char*, size_type) const;
+	template _UCXXEXPORT string::size_type string::find_first_not_of(char c, size_type) const;
 
-	template int string::compare(const string & str) const;
-	template int string::compare(size_type pos1, size_type n1, const string & str) const;
+	template _UCXXEXPORT int string::compare(const string & str) const;
+	template _UCXXEXPORT int string::compare(size_type pos1, size_type n1, const string & str) const;
 
-	template string string::substr(size_type pos, size_type n) const;
+	template _UCXXEXPORT string string::substr(size_type pos, size_type n) const;
 
-	template string & string::operator=(const string & str);
-	template string & string::operator=(const char * s);
+	template _UCXXEXPORT string & string::operator=(const string & str);
+	template _UCXXEXPORT string & string::operator=(const char * s);
 
-	template bool operator==(const string & lhs, const string & rhs);
-	template bool operator==(const char * lhs, const string & rhs);
-	template bool operator==(const string & rhs, const char * rhs);
+	template _UCXXEXPORT bool operator==(const string & lhs, const string & rhs);
+	template _UCXXEXPORT bool operator==(const char * lhs, const string & rhs);
+	template _UCXXEXPORT bool operator==(const string & rhs, const char * rhs);
 
-	template bool operator!=(const string & lhs, const string & rhs);
-	template bool operator!=(const char * lhs, const string & rhs);
-	template bool operator!=(const string & rhs, const char * rhs);
+	template _UCXXEXPORT bool operator!=(const string & lhs, const string & rhs);
+	template _UCXXEXPORT bool operator!=(const char * lhs, const string & rhs);
+	template _UCXXEXPORT bool operator!=(const string & rhs, const char * rhs);
 
-	template string operator+(const string & lhs, const char* rhs);
-	template string operator+(const char* lhs, const string & rhs);
-	template string operator+(const string & lhs,	const string & rhs);
+	template _UCXXEXPORT string operator+(const string & lhs, const char* rhs);
+	template _UCXXEXPORT string operator+(const char* lhs, const string & rhs);
+	template _UCXXEXPORT string operator+(const string & lhs,	const string & rhs);
 
-	template bool operator> (const string & lhs, const string & rhs);
-	template bool operator< (const string & lhs, const string & rhs);
+	template _UCXXEXPORT bool operator> (const string & lhs, const string & rhs);
+	template _UCXXEXPORT bool operator< (const string & lhs, const string & rhs);
 
 
 //Functions dependent upon OSTREAM
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
 
-template ostream & operator<<(ostream & os, const string & str);
+template _UCXXEXPORT ostream & operator<<(ostream & os, const string & str);
 
 #endif
 
@@ -97,7 +97,7 @@ template ostream & operator<<(ostream & os, const string & str);
 //Functions dependent upon ISTREAM
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
-template istream & operator>>(istream & is, string & str);
+template _UCXXEXPORT istream & operator>>(istream & is, string & str);
 
 
 #endif

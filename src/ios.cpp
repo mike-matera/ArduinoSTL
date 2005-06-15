@@ -29,62 +29,62 @@ namespace std{
 
 
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-	int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
+	_UCXXEXPORT int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
 
 //Create buffers first
 #ifdef __UCLIBCXX_SUPPORT_COUT__
-	filebuf _cout_filebuf;
+	_UCXXEXPORT filebuf _cout_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CIN__
-	filebuf _cin_filebuf;
+	_UCXXEXPORT filebuf _cin_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CERR__
-	filebuf _cerr_filebuf;
+	_UCXXEXPORT filebuf _cerr_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CLOG__
-	filebuf _clog_filebuf;
+	_UCXXEXPORT filebuf _clog_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCOUT__
-	wfilebuf _wcout_filebuf;
+	_UCXXEXPORT wfilebuf _wcout_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCIN__
-	wfilebuf _wcin_filebuf;
+	_UCXXEXPORT wfilebuf _wcin_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCERR__
-	wfilebuf _wcerr_filebuf;
+	_UCXXEXPORT wfilebuf _wcerr_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCLOG__
-	wfilebuf _wclog_filebuf;
+	_UCXXEXPORT wfilebuf _wclog_filebuf;
 #endif
 
 //Then create streams
 #ifdef __UCLIBCXX_SUPPORT_COUT__
-	ostream cout(&_cout_filebuf);
+	_UCXXEXPORT ostream cout(&_cout_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CIN__
-	istream cin(&_cin_filebuf);
+	_UCXXEXPORT istream cin(&_cin_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CERR__
-	ostream cerr(&_cerr_filebuf);
+	_UCXXEXPORT ostream cerr(&_cerr_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CLOG__
-	ostream clog(&_clog_filebuf);
+	_UCXXEXPORT ostream clog(&_clog_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCOUT__
-	wostream wcout(&_wcout_filebuf);
+	_UCXXEXPORT wostream wcout(&_wcout_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCIN__
-	wistream wcin(&_wcin_filebuf);
+	_UCXXEXPORT wistream wcin(&_wcin_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCERR__
-	wostream wcerr(&_wcerr_filebuf);
+	_UCXXEXPORT wostream wcerr(&_wcerr_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCLOG__
-	wostream wclog(&_wclog_filebuf);
+	_UCXXEXPORT wostream wclog(&_wclog_filebuf);
 #endif
 
 
-	ios_base::Init::Init(){
+	_UCXXEXPORT ios_base::Init::Init(){
 		if(init_cnt == 0){	//Need to construct cout et al
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 			_cout_filebuf.fp = stdout;
@@ -134,7 +134,7 @@ namespace std{
 		init_cnt++;
 	}
 
-	ios_base::Init::~Init(){
+	_UCXXEXPORT ios_base::Init::~Init(){
 		--init_cnt;
 		if(init_cnt==0){
 
@@ -145,38 +145,38 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
 
-	template void basic_ios<char, char_traits<char> >::clear(iostate state);
+	template _UCXXEXPORT void basic_ios<char, char_traits<char> >::clear(iostate state);
 
 #endif
 
 
-	ios_base::fmtflags ios_base::flags(fmtflags fmtfl){
+	_UCXXEXPORT ios_base::fmtflags ios_base::flags(fmtflags fmtfl){
 		fmtflags temp = mformat;
 		mformat = fmtfl;
 		return temp;
 	}
 
-	ios_base::fmtflags ios_base::setf(fmtflags fmtfl){
+	_UCXXEXPORT ios_base::fmtflags ios_base::setf(fmtflags fmtfl){
 		return flags(flags() | fmtfl);
 	}
 
-	ios_base::fmtflags ios_base::setf(fmtflags fmtfl, fmtflags mask ){
+	_UCXXEXPORT ios_base::fmtflags ios_base::setf(fmtflags fmtfl, fmtflags mask ){
 		return flags( (flags()& ~mask) | (fmtfl & mask));
 	}
 
-	streamsize ios_base::precision(streamsize prec){
+	_UCXXEXPORT streamsize ios_base::precision(streamsize prec){
 		streamsize temp = mprecision;
 		mprecision = prec;
 		return temp;
 	}
 
-	streamsize ios_base::width(streamsize wide){
+	_UCXXEXPORT streamsize ios_base::width(streamsize wide){
 		streamsize temp = mwidth;
 		mwidth = wide;
 		return temp;
 	}
 
-	locale ios_base::imbue(const locale& loc){
+	_UCXXEXPORT locale ios_base::imbue(const locale& loc){
 		locale retval = mLocale;
 		mLocale = loc;
 		return retval;

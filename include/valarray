@@ -116,7 +116,7 @@ namespace std{
 	//Actual class definitions
 
 
-	class slice {
+	class _UCXXEXPORT slice {
 	protected:
 		size_t sta;
 		size_t siz;
@@ -140,7 +140,7 @@ namespace std{
 
 
 
-	template<class T> class valarray {
+	template<class T> class _UCXXEXPORT valarray {
 		friend class slice_array<T>;
 	protected:
 		T * data;
@@ -456,7 +456,7 @@ namespace std{
 
 
 
-	template <class T> class slice_array {
+	template <class T> class _UCXXEXPORT slice_array {
 		friend class valarray<T>;
 	public:
 		typedef T value_type;
@@ -537,7 +537,7 @@ namespace std{
 	};
 
 
-	class gslice {
+	class _UCXXEXPORT gslice {
 	private:
 		size_t sta;
 		valarray<size_t> siz;

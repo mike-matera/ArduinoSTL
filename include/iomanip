@@ -29,37 +29,37 @@ namespace std{
 // These are the helper classes which we are going to be using to
 // hold the required data
 
-class __resetiosflags{
+class _UCXXEXPORT __resetiosflags{
 public:
 	ios_base::fmtflags m;
 	__resetiosflags(ios_base::fmtflags mask) : m(mask){ }
 };
 
-class __setiosflags{
+class _UCXXEXPORT __setiosflags{
 public:
 	ios_base::fmtflags m;
 	__setiosflags(ios_base::fmtflags mask) : m(mask){ }
 };
 
-class __setbase{
+class _UCXXEXPORT __setbase{
 public:
 	int base;
 	__setbase(int b) : base(b){ }
 };
 
-class __setfill{
+class _UCXXEXPORT __setfill{
 public:
 	int character;
 	__setfill(int c): character(c){  }
 };
 
-class __setprecision{
+class _UCXXEXPORT __setprecision{
 public:
 	int digits;
 	__setprecision(int n): digits(n) {  }
 };
 
-class __setw{
+class _UCXXEXPORT __setw{
 public:
 	int width;
 	__setw(int n): width(n) {  }
@@ -95,28 +95,28 @@ inline __setw setw(int n){
 
 //How to handle interaction with [i|o]stream classes
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __resetiosflags s)
 {
 	os.setf(ios_base::fmtflags(0),s.m);
 	return os;
 }
 
-template<class Ch, class Tr> basic_istream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_istream<Ch, Tr>&
 	operator>>(basic_istream<Ch, Tr>& is, const __resetiosflags s)
 {
 	is.setf(ios_base::fmtflags(0),s.m);
 	return is;
 }
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setiosflags s)
 {
 	os.setf(s.m);
 	return os;
 }
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setbase s)
 {
 	ios_base::fmtflags f(0);
@@ -138,21 +138,21 @@ template<class Ch, class Tr> basic_ostream<Ch, Tr>&
 	return os;
 }
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setfill s)
 {
 	os.fill(s.character);
 	return os;
 }
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setprecision s)
 {
 	os.precision(s.digits);
 	return os;
 }
 
-template<class Ch, class Tr> basic_ostream<Ch, Tr>&
+template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 	operator<<(basic_ostream<Ch, Tr>& os, const __setw s)
 {
 	os.width(s.width);

@@ -41,7 +41,7 @@ namespace std{
 	 * require different scanf functions
 	 */
 
-	template <class C, class traits>
+	template <class C, class traits> _UCXXEXPORT 
 		basic_string<C, traits> _readToken(basic_istream<C, traits>& stream)
 	{
 		basic_string<C, traits> temp;
@@ -61,17 +61,17 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
-	template <> string _readToken<char, char_traits<char> >(istream & stream);
+	template <> _UCXXEXPORT string _readToken<char, char_traits<char> >(istream & stream);
 
 #endif
 
 
-	template <class traits, class charT, class dataType> class __istream_readin{
+	template <class traits, class charT, class dataType> class _UCXXEXPORT __istream_readin{
 	public:
 		static void readin(basic_istream<charT,traits>& stream, dataType & var);
 	};
 
-	template <class traits> class __istream_readin<traits, char, bool>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, bool>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, bool & var)
 		{
@@ -86,7 +86,7 @@ namespace std{
 	};
 
 
-	template <class traits> class __istream_readin<traits, char, short>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, short>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, short & var)
 		{
@@ -109,7 +109,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __istream_readin<traits, char, unsigned short>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, unsigned short>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, unsigned short & var)
 		{
@@ -132,7 +132,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __istream_readin<traits, char, int>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, int>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, int & var)
 		{
@@ -155,7 +155,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __istream_readin<traits, char, unsigned int>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, unsigned int>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, unsigned int & var)
 		{
@@ -180,7 +180,7 @@ namespace std{
 	};
 
 
-	template <class traits> class __istream_readin<traits, char, long int>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, long int>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, long int & var)
 		{
@@ -205,7 +205,7 @@ namespace std{
 	};
 
 
-	template <class traits> class __istream_readin<traits, char, unsigned long int>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, unsigned long int>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, unsigned long int & var)
 		{
@@ -231,7 +231,7 @@ namespace std{
 
 #ifdef __UCLIBCXX_HAS_FLOATS__
 
-	template <class traits> class __istream_readin<traits, char, float>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, float>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, float & var)
 		{
@@ -242,7 +242,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __istream_readin<traits, char, double>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, double>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, double & var)
 		{
@@ -252,7 +252,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __istream_readin<traits, char, long double>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, long double>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, long double & var)
 		{
@@ -264,7 +264,7 @@ namespace std{
 
 #endif	// ifdef __UCLIBCXX_HAS_FLOATS__
 
-	template <class traits> class __istream_readin<traits, char, void*>{
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, void*>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, void* & var)
 		{

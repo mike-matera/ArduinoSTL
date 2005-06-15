@@ -29,20 +29,20 @@ namespace std{
 
 	template<class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&> struct iterator;
 
-	struct input_iterator_tag {};
-	struct output_iterator_tag {};
-	struct forward_iterator_tag: public input_iterator_tag {};
-	struct bidirectional_iterator_tag: public forward_iterator_tag {};
-	struct random_access_iterator_tag: public bidirectional_iterator_tag {};
+	struct _UCXXEXPORT input_iterator_tag {};
+	struct _UCXXEXPORT output_iterator_tag {};
+	struct _UCXXEXPORT forward_iterator_tag: public input_iterator_tag {};
+	struct _UCXXEXPORT bidirectional_iterator_tag: public forward_iterator_tag {};
+	struct _UCXXEXPORT random_access_iterator_tag: public bidirectional_iterator_tag {};
 
-	template <class InputIterator, class Distance> void advance(InputIterator& i, Distance n){
+	template <class InputIterator, class Distance> _UCXXEXPORT void advance(InputIterator& i, Distance n){
 		while(n > 0){
 			--n;
 			++i;
 		}
 	}
 
-	template <class InputIterator> typename iterator_traits<InputIterator>::difference_type 
+	template <class InputIterator> _UCXXEXPORT typename iterator_traits<InputIterator>::difference_type 
 		distance(InputIterator first, InputIterator last)
 	{
 		typename iterator_traits<InputIterator>::difference_type d = 0;
@@ -74,7 +74,7 @@ namespace std{
 	
 	//Actual Template definitions
 
-	template<class Iterator> struct iterator_traits {
+	template<class Iterator> struct _UCXXEXPORT iterator_traits {
 		typedef typename Iterator::difference_type difference_type;
 		typedef typename Iterator::value_type value_type;
 		typedef typename Iterator::pointer pointer;
@@ -83,7 +83,7 @@ namespace std{
 	};
 
 	//Pointer specialization - required by standard
-	template<class T> struct iterator_traits<T*> {
+	template<class T> struct _UCXXEXPORT iterator_traits<T*> {
 		typedef ptrdiff_t difference_type;
 		typedef T value_type;
 		typedef T* pointer;
@@ -92,7 +92,7 @@ namespace std{
 	};
 
 	//Specialization recomended by standard
-/*	template<class T> struct iterator_traits<T __far*> {
+/*	template<class T> struct _UCXXEXPORT iterator_traits<T __far*> {
 		typedef long difference_type;
 		typedef T value_type;
 		typedef T __far* pointer;
@@ -100,7 +100,9 @@ namespace std{
 		typedef random_access_iterator_tag iterator_category;
 	};*/
 
-/*	template <class BidirectionalIterator> void reverse(BidirectionalIterator first, BidirectionalIterator last){
+/*	template <class BidirectionalIterator> _UCXXEXPORT void
+		reverse(BidirectionalIterator first, BidirectionalIterator last)
+	{
 		typename iterator_traits<BidirectionalIterator>::difference_type n = distance(first, last);
 		--n;
 		while(n > 0){
@@ -113,7 +115,7 @@ namespace std{
 
 
 	template <class Category, class T, class Distance, class Pointer, class Reference> 
-		struct iterator
+		struct _UCXXEXPORT iterator
 	{
 		typedef T         value_type;
 		typedef Distance  difference_type;
@@ -123,7 +125,8 @@ namespace std{
 	};
 
 
-	template <class Iterator> class reverse_iterator : public iterator<typename iterator_traits<Iterator>::iterator_category,
+	template <class Iterator> class _UCXXEXPORT reverse_iterator
+		: public iterator<typename iterator_traits<Iterator>::iterator_category,
 		typename iterator_traits<Iterator>::value_type, typename iterator_traits<Iterator>::difference_type,
 		typename iterator_traits<Iterator>::pointer, typename iterator_traits<Iterator>::reference>
 	{
@@ -173,36 +176,48 @@ namespace std{
 	 };
 
 
-	template <class Iterator> bool operator==(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
+	template <class Iterator> _UCXXEXPORT bool
+		operator==(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	{
 		return x.base() == y.base();
 	}
-	template <class Iterator> bool operator<(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
+	template <class Iterator> _UCXXEXPORT bool
+		operator<(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	{
 		return x.base() < y.base();
 	}
-	template <class Iterator> bool operator!=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
+	template <class Iterator> _UCXXEXPORT bool
+		operator!=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	{
 		return x.base() != y.base();
 	}
-	template <class Iterator> bool operator>(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
+	template <class Iterator> _UCXXEXPORT bool
+		operator>(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	{
 		return x.base() > y.base();
 	}
-	template <class Iterator> bool operator>=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
+	template <class Iterator> _UCXXEXPORT bool
+		operator>=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	{
 		return x.base() >= y.base();
 	}
-	template <class Iterator> bool operator<=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
+	template <class Iterator> _UCXXEXPORT bool
+		operator<=(const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	{
 		return x.base() <= y.base();
 	}
-	template <class Iterator> typename reverse_iterator<Iterator>::difference_type operator-
-		( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
+	template <class Iterator> _UCXXEXPORT typename reverse_iterator<Iterator>::difference_type
+		operator-( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
 	{
 		return y.base() - x.base();
 	}
-	template <class Iterator>reverse_iterator<Iterator> operator+
-		(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x)
+	template <class Iterator> _UCXXEXPORT reverse_iterator<Iterator>
+		operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x)
 	{
 		return reverse_iterator<Iterator> (x.base() - n);
 	}
 
-	template <class Container> class back_insert_iterator : 
+	template <class Container> class _UCXXEXPORT back_insert_iterator : 
 		public iterator<output_iterator_tag,void,void,void,void>
 	{
 	protected:
@@ -225,11 +240,15 @@ namespace std{
 		}
 	};
 
-	template <class Container> back_insert_iterator<Container> back_inserter(Container& x){
+	template <class Container> _UCXXEXPORT back_insert_iterator<Container>
+		back_inserter(Container& x)
+	{
 		return back_insert_iterator<Container>(x);
 	}
 
-	template <class Container>class front_insert_iterator : public iterator<output_iterator_tag,void,void,void,void> {
+	template <class Container> class _UCXXEXPORT front_insert_iterator
+		: public iterator<output_iterator_tag,void,void,void,void>
+	{
 	protected:
 		Container& container;
 	public:
@@ -245,11 +264,15 @@ namespace std{
 		front_insert_iterator<Container> operator++(int) { return *this; }
 	};
 
-	template <class Container> front_insert_iterator<Container> front_inserter(Container& x){
+	template <class Container> _UCXXEXPORT front_insert_iterator<Container>
+		front_inserter(Container& x)
+	{
 		return front_insert_iterator<Container>(x);
 	}
 
-	template <class Container> class insert_iterator : public iterator<output_iterator_tag,void,void,void,void> {
+	template <class Container> class _UCXXEXPORT insert_iterator
+		: public iterator<output_iterator_tag,void,void,void,void>
+	{
 	protected:
 		Container& container;
 		typename Container::iterator iter;
@@ -266,7 +289,9 @@ namespace std{
 		insert_iterator<Container> operator++(int) { return *this; }
 	};
 
-	template <class Container, class Iterator> insert_iterator<Container> inserter(Container& x, Iterator i){
+	template <class Container, class Iterator> _UCXXEXPORT insert_iterator<Container>
+		inserter(Container& x, Iterator i)
+	{
 		return insert_iterator<Container>(x,typename Container::iterator(i));
 	}
 

@@ -153,14 +153,14 @@ namespace std
 namespace __gnu_cxx
 {
 #if _GLIBCPP_USE_C99_CHECK || _GLIBCPP_USE_C99_DYNAMIC || _GLIBCXX_USE_C99_CHECK || _GLIBCXX_USE_C99_DYNAMIC
-  extern "C" int
+  extern "C" _UCXXEXPORT int
     (snprintf)(char * restrict, size_t, const char * restrict, ...);
-  extern "C" int
+  extern "C" _UCXXEXPORT int
     (vfscanf)(FILE * restrict, const char * restrict, __gnuc_va_list);
-  extern "C" int (vscanf)(const char * restrict, __gnuc_va_list);
-  extern "C" int
+  extern "C" _UCXXEXPORT int (vscanf)(const char * restrict, __gnuc_va_list);
+  extern "C" _UCXXEXPORT int
     (vsnprintf)(char * restrict, size_t, const char * restrict, __gnuc_va_list);
-  extern "C" int
+  extern "C" _UCXXEXPORT int
     (vsscanf)(const char * restrict, const char * restrict, __gnuc_va_list);
 #endif
 #if !_GLIBCPP_USE_C99_DYNAMIC && !_GLIBCXX_USE_C99_DYNAMIC

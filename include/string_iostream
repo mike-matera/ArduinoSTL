@@ -33,13 +33,13 @@ namespace std{
 
 
 
-template<class charT, class traits, class Allocator> basic_ostream<charT, traits>&
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_ostream<charT, traits>&
 	operator<<(basic_ostream<charT, traits>& os, const basic_string<charT,traits,Allocator>& str)
 {
 	return os.write(str.data(), str.length());
 }
 
-template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<charT,traits>&
 	operator>>(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str)
 {
 
@@ -78,7 +78,7 @@ template<class charT, class traits, class Allocator> basic_istream<charT,traits>
 	return is;
 }
 
-template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<charT,traits>&
 	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str, charT delim)
 {
 	typename basic_istream<charT,traits>::sentry s(is);
@@ -104,7 +104,7 @@ template<class charT, class traits, class Allocator> basic_istream<charT,traits>
 	return is;	
 }
 
-template<class charT, class traits, class Allocator> basic_istream<charT,traits>&
+template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<charT,traits>&
 	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str)
 {
 	return getline(is, str, '\n');
@@ -116,14 +116,14 @@ template<class charT, class traits, class Allocator> basic_istream<charT,traits>
 
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
-template<> basic_istream<char, char_traits<char> >& operator>>(
+template<> _UCXXEXPORT basic_istream<char, char_traits<char> >& operator>>(
 	basic_istream<char,char_traits<char> >& is,
 	basic_string<char, char_traits<char>, allocator<char> >& str);
 #endif
 
 
 #ifdef __UCLIBCXX_EXPAND_OSTREAM_CHAR__
-template<> basic_ostream<char, char_traits<char> >&
+template<> _UCXXEXPORT basic_ostream<char, char_traits<char> >&
 	operator<<(basic_ostream<char, char_traits<char> >& os, 
 	const basic_string<char,char_traits<char>, std::allocator<char> >& str);
 

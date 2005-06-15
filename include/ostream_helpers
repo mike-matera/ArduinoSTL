@@ -42,12 +42,12 @@ namespace std{
 
 
 
-	template <class traits, class charT, class dataType> class __ostream_printout{
+	template <class traits, class charT, class dataType> class _UCXXEXPORT __ostream_printout{
 	public:
 		static void printout(basic_ostream<charT,traits>& stream, const dataType n);
 	};
 
-	template <class traits> class __ostream_printout<traits, char, signed long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, signed long int>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const signed long int n)
 		{
@@ -95,7 +95,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __ostream_printout<traits, char, unsigned long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, unsigned long int>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const unsigned long int n)
 		{
@@ -142,7 +142,7 @@ namespace std{
 
 #ifndef __STRICT_ANSI__
 
-	template <class traits> class __ostream_printout<traits, char, signed long long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, signed long long int>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const signed long long int n)
 		{
@@ -188,7 +188,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __ostream_printout<traits, char, unsigned long long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, unsigned long long int>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const unsigned long long int n)
 		{
@@ -237,7 +237,7 @@ namespace std{
 
 #endif	//__STRICT_ANSI__
 
-	template <class traits> class __ostream_printout<traits, char, double>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, double>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const double f)
 		{
@@ -261,7 +261,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __ostream_printout<traits, char, long double>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, long double>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const long double f)
 		{
@@ -287,7 +287,7 @@ namespace std{
 	};
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-	template <class traits> class __ostream_printout<traits, wchar_t, signed long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, signed long int>{
 	public:
 		static void printout(basic_ostream<wchar_t, traits >& stream, const signed long int n)
 		{
@@ -321,7 +321,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __ostream_printout<traits, wchar_t, unsigned long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, unsigned long int>{
 	public:
 		static void printout(basic_ostream<wchar_t, traits >& stream, const unsigned long int n)
 		{
@@ -357,7 +357,7 @@ namespace std{
 
 #ifndef __STRICT_ANSI__
 
-	template <class traits> class __ostream_printout<traits, wchar_t, signed long long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, signed long long int>{
 	public:
 		static void printout(basic_ostream<wchar_t, traits >& stream, const signed long long int n)
 		{
@@ -391,7 +391,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __ostream_printout<traits, wchar_t, unsigned long long int>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, unsigned long long int>{
 	public:
 		static void printout(basic_ostream<wchar_t, traits >& stream, const unsigned long long int n)
 		{
@@ -428,7 +428,7 @@ namespace std{
 
 #endif	//__STRICT_ANSI__
 
-	template <class traits> class __ostream_printout<traits, wchar_t, double>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, double>{
 	public:
 		static void printout(basic_ostream<wchar_t, traits >& stream, const double f)
 		{
@@ -452,7 +452,7 @@ namespace std{
 		}
 	};
 
-	template <class traits> class __ostream_printout<traits, wchar_t, long double>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, long double>{
 	public:
 		static void printout(basic_ostream<wchar_t, traits >& stream, const long double f)
 		{

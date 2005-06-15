@@ -24,49 +24,48 @@
 
 namespace std{
 
-	logic_error::logic_error() throw() : mstring(){
+	_UCXXEXPORT logic_error::logic_error() throw() : mstring(){
 
 	}
 
-	logic_error::logic_error(const string& what_arg) : mstring(what_arg){
+	_UCXXEXPORT logic_error::logic_error(const string& what_arg) : mstring(what_arg){
 
 	}
 
-	logic_error::~logic_error() throw(){
+	_UCXXEXPORT logic_error::~logic_error() throw(){
 
 	}
 
-	const char * logic_error::what(){
+	_UCXXEXPORT const char * logic_error::what(){
 		return mstring.c_str();
 	}
 
 
-	out_of_range::out_of_range() : logic_error(){
+	_UCXXEXPORT out_of_range::out_of_range() : logic_error(){
 
 	}
 
-	out_of_range::out_of_range(const string & what_arg) : logic_error(what_arg) {
+	_UCXXEXPORT out_of_range::out_of_range(const string & what_arg) : logic_error(what_arg) {
 	
 	}
 
-	out_of_range::~out_of_range() throw() {
+	_UCXXEXPORT out_of_range::~out_of_range() throw() {
 	
 	}
 
-
-	runtime_error::runtime_error() : mstring(){
-
-	}
-
-	runtime_error::runtime_error(const string& what_arg) : mstring(what_arg){
+	_UCXXEXPORT runtime_error::runtime_error() : mstring(){
 
 	}
 
-	runtime_error::~runtime_error(){
+	_UCXXEXPORT runtime_error::runtime_error(const string& what_arg) : mstring(what_arg){
 
 	}
 
-	const char * runtime_error::what(){
+	_UCXXEXPORT runtime_error::~runtime_error(){
+
+	}
+
+	_UCXXEXPORT const char * runtime_error::what(){
 		return mstring.c_str();
 	}
 

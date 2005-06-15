@@ -46,8 +46,8 @@ namespace std{
 	template <class charT, class traits = char_traits<charT> > class ostreambuf_iterator;
 
 	
-	template < class T, class charT, class traits, class Distance >
-		class istream_iterator : public iterator<input_iterator_tag,T,Distance,const T*, const T&>
+	template < class T, class charT, class traits, class Distance >	class _UCXXEXPORT istream_iterator
+		: public iterator<input_iterator_tag,T,Distance,const T*, const T&>
 	{
 	public:
 		typedef charT char_type;
@@ -84,22 +84,22 @@ namespace std{
 		T value;
 	};
 
-	template <class T, class charT, class traits, class Distance> 
+	template <class T, class charT, class traits, class Distance> _UCXXEXPORT 
 		bool operator==(const istream_iterator<T,charT,traits,Distance>& x,
 		const istream_iterator<T,charT,traits,Distance>& y)
 	{
 		return x.m_equal(y);
 	}
 
-	template <class T, class charT, class traits, class Distance>
+	template <class T, class charT, class traits, class Distance> _UCXXEXPORT 
 		bool operator!=(const istream_iterator<T,charT,traits,Distance>& x,
 		const istream_iterator<T,charT,traits,Distance>& y)
 	{
 		return !(x == y);
 	}
 
-	template <class T, class charT, class traits> 
-		class ostream_iterator : public iterator<output_iterator_tag,void,void,void,void>
+	template <class T, class charT, class traits> class _UCXXEXPORT ostream_iterator
+		: public iterator<output_iterator_tag,void,void,void,void>
 	{
 	public:
 		typedef charT char_type;
@@ -125,7 +125,7 @@ namespace std{
 		const char* delim;
 	};
 
-	template<class charT, class traits > class istreambuf_iterator : 
+	template<class charT, class traits > class _UCXXEXPORT istreambuf_iterator : 
 		public iterator<input_iterator_tag, charT, typename traits::off_type, charT*, charT&>
 	{
 	public:
@@ -135,7 +135,7 @@ namespace std{
 		typedef basic_streambuf<charT,traits>	streambuf_type;
 		typedef basic_istream<charT,traits>	istream_type;
 
-		class proxy{
+		class _UCXXEXPORT proxy{
 			charT val;
 			basic_streambuf<charT, traits> * buf;
 			
@@ -170,19 +170,23 @@ namespace std{
 		streambuf_type* sbuf;
 	};
 
-	template <class charT, class traits> bool operator==(const istreambuf_iterator<charT,traits>& a,
+	template <class charT, class traits> _UCXXEXPORT bool
+		operator==(const istreambuf_iterator<charT,traits>& a,
 		const istreambuf_iterator<charT,traits>& b)
 	{
 		return a.equal(b);
 	}
 
-	template <class charT, class traits> bool operator!=(const istreambuf_iterator<charT,traits>& a,
+	template <class charT, class traits> bool _UCXXEXPORT 
+		operator!=(const istreambuf_iterator<charT,traits>& a,
 		const istreambuf_iterator<charT,traits>& b)
 	{
 		return !a.equal(b);
 	}
 
-	template <class charT, class traits> class ostreambuf_iterator : iterator<output_iterator_tag,void,void,void,void>{
+	template <class charT, class traits> class _UCXXEXPORT ostreambuf_iterator
+		: iterator<output_iterator_tag,void,void,void,void>
+	{
 	public:
 		typedef charT                         char_type;
 		typedef traits                        traits_type;

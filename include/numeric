@@ -17,13 +17,14 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <basic_definitions>
 #include <exception>
 
 #ifndef __STD_NUMERIC_HEADER
 #define __STD_NUMERIC_HEADER 1
 
 namespace std{
-	template <class InputIterator, class T>
+	template <class InputIterator, class T> _UCXXEXPORT 
 		T accumulate(InputIterator first, InputIterator last, T init)
 	{
 		while(first != last){
@@ -33,7 +34,7 @@ namespace std{
 		return init;
 	}
 
-	template <class InputIterator, class T, class BinaryOperation>
+	template <class InputIterator, class T, class BinaryOperation> _UCXXEXPORT 
 		T accumulate(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 	{
 		while(first != last){
@@ -44,7 +45,7 @@ namespace std{
 	}
 
 
-	template <class InputIterator1, class InputIterator2, class T>
+	template <class InputIterator1, class InputIterator2, class T> _UCXXEXPORT 
 		T inner_product(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, T init)
 	{
@@ -57,7 +58,7 @@ namespace std{
 	}
 
 	template <class InputIterator1, class InputIterator2, class T,
-		class BinaryOperation1, class BinaryOperation2>
+		class BinaryOperation1, class BinaryOperation2> _UCXXEXPORT 
 		T inner_product(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, T init,
 			BinaryOperation1 binary_op1,
@@ -71,7 +72,7 @@ namespace std{
 		return init;
 	}
 
-	template <class InputIterator, class OutputIterator>
+	template <class InputIterator, class OutputIterator> _UCXXEXPORT 
 		OutputIterator partial_sum(InputIterator first, InputIterator last,
 		OutputIterator result)
 	{
@@ -90,7 +91,7 @@ namespace std{
 	}
 
 
-	template <class InputIterator, class OutputIterator, class BinaryOperation>
+	template <class InputIterator, class OutputIterator, class BinaryOperation> _UCXXEXPORT 
 		OutputIterator partial_sum(InputIterator first, InputIterator last,
 		OutputIterator result, BinaryOperation binary_op)
 	{
@@ -109,7 +110,7 @@ namespace std{
 	}
 
 
-	template <class InputIterator, class OutputIterator>
+	template <class InputIterator, class OutputIterator> _UCXXEXPORT 
 		OutputIterator
 		adjacent_difference(InputIterator first, InputIterator last,
 			OutputIterator result)
@@ -130,7 +131,7 @@ namespace std{
 	}
 
 
-	template <class InputIterator, class OutputIterator, class BinaryOperation>
+	template <class InputIterator, class OutputIterator, class BinaryOperation> _UCXXEXPORT 
 		OutputIterator
 		adjacent_difference(InputIterator first, InputIterator last,
 			OutputIterator result, BinaryOperation binary_op)

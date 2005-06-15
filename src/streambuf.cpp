@@ -27,19 +27,19 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template streambuf::basic_streambuf();
-	template streambuf::~basic_streambuf();
+	template _UCXXEXPORT streambuf::basic_streambuf();
+	template _UCXXEXPORT streambuf::~basic_streambuf();
 
 #endif
 
-	template locale streambuf::pubimbue(const locale &loc);
-	template streamsize streambuf::in_avail();
-	template streambuf::int_type streambuf::sbumpc();
-	template streambuf::int_type streambuf::snextc();
-	template streambuf::int_type streambuf::sgetc();
-	template streambuf::int_type streambuf::sputbackc(char_type c);
-	template streambuf::int_type streambuf::sungetc();
-	template streambuf::int_type streambuf::sputc(char_type c);
+	template _UCXXEXPORT locale streambuf::pubimbue(const locale &loc);
+	template _UCXXEXPORT streamsize streambuf::in_avail();
+	template _UCXXEXPORT streambuf::int_type streambuf::sbumpc();
+	template _UCXXEXPORT streambuf::int_type streambuf::snextc();
+	template _UCXXEXPORT streambuf::int_type streambuf::sgetc();
+	template _UCXXEXPORT streambuf::int_type streambuf::sputbackc(char_type c);
+	template _UCXXEXPORT streambuf::int_type streambuf::sungetc();
+	template _UCXXEXPORT streambuf::int_type streambuf::sputc(char_type c);
 
 #endif
 

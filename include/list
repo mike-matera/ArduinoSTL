@@ -27,7 +27,7 @@
 
 namespace std{
 
-	template <class T, class Allocator = allocator<T> > class list {
+	template <class T, class Allocator = allocator<T> > class _UCXXEXPORT list {
 	public:
 		typedef typename Allocator::reference		reference;
 		typedef typename Allocator::const_reference	const_reference;
@@ -129,7 +129,7 @@ namespace std{
 	//Implementations of List
 
 	//List node
-	template <class T, class Allocator> class list<T, Allocator>::node{
+	template <class T, class Allocator> class _UCXXEXPORT list<T, Allocator>::node{
 	public:
 		node * previous;
 		node * next;
@@ -147,7 +147,7 @@ namespace std{
 	};
 
 	//List iterator
-	template <class T, class Allocator> class list<T, Allocator>::iter_list
+	template <class T, class Allocator> class _UCXXEXPORT list<T, Allocator>::iter_list
 		: public std::iterator<
 			bidirectional_iterator_tag, 
 			T, 

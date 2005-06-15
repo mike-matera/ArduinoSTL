@@ -27,31 +27,31 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template filebuf::basic_filebuf();
-	template filebuf::~basic_filebuf();
+	template _UCXXEXPORT filebuf::basic_filebuf();
+	template _UCXXEXPORT filebuf::~basic_filebuf();
 
 #endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template filebuf::int_type filebuf::pbackfail(filebuf::int_type c);
-	template filebuf * filebuf::open(const char* s, ios_base::openmode mode);
-	template filebuf * filebuf::close();
-	template filebuf::int_type filebuf::overflow(filebuf::int_type);
-	template filebuf::int_type filebuf::underflow ();
-	template streamsize filebuf::xsputn(const char* s, streamsize n);
+	template _UCXXEXPORT filebuf::int_type filebuf::pbackfail(filebuf::int_type c);
+	template _UCXXEXPORT filebuf * filebuf::open(const char* s, ios_base::openmode mode);
+	template _UCXXEXPORT filebuf * filebuf::close();
+	template _UCXXEXPORT filebuf::int_type filebuf::overflow(filebuf::int_type);
+	template _UCXXEXPORT filebuf::int_type filebuf::underflow ();
+	template _UCXXEXPORT streamsize filebuf::xsputn(const char* s, streamsize n);
 
-	template basic_streambuf<char, char_traits<char> >*
+	template _UCXXEXPORT basic_streambuf<char, char_traits<char> >*
 		filebuf::setbuf(char * s, streamsize n);
 
 
 #ifdef __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
-	template basic_ofstream<char, char_traits<char> >::basic_ofstream();
-	template basic_ofstream<char, char_traits<char> >::basic_ofstream(const char* s, ios_base::openmode mode);
-	template basic_ofstream<char, char_traits<char> >::~basic_ofstream();
+	template _UCXXEXPORT basic_ofstream<char, char_traits<char> >::basic_ofstream();
+	template _UCXXEXPORT basic_ofstream<char, char_traits<char> >::basic_ofstream(const char* s, ios_base::openmode mode);
+	template _UCXXEXPORT basic_ofstream<char, char_traits<char> >::~basic_ofstream();
 
-	template basic_ifstream<char, char_traits<char> >::basic_ifstream();
-	template basic_ifstream<char, char_traits<char> >::basic_ifstream(const char* s, ios_base::openmode mode);
-	template basic_ifstream<char, char_traits<char> >::~basic_ifstream();
+	template _UCXXEXPORT basic_ifstream<char, char_traits<char> >::basic_ifstream();
+	template _UCXXEXPORT basic_ifstream<char, char_traits<char> >::basic_ifstream(const char* s, ios_base::openmode mode);
+	template _UCXXEXPORT basic_ifstream<char, char_traits<char> >::~basic_ifstream();
 
 #endif //__UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
@@ -62,7 +62,7 @@ namespace std{
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
 
-template <> basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
+template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 	basic_filebuf<wchar_t, char_traits<wchar_t> >::overflow(int_type c)
 {
 	typedef basic_streambuf<wchar_t, char_traits<wchar_t> > wstreambuf;

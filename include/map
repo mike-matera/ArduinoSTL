@@ -52,7 +52,7 @@ template<class Key, class T, class Compare, class Allocator> class __map_citer;
 //All base classes first (__base_map, iterators, value_compare) and it's associated code
 
 
-template<class Key, class T, class Compare, class Allocator> class __base_map{
+template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __base_map{
 
 protected:
 	friend class __map_iter<Key, T, Compare, Allocator>;
@@ -111,7 +111,7 @@ protected:
 
 	//Implementations
 
-	template<class Key, class T, class Compare, class Allocator> class __map_iter
+	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_iter
 		: public std::iterator<
 			bidirectional_iterator_tag,
 			std::pair<Key, T>,
@@ -179,7 +179,7 @@ protected:
 	};
 
 
-	template<class Key, class T, class Compare, class Allocator> class __map_citer
+	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_citer
 		: public std::iterator<
 			bidirectional_iterator_tag,
 			std::pair<Key, T>,
@@ -248,7 +248,7 @@ protected:
 
 
 	//Compare the keys of the two items
-	template<class Key, class T, class Compare, class Allocator> class 
+	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT 
 		__base_map<Key, T, Compare, Allocator>::value_compare : public binary_function<
 			typename map<Key, T, Compare, Allocator>::value_type,
 			typename map<Key, T, Compare, Allocator>::value_type,
@@ -409,7 +409,7 @@ protected:
 //Implementation of map
 
 
-template<class Key, class T, class Compare, class Allocator> class map
+template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT map
 	: public __base_map<Key, T, Compare, Allocator>
 {
 		//Default value of allocator does not meet C++ standard specs, but it works for this library
@@ -853,7 +853,7 @@ protected:
 //Implementation of multimap
 
 
-template<class Key, class T, class Compare, class Allocator> class multimap
+template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT multimap
 	: public __base_map<Key, T, Compare, Allocator>
 {
 		//Default value of allocator does not meet C++ standard specs, but it works for this library
@@ -1333,33 +1333,33 @@ protected:
    them are supposed to do, and I have time.
  */
 
-	template <class Key, class T, class Compare, class Allocator> bool operator< 
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator< 
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator>bool operator!=
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator!=
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator>
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator>
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator>=
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator>=
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator<=
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator<=
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> void swap
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT void swap
 		(map<Key,T,Compare,Allocator>& x, map<Key,T,Compare,Allocator>& y);
 
 
-	template <class Key, class T, class Compare, class Allocator> bool operator==
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator==
 		(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator< 
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator< 
 		(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator!=
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator!=
 		(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator> 
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator> 
 		(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator>=
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator>=
 		(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> bool operator<=
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT bool operator<=
 		(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);
-	template <class Key, class T, class Compare, class Allocator> void swap
+	template <class Key, class T, class Compare, class Allocator> _UCXXEXPORT void swap
 		(multimap<Key,T,Compare,Allocator>& x, multimap<Key,T,Compare,Allocator>& y);
 
 }

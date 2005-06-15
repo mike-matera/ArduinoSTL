@@ -21,7 +21,7 @@
 #include <cstdlib>
 #include <func_exception>
 
-void* operator new[](std::size_t numBytes) throw(std::bad_alloc){
+_UCXXEXPORT void* operator new[](std::size_t numBytes) throw(std::bad_alloc){
 	void * p = malloc(numBytes);
 	if(p == 0){
 		std::__throw_bad_alloc();

@@ -23,20 +23,20 @@
 #ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
 
 namespace std{
-	static char * __std_exception_what_value = "exception";
+	_UCXXEXPORT static char * __std_exception_what_value = "exception";
 
 	/*We are providing our own versions to be sneaky*/
 
 
-	exception::~exception() throw(){
+	_UCXXEXPORT exception::~exception() throw(){
 		//Empty function
 	}
 
-	const char* exception::what() const throw(){
+	_UCXXEXPORT const char* exception::what() const throw(){
 		return __std_exception_what_value;
 	}
 
-	bad_exception::~bad_exception() throw(){
+	_UCXXEXPORT bad_exception::~bad_exception() throw(){
 
 	}
 

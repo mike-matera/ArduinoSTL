@@ -22,7 +22,7 @@
 #include <func_exception>
 
 #ifndef NO_NOTHROW
-void operator delete[](void* ptr, const std::nothrow_t& ) throw(){
+_UCXXEXPORT void operator delete[](void* ptr, const std::nothrow_t& ) throw(){
 	free(ptr);
 }
 #endif

@@ -29,7 +29,7 @@ namespace std {
 //	class complex<double>;
 //	class complex<long double>;
 
-	template<class T> class complex{
+	template<class T> _UCXXEXPORT class complex{
 	public:
 		typedef T value_type;
 
@@ -108,107 +108,107 @@ namespace std {
 		T i;
 	};
 
-	template<class T> complex<T> operator+(const complex<T>& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator+(const complex<T>& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval += rs;
 		return retval;
 	}
-	template<class T> complex<T> operator+(const complex<T>& ls, const T& rs){
+	template<class T> _UCXXEXPORT complex<T> operator+(const complex<T>& ls, const T& rs){
 		complex<T> retval(ls);
 		ls += rs;
 		return retval;
 	}
-	template<class T> inline complex<T> operator+(const T& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT inline complex<T> operator+(const T& ls, const complex<T>& rs){
 		return rs + ls;
 	}
-	template<class T> complex<T> operator-(const complex<T>& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator-(const complex<T>& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval -= rs;
 		return retval;
 	}
-	template<class T> complex<T> operator-(const complex<T>& ls, const T& rs){
+	template<class T> _UCXXEXPORT complex<T> operator-(const complex<T>& ls, const T& rs){
 		complex<T> retval(ls);
 		retval -= rs;
 		return retval;
 	}
-	template<class T> complex<T> operator-(const T& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator-(const T& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval -= rs;
 		return retval;
 	}
-	template<class T> complex<T> operator*(const complex<T>& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator*(const complex<T>& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval *= rs;
 		return retval;
 	}
-	template<class T> complex<T> operator*(const complex<T>& ls, const T& rs){
+	template<class T> _UCXXEXPORT complex<T> operator*(const complex<T>& ls, const T& rs){
 		complex<T> retval(ls);
 		retval *= rs;
 		return retval;
 	}
-	template<class T> complex<T> operator*(const T& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator*(const T& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval *=rs;
 		return retval;
 	}
-	template<class T> complex<T> operator/(const complex<T>& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator/(const complex<T>& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval/=rs;
 		return retval;
 	}
-	template<class T> complex<T> operator/(const complex<T>& ls, const T& rs){
+	template<class T> _UCXXEXPORT complex<T> operator/(const complex<T>& ls, const T& rs){
 		complex<T> retval(ls);
 		retval/=rs;
 		return retval;
 	}
-	template<class T> complex<T> operator/(const T& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT complex<T> operator/(const T& ls, const complex<T>& rs){
 		complex<T> retval(ls);
 		retval/=rs;
 		return retval;
 	}
-	template<class T> complex<T> operator+(const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> operator+(const complex<T>& v){
 		return v;
 	}
-	template<class T> complex<T> operator-(const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> operator-(const complex<T>& v){
 		return complex<T> (-v.real(), -v.imag());
 	}
-	template<class T> bool operator==(const complex<T>& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT bool operator==(const complex<T>& ls, const complex<T>& rs){
 		if( ls.real() == rs.real() && ls.imag() == rs.image()){
 			return true;
 		}
 		return false;
 	}
-	template<class T> bool operator==(const complex<T>& ls, const T& rs){
+	template<class T> _UCXXEXPORT bool operator==(const complex<T>& ls, const T& rs){
 		if(ls.real() == rs && ls.imag() == T()){
 			return true;
 		}
 		return false;
 	}
-	template<class T> bool operator==(const T& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT bool operator==(const T& ls, const complex<T>& rs){
 		if(ls == rs.real() && rs.imag() == T()){
 			return true;
 		}
 		return false;
 	}
-	template<class T> bool operator!=(const complex<T>& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT bool operator!=(const complex<T>& ls, const complex<T>& rs){
 		if(ls == rs){
 			return false;
 		}
 		return true;
 	}
-	template<class T> bool operator!=(const complex<T>& ls, const T& rs){
+	template<class T> _UCXXEXPORT bool operator!=(const complex<T>& ls, const T& rs){
 		if(ls == rs){
 			return false;
 		}
 		return true;
 	}
-	template<class T> bool operator!=(const T& ls, const complex<T>& rs){
+	template<class T> _UCXXEXPORT bool operator!=(const T& ls, const complex<T>& rs){
 		if(ls == rs){
 			return false;
 		}
 		return true;
 	}
-	template<class T, class charT, class traits> basic_istream<charT, traits>&
+	template<class T, class charT, class traits> _UCXXEXPORT basic_istream<charT, traits>&
 		 operator>>(basic_istream<charT, traits>& is, complex<T>& v)
 	{
 		T tempr;
@@ -220,74 +220,74 @@ namespace std {
 		return is;
 	}
 
-	template<class T, class charT, class traits> basic_ostream<charT, traits>&
+	template<class T, class charT, class traits> _UCXXEXPORT basic_ostream<charT, traits>&
 		 operator<<(basic_ostream<charT, traits>& os, const complex<T>&v)
 	{
 		os << v.real() << ", " << v.imag();
 		return os;
 	}
 
-	template<class T> T real(const complex<T>& v){
+	template<class T> _UCXXEXPORT T real(const complex<T>& v){
 		return v.real();
 	}
 
-	template<class T> T imag(const complex<T>& v){
+	template<class T> _UCXXEXPORT T imag(const complex<T>& v){
 		return v.imag();
 	}
 
-	template<class T> T norm(const complex<T>& v){
+	template<class T> _UCXXEXPORT T norm(const complex<T>& v){
 		return (v.real() * v.real() + v.imag() * v.imag());
 	}
 
-	template<class T> complex<T> conj(const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> conj(const complex<T>& v){
 		return complex<T>(v.real(), -v.imag());
 	}
 
 #ifdef __UCLIBCXX_SUPPORT_MATH__	//Can we link with libm?
 
-	template<class T> T abs(const complex<T>& v){
+	template<class T> _UCXXEXPORT T abs(const complex<T>& v){
 		return sqrt(v.real() * v.real() + v.imag() * v.imag());
 	}
 
-	template<class T> T arg(const complex<T>& v){
+	template<class T> _UCXXEXPORT T arg(const complex<T>& v){
 		return atan2(v.imag(), v.real());
 	}
 
-	template<class T> complex<T> polar(const T& rho, const T& theta){
+	template<class T> _UCXXEXPORT complex<T> polar(const T& rho, const T& theta){
 		return complex<T>(rho * cos(theta), rho * sin(theta));
 	}
 
-	template<class T> complex<T> cos  (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> cos  (const complex<T>& v){
 		return complex<T>(cos(v.real()) * cosh(v.imag()), -sin(v.real()) * sinh(v.imag()));
 	}
 
-	template<class T> complex<T> cosh (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> cosh (const complex<T>& v){
 		return complex<T>(cosh(v.real()) * cos(v.imag()), sinh(v.real()) * sin(v.imag()));
 	}
 
-	template<class T> complex<T> exp  (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> exp  (const complex<T>& v){
 		return polar(exp(v.real()), v.imag());
 	}
 
-	template<class T> complex<T> log  (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> log  (const complex<T>& v){
 		return complex<T>(log(abs(v)), arg(v));
 	}
 
-	template<class T> complex<T> log10(const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> log10(const complex<T>& v){
 		return (log(v) / log(T(10.0)));
 	}
 
-	template<class T> complex<T> pow(const complex<T>& v, int p){
+	template<class T> _UCXXEXPORT complex<T> pow(const complex<T>& v, int p){
 		T rho = pow(abs(v), p);
 		T theta = arg(v);
 		return complex<T>(rho * cos(p * theta), rho * sin(p * theta) );
 	}
 
-	template<class T> complex<T> pow(const complex<T>& v, const T& p){
+	template<class T> _UCXXEXPORT complex<T> pow(const complex<T>& v, const T& p){
 		return polar( pow(abs(v),p), arg(v)*p );
 	}
 
-	template<class T> complex<T> pow(const complex<T>& v, const complex<T>& p){
+	template<class T> _UCXXEXPORT complex<T> pow(const complex<T>& v, const complex<T>& p){
 		if(v == T()){
 			//We are using "0" as the value
 			return T();
@@ -295,27 +295,27 @@ namespace std {
 		return exp(p * log(v));
 	}
 
-	template<class T> complex<T> pow(const T& v, const complex<T>& p){
+	template<class T> _UCXXEXPORT complex<T> pow(const T& v, const complex<T>& p){
 		if(v == T()){
 			return T();
 		}
 		return polar(pow(v,p.real()), y.imag() * log(x) );
 	}
 
-	template<class T> complex<T> sin  (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> sin  (const complex<T>& v){
 		return complex<T>(sin(v.real()) * cosh(v.imag()), cosh(v.real()) * sin(v.imag()));
 	}
 
-	template<class T> complex<T> sinh (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> sinh (const complex<T>& v){
 		return complext<T>(sinh(v.real()) * cos(v.imag()), cosh(v.real()) * sin(v.imag()) );
 	}
 
-	template<class T> complex<T> sqrt (const complex<T>&);
-	template<class T> complex<T> tan  (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> sqrt (const complex<T>&);
+	template<class T> _UCXXEXPORT complex<T> tan  (const complex<T>& v){
 		return sin(v) / cos(v);
 	}
 
-	template<class T> complex<T> tanh (const complex<T>& v){
+	template<class T> _UCXXEXPORT complex<T> tanh (const complex<T>& v){
 		return sinh(v) / cosh(v);
 	}
 

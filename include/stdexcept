@@ -31,7 +31,7 @@ namespace std{
 
 //typedef basic_string<char> string;
 
-class logic_error : public exception {
+class _UCXXEXPORT logic_error : public exception {
 protected:
 	string mstring;
 public:
@@ -43,28 +43,28 @@ public:
 
 };	
 
-class domain_error : public logic_error {
+class _UCXXEXPORT domain_error : public logic_error {
 public:
 	domain_error() : logic_error() {}
 	domain_error(const string& what_arg) : logic_error(what_arg) {}
 	virtual ~domain_error() throw() {}
 };
 
-class invalid_argument : public logic_error {
+class _UCXXEXPORT invalid_argument : public logic_error {
 public:
 	invalid_argument() : logic_error(){}
 	invalid_argument(const string& what_arg) : logic_error(what_arg){}
 	virtual ~invalid_argument() throw() {}
 };
 
-class length_error : public logic_error {
+class _UCXXEXPORT length_error : public logic_error {
 public:
 	length_error() : logic_error(){}
 	length_error(const string& what_arg) : logic_error(what_arg){}
 	virtual ~length_error() throw() {}
 };
 
-class out_of_range : public logic_error{
+class _UCXXEXPORT out_of_range : public logic_error{
 public:
 	out_of_range();
 	out_of_range(const string & what_arg);
@@ -72,7 +72,7 @@ public:
 
 };
 
-class runtime_error{
+class _UCXXEXPORT runtime_error{
 protected:
 	string mstring;
 public:
@@ -83,7 +83,7 @@ public:
 	virtual const char * what();
 };
 
-class range_error : public runtime_error{
+class _UCXXEXPORT range_error : public runtime_error{
 public:
 	range_error() : runtime_error(){}
 	range_error(const string& what_arg) : runtime_error(what_arg) {}
@@ -91,14 +91,14 @@ public:
 };
 
 
-class overflow_error : public runtime_error{
+class _UCXXEXPORT overflow_error : public runtime_error{
 public:
 	overflow_error() : runtime_error(){}
 	overflow_error(const string& what_arg) : runtime_error(what_arg) {}
 	virtual ~overflow_error(){}
 };
 
-class underflow_error : public runtime_error{
+class _UCXXEXPORT underflow_error : public runtime_error{
 public:
 	underflow_error() : runtime_error(){}
 	underflow_error(const string& what_arg) : runtime_error(what_arg) {}

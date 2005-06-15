@@ -27,7 +27,7 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
-	template <> string _readToken<char, char_traits<char> >(istream & stream)
+	template <> _UCXXEXPORT string _readToken<char, char_traits<char> >(istream & stream)
 	{
 		string temp;
 		char_traits<char>::int_type c;
@@ -44,25 +44,24 @@ namespace std{
 		return temp;
         }
 
-	template istream::int_type istream::get();
-	template istream & istream::get(char &c);
+	template _UCXXEXPORT istream::int_type istream::get();
+	template _UCXXEXPORT istream & istream::get(char &c);
 
-
-	template istream & istream::operator>>(bool &n);
-	template istream & istream::operator>>(short &n);
-	template istream & istream::operator>>(unsigned short &n);
-	template istream & istream::operator>>(int &n);
-	template istream & istream::operator>>(unsigned int &n);
-	template istream & istream::operator>>(long unsigned &n);
-	template istream & istream::operator>>(long int &n);
-	template istream & istream::operator>>(void *& p);
-	template istream & operator>>(istream & is, char & c);
+	template _UCXXEXPORT istream & istream::operator>>(bool &n);
+	template _UCXXEXPORT istream & istream::operator>>(short &n);
+	template _UCXXEXPORT istream & istream::operator>>(unsigned short &n);
+	template _UCXXEXPORT istream & istream::operator>>(int &n);
+	template _UCXXEXPORT istream & istream::operator>>(unsigned int &n);
+	template _UCXXEXPORT istream & istream::operator>>(long unsigned &n);
+	template _UCXXEXPORT istream & istream::operator>>(long int &n);
+	template _UCXXEXPORT istream & istream::operator>>(void *& p);
+	template _UCXXEXPORT istream & operator>>(istream & is, char & c);
 
 
 #ifdef __UCLIBCXX_HAS_FLOATS__
-	template istream & istream::operator>>(float &f);
-	template istream & istream::operator>>(double &f);
-	template istream & istream::operator>>(long double &f);
+	template _UCXXEXPORT istream & istream::operator>>(float &f);
+	template _UCXXEXPORT istream & istream::operator>>(double &f);
+	template _UCXXEXPORT istream & istream::operator>>(long double &f);
 #endif
 
 

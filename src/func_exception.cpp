@@ -26,32 +26,32 @@ namespace std{
 
 #ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
 
-void __throw_bad_alloc(){
+_UCXXEXPORT void __throw_bad_alloc(){
 	throw bad_alloc();
 }
 
-void __throw_out_of_range( const char * message){
+_UCXXEXPORT void __throw_out_of_range( const char * message){
 	if(message == 0){
 		throw out_of_range();
 	}
 	throw out_of_range(message);
 }
 
-void __throw_overflow_error( const char * message){
+_UCXXEXPORT void __throw_overflow_error( const char * message){
 	if(message == 0){
 		throw overflow_error();
 	}
 	throw overflow_error(message);
 }
 
-void __throw_length_error(const char * message){
+_UCXXEXPORT void __throw_length_error(const char * message){
 	if(message == 0){
 		throw length_error();
 	}
 	throw length_error(message);
 }
 
-void __throw_invalid_argument(const char * message){
+_UCXXEXPORT void __throw_invalid_argument(const char * message){
 	if(message == 0){
 		throw invalid_argument();
 	}
@@ -60,23 +60,23 @@ void __throw_invalid_argument(const char * message){
 
 #else
 
-void __throw_bad_alloc(){
+_UCXXEXPORT void __throw_bad_alloc(){
 	abort();
 }
 
-void __throw_out_of_range( const char * ){
+_UCXXEXPORT void __throw_out_of_range( const char * ){
 	abort();
 }
 
-void __throw_overflow_error( const char * ){
+_UCXXEXPORT void __throw_overflow_error( const char * ){
 	abort();
 }
 
-void __throw_length_error(const char * ){
+_UCXXEXPORT void __throw_length_error(const char * ){
 	abort();
 }
 
-void __throw_invalid_argument(const char *){
+_UCXXEXPORT void __throw_invalid_argument(const char *){
 	abort();
 }
 

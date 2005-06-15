@@ -52,7 +52,7 @@ template<class Key, class Compare, class Allocator> class __set_citer;
 //All base classes first (__base_set, iterators, value_compare) and it's associated code
 
 
-template<class Key, class Compare, class Allocator> class __base_set{
+template<class Key, class Compare, class Allocator> class _UCXXEXPORT __base_set{
 
 protected:
 	friend class __set_iter<Key, Compare, Allocator>;
@@ -109,7 +109,7 @@ protected:
 
 	//Implementations
 
-	template<class Key, class Compare, class Allocator> class __set_iter
+	template<class Key, class Compare, class Allocator> class _UCXXEXPORT __set_iter
 		: public std::iterator<
 			bidirectional_iterator_tag,
 			Key,
@@ -177,7 +177,7 @@ protected:
 	};
 
 
-	template<class Key, class Compare, class Allocator> class __set_citer
+	template<class Key, class Compare, class Allocator> class _UCXXEXPORT __set_citer
 		: public std::iterator<
 			bidirectional_iterator_tag,
 			Key,
@@ -246,7 +246,7 @@ protected:
 
 
 	//Compare the keys of the two items
-	template<class Key, class Compare, class Allocator> class 
+	template<class Key, class Compare, class Allocator> class _UCXXEXPORT 
 		__base_set<Key, Compare, Allocator>::value_compare : public binary_function<
 			typename set<Key, Compare, Allocator>::value_type,
 			typename set<Key, Compare, Allocator>::value_type,
@@ -404,7 +404,7 @@ protected:
 //Implementation of set
 
 
-template<class Key, class Compare, class Allocator> class set
+template<class Key, class Compare, class Allocator> class _UCXXEXPORT set
 	: public __base_set<Key, Compare, Allocator>
 {
 		//Default value of allocator does not meet C++ standard specs, but it works for this library
@@ -828,7 +828,7 @@ protected:
 //Implementation of multiset
 
 
-template<class Key, class Compare, class Allocator> class multiset
+template<class Key, class Compare, class Allocator> class _UCXXEXPORT multiset
 	: public __base_set<Key, Compare, Allocator>
 {
 		//Default value of allocator does not meet C++ standard specs, but it works for this library
@@ -1273,33 +1273,33 @@ protected:
    them are supposed to do, and I have time.
  */
 
-	template <class Key, class Compare, class Allocator> bool operator< 
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator< 
 		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator>bool operator!=
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator!=
 		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator>
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>
 		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator>=
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>=
 		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator<=
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator<=
 		(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> void swap
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT void swap
 		(set<Key,Compare,Allocator>& x, set<Key,Compare,Allocator>& y);
 
 
-	template <class Key, class Compare, class Allocator> bool operator==
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator==
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator< 
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator< 
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator!=
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator!=
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator> 
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator> 
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator>=
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator>=
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> bool operator<=
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT bool operator<=
 		(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
-	template <class Key, class Compare, class Allocator> void swap
+	template <class Key, class Compare, class Allocator> _UCXXEXPORT void swap
 		(multiset<Key,Compare,Allocator>& x, multiset<Key,Compare,Allocator>& y);
 
 }

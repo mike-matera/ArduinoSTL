@@ -27,55 +27,55 @@
 
 namespace std{
 
-	struct __true_type{};
-	struct __false_type{};
+	struct _UCXXEXPORT __true_type{};
+	struct _UCXXEXPORT __false_type{};
 
-	template <class I> class __is_integer{
+	template <class I> class _UCXXEXPORT __is_integer{
 	public:
 		typedef __false_type value;
 	};
 
-	template <> class __is_integer <unsigned int>{
+	template <> class _UCXXEXPORT __is_integer <unsigned int>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <signed int>{
+	template <> class _UCXXEXPORT __is_integer <signed int>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <short unsigned int>{
+	template <> class _UCXXEXPORT __is_integer <short unsigned int>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <short signed int>{
+	template <> class _UCXXEXPORT __is_integer <short signed int>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <char>{
+	template <> class _UCXXEXPORT __is_integer <char>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <signed char>{
+	template <> class _UCXXEXPORT __is_integer <signed char>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <unsigned char>{
+	template <> class _UCXXEXPORT __is_integer <unsigned char>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <long unsigned int>{
+	template <> class _UCXXEXPORT __is_integer <long unsigned int>{
 	public:
 		typedef __true_type value;
 	};
 
-	template <> class __is_integer <long signed int>{
+	template <> class _UCXXEXPORT __is_integer <long signed int>{
 	public:
 		typedef __true_type value;
 	};

@@ -36,7 +36,9 @@ namespace std{
 
 	template <class charT, class traits> basic_istream<charT,traits>& ws(basic_istream<charT,traits>& is);
 
-	template <class charT, class traits> class basic_istream : virtual public basic_ios<charT,traits> {
+	template <class charT, class traits> class _UCXXEXPORT basic_istream :
+		virtual public basic_ios<charT,traits>
+	{
 	public:
 	
 		typedef charT                     char_type;
@@ -336,7 +338,7 @@ namespace std{
 
 	};
 	
-	template <class charT,class traits = char_traits<charT> > class basic_istream<charT,traits>::sentry {
+	template <class charT,class traits = char_traits<charT> > class _UCXXEXPORT basic_istream<charT,traits>::sentry {
 		bool ok;
 	public:
 		explicit sentry(basic_istream<charT,traits>& os, bool noskipws = false){
@@ -483,26 +485,34 @@ namespace std{
 		return *this;
 	}
 
-	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT& c){
+	template<class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
+		operator>>(basic_istream<charT,traits>& is, charT& c)
+	{
 		typename basic_istream<charT,traits>::sentry s(is);
 		is.get(c);
 		return is;
 	}
 
-	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char& c){
+	template<class traits> _UCXXEXPORT basic_istream<char,traits>&
+		operator>>(basic_istream<char,traits>& is, unsigned char& c)
+	{
 		typename basic_istream<char,traits>::sentry s(is);
 		char b;
 		is.get(b);
 		c = b;
 		return is;
 	}
-	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char& c){
+	template<class traits> _UCXXEXPORT basic_istream<char,traits>&
+		operator>>(basic_istream<char,traits>& is, signed char& c)
+	{
 		typename basic_istream<char,traits>::sentry s(is);
 		is.get(c);
 		return is;
 	}
 
-	template<class charT, class traits> basic_istream<charT,traits>& operator>>(basic_istream<charT,traits>& is, charT* c){
+	template<class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
+		operator>>(basic_istream<charT,traits>& is, charT* c)
+	{
 		typename basic_istream<charT,traits>::sentry s(is);
 		int n = is.width();
 		if(n == 0){
@@ -512,7 +522,9 @@ namespace std{
 		return is;
 
 	}
-	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, unsigned char* c){
+	template<class traits> _UCXXEXPORT basic_istream<char,traits>&
+		operator>>(basic_istream<char,traits>& is, unsigned char* c)
+	{
 		typename basic_istream<char,traits>::sentry s(is);
 		int n = is.width();
 		if(n == 0){
@@ -521,7 +533,9 @@ namespace std{
 		is.get(c, n);
 		return is;
 	}
-	template<class traits> basic_istream<char,traits>& operator>>(basic_istream<char,traits>& is, signed char* c){
+	template<class traits> _UCXXEXPORT basic_istream<char,traits>&
+		operator>>(basic_istream<char,traits>& is, signed char* c)
+	{
 		typename basic_istream<char,traits>::sentry s(is);
 		int n = is.width();
 		if(n == 0){
@@ -535,25 +549,25 @@ namespace std{
 #ifndef __UCLIBCXX_COMPILE_ISTREAM__
 
 
-	template <> istream & basic_istream<char, char_traits<char> >::get(char & c);
-	template <> istream::int_type basic_istream<char, char_traits<char> >::get();
+	template <> _UCXXEXPORT istream & basic_istream<char, char_traits<char> >::get(char & c);
+	template <> _UCXXEXPORT istream::int_type basic_istream<char, char_traits<char> >::get();
 
-	template <> istream & istream::operator>>(bool &n);
-	template <> istream & istream::operator>>(short &n);
-	template <> istream & istream::operator>>(unsigned short &n);
-	template <> istream & istream::operator>>(int &n);
-	template <> istream & istream::operator>>(unsigned int &n);
-	template <> istream & istream::operator>>(long unsigned &n);
-	template <> istream & istream::operator>>(long int &n);
-	template <> istream & istream::operator>>(void *& p);
+	template <> _UCXXEXPORT istream & istream::operator>>(bool &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(short &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(unsigned short &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(int &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(unsigned int &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(long unsigned &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(long int &n);
+	template <> _UCXXEXPORT istream & istream::operator>>(void *& p);
 
 #ifdef __UCLIBCXX_HAS_FLOATS__
-	template <> istream & istream::operator>>(float &f);
-	template <> istream & istream::operator>>(double &f);
-	template <> istream & istream::operator>>(long double &f);
+	template <> _UCXXEXPORT istream & istream::operator>>(float &f);
+	template <> _UCXXEXPORT istream & istream::operator>>(double &f);
+	template <> _UCXXEXPORT istream & istream::operator>>(long double &f);
 #endif
 
-	template <> istream & operator>>(istream & is, char & c);
+	template <> _UCXXEXPORT istream & operator>>(istream & is, char & c);
 
 
 

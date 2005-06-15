@@ -17,6 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <basic_definitions>
 #include <exception>
 #include <cstddef>
 
@@ -24,28 +25,28 @@
 #define __STD_NEW_OPERATOR 1
 
 namespace std{
-	class bad_alloc : public exception {};
+	class _UCXXEXPORT bad_alloc : public exception {};
 
-	struct nothrow_t {};
+	struct _UCXXEXPORT nothrow_t {};
 	typedef nothrow_t nothrow;
 
 	typedef void (*new_handler)();
-	new_handler set_new_handler(new_handler new_p) throw();
+	_UCXXEXPORT new_handler set_new_handler(new_handler new_p) throw();
 }
 
 
-void* operator new(std::size_t numBytes) throw(std::bad_alloc);
-void operator delete(void* ptr) throw();
+_UCXXEXPORT void* operator new(std::size_t numBytes) throw(std::bad_alloc);
+_UCXXEXPORT void operator delete(void* ptr) throw();
 
-void* operator new[](std::size_t numBytes) throw(std::bad_alloc);
-void operator delete[](void * ptr) throw();
+_UCXXEXPORT void* operator new[](std::size_t numBytes) throw(std::bad_alloc);
+_UCXXEXPORT void operator delete[](void * ptr) throw();
 
 #ifndef NO_NOTHROW
-void* operator new(std::size_t numBytes, const std::nothrow_t& ) throw();
-void operator delete(void* ptr, const std::nothrow_t& ) throw();
+_UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) throw();
+_UCXXEXPORT void operator delete(void* ptr, const std::nothrow_t& ) throw();
 
-void* operator new[](std::size_t numBytes, const std::nothrow_t& ) throw();
-void operator delete[](void* ptr, const std::nothrow_t& ) throw();
+_UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) throw();
+_UCXXEXPORT void operator delete[](void* ptr, const std::nothrow_t& ) throw();
 #endif
 
 	/* Placement operators */

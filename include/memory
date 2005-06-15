@@ -29,7 +29,7 @@
 
 namespace std{
 
-template <class T> class allocator;
+template <class T> class _UCXXEXPORT allocator;
 	// Specialize for void:
 
 template <> class allocator<void> {
@@ -40,7 +40,7 @@ public:
 	template <class U> struct rebind { typedef allocator<U> other; };
 };
 
-template <class T> class allocator{
+template <class T> class _UCXXEXPORT allocator{
 public:
 	typedef T value_type;
 	typedef size_t size_type;
@@ -76,8 +76,9 @@ public:
 
 };
 
-template <class Out, class T>
-class raw_storage_iterator: public iterator<output_iterator_tag, void, void, void, void>{
+template <class Out, class T> class _UCXXEXPORT raw_storage_iterator
+	: public iterator<output_iterator_tag, void, void, void, void>
+{
 		Out p;
 
 public:
@@ -97,7 +98,7 @@ public:
 	}
 };
 
-template <class T> pair<T*, ptrdiff_t> get_temporary_buffer(ptrdiff_t n){
+template <class T> _UCXXEXPORT pair<T*, ptrdiff_t> get_temporary_buffer(ptrdiff_t n){
 	pair<T*, ptrdiff_t> retval;
 	retval.first = static_cast<T*>(malloc(n * sizeof(T)));
 	if(retval.first == 0){
@@ -108,12 +109,12 @@ template <class T> pair<T*, ptrdiff_t> get_temporary_buffer(ptrdiff_t n){
 	return retval;
 }
 
-template <class T> void return_temporary_buffer(T* p){
+template <class T> _UCXXEXPORT void return_temporary_buffer(T* p){
 	free(p);
 }
 
 
-	template <class T> class auto_ptr{
+	template <class T> class _UCXXEXPORT auto_ptr{
 
 	private:
 		T * object;
