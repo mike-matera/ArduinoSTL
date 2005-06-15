@@ -26,7 +26,7 @@
 namespace std{
 
 	// subclause _lib.alg.nonmodifying_, non-modifying sequence operations:
-	template<class InputIterator, class Function>
+	template<class InputIterator, class Function> _UCXXEXPORT
 		Function for_each(InputIterator first, InputIterator last, Function f)
 	{
 		while(first !=last){
@@ -37,7 +37,7 @@ namespace std{
 	}
 
 
-	template<class InputIterator, class T>
+	template<class InputIterator, class T> _UCXXEXPORT
 		InputIterator find(InputIterator first, InputIterator last, const T& value)
 	{
 		while(first !=last && *first != value){
@@ -46,7 +46,7 @@ namespace std{
 		return first;
 	}
 
-	template<class InputIterator, class Predicate>
+	template<class InputIterator, class Predicate> _UCXXEXPORT
 		InputIterator find_if(InputIterator first, InputIterator last, Predicate pred)
 	{
 		while(first !=last && !pred(*first)){
@@ -55,7 +55,7 @@ namespace std{
 		return first;
 	}
 
-	template<class ForwardIterator1, class ForwardIterator2> ForwardIterator1
+	template<class ForwardIterator1, class ForwardIterator2> _UCXXEXPORT ForwardIterator1
 		find_end(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2)
 	{
@@ -77,7 +77,7 @@ namespace std{
 		return retval;
 	}
 
-	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator1
 		find_end(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2,
@@ -101,7 +101,7 @@ namespace std{
 		return retval;
 	}
 
-	template<class ForwardIterator1, class ForwardIterator2>
+	template<class ForwardIterator1, class ForwardIterator2> _UCXXEXPORT
 		ForwardIterator1
 		find_first_of(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2)
@@ -119,7 +119,7 @@ namespace std{
 		return last1;
 	}
 
-	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator1
 		find_first_of(ForwardIterator1 first1, ForwardIterator1 last1,	
 			ForwardIterator2 first2, ForwardIterator2 last2,
@@ -138,8 +138,7 @@ namespace std{
 		return last1;
 	}
 
-	template<class ForwardIterator>
-		ForwardIterator
+	template<class ForwardIterator> _UCXXEXPORT ForwardIterator
 		adjacent_find(ForwardIterator first, ForwardIterator last)
 	{
 		ForwardIterator temp;
@@ -154,7 +153,7 @@ namespace std{
 		return first;
 	}
 
-	template<class ForwardIterator, class BinaryPredicate>
+	template<class ForwardIterator, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator
 		adjacent_find(ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
 	{
@@ -170,7 +169,7 @@ namespace std{
 		return first;
 	}
 
-	template<class InputIterator, class T>
+	template<class InputIterator, class T> _UCXXEXPORT
 		typename iterator_traits<InputIterator>::difference_type
 		count(InputIterator first, InputIterator last, const T& value)
 	{
@@ -184,7 +183,7 @@ namespace std{
 		return i;
 	}
 
-	template<class InputIterator, class Predicate>
+	template<class InputIterator, class Predicate> _UCXXEXPORT
 		typename iterator_traits<InputIterator>::difference_type
 		count_if(InputIterator first, InputIterator last, Predicate pred)
 	{
@@ -198,7 +197,7 @@ namespace std{
 		return i;
 	}
 
-	template<class InputIterator1, class InputIterator2>
+	template<class InputIterator1, class InputIterator2> _UCXXEXPORT
 		pair<InputIterator1, InputIterator2>	
 		mismatch(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
@@ -216,7 +215,7 @@ namespace std{
 		return retval;
 	}
 
-	template<class InputIterator1, class InputIterator2, class BinaryPredicate>
+	template<class InputIterator1, class InputIterator2, class BinaryPredicate> _UCXXEXPORT
 		pair<InputIterator1, InputIterator2>
 		mismatch(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, BinaryPredicate pred)
@@ -235,7 +234,7 @@ namespace std{
 		return retval;
 	}
 
-	template<class InputIterator1, class InputIterator2>
+	template<class InputIterator1, class InputIterator2> _UCXXEXPORT
 		bool
 		equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
@@ -249,7 +248,7 @@ namespace std{
 		return true;
 	}
 
-	template<class InputIterator1, class InputIterator2, class BinaryPredicate>
+	template<class InputIterator1, class InputIterator2, class BinaryPredicate> _UCXXEXPORT
 		bool
 		equal(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, BinaryPredicate pred)
@@ -264,7 +263,7 @@ namespace std{
 		return true;
 	}
 
-	template<class ForwardIterator1, class ForwardIterator2>
+	template<class ForwardIterator1, class ForwardIterator2> _UCXXEXPORT
 		ForwardIterator1 search(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2)
 	{
@@ -273,7 +272,7 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+	template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator1
 		search(ForwardIterator1 first1, ForwardIterator1 last1,
 			ForwardIterator2 first2, ForwardIterator2 last2,
@@ -298,7 +297,7 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator, class Size, class T>
+	template<class ForwardIterator, class Size, class T> _UCXXEXPORT
 		ForwardIterator
 		search_n(ForwardIterator first, ForwardIterator last, Size count, const T& value)
 	{
@@ -321,7 +320,7 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator, class Size, class T, class BinaryPredicate>
+	template<class ForwardIterator, class Size, class T, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator
 		search_n(ForwardIterator first, ForwardIterator last,
 			Size count, const T& value, BinaryPredicate pred)
@@ -347,7 +346,7 @@ namespace std{
 
 	// subclause _lib.alg.modifying.operations_, modifying sequence operations:
 
-	template<class InputIterator, class OutputIterator>
+	template<class InputIterator, class OutputIterator> _UCXXEXPORT
 		OutputIterator
 		copy(InputIterator first, InputIterator last, OutputIterator result)
 	{
@@ -359,7 +358,7 @@ namespace std{
 		return result;
 	}
 
-	template<class BidirectionalIterator1, class BidirectionalIterator2>
+	template<class BidirectionalIterator1, class BidirectionalIterator2> _UCXXEXPORT
 		BidirectionalIterator2
 		copy_backward(BidirectionalIterator1 first, BidirectionalIterator1 last,
 			BidirectionalIterator2 result)
@@ -372,13 +371,13 @@ namespace std{
 		return result;
 	}
 
-	template<class T> void swap(T& a, T& b){
+	template<class T> _UCXXEXPORT void swap(T& a, T& b){
 		T temp = a;
 		a = b;
 		b = temp;
 	}
 
-	template<class ForwardIterator1, class ForwardIterator2>
+	template<class ForwardIterator1, class ForwardIterator2> _UCXXEXPORT
 		ForwardIterator2
 		swap_ranges(ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2)
 	{
@@ -391,7 +390,7 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator1, class ForwardIterator2>
+	template<class ForwardIterator1, class ForwardIterator2> _UCXXEXPORT
 		void
 		iter_swap(ForwardIterator1 a, ForwardIterator2 b)
 	{
@@ -403,7 +402,7 @@ namespace std{
 	}
 
 
-	template<class InputIterator, class OutputIterator, class UnaryOperation>
+	template<class InputIterator, class OutputIterator, class UnaryOperation> _UCXXEXPORT
 		OutputIterator
 		transform(InputIterator first, InputIterator last,
 			OutputIterator result, UnaryOperation op)
@@ -417,7 +416,7 @@ namespace std{
 	}
 
 
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class BinaryOperation>
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class BinaryOperation> _UCXXEXPORT
 		OutputIterator transform(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, OutputIterator result,
 			BinaryOperation binary_op)
@@ -432,7 +431,7 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator, class T>
+	template<class ForwardIterator, class T> _UCXXEXPORT
 		void
 		replace(ForwardIterator first, ForwardIterator last,
 			const T& old_value, const T& new_value)
@@ -445,7 +444,7 @@ namespace std{
 		}
 	}
 
-	template<class ForwardIterator, class Predicate, class T>
+	template<class ForwardIterator, class Predicate, class T> _UCXXEXPORT
 		void
 		replace_if(ForwardIterator first, ForwardIterator last,
 			Predicate pred, const T& new_value)
@@ -459,7 +458,7 @@ namespace std{
 	}
 
 
-	template<class InputIterator, class OutputIterator, class T>
+	template<class InputIterator, class OutputIterator, class T> _UCXXEXPORT
 		OutputIterator
 		replace_copy(InputIterator first, InputIterator last,
 			OutputIterator result, const T& old_value, const T& new_value)
@@ -476,7 +475,7 @@ namespace std{
 		return result;
 	}
 
-	template<class Iterator, class OutputIterator, class Predicate, class T>
+	template<class Iterator, class OutputIterator, class Predicate, class T> _UCXXEXPORT
 		OutputIterator
 		replace_copy_if(Iterator first, Iterator last,
 			OutputIterator result, Predicate pred, const T& new_value)
@@ -493,7 +492,7 @@ namespace std{
 		return result;
 	}
 
-	template<class ForwardIterator, class T>
+	template<class ForwardIterator, class T> _UCXXEXPORT
 		void
 		fill(ForwardIterator first, ForwardIterator last, const T& value)
 	{
@@ -503,7 +502,7 @@ namespace std{
 		}
 	}
 
-	template<class OutputIterator, class Size, class T>
+	template<class OutputIterator, class Size, class T> _UCXXEXPORT
 		void
 		fill_n(OutputIterator first, Size n, const T& value)
 	{
@@ -514,7 +513,7 @@ namespace std{
 		}
 	}
 
-	template<class ForwardIterator, class Generator>
+	template<class ForwardIterator, class Generator> _UCXXEXPORT
 		void
 		generate(ForwardIterator first, ForwardIterator last, Generator gen)
 	{
@@ -524,7 +523,7 @@ namespace std{
 		}
 	}
 
-	template<class OutputIterator, class Size, class Generator>
+	template<class OutputIterator, class Size, class Generator> _UCXXEXPORT
 		void
 		generate_n(OutputIterator first, Size n, Generator gen)
 	{
@@ -535,7 +534,7 @@ namespace std{
 		}
 	}
 
-	template<class ForwardIterator, class T>
+	template<class ForwardIterator, class T> _UCXXEXPORT
 		ForwardIterator
 		remove(ForwardIterator first, ForwardIterator last, const T& value)
 	{
@@ -552,7 +551,7 @@ namespace std{
 		return first;
 	}
 
-	template<class ForwardIterator, class Predicate>
+	template<class ForwardIterator, class Predicate> _UCXXEXPORT
 		ForwardIterator
 		remove_if(ForwardIterator first, ForwardIterator last, Predicate pred)
 	{
@@ -570,7 +569,7 @@ namespace std{
 	}
 
 
-	template<class InputIterator, class OutputIterator, class T>
+	template<class InputIterator, class OutputIterator, class T> _UCXXEXPORT
 		OutputIterator
 		remove_copy(InputIterator first, InputIterator last,
 			OutputIterator result, const T& value)
@@ -585,7 +584,7 @@ namespace std{
 		return result;
 	}
 
-	template<class InputIterator, class OutputIterator, class Predicate>
+	template<class InputIterator, class OutputIterator, class Predicate> _UCXXEXPORT
 		OutputIterator
 		remove_copy_if(InputIterator first, InputIterator last,
 			OutputIterator result, Predicate pred)
@@ -600,7 +599,7 @@ namespace std{
 		return result;
 	}
 
-	template<class ForwardIterator>
+	template<class ForwardIterator> _UCXXEXPORT
 		ForwardIterator
 		unique(ForwardIterator first, ForwardIterator last)
 	{
@@ -620,7 +619,7 @@ namespace std{
 		return first;
 	}
 
-	template<class ForwardIterator, class BinaryPredicate>
+	template<class ForwardIterator, class BinaryPredicate> _UCXXEXPORT
 		ForwardIterator
 		unique(ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
 	{
@@ -640,7 +639,7 @@ namespace std{
 		return first;
 	}
 
-	template<class InputIterator, class OutputIterator>
+	template<class InputIterator, class OutputIterator> _UCXXEXPORT
 		OutputIterator
 		unique_copy(InputIterator first, InputIterator last, OutputIterator result)
 	{
@@ -658,7 +657,7 @@ namespace std{
 		return result;
 	}
 
-	template<class InputIterator, class OutputIterator, class BinaryPredicate>
+	template<class InputIterator, class OutputIterator, class BinaryPredicate> _UCXXEXPORT
 		OutputIterator
 		unique_copy(InputIterator first, InputIterator last,
 			OutputIterator result, BinaryPredicate pred)
@@ -677,7 +676,7 @@ namespace std{
 		return result;
 	}
 
-	template<class BidirectionalIterator>
+	template<class BidirectionalIterator> _UCXXEXPORT
 		void
 		reverse(BidirectionalIterator first, BidirectionalIterator last)
 	{
@@ -689,7 +688,7 @@ namespace std{
 		}
 	}
 
-	template<class BidirectionalIterator, class OutputIterator>
+	template<class BidirectionalIterator, class OutputIterator> _UCXXEXPORT
 		OutputIterator
 		reverse_copy(BidirectionalIterator first, BidirectionalIterator last,
 		OutputIterator result)
@@ -702,7 +701,7 @@ namespace std{
 		return result;
 	}
 
-	template<class ForwardIterator>
+	template<class ForwardIterator> _UCXXEXPORT
 		void
 		rotate(ForwardIterator first, ForwardIterator middle, ForwardIterator last)
 	{
@@ -735,7 +734,7 @@ namespace std{
 		}
 	}
 
-	template<class ForwardIterator, class OutputIterator>
+	template<class ForwardIterator, class OutputIterator> _UCXXEXPORT
 		OutputIterator
 		rotate_copy(ForwardIterator first, ForwardIterator middle,
 			ForwardIterator last, OutputIterator result)
@@ -755,7 +754,7 @@ namespace std{
 	}
 
 
-	template<class RandomAccessIterator>
+	template<class RandomAccessIterator> _UCXXEXPORT
 		void
 		random_shuffle(RandomAccessIterator first, RandomAccessIterator last)
 	{
@@ -766,7 +765,7 @@ namespace std{
 		}
 	}
 
-	template<class RandomAccessIterator, class RandomNumberGenerator>
+	template<class RandomAccessIterator, class RandomNumberGenerator> _UCXXEXPORT
 		void
 		random_shuffle(RandomAccessIterator first, RandomAccessIterator last,
 		RandomNumberGenerator& rand)
@@ -779,13 +778,13 @@ namespace std{
 	}
 
 	// _lib.alg.partitions_, partitions:
-	template<class BidirectionalIterator, class Predicate> BidirectionalIterator
+	template<class BidirectionalIterator, class Predicate> _UCXXEXPORT BidirectionalIterator
 		partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred)
 	{
 		return stable_partition(first, last, pred);
 	}
 
-	template<class BidirectionalIterator, class Predicate> BidirectionalIterator
+	template<class BidirectionalIterator, class Predicate> _UCXXEXPORT BidirectionalIterator
 		stable_partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred)
 	{
 		//first now points to the first non-desired element
@@ -820,23 +819,27 @@ namespace std{
 		return first;
 	}
 
-	template<class RandomAccessIterator> void sort(RandomAccessIterator first, RandomAccessIterator last){
+	template<class RandomAccessIterator> _UCXXEXPORT
+		void sort(RandomAccessIterator first, RandomAccessIterator last)
+	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		sort(first, last, c );
 	}
 
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	{
 		stable_sort(first, last, comp);
 	}
 
-	template<class RandomAccessIterator> void stable_sort(RandomAccessIterator first, RandomAccessIterator last){
+	template<class RandomAccessIterator> _UCXXEXPORT
+		void stable_sort(RandomAccessIterator first, RandomAccessIterator last)
+	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		stable_sort(first, last, c);
 	}
 
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void stable_sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	{
 		//FIXME - bubble sort
@@ -854,13 +857,13 @@ namespace std{
 		}
 	}
 
-	template<class RandomAccessIterator>
+	template<class RandomAccessIterator> _UCXXEXPORT
 		void partial_sort(RandomAccessIterator first, RandomAccessIterator middle, RandomAccessIterator last)
 	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		partial_sort(first, middle, last, c);
 	}
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void partial_sort(RandomAccessIterator first, RandomAccessIterator middle,
 			RandomAccessIterator last, Compare comp)
 	{
@@ -878,7 +881,7 @@ namespace std{
 			++first;
 		}
 	}
-	template<class InputIterator, class RandomAccessIterator>
+	template<class InputIterator, class RandomAccessIterator> _UCXXEXPORT
 		RandomAccessIterator
 		partial_sort_copy(InputIterator first, InputIterator last,
 			RandomAccessIterator result_first, RandomAccessIterator result_last)
@@ -886,7 +889,7 @@ namespace std{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		return partial_sort_copy(first, last, result_first, result_last, c);
 	}
-	template<class InputIterator, class RandomAccessIterator, class Compare>
+	template<class InputIterator, class RandomAccessIterator, class Compare> _UCXXEXPORT
 		RandomAccessIterator
 		partial_sort_copy(InputIterator first, InputIterator last,
 			RandomAccessIterator result_first, RandomAccessIterator result_last, Compare comp)
@@ -917,20 +920,20 @@ namespace std{
 
 		return middle;
 	}
-	template<class RandomAccessIterator>
+	template<class RandomAccessIterator> _UCXXEXPORT
 		void nth_element(RandomAccessIterator first, RandomAccessIterator nth, RandomAccessIterator last)
 	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		nth_element(first, nth, last, c);
 	}
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void nth_element(RandomAccessIterator first, RandomAccessIterator nth,
 			RandomAccessIterator last, Compare comp)
 	{
 		partial_sort(first, nth, last, comp);
 	}
 
-	template<class ForwardIterator, class T>
+	template<class ForwardIterator, class T> _UCXXEXPORT
 		ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last,
 			const T& value)
 	{
@@ -938,7 +941,7 @@ namespace std{
 		return lower_bound(first, last, value, c);
 	}
 
-	template<class ForwardIterator, class T, class Compare>
+	template<class ForwardIterator, class T, class Compare> _UCXXEXPORT
 		ForwardIterator lower_bound(ForwardIterator first, ForwardIterator last,
 			const T& value, Compare comp)
 	{
@@ -976,7 +979,7 @@ namespace std{
 		return last;
 	}
 
-	template<class ForwardIterator, class T>
+	template<class ForwardIterator, class T> _UCXXEXPORT
 		ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last,
 			const T& value)
 	{
@@ -985,7 +988,7 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator, class T, class Compare>
+	template<class ForwardIterator, class T, class Compare> _UCXXEXPORT
 		ForwardIterator upper_bound(ForwardIterator first, ForwardIterator last,
 			const T& value, Compare comp)
 	{
@@ -1025,14 +1028,16 @@ namespace std{
 	}
 
 
-	template<class ForwardIterator, class T> pair<ForwardIterator, ForwardIterator>
+	template<class ForwardIterator, class T> _UCXXEXPORT
+		pair<ForwardIterator, ForwardIterator>
 		equal_range(ForwardIterator first, ForwardIterator last, const T& value)
 	{
 		less<typename iterator_traits<ForwardIterator>::value_type> c;
 		return equal_range(first, last, value, c);
 	}
 
-	template<class ForwardIterator, class T, class Compare> pair<ForwardIterator, ForwardIterator>
+	template<class ForwardIterator, class T, class Compare> _UCXXEXPORT
+		pair<ForwardIterator, ForwardIterator>
 		equal_range(ForwardIterator first, ForwardIterator last, const T& value, Compare comp)
 	{
 		pair<ForwardIterator, ForwardIterator> retval;
@@ -1043,7 +1048,7 @@ namespace std{
 
 	}
 
-	template<class ForwardIterator, class T>
+	template<class ForwardIterator, class T> _UCXXEXPORT
 		bool binary_search(ForwardIterator first, ForwardIterator last,
 			const T& value)
 	{
@@ -1051,7 +1056,7 @@ namespace std{
 		return binary_search(first, last, value, c);
 	}
 
-	template<class ForwardIterator, class T, class Compare>
+	template<class ForwardIterator, class T, class Compare> _UCXXEXPORT
 		bool binary_search(ForwardIterator first, ForwardIterator last,
 			const T& value, Compare comp)
 	{
@@ -1084,7 +1089,7 @@ namespace std{
 	}
 
 	// _lib.alg.merge_, merge:
-	template<class InputIterator1, class InputIterator2, class OutputIterator>
+	template<class InputIterator1, class InputIterator2, class OutputIterator> _UCXXEXPORT
 		OutputIterator
 		merge(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result)
@@ -1092,7 +1097,7 @@ namespace std{
 		less<typename iterator_traits<InputIterator1>::value_type> c;
 		return merge(first1, last1, first2, last2, result, c);
 	}
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare>
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> _UCXXEXPORT
 		OutputIterator
 		merge(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp)
@@ -1121,14 +1126,14 @@ namespace std{
 		}
 		return result;
 	}
-	template<class BidirectionalIterator>
+	template<class BidirectionalIterator> _UCXXEXPORT
 		void inplace_merge(BidirectionalIterator first,
 			BidirectionalIterator middle, BidirectionalIterator last)
 	{
 		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
 		inplace_merge(first, middle, last, c);
 	}
-	template<class BidirectionalIterator, class Compare>
+	template<class BidirectionalIterator, class Compare> _UCXXEXPORT
 		void inplace_merge(BidirectionalIterator first,
 			BidirectionalIterator middle, BidirectionalIterator last, Compare comp)
 	{
@@ -1147,7 +1152,7 @@ namespace std{
 	}
 
 	// _lib.alg.set.operations_, set operations:
-	template<class InputIterator1, class InputIterator2> 
+	template<class InputIterator1, class InputIterator2> _UCXXEXPORT
 		bool includes(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2)
 	{
@@ -1155,7 +1160,7 @@ namespace std{
 		return includes(first1, last1, first2, last2, c );
 	}
 
-	template<class InputIterator1, class InputIterator2, class Compare>
+	template<class InputIterator1, class InputIterator2, class Compare> _UCXXEXPORT
 		bool includes(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, Compare comp)
 	{
@@ -1177,7 +1182,7 @@ namespace std{
 		return true;
 	}
 
-	template<class InputIterator1, class InputIterator2, class OutputIterator>
+	template<class InputIterator1, class InputIterator2, class OutputIterator> _UCXXEXPORT
 		OutputIterator set_union(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result)
 	{
@@ -1185,7 +1190,7 @@ namespace std{
 		return set_union(first1, last1, first2, last2, result, c);
 	}
 
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare>
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> _UCXXEXPORT
 		OutputIterator set_union(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp)
 	{
@@ -1236,14 +1241,14 @@ namespace std{
 		return result;
 	}
 
-	template<class InputIterator1, class InputIterator2, class OutputIterator>
+	template<class InputIterator1, class InputIterator2, class OutputIterator> _UCXXEXPORT
 		OutputIterator set_intersection(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result)
 	{
 		less<typename iterator_traits<InputIterator1>::value_type> c;
 		return set_intersection(first1, last1, first2, last2, result, c);
 	}
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare>
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> _UCXXEXPORT
 		OutputIterator set_intersection(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp)
 	{
@@ -1264,14 +1269,14 @@ namespace std{
 		}
 		return result;
 	}
-	template<class InputIterator1, class InputIterator2, class OutputIterator>
+	template<class InputIterator1, class InputIterator2, class OutputIterator> _UCXXEXPORT
 		OutputIterator set_difference(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result)
 	{
 		less<typename iterator_traits<InputIterator1>::value_type> c;
 		return set_difference(first1, last1, first2, last2, result, c);
 	}
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare>
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> _UCXXEXPORT
 		OutputIterator set_difference(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp)
 	{
@@ -1317,14 +1322,14 @@ namespace std{
 
 		return result;
 	}
-	template<class InputIterator1, class InputIterator2, class OutputIterator>
+	template<class InputIterator1, class InputIterator2, class OutputIterator> _UCXXEXPORT
 		OutputIterator set_symmetric_difference(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result)
 	{
 		less<typename iterator_traits<InputIterator1>::value_type> c;
 		return set_symmetric_difference(first1, last1, first2, last2, result, c);
 	}
-	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare>
+	template<class InputIterator1, class InputIterator2, class OutputIterator, class Compare> _UCXXEXPORT
 		OutputIterator set_symmetric_difference(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, OutputIterator result, Compare comp)
 	{
@@ -1384,12 +1389,14 @@ namespace std{
 
 	// _lib.alg.heap.operations_, heap operations:
 
-	template<class RandomAccessIterator> void push_heap(RandomAccessIterator first, RandomAccessIterator last){
+	template<class RandomAccessIterator> _UCXXEXPORT
+		void push_heap(RandomAccessIterator first, RandomAccessIterator last)
+	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		push_heap(first, last, c);
 	}
 
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void push_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	{
 		// *(last - 1) is the last element
@@ -1426,11 +1433,13 @@ namespace std{
 		}
 	}
 
-	template<class RandomAccessIterator> void pop_heap(RandomAccessIterator first, RandomAccessIterator last){
+	template<class RandomAccessIterator> _UCXXEXPORT
+		void pop_heap(RandomAccessIterator first, RandomAccessIterator last)
+	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		pop_heap(first, last, c);
 	}
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void pop_heap(RandomAccessIterator first, RandomAccessIterator last, Compare)
 	{
 		--last;
@@ -1440,20 +1449,24 @@ namespace std{
 		}
 	}
 
-	template<class RandomAccessIterator> void make_heap(RandomAccessIterator first, RandomAccessIterator last){
+	template<class RandomAccessIterator> _UCXXEXPORT
+		void make_heap(RandomAccessIterator first, RandomAccessIterator last)
+	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		make_heap(first, last, c);
 	}
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	{
 		sort( reverse_iterator<RandomAccessIterator>(last), reverse_iterator<RandomAccessIterator>(first), comp);
 	}
-	template<class RandomAccessIterator> void sort_heap(RandomAccessIterator first, RandomAccessIterator last){
+	template<class RandomAccessIterator> _UCXXEXPORT
+		void sort_heap(RandomAccessIterator first, RandomAccessIterator last)
+	{
 		less<typename iterator_traits<RandomAccessIterator>::value_type> c;
 		sort_heap(first, last, c);
 	}
-	template<class RandomAccessIterator, class Compare>
+	template<class RandomAccessIterator, class Compare> _UCXXEXPORT
 		void sort_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	{
 		sort( first, last, comp);
@@ -1461,40 +1474,50 @@ namespace std{
 
 
 	// _lib.alg.min.max_, minimum and maximum:
-	template<class T> const T& min(const T& a, const T& b){
+	template<class T> _UCXXEXPORT
+		const T& min(const T& a, const T& b)
+	{
 		if(b < a){
 			return b;
 		}
 		return a;
 	}
 
-	template<class T, class Compare> const T& min(const T& a, const T& b, Compare comp){
+	template<class T, class Compare> _UCXXEXPORT
+		const T& min(const T& a, const T& b, Compare comp)
+	{
 		if( comp(b, a) == true){
 			return b;
 		}
 		return a;
 	}
 
-	template<class T> const T& max(const T& a, const T& b){
+	template<class T> _UCXXEXPORT
+		const T& max(const T& a, const T& b)
+	{
 		if( a < b){
 			return b;
 		}
 		return a;
 	}
 
-	template<class T, class Compare> const T& max(const T& a, const T& b, Compare comp){
+	template<class T, class Compare> _UCXXEXPORT
+		const T& max(const T& a, const T& b, Compare comp)
+	{
 		if( comp(a, b) ){
 			return b;
 		}
 		return a;
 	}
 
-	template<class ForwardIterator> ForwardIterator min_element(ForwardIterator first, ForwardIterator last){
+	template<class ForwardIterator> _UCXXEXPORT
+		ForwardIterator min_element(ForwardIterator first, ForwardIterator last)
+	{
 		less<typename iterator_traits<ForwardIterator>::value_type> c;
 		return min_element(first, last, c);
 	}
 
-	template<class ForwardIterator, class Compare>
+	template<class ForwardIterator, class Compare> _UCXXEXPORT
 		ForwardIterator min_element(ForwardIterator first, ForwardIterator last, Compare comp)
 	{
 		ForwardIterator retval = first;
@@ -1508,14 +1531,14 @@ namespace std{
 		return retval;
 	}
 
-	template<class ForwardIterator>
+	template<class ForwardIterator> _UCXXEXPORT
 		ForwardIterator max_element(ForwardIterator first, ForwardIterator last)
 	{
 		less<typename iterator_traits<ForwardIterator>::value_type> c;
 		return max_element(first, last, c);
 	}
 
-	template<class ForwardIterator, class Compare>
+	template<class ForwardIterator, class Compare> _UCXXEXPORT
 		ForwardIterator max_element(ForwardIterator first, ForwardIterator last, Compare comp)
 	{
 		ForwardIterator retval = first;
@@ -1529,7 +1552,7 @@ namespace std{
 		return retval;
 	}
 
-	template<class InputIterator1, class InputIterator2>
+	template<class InputIterator1, class InputIterator2> _UCXXEXPORT
 		bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2)
 	{
@@ -1537,7 +1560,7 @@ namespace std{
 		return lexicographical_compare(first1, last1, first2, last2, c);
 	}
 
-	template<class InputIterator1, class InputIterator2, class Compare>
+	template<class InputIterator1, class InputIterator2, class Compare> _UCXXEXPORT
 		bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2, Compare comp)
 	{
@@ -1555,14 +1578,14 @@ namespace std{
 	}
 
 	// _lib.alg.permutation.generators_, permutations
-	template<class BidirectionalIterator>
+	template<class BidirectionalIterator> _UCXXEXPORT
 		bool next_permutation(BidirectionalIterator first, BidirectionalIterator last)
 	{
 		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
 		return next_permutation(first, last, c);
 	}
 
-	template<class BidirectionalIterator, class Compare>
+	template<class BidirectionalIterator, class Compare> _UCXXEXPORT
 		bool next_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp)
 	{
 		if(first == last){
@@ -1607,14 +1630,14 @@ namespace std{
 
 	}
 
-	template<class BidirectionalIterator>
+	template<class BidirectionalIterator> _UCXXEXPORT
 		bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last)
 	{
 		less<typename iterator_traits<BidirectionalIterator>::value_type> c;
 		return prev_permutation(first, last, c);
 	}
 	
-	template<class BidirectionalIterator, class Compare>
+	template<class BidirectionalIterator, class Compare> _UCXXEXPORT
 		bool prev_permutation(BidirectionalIterator first, BidirectionalIterator last, Compare comp)
 	{
 		if(first == last){

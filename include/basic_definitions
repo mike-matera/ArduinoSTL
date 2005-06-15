@@ -23,11 +23,11 @@
 //The following is used to support GCC symbol visibility patch
 
 #ifdef GCC_HASCLASSVISIBILITY
-	#define UCXXEXPORT __attribute__ ((visibility("default")))
-	#define UCXXLOCAL __attribute__ ((visibility("hidden")))
+	#define _UCXXEXPORT __attribute__ ((visibility("default")))
+	#define _UCXXLOCAL __attribute__ ((visibility("hidden")))
 #else
-	#define UCXXEXPORT
-	#define UCXXLOCAL
+	#define _UCXXEXPORT
+	#define _UCXXLOCAL
 
 #endif
 

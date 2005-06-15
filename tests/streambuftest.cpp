@@ -7,8 +7,6 @@ int main(){
 	std::streambuf * buf;
 	buf = std::cin.rdbuf();
 
-	std::filebuf * fbuf = dynamic_cast<std::filebuf *>(buf);
-
 	int c;
 
 	while ( (c = buf->snextc()) != std::char_traits<char>::eof() ){

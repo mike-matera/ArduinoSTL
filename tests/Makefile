@@ -17,7 +17,7 @@ endif
 
 EXOBJS	:= $(patsubst %.cpp,%.o, $(SRCS))
 
-OLDOBJS	:= $(patsubst %.cpp,%.o-old, $(SRCS))
+OLDOBJS	:= $(patsubst %.cpp,%-old.o, $(SRCS))
 
 ALLBIN	:= $(patsubst %.cpp,%, $(SRCS))
 
@@ -41,11 +41,11 @@ $(ALLBIN): $(EXOBJS)
 	$(WR_CXX) $(LDFLAGS) -o $@ $@.o
 
 $(OLDBIN): $(OLDOBJS)
-	$(HOSTCXX) $(LDFLAGS) -o $@ $<
+	$(HOSTCXX) $(LDFLAGS) -o $@ $@.o
 
 $(EXOBJS): %.o : %.cpp
 	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 
-$(OLDOBJS): %.o-old : %.cpp
+$(OLDOBJS): %-old.o : %.cpp
 	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
 

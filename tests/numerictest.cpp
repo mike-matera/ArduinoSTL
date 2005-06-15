@@ -6,7 +6,7 @@ int main(){
 
 	std::vector<double> src;
 	std::vector<double> dest;
-	std::vector<double>::iterator i, j;
+	std::vector<double>::iterator i;
 
 	src.clear();
 	dest.clear();
