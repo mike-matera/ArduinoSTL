@@ -37,7 +37,7 @@ namespace std{
 	template <class T, class Allocator> bool operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> void swap(deque<T,Allocator>& x, deque<T,Allocator>& y);
 
-	template <class T, class Allocator> _UCXXEXPORT class deque {
+	template <class T, class Allocator> class _UCXXEXPORT deque {
 	public:
 		friend class deque_iter;
 		class deque_iter;
@@ -128,7 +128,7 @@ namespace std{
 	};
 
 
-	template<class T, class Allocator> _UCXXEXPORT class deque<T, Allocator>::deque_iter
+	template<class T, class Allocator> class _UCXXEXPORT deque<T, Allocator>::deque_iter
 		: public std::iterator<
 			random_access_iterator_tag,
 			T,

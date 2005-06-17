@@ -29,7 +29,7 @@ namespace std {
 //	class complex<double>;
 //	class complex<long double>;
 
-	template<class T> _UCXXEXPORT class complex{
+	template<class T> class _UCXXEXPORT complex{
 	public:
 		typedef T value_type;
 

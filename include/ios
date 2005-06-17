@@ -258,7 +258,7 @@ namespace std{
 	//basic_ios class definition
 
 
-	template <class charT, class traits > _UCXXEXPORT class basic_ios
+	template <class charT, class traits > class _UCXXEXPORT basic_ios
 		: public ios_base
 	{
 	public:

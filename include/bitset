@@ -43,7 +43,7 @@ namespace std{
 	//Actual Code
 
 
-	template<size_t N> _UCXXEXPORT class bitset {
+	template<size_t N> class _UCXXEXPORT bitset {
 	private:
 		//Number of characters allocated to hold the bits
 		static const size_t WORD_SIZE = CHAR_BIT;		//Use int maybe?
