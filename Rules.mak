@@ -75,6 +75,9 @@ endif
 check_gcc=$(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; \
         then echo "$(1)"; else echo "$(2)"; fi)
 
+check_gxx_visibility=$(shell if $(CXX) -fvisibility-inlines-hidden -S -o /dev/null -xc++ /dev/null > /dev/null 2>&1; \
+        then echo "-DGCC_HASCLASSVISIBILITY"; fi)
+
 check_as_needed=$(shell if $(LD) --help | grep -q 'as-needed' ; \
 	then echo "-Wl,--as-needed -lgcc_s -Wl,--no-as-needed"; else echo "-lgcc_s"; fi)
 
@@ -139,6 +142,7 @@ ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 endif
 
 GEN_CXXFLAGS:=-nostdinc++
+GEN_CXXFLAGS+=$(call check_gxx_visibility)
 CXXFLAGS:=$(CFLAGS)
 
 LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
