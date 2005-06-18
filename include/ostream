@@ -390,7 +390,7 @@ namespace std {
 		operator<<(basic_ostream<char,traits>& out, const signed char* c)
 	{
 		typename basic_ostream<char,traits>::sentry s(out);
-		out.write((const char *)c, traits::length(c));
+		out.write(reinterpret_cast<const char *>(c), traits::length( reinterpret_cast<const char *>(c)));
 		return out;
 	}
 	
