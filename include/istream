@@ -332,7 +332,7 @@ namespace std{
 		
 	protected:
 		_UCXXEXPORT basic_istream(const basic_istream<charT,traits> &): basic_ios<charT, traits>() { }
-		_UCXXEXPORT basic_streambuf<charT,traits>* sbuffer;
+		basic_streambuf<charT,traits>* sbuffer;
 		_UCXXEXPORT basic_istream<charT,traits> & operator=(const basic_istream<charT,traits> &){ return *this; }
 		streamsize count_last_ufmt_input;
 
@@ -371,7 +371,7 @@ namespace std{
 	//For code reduction
 
 	template <class charT, class traits>
-	typename _UCXXEXPORT basic_istream<charT,traits>::int_type basic_istream<charT,traits>::get(){
+	_UCXXEXPORT typename basic_istream<charT,traits>::int_type basic_istream<charT,traits>::get(){
 		sentry(*this, true);
 		int_type retval = sbuffer->sgetc();
 		if(retval == traits::eof()){

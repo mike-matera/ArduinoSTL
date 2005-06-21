@@ -65,7 +65,7 @@ namespace std{
 
 		//Constructors/destructor:
 
-		basic_filebuf()	: basic_streambuf<charT, traits>(), fp(0), pbuffer(0), gbuffer(0)
+		_UCXXEXPORT basic_filebuf()	: basic_streambuf<charT, traits>(), fp(0), pbuffer(0), gbuffer(0)
 		{
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
@@ -77,7 +77,7 @@ namespace std{
 		}
 
 
-		virtual ~basic_filebuf(){
+		_UCXXEXPORT virtual ~basic_filebuf(){
 			close();
 			delete [] pbuffer;
 			delete [] gbuffer;
@@ -88,14 +88,14 @@ namespace std{
 
 		//Members:
 
-		bool is_open() const{
+		_UCXXEXPORT bool is_open() const{
 			if(fp == 0){
 				return false;
 			}
 			return true;
 		}
 
-		basic_filebuf<charT,traits>* open(const char* s, ios_base::openmode mode){
+		_UCXXEXPORT basic_filebuf<charT,traits>* open(const char* s, ios_base::openmode mode){
 			bool move_end = (mode & ios_base::ate) != 0;
 			if(is_open() !=false){	//Must call close() first
 				return 0;
@@ -151,7 +151,7 @@ namespace std{
 
 			return this;
 		}
-		basic_filebuf<charT,traits>* close(){
+		_UCXXEXPORT basic_filebuf<charT,traits>* close(){
 			if(fp != 0){
 				overflow();
 				int retval = fclose(fp);
@@ -163,15 +163,15 @@ namespace std{
 			return this;
 		}
 	protected:
-		basic_filebuf(const basic_filebuf<charT,traits> &){ }
-		basic_filebuf<charT,traits> & operator=(const basic_filebuf<charT,traits> &){ return *this; }
+		_UCXXEXPORT basic_filebuf(const basic_filebuf<charT,traits> &){ }
+		_UCXXEXPORT basic_filebuf<charT,traits> & operator=(const basic_filebuf<charT,traits> &){ return *this; }
 
 		//Overridden virtual functions:
 
-		virtual int showmanyc(){
+		virtual _UCXXEXPORT int showmanyc(){
 			return basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr();
 		}
-		virtual int_type underflow(){
+		virtual _UCXXEXPORT int_type underflow(){
 			/* Some variables used internally:
 			   Buffer pointers:
 			   charT * mgbeg;
@@ -266,7 +266,7 @@ namespace std{
 
 			return traits::to_int_type(*basic_streambuf<charT,traits>::gptr());
 		}
-		virtual int_type uflow(){
+		virtual _UCXXEXPORT int_type uflow(){
 			bool dobump = (basic_streambuf<charT,traits>::gptr() != 0);
 			int_type retval = underflow();
 			if(dobump){
@@ -274,7 +274,7 @@ namespace std{
 			}
 			return retval;
 		}
-		virtual int_type pbackfail(int_type c = traits::eof()){
+		virtual _UCXXEXPORT int_type pbackfail(int_type c = traits::eof()){
 			if(is_open() == false || 
 				basic_streambuf<charT,traits>::gptr() == basic_streambuf<charT,traits>::eback())
 			{
@@ -294,7 +294,7 @@ namespace std{
 			}
 		}
 
-		virtual int_type overflow (int_type c = traits::eof()){
+		virtual _UCXXEXPORT int_type overflow (int_type c = traits::eof()){
 			if(is_open() == false){
 				//Can't do much
 				return traits::eof();
@@ -351,7 +351,7 @@ namespace std{
 			return traits::not_eof(c);
 		}
 
-		virtual basic_streambuf<charT,traits>* setbuf(char_type* s, streamsize n){
+		virtual _UCXXEXPORT basic_streambuf<charT,traits>* setbuf(char_type* s, streamsize n){
 			if(s == 0 && n == 0){	//Unbuffered
 				if(pbuffer !=0){
 					delete [] pbuffer;
@@ -369,7 +369,7 @@ namespace std{
 			}
 			return this;
 		}
-		virtual pos_type seekoff(off_type off, ios_base::seekdir way, 
+		virtual _UCXXEXPORT pos_type seekoff(off_type off, ios_base::seekdir way, 
 			ios_base::openmode = ios_base::in | ios_base::out)
 		{
 			if(is_open() == false){
@@ -402,7 +402,7 @@ namespace std{
 
 			return retval;
 		}
-		virtual pos_type seekpos(pos_type sp, ios_base::openmode = ios_base::in | ios_base::out){
+		virtual _UCXXEXPORT pos_type seekpos(pos_type sp, ios_base::openmode = ios_base::in | ios_base::out){
 			if(is_open() == false){
 				return -1;
 			}
@@ -417,7 +417,7 @@ namespace std{
 			}
 			return -1;
 		}
-		virtual int sync(){
+		virtual _UCXXEXPORT int sync(){
 			if(pbuffer !=0){
 				if(overflow() == traits::eof()){
 					return -1;
@@ -428,12 +428,12 @@ namespace std{
 			}
 			return 0;
 		}
-		virtual void imbue(const locale&){
+		virtual _UCXXEXPORT void imbue(const locale&){
 			return;
 		}
 
 
-		virtual streamsize xsputn(const char_type* s, streamsize n){
+		virtual _UCXXEXPORT streamsize xsputn(const char_type* s, streamsize n){
 			if(is_open() == false){
 				return 0;
 			}
@@ -585,10 +585,10 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		basic_ifstream(): basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb){
+		_UCXXEXPORT basic_ifstream(): basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb){
 			//Passing the address of sb
 		}
-		explicit basic_ifstream(const char* s, ios_base::openmode mode = ios_base::in)
+		explicit _UCXXEXPORT basic_ifstream(const char* s, ios_base::openmode mode = ios_base::in)
 			: basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb)
 		{
 			if(sb.open(s, mode) == 0){
@@ -596,24 +596,24 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 			}
 		}
 
-		virtual ~basic_ifstream(){
+		virtual _UCXXEXPORT ~basic_ifstream(){
 
 		}
 
-		basic_filebuf<charT,traits>* rdbuf() const{
+		_UCXXEXPORT basic_filebuf<charT,traits>* rdbuf() const{
 			return (basic_filebuf<charT,traits>*)&sb;
 		}
-		bool is_open() const{
+		_UCXXEXPORT bool is_open() const{
 			return sb.is_open();
 		}
-		void open(const char* s, ios_base::openmode mode = ios_base::in){
+		_UCXXEXPORT void open(const char* s, ios_base::openmode mode = ios_base::in){
 			sb.open(s, mode);
 		}
-		void close(){
+		_UCXXEXPORT void close(){
 			sb.close();
 		}
 	private:
-		basic_filebuf<charT,traits> sb;
+		_UCXXEXPORT basic_filebuf<charT,traits> sb;
 	};
 
 
@@ -626,13 +626,13 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		basic_ofstream() : basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb){
+		_UCXXEXPORT basic_ofstream() : basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb){
 
 		}
 
-		virtual ~basic_ofstream();
+		virtual _UCXXEXPORT ~basic_ofstream();
 
-		explicit basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc) :
+		explicit _UCXXEXPORT basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc) :
 			basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb)
 		{
 			if(sb.open(s, mode) == 0){
@@ -640,17 +640,17 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 			}
 		}
 
-		basic_filebuf<charT,traits>* rdbuf() const{
+		_UCXXEXPORT basic_filebuf<charT,traits>* rdbuf() const{
 			return (basic_filebuf<charT,traits>*)&sb;
 		}
 
-		bool is_open() const{
+		_UCXXEXPORT bool is_open() const{
 			return sb.is_open();
 		}
-		void open(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc){
+		_UCXXEXPORT void open(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc){
 			sb.open(s, mode);
 		}
-		void close(){
+		_UCXXEXPORT void close(){
 			sb.close();
 		}
 	private:
@@ -671,24 +671,24 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		basic_fstream(): basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb){ }
+		_UCXXEXPORT basic_fstream(): basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb){ }
 
-		explicit basic_fstream(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out):
+		explicit _UCXXEXPORT basic_fstream(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out):
 			basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb)
 		{
 			sb.open(s, mode);
 		}
 
-		basic_filebuf<charT,traits>* rdbuf() const{
+		_UCXXEXPORT basic_filebuf<charT,traits>* rdbuf() const{
 			return (basic_filebuf<charT,traits>*)&sb;
 		}
-		bool is_open() const{
+		_UCXXEXPORT bool is_open() const{
 			return sb.is_open();
 		}
-		void open(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out){
+		_UCXXEXPORT void open(const char* s, ios_base::openmode mode = ios_base::in|ios_base::out){
 			sb.open(s, mode);
 		}
-		void close(){
+		_UCXXEXPORT void close(){
 			sb.close();
 		}
 	private:
