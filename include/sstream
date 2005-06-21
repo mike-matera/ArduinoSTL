@@ -301,7 +301,7 @@ namespace std{
 			basic_ostream<charT,traits>::clear();
 		}
 	private:
-		_UCXXEXPORT basic_stringbuf<charT,traits,Allocator> sb;
+		basic_stringbuf<charT,traits,Allocator> sb;
 	};
 
 

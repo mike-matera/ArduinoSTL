@@ -613,7 +613,7 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 			sb.close();
 		}
 	private:
-		_UCXXEXPORT basic_filebuf<charT,traits> sb;
+		basic_filebuf<charT,traits> sb;
 	};
 
 

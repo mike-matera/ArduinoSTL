@@ -97,7 +97,9 @@ public:
 		
 	}
 
-	_UCXXEXPORT ~basic_string() { }
+	_UCXXEXPORT ~basic_string() {
+		return;
+	}
 
 	_UCXXEXPORT basic_string& operator=(const basic_string& str);	//Below
 
