@@ -56,23 +56,24 @@ namespace std{
 #endif
 
 
-	template <class charT, class traits> class basic_iostream :
+	template <class charT, class traits> class _UCXXEXPORT basic_iostream :
 		public basic_istream<charT,traits>, public basic_ostream<charT,traits> 
 	{
 	public:
 		// constructor/destructor
-		explicit basic_iostream(basic_streambuf<charT,traits>* sb);
-		virtual ~basic_iostream();	//Below
+		explicit _UCXXEXPORT basic_iostream(basic_streambuf<charT,traits>* sb);
+		virtual _UCXXEXPORT ~basic_iostream();	//Below
 	};
 
-	template <class charT, class traits> basic_iostream<charT, traits>:: basic_iostream(basic_streambuf<charT,traits>* sb)
+	template <class charT, class traits> _UCXXEXPORT 
+		basic_iostream<charT, traits>:: basic_iostream(basic_streambuf<charT,traits>* sb)
 		: basic_ios<charT, traits>(sb), basic_istream<charT,traits>(sb), basic_ostream<charT,traits>(sb)
 	{
 		return;
 	}
 
 
-	template <class charT, class traits> basic_iostream<charT, traits>::~basic_iostream(){
+	template <class charT, class traits> _UCXXEXPORT basic_iostream<charT, traits>::~basic_iostream(){
 		return;
 	}
 

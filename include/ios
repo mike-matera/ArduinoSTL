@@ -34,10 +34,10 @@ namespace std{
 	public:
 		class failure;
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-		class Init{
+		class _UCXXEXPORT Init{
 		public:
-			Init();
-			~Init();
+			_UCXXEXPORT Init();
+			_UCXXEXPORT ~Init();
 		private:
 			static int init_cnt;
 		};
@@ -92,33 +92,33 @@ namespace std{
 		static const seekdir cur		= 0x02;
 		static const seekdir end		= 0x04;
 
-		fmtflags flags() const{
+		_UCXXEXPORT fmtflags flags() const{
 			return mformat;
 		}
-		fmtflags flags(fmtflags fmtfl);
+		_UCXXEXPORT fmtflags flags(fmtflags fmtfl);
 
 		fmtflags setf(fmtflags fmtfl);
 		fmtflags setf(fmtflags fmtfl, fmtflags mask );
 
-		void unsetf(fmtflags mask){
+		_UCXXEXPORT void unsetf(fmtflags mask){
 			mformat&= ~mask;
 		}
 
-		streamsize precision() const{
+		_UCXXEXPORT streamsize precision() const{
 			return mprecision;
 		}
 
-		streamsize precision(streamsize prec);
+		_UCXXEXPORT streamsize precision(streamsize prec);
 
-		streamsize width() const{
+		_UCXXEXPORT streamsize width() const{
 			return mwidth;
 		}
 
-		streamsize width(streamsize wide);
+		_UCXXEXPORT streamsize width(streamsize wide);
 
-		locale imbue(const locale& loc);
+		_UCXXEXPORT locale imbue(const locale& loc);
 
-		locale getloc() const{
+		_UCXXEXPORT locale getloc() const{
 			return mLocale;
 		}
 
@@ -127,7 +127,7 @@ namespace std{
 //		long&  iword(int index);
 //		void*& pword(int index);
 
-		~ios_base() { }
+		_UCXXEXPORT ~ios_base() { }
 
 		enum event { erase_event, imbue_event, copyfmt_event };
 
@@ -138,7 +138,7 @@ namespace std{
 		inline static bool sync_with_stdio(bool = true) { return true; }
 
 	protected:
-		ios_base() : mLocale(), mformat(dec | unitbuf ), mstate(goodbit), 
+		_UCXXEXPORT ios_base() : mLocale(), mformat(dec | unitbuf ), mstate(goodbit), 
 			mmode(), mdir(), mprecision(6), mwidth(0)
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 			,mInit()
@@ -269,91 +269,91 @@ namespace std{
 		typedef typename traits::off_type off_type;
 		typedef traits traits_type;
 
-		operator void*() const{
+		_UCXXEXPORT operator void*() const{
 			if(fail() ){
 				return 0;
 			}
 			return (void *)(1);	//Must return a non-NULL pointer (though it can be *any* pointer)
 		}
 
-		bool operator!() const{
+		_UCXXEXPORT bool operator!() const{
 			return fail();
 		}
-		iostate rdstate() const{
+		_UCXXEXPORT iostate rdstate() const{
 			return mstate;
 		}
-		void clear(iostate state = goodbit){
+		_UCXXEXPORT void clear(iostate state = goodbit){
 			if(rdbuf()!=0){
 				mstate = state;
 			}else{
 				mstate = state|ios_base::badbit;
 			}
 		}
-		void setstate(iostate state) {
+		_UCXXEXPORT void setstate(iostate state) {
 			clear(rdstate()  | state);
 		}
 
-		bool good() const{
+		_UCXXEXPORT bool good() const{
 			return (rdstate() == 0);
 		}
-		bool eof()  const{
+		_UCXXEXPORT bool eof()  const{
 			if(rdstate() & eofbit){
 				return true;
 			}
 			return false;
 		}
-		bool fail() const{
+		_UCXXEXPORT bool fail() const{
 			if( mstate & (failbit | badbit) ){
 				return true;
 			}
 			return false;
 		}
 
-		bool bad()  const{
+		_UCXXEXPORT bool bad()  const{
 			if(mstate & badbit){
 				return true;
 			}
 			return false;
 		}
 
-		iostate exceptions() const;
-		void exceptions(iostate except);
+		_UCXXEXPORT iostate exceptions() const;
+		_UCXXEXPORT void exceptions(iostate except);
 
-		explicit basic_ios(basic_streambuf<charT,traits>* sb) : fill_char(' '), mtied(0), mstreambuf(0){
+		explicit _UCXXEXPORT basic_ios(basic_streambuf<charT,traits>* sb) : fill_char(' '), mtied(0), mstreambuf(0){
 			init(sb);
 		}
-		virtual ~basic_ios(){
+		virtual _UCXXEXPORT ~basic_ios(){
 		}
 
-		basic_ostream<charT,traits>* tie() const{
+		_UCXXEXPORT basic_ostream<charT,traits>* tie() const{
 			return mtied;
 		}
-		basic_ostream<charT,traits>* tie(basic_ostream<charT,traits>* tiestr){
+		_UCXXEXPORT basic_ostream<charT,traits>* tie(basic_ostream<charT,traits>* tiestr){
 			basic_ostream<charT,traits>* retval= mtied;
 			mtied = tiestr;
 			return retval;			
 		}
-		basic_streambuf<charT,traits>* rdbuf() const{
+		_UCXXEXPORT basic_streambuf<charT,traits>* rdbuf() const{
 			return mstreambuf;
 		}
-		basic_streambuf<charT,traits>* rdbuf(basic_streambuf<charT,traits>* sb){
+		_UCXXEXPORT basic_streambuf<charT,traits>* rdbuf(basic_streambuf<charT,traits>* sb){
 			basic_streambuf<charT,traits>* retval = mstreambuf;
 			mstreambuf = sb;
 			return retval;
 		}
-		basic_ios& copyfmt(const basic_ios& rhs);
-		char_type fill() const{
+		_UCXXEXPORT basic_ios& copyfmt(const basic_ios& rhs);
+		_UCXXEXPORT char_type fill() const{
 			return fill_char;
 		}
-		char_type fill(char_type ch){
+		_UCXXEXPORT char_type fill(char_type ch){
 			char_type temp = fill_char;
 			fill_char = ch;
 			return temp;
 		}
 
-		locale imbue(const locale& loc);
-		char narrow(char_type c, char dfault) const;
-		char_type widen(char c) const;
+		_UCXXEXPORT locale imbue(const locale& loc);
+		_UCXXEXPORT char narrow(char_type c, char dfault) const;
+		_UCXXEXPORT char_type widen(char c) const;
 
 	protected:
 		char_type fill_char;
@@ -363,9 +363,9 @@ namespace std{
 //			fprintf(stderr, "Called basic_ios with no streambuf\n");
 //			abort();
 //		}
-		basic_ios(const basic_ios<charT,traits> &){ }
-		basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
-		void init(basic_streambuf<charT,traits>* sb){
+		_UCXXEXPORT basic_ios(const basic_ios<charT,traits> &){ }
+		_UCXXEXPORT basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
+		_UCXXEXPORT void init(basic_streambuf<charT,traits>* sb){
 			mstreambuf = sb;
 			mstate = goodbit;
 		}
@@ -434,30 +434,30 @@ namespace std{
 
 	template <class stateT> class _UCXXEXPORT fpos{
 	public:
-		fpos(stateT s){
+		_UCXXEXPORT fpos(stateT s){
 			st = s;
 		}
-		stateT state() const{
+		_UCXXEXPORT stateT state() const{
 			return st;
 		}
-		void state(stateT s){
+		_UCXXEXPORT void state(stateT s){
 			st = s;
 		}
-		bool operator==(const fpos &rhs){
+		_UCXXEXPORT bool operator==(const fpos &rhs){
 			return st == rhs.st;
 		}
-		bool operator!=(const fpos &rhs){
+		_UCXXEXPORT bool operator!=(const fpos &rhs){
 			return st == rhs.st;
 		}
-		fpos & operator+(const streamoff & o){
+		_UCXXEXPORT fpos & operator+(const streamoff & o){
 			st += o;
 			return *this;
 		}
-		fpos & operator-(const streamoff & o){
+		_UCXXEXPORT fpos & operator-(const streamoff & o){
 			st -= o;
 			return *this;
 		}
-		streamoff operator-(const fpos & rhs){
+		_UCXXEXPORT streamoff operator-(const fpos & rhs){
 			return st - rhs.st;
 		}
 

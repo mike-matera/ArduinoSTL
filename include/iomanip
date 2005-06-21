@@ -32,37 +32,37 @@ namespace std{
 class _UCXXEXPORT __resetiosflags{
 public:
 	ios_base::fmtflags m;
-	__resetiosflags(ios_base::fmtflags mask) : m(mask){ }
+	_UCXXEXPORT __resetiosflags(ios_base::fmtflags mask) : m(mask){ }
 };
 
 class _UCXXEXPORT __setiosflags{
 public:
 	ios_base::fmtflags m;
-	__setiosflags(ios_base::fmtflags mask) : m(mask){ }
+	_UCXXEXPORT __setiosflags(ios_base::fmtflags mask) : m(mask){ }
 };
 
 class _UCXXEXPORT __setbase{
 public:
 	int base;
-	__setbase(int b) : base(b){ }
+	_UCXXEXPORT __setbase(int b) : base(b){ }
 };
 
 class _UCXXEXPORT __setfill{
 public:
 	int character;
-	__setfill(int c): character(c){  }
+	_UCXXEXPORT __setfill(int c): character(c){  }
 };
 
 class _UCXXEXPORT __setprecision{
 public:
 	int digits;
-	__setprecision(int n): digits(n) {  }
+	_UCXXEXPORT __setprecision(int n): digits(n) {  }
 };
 
 class _UCXXEXPORT __setw{
 public:
 	int width;
-	__setw(int n): width(n) {  }
+	_UCXXEXPORT __setw(int n): width(n) {  }
 };
 
 

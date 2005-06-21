@@ -68,11 +68,11 @@ public:
 
 	static const size_type npos = -1;
 
-	explicit basic_string(const A& al = A()) : vector<Ch, A>(al){ return; }
+	explicit _UCXXEXPORT basic_string(const A& al = A()) : vector<Ch, A>(al){ return; }
 
-	basic_string(const basic_string& str, size_type pos = 0, size_type n = npos, const A& al = A());	//Below
+	_UCXXEXPORT basic_string(const basic_string& str, size_type pos = 0, size_type n = npos, const A& al = A());	//Below
 
-	basic_string(const Ch* s, size_type n, const A& al = A())
+	_UCXXEXPORT basic_string(const Ch* s, size_type n, const A& al = A())
 		: vector<Ch, A>(al)
 	{
 		if(n == npos){
@@ -84,24 +84,24 @@ public:
 		}
 	}
 
-	basic_string(const Ch* s, const A& al = A());		//Below
+	_UCXXEXPORT basic_string(const Ch* s, const A& al = A());		//Below
 	
-	basic_string(size_type n, Ch c, const A& al = A())
+	_UCXXEXPORT basic_string(size_type n, Ch c, const A& al = A())
 		: vector<Ch, A>(n, c, al)
 	{
 	}
 
-	template<class InputIterator> basic_string(InputIterator begin, InputIterator end, const A& a = A())
+	template<class InputIterator> _UCXXEXPORT basic_string(InputIterator begin, InputIterator end, const A& a = A())
 		:vector<Ch, A>(begin, end)
 	{
 		
 	}
 
-	~basic_string() { }
+	_UCXXEXPORT ~basic_string() { }
 
-	basic_string& operator=(const basic_string& str);	//Below
+	_UCXXEXPORT basic_string& operator=(const basic_string& str);	//Below
 
-	basic_string& operator=(const Ch* s){
+	_UCXXEXPORT basic_string& operator=(const Ch* s){
 		vector<Ch, A>::clear();
 		if(s!=0){
 			size_type len = Tr::length(s);
@@ -111,32 +111,32 @@ public:
 		return *this;
 	}
 
-	basic_string& operator=(Ch c){
+	_UCXXEXPORT basic_string& operator=(Ch c){
 		vector<Ch, A>::clear();
 		vector<Ch, A>::push_back(c);
 		return *this;
 	}
 
-	inline size_type length() const { return vector<Ch, A>::size(); }
+	inline _UCXXEXPORT size_type length() const { return vector<Ch, A>::size(); }
 
-	void resize(size_type n){
+	void _UCXXEXPORT resize(size_type n){
 		vector<Ch, A>::resize(n, Ch() );
 	}
 
-	basic_string& operator+=(const basic_string& str){
+	_UCXXEXPORT basic_string& operator+=(const basic_string& str){
 		return append(str);
 	}
 
-	basic_string& operator+=(const Ch * s){
+	_UCXXEXPORT basic_string& operator+=(const Ch * s){
 		return append(s);
 	}
 
-	basic_string& operator+=(Ch c){
+	_UCXXEXPORT basic_string& operator+=(Ch c){
 		vector<Ch, A>::push_back(c);
 		return *this;
 	}
 
-	basic_string& append(const basic_string& str){
+	_UCXXEXPORT basic_string& append(const basic_string& str){
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + str.elements);
 		Tr::copy( vector<Ch, A>::data + temp, str.vector<Ch, A>::data, str.elements);
@@ -144,7 +144,7 @@ public:
 		return *this;
 	}
 
-	basic_string& append(const basic_string& str, size_type pos, size_type n){
+	_UCXXEXPORT basic_string& append(const basic_string& str, size_type pos, size_type n){
 		if(pos > str.size()){
 			__throw_out_of_range();
 		}
@@ -162,14 +162,14 @@ public:
 		return *this;
 	}
 		
-	basic_string& append(const Ch* s, size_type n){
+	_UCXXEXPORT basic_string& append(const Ch* s, size_type n){
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
 		Tr::copy( vector<Ch, A>::data + temp, s, n);
 		return *this;
 	}
 
-	basic_string& append(const Ch* s){
+	_UCXXEXPORT basic_string& append(const Ch* s){
 		size_type strLen = Tr::length(s);
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + strLen);
@@ -177,17 +177,17 @@ public:
 		return *this;
 	}
 
-	basic_string& append(size_type n, Ch c){
+	_UCXXEXPORT basic_string& append(size_type n, Ch c){
 		vector<Ch, A>::resize(vector<Ch, A>::elements + n, c);
 		return *this;
 	}
 
-	basic_string& assign(const basic_string& str){
+	_UCXXEXPORT basic_string& assign(const basic_string& str){
 		operator=(str);
 		return *this;
 	}
 
-	basic_string& assign(const basic_string& str, size_type pos, size_type n){
+	_UCXXEXPORT basic_string& assign(const basic_string& str, size_type pos, size_type n){
 		if(pos > str.elements){
 			__throw_out_of_range();
 		}
@@ -201,27 +201,27 @@ public:
 		return *this;
 	}
 
-	basic_string& assign(const Ch* s, size_type n){
+	_UCXXEXPORT basic_string& assign(const Ch* s, size_type n){
 		resize(n);
 //		vector<Ch, A>::elements = n;
 		Tr::copy(vector<Ch, A>::data, s, n);
 		return *this;
 	}
 
-	basic_string& assign(const Ch* s){
+	_UCXXEXPORT basic_string& assign(const Ch* s){
 		size_type len = Tr::length(s);
 		return assign(s, len);
 	}
 
-	basic_string& assign(size_type n, Ch c){
+	_UCXXEXPORT basic_string& assign(size_type n, Ch c){
 		vector<Ch, A>::clear();
 		vector<Ch, A>::resize(n, Ch() );
 		return *this;
 	}
 
-//	template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
+//	template<class InputIterator> _UCXXEXPORT basic_string& assign(InputIterator first, InputIterator last);
 
-	basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
+	_UCXXEXPORT basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
 		if(pos1 > vector<Ch, A>::elements || pos2 > str.elements){
 			__throw_out_of_range();
 		}
@@ -240,7 +240,7 @@ public:
 		return *this;
 	}
 
-	basic_string& insert(size_type pos, const Ch* s, size_type n){
+	_UCXXEXPORT basic_string& insert(size_type pos, const Ch* s, size_type n){
 		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
@@ -255,12 +255,12 @@ public:
 		return *this;
 	}
 
-	inline basic_string& insert(size_type pos, const Ch* s){
+	inline _UCXXEXPORT basic_string& insert(size_type pos, const Ch* s){
 		size_type len = Tr::length(s);
 		return insert(pos, s, len);
 	}
 
-	basic_string& insert(size_type pos, size_type n, Ch c){
+	_UCXXEXPORT basic_string& insert(size_type pos, size_type n, Ch c){
 		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
@@ -279,7 +279,7 @@ public:
 //	void insert(iterator p, size_type n, charT c);
 //	template<class InputIterator> void insert(iterator p, InputIterator first, InputIterator last);
 
-	basic_string& erase(size_type pos = 0, size_type n = npos){
+	_UCXXEXPORT basic_string& erase(size_type pos = 0, size_type n = npos){
 		size_type xlen = vector<Ch, A>::elements - pos;
 		if(xlen > n){
 			xlen = n;
@@ -290,7 +290,7 @@ public:
 		return *this;
 	}
 
-	iterator erase(iterator position){
+	_UCXXEXPORT iterator erase(iterator position){
 		if(position == vector<Ch, A>::end()){
 			return position;
 		}
@@ -308,7 +308,7 @@ public:
 		return temp;
 	}
 
-	iterator erase(iterator first, iterator last){
+	_UCXXEXPORT iterator erase(iterator first, iterator last){
 		size_t count = last - first;
 
 		iterator temp = last;
@@ -323,7 +323,9 @@ public:
 		return temp;
 	}
 
-	basic_string& replace(size_type pos1, size_type n1, const basic_string& str, size_type pos2=0, size_type n2=npos){
+	_UCXXEXPORT basic_string&
+		replace(size_type pos1, size_type n1, const basic_string& str, size_type pos2=0, size_type n2=npos)
+	{
 		if(pos1 > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
@@ -356,26 +358,26 @@ public:
 		return *this;
 	}
 
-	basic_string& replace(size_type pos, size_type n1, const Ch* s, size_type n2){
+	_UCXXEXPORT basic_string& replace(size_type pos, size_type n1, const Ch* s, size_type n2){
 		return replace(pos,n1,basic_string<Ch,Tr,A>(s,n2));
 		
 	}
 
-	inline basic_string& replace(size_type pos, size_type n1, const Ch* s){
+	inline _UCXXEXPORT basic_string& replace(size_type pos, size_type n1, const Ch* s){
 		return replace(pos,n1,basic_string<Ch,Tr,A>(s));
 	}
 
-	basic_string& replace(size_type pos, size_type n1, size_type n2, Ch c){
+	_UCXXEXPORT basic_string& replace(size_type pos, size_type n1, size_type n2, Ch c){
 		return replace(pos,n1,basic_string<Ch, Tr, A>(n2,c));
 	}
-//	basic_string& replace(iterator i1, iterator i2, const basic_string& str);
-//	basic_string& replace(iterator i1, iterator i2, const Ch* s, size_type n);
-//	basic_string& replace(iterator i1, iterator i2, const Ch* s);
-//	basic_string& replace(iterator i1, iterator i2, size_type n, Ch c);
-/*	template<class InputIterator> basic_string& replace(iterator i1, iterator i2,
+//	_UCXXEXPORT basic_string& replace(iterator i1, iterator i2, const basic_string& str);
+//	_UCXXEXPORT basic_string& replace(iterator i1, iterator i2, const Ch* s, size_type n);
+//	_UCXXEXPORT basic_string& replace(iterator i1, iterator i2, const Ch* s);
+//	_UCXXEXPORT basic_string& replace(iterator i1, iterator i2, size_type n, Ch c);
+/*	template<class InputIterator> _UCXXEXPORT basic_string& replace(iterator i1, iterator i2,
 		InputIterator j1, InputIterator j2);*/
 
-	size_type copy(Ch* s, size_type n, size_type pos = 0) const{
+	size_type _UCXXEXPORT copy(Ch* s, size_type n, size_type pos = 0) const{
 		if(pos > vector<Ch, A>::elements){
 			__throw_out_of_range();
 		}
@@ -387,34 +389,34 @@ public:
 		return r;
 	}
 
-	void swap(basic_string<Ch,Tr,A>& s){
+	_UCXXEXPORT void swap(basic_string<Ch,Tr,A>& s){
 		//Data pointers
 
 		vector<Ch, A>::swap(s);
 	}
 
-	const Ch* c_str() const{
+	_UCXXEXPORT const Ch* c_str() const{
 		const_cast<basic_string<Ch,Tr,A> *>(this)->reserve(vector<Ch, A>::elements+1);
 		vector<Ch, A>::data[vector<Ch, A>::elements] = 0;	//Add 0 at the end
 		return vector<Ch, A>::data;
 	}
 
-	const Ch* data() const{
+	_UCXXEXPORT const Ch* data() const{
 		return vector<Ch, A>::data;
 	}
-	allocator_type get_allocator() const{
+	_UCXXEXPORT allocator_type get_allocator() const{
 		return vector<Ch, A>::a;
 	}
 
-	size_type find (const basic_string& str, size_type pos = 0) const;	//Below
+	_UCXXEXPORT size_type find (const basic_string& str, size_type pos = 0) const;	//Below
 
-	size_type find (const Ch* s, size_type pos, size_type n) const{
+	_UCXXEXPORT size_type find (const Ch* s, size_type pos, size_type n) const{
 		return find(basic_string<Ch, Tr, A>(s,n), pos);
 	}
-	size_type find (const Ch* s, size_type pos = 0) const{
+	_UCXXEXPORT size_type find (const Ch* s, size_type pos = 0) const{
 		return find(basic_string<Ch, Tr, A>(s), pos);
 	}
-	size_type find (Ch c, size_type pos = 0) const{
+	_UCXXEXPORT size_type find (Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i < length(); ++i){
 			if(operator[](i) == c){
 				return i;
@@ -422,7 +424,7 @@ public:
 		}
 		return npos;
 	}
-	size_type rfind(const basic_string& str, size_type pos = npos) const{
+	_UCXXEXPORT size_type rfind(const basic_string& str, size_type pos = npos) const{
 		if(pos >= length()){
 			pos = length();
 		}
@@ -433,17 +435,17 @@ public:
 		}
 		return npos;
 	}
-	size_type rfind(const Ch* s, size_type pos, size_type n) const{
+	_UCXXEXPORT size_type rfind(const Ch* s, size_type pos, size_type n) const{
 		return rfind(basic_string<Ch, Tr, A>(s,n),pos);
 	}
-	size_type rfind(const Ch* s, size_type pos = npos) const{
+	_UCXXEXPORT size_type rfind(const Ch* s, size_type pos = npos) const{
 		return rfind(basic_string<Ch, Tr, A>(s),pos);
 	}
-	size_type rfind(Ch c, size_type pos = npos) const{
+	_UCXXEXPORT size_type rfind(Ch c, size_type pos = npos) const{
 		return rfind(basic_string<Ch, Tr, A>(1,c),pos);
 	}
 
-	size_type find_first_of(const basic_string& str, size_type pos = 0) const{
+	_UCXXEXPORT size_type find_first_of(const basic_string& str, size_type pos = 0) const{
 		for(size_type i = pos; i < length(); ++i){
 			for(size_type j = 0; j < str.length() ; ++j){
 				if(str[j] == operator[](i) ){
@@ -454,13 +456,13 @@ public:
 		return npos;
 	}
 
-	size_type find_first_of(const Ch* s, size_type pos, size_type n) const{
+	_UCXXEXPORT size_type find_first_of(const Ch* s, size_type pos, size_type n) const{
 		return find_first_of(basic_string<Ch, Tr, A>(s,n),pos);
 	}
-	size_type find_first_of(const Ch* s, size_type pos = 0) const{
+	_UCXXEXPORT size_type find_first_of(const Ch* s, size_type pos = 0) const{
 		return find_first_of(basic_string<Ch, Tr, A>(s),pos);
 	}
-	size_type find_first_of(Ch c, size_type pos = 0) const{
+	_UCXXEXPORT size_type find_first_of(Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i< length(); ++i){
 			if(operator[](i) == c){
 				return i;
@@ -469,7 +471,7 @@ public:
 		return npos;
 	}
 
-	size_type find_last_of (const basic_string& str, size_type pos = npos) const{
+	_UCXXEXPORT size_type find_last_of (const basic_string& str, size_type pos = npos) const{
 		if(pos > length()){
 			pos = length();
 		}
@@ -482,13 +484,13 @@ public:
 		}
 		return npos;
 	}
-	size_type find_last_of (const Ch* s, size_type pos, size_type n) const{
+	_UCXXEXPORT size_type find_last_of (const Ch* s, size_type pos, size_type n) const{
 		return find_last_of(basic_string<Ch, Tr, A>(s,n),pos);
 	}
-	size_type find_last_of (const Ch* s, size_type pos = npos) const{
+	_UCXXEXPORT size_type find_last_of (const Ch* s, size_type pos = npos) const{
 		return find_last_of(basic_string<Ch, Tr, A>(s),pos);
 	}
-	size_type find_last_of (Ch c, size_type pos = npos) const{
+	_UCXXEXPORT size_type find_last_of (Ch c, size_type pos = npos) const{
 		if(pos > length()){
 			pos = length();
 		}
@@ -500,7 +502,7 @@ public:
 		return npos;
 	}
 
-	size_type find_first_not_of(const basic_string& str, size_type pos = 0) const{
+	_UCXXEXPORT size_type find_first_not_of(const basic_string& str, size_type pos = 0) const{
 		bool foundCharacter;
 		for(size_type i = pos; i < length(); ++i){
 			foundCharacter = false;
@@ -516,13 +518,13 @@ public:
 		return npos;
 	}
 
-	size_type find_first_not_of(const Ch* s, size_type pos, size_type n) const{
+	_UCXXEXPORT size_type find_first_not_of(const Ch* s, size_type pos, size_type n) const{
 		return find_first_not_of(basic_string<Ch, Tr, A>(s,n),pos);
 	}
-	size_type find_first_not_of(const Ch* s, size_type pos = 0) const{
+	_UCXXEXPORT size_type find_first_not_of(const Ch* s, size_type pos = 0) const{
 		return find_first_not_of(basic_string<Ch, Tr, A>(s),pos);
 	}
-	size_type find_first_not_of(Ch c, size_type pos = 0) const{
+	_UCXXEXPORT size_type find_first_not_of(Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i < length() ; ++i){
 			if(operator[](i) != c){
 				return i;
@@ -530,15 +532,15 @@ public:
 		}
 		return npos;
 	}
-/*	size_type find_last_not_of (const basic_string& str, size_type pos = npos) const;
-	size_type find_last_not_of (const charT* s, size_type pos, size_type n) const;
-	size_type find_last_not_of (const charT* s, size_type pos = npos) const;
-	size_type find_last_not_of (charT c, size_type pos = npos) const;
+/*	_UCXXEXPORT size_type find_last_not_of (const basic_string& str, size_type pos = npos) const;
+	_UCXXEXPORT size_type find_last_not_of (const charT* s, size_type pos, size_type n) const;
+	_UCXXEXPORT size_type find_last_not_of (const charT* s, size_type pos = npos) const;
+	_UCXXEXPORT size_type find_last_not_of (charT c, size_type pos = npos) const;
 */
 
-	basic_string substr(size_type pos = 0, size_type n = npos) const;
+	_UCXXEXPORT basic_string substr(size_type pos = 0, size_type n = npos) const;
 
-	int compare(const basic_string& str) const{
+	_UCXXEXPORT int compare(const basic_string& str) const{
 		size_type rlen = vector<Ch, A>::elements;
 		if(rlen >  str.elements){
 			rlen = str.elements;
@@ -555,7 +557,7 @@ public:
 		return retval;
 	}
 
-	int compare(size_type pos1, size_type n1, const basic_string& str) const{
+	_UCXXEXPORT int compare(size_type pos1, size_type n1, const basic_string& str) const{
 		size_type rlen = vector<Ch, A>::elements - pos1;
 		if(rlen > n1){
 			rlen = n1;
@@ -575,7 +577,7 @@ public:
 		return retval;
 	}
 
-	int compare(size_type pos1, size_type n1, const basic_string& str,
+	_UCXXEXPORT int compare(size_type pos1, size_type n1, const basic_string& str,
 		size_type pos2=0, size_type n2=npos) const{
 		size_type len1 = vector<Ch, A>::elements - pos1;
 		if(len1 > n1){
@@ -601,7 +603,7 @@ public:
 		return retval;
 	}
 
-	int compare(const Ch* s) const{
+	_UCXXEXPORT int compare(const Ch* s) const{
 		size_type slen = Tr::length(s);
 		size_type rlen = slen;
 		if(rlen > vector<Ch, A>::elements){
@@ -619,7 +621,7 @@ public:
 		return retval;
 	}
 
-	int compare(size_type pos1, size_type n1, const Ch* s, size_type n2 = npos) const{
+	_UCXXEXPORT int compare(size_type pos1, size_type n1, const Ch* s, size_type n2 = npos) const{
 		size_type len1 = vector<Ch, A>::elements - pos1;
 		if(len1 > n1){
 			len1 = n1;
@@ -650,7 +652,7 @@ public:
 
 //Functions
 
-template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::basic_string(const Ch* s, const A& al)
+template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>::basic_string(const Ch* s, const A& al)
 	: vector<Ch, A>(al)
 {
 	if(s!=0){
@@ -659,7 +661,7 @@ template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::basic_string(const Ch
 	}
 }
 
-template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::
+template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>::
 	basic_string(const basic_string& str, size_type pos, size_type n, const A& al) 
 	: vector<Ch, A>(al)
 {
@@ -674,7 +676,7 @@ template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>::
 	Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, vector<Ch, A>::elements);
 }
 
-template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>&
+template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>&
 	basic_string<Ch,Tr,A>::operator=(const basic_string<Ch,Tr,A> & str)
 {
 	if(&str == this){	//Check if we are doing a=a 
@@ -688,7 +690,7 @@ template<class Ch,class Tr,class A> basic_string<Ch,Tr,A>&
 }
 
 
-template<class Ch,class Tr,class A> typename basic_string<Ch,Tr,A>::size_type
+template<class Ch,class Tr,class A> _UCXXEXPORT typename basic_string<Ch,Tr,A>::size_type
 	basic_string<Ch,Tr,A>::find (const basic_string<Ch,Tr,A>& str, size_type pos) const
 {
 	if(str.length() > length()){
@@ -705,7 +707,7 @@ template<class Ch,class Tr,class A> typename basic_string<Ch,Tr,A>::size_type
 
 
 template<class Ch,class Tr,class A>
-	basic_string<Ch, Tr, A> basic_string<Ch,Tr,A>::substr(size_type pos, size_type n) const
+	_UCXXEXPORT basic_string<Ch, Tr, A> basic_string<Ch,Tr,A>::substr(size_type pos, size_type n) const
 {
 	if(pos > vector<Ch, A>::elements){
 		__throw_out_of_range();

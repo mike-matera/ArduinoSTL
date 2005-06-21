@@ -41,33 +41,36 @@ namespace std{
 		typedef typename traits::off_type off_type;
 		typedef typename Allocator::size_type size_type;
 
-		explicit basic_stringbuf(ios_base::openmode which = ios_base::in | ios_base::out)
+		explicit _UCXXEXPORT basic_stringbuf(ios_base::openmode which = ios_base::in | ios_base::out)
 			: data(), ielement(0), oelement(0)
 		{
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
 
-		explicit basic_stringbuf(const basic_string<charT,traits,Allocator>& str,
+		explicit _UCXXEXPORT basic_stringbuf(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::in | ios_base::out)
 			: data(str), ielement(0), oelement(str.length())
 		{
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
 
-		virtual ~basic_stringbuf() { }
+		virtual _UCXXEXPORT ~basic_stringbuf() { }
 
-		basic_string<charT,traits,Allocator> str() const;		//Below
-		void str(const basic_string<charT,traits,Allocator>& s){
+		_UCXXEXPORT basic_string<charT,traits,Allocator> str() const{
+			return data;
+		}
+
+		_UCXXEXPORT void str(const basic_string<charT,traits,Allocator>& s){
 			data = s;
 			ielement = 0;
 			oelement = data.length();
 		}
 
 	protected:
-		virtual int sync(){
+		virtual _UCXXEXPORT int sync(){
 			return 0;
 		}
-		virtual int_type underflow(){
+		virtual _UCXXEXPORT int_type underflow(){
 			if(ielement >= data.length()){
 //			if(ielement > data.length()){
 				return traits::eof();
@@ -76,7 +79,7 @@ namespace std{
 //			return traits::to_int_type(data[ielement-1]);
 		}
 
-		virtual int_type uflow(){
+		virtual _UCXXEXPORT int_type uflow(){
 			int_type retval = underflow();
 			if(retval != traits::eof()){
 				++ielement;
@@ -84,7 +87,7 @@ namespace std{
 			return retval;	
 		}
 
-		virtual int_type   pbackfail(int_type c = traits::eof()){
+		virtual _UCXXEXPORT int_type   pbackfail(int_type c = traits::eof()){
 			//Error possibilities
 			if(ielement == 0){
 //			if(ielement < 2){
@@ -114,11 +117,11 @@ namespace std{
 			return traits::eof();
 		}
 
-		virtual int showmanyc(){
+		virtual _UCXXEXPORT int showmanyc(){
 			return data.length() - ielement;
 //			return data.length() + 1 - ielement;
 		}
-		virtual streamsize xsgetn(char_type* c, streamsize n){
+		virtual _UCXXEXPORT streamsize xsgetn(char_type* c, streamsize n){
 			streamsize i = 0;
 			while(ielement < data.length() && i < n ){
 //			while(ielement <= data.length() && i < n ){
@@ -130,7 +133,7 @@ namespace std{
 			return i;
 		}
 
-		virtual int_type   overflow (int_type c = traits::eof()){
+		virtual _UCXXEXPORT int_type overflow (int_type c = traits::eof()){
 			//Nothing to do
 			if(traits::eq_int_type(c,traits::eof())){
 				return traits::not_eof(c);
@@ -150,12 +153,12 @@ namespace std{
 			return traits::eof();
 		}
 
-		virtual  basic_streambuf<charT,traits>* setbuf(charT*, streamsize){
+		virtual _UCXXEXPORT basic_streambuf<charT,traits>* setbuf(charT*, streamsize){
 			//This function does nothing
 			return this;
 		}
 
-		virtual streamsize xsputn(const char_type* s, streamsize n){
+		virtual _UCXXEXPORT streamsize xsputn(const char_type* s, streamsize n){
 			streamsize alen = n;
 			streamsize rlen = data.length() - oelement;
 			if(alen < rlen){
@@ -173,7 +176,7 @@ namespace std{
 			return n;
 		}
 
-		virtual pos_type seekoff(off_type off, ios_base::seekdir way,
+		virtual _UCXXEXPORT pos_type seekoff(off_type off, ios_base::seekdir way,
 			ios_base::openmode which = ios_base::in | ios_base::out)
 		{
 			//Test for invalid option
@@ -220,7 +223,7 @@ namespace std{
 			return newpos;
 		}
 			
-		virtual pos_type seekpos(pos_type sp, 
+		virtual _UCXXEXPORT pos_type seekpos(pos_type sp, 
 			ios_base::openmode which = ios_base::in | ios_base::out)
 		{
 			return seekoff(sp, ios_base::beg, which);
@@ -231,12 +234,11 @@ namespace std{
 		size_type oelement;
 	};
 
-	template <class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
+/*	template <class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
 		basic_stringbuf<charT,traits,Allocator>::str() const
 	{
-		return data;
 	}
-
+*/
 
 
 
@@ -250,19 +252,19 @@ namespace std{
 		typedef typename traits::off_type off_type;
 
 
-		explicit basic_istringstream(ios_base::openmode m = ios_base::in) 
+		explicit _UCXXEXPORT basic_istringstream(ios_base::openmode m = ios_base::in) 
 			: basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb), sb(m) {  }
-		explicit basic_istringstream( const basic_string<charT,traits,Allocator>& str, 
+		explicit _UCXXEXPORT basic_istringstream( const basic_string<charT,traits,Allocator>& str, 
 			ios_base::openmode which = ios_base::in) 
 			: basic_ios<charT, traits>(&sb), basic_istream<charT,traits>(&sb), sb(str, which) {  }
-		virtual ~basic_istringstream() {  }
-		basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
+		virtual _UCXXEXPORT ~basic_istringstream() {  }
+		_UCXXEXPORT basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
 			return &sb;
 		}
-		basic_string<charT,traits,Allocator> str() const{
+		_UCXXEXPORT basic_string<charT,traits,Allocator> str() const{
 			return sb.str();
 		}
-		void str(const basic_string<charT,traits,Allocator>& s){
+		_UCXXEXPORT void str(const basic_string<charT,traits,Allocator>& s){
 			sb.str(s);
 			basic_istream<charT,traits>::clear();
 		}
@@ -281,25 +283,25 @@ namespace std{
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		explicit basic_ostringstream(ios_base::openmode m = ios_base::out)
+		explicit _UCXXEXPORT basic_ostringstream(ios_base::openmode m = ios_base::out)
 			: basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb), sb(m) {  }
-		explicit basic_ostringstream(const basic_string<charT,traits,Allocator>& str, 
+		explicit _UCXXEXPORT basic_ostringstream(const basic_string<charT,traits,Allocator>& str, 
 			ios_base::openmode which = ios_base::out)
 			: basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb), sb(str, which) {  }
-		virtual ~basic_ostringstream() {  }
+		virtual _UCXXEXPORT ~basic_ostringstream() {  }
 
-		basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
+		_UCXXEXPORT basic_stringbuf<charT,traits,Allocator>* rdbuf() const{
 			return &sb;
 		}
-		basic_string<charT,traits,Allocator> str() const{
+		_UCXXEXPORT basic_string<charT,traits,Allocator> str() const{
 			return sb.str();
 		}
-		void str(const basic_string<charT,traits,Allocator>& s){
+		_UCXXEXPORT void str(const basic_string<charT,traits,Allocator>& s){
 			sb.str(s);
 			basic_ostream<charT,traits>::clear();
 		}
 	private:
-		basic_stringbuf<charT,traits,Allocator> sb;
+		_UCXXEXPORT basic_stringbuf<charT,traits,Allocator> sb;
 	};
 
 
@@ -313,19 +315,21 @@ namespace std{
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
 
-		explicit basic_stringstream(ios_base::openmode which = ios_base::out|ios_base::in);	//Below
-		explicit basic_stringstream(const basic_string<charT,traits,Allocator>& str,
+		explicit _UCXXEXPORT basic_stringstream(ios_base::openmode which = ios_base::out|ios_base::in)
+			: basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb), sb(which) {  }
+
+		explicit _UCXXEXPORT basic_stringstream(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::out|ios_base::in)
 			: basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb), sb(str, which) {  }
-		virtual ~basic_stringstream();		//Below
+		virtual _UCXXEXPORT ~basic_stringstream(){  }
 
-		basic_stringbuf<charT,traits,Allocator>* rdbuf(){
+		_UCXXEXPORT basic_stringbuf<charT,traits,Allocator>* rdbuf(){
 			return &sb;
 		}
-		basic_string<charT,traits,Allocator> str() const{
+		_UCXXEXPORT basic_string<charT,traits,Allocator> str() const{
 			return sb.str();
 		}
-		void str(const basic_string<charT,traits,Allocator>& s){
+		_UCXXEXPORT void str(const basic_string<charT,traits,Allocator>& s){
 			sb.str(s);
 			basic_iostream<charT,traits>::clear();
 		}
@@ -333,13 +337,14 @@ namespace std{
 		basic_stringbuf<charT, traits> sb;
 	};
 
-	template <class charT, class traits, class Allocator> basic_stringstream<charT, traits, Allocator>::
+/*	template <class charT, class traits, class Allocator> basic_stringstream<charT, traits, Allocator>::
 		basic_stringstream(ios_base::openmode which)
 			: basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb), sb(which) {  }
+*/
 
-	template <class charT, class traits, class Allocator>
+/*	template <class charT, class traits, class Allocator>
 		basic_stringstream<charT, traits, Allocator>::~basic_stringstream() {  }
-
+*/
 
 #ifdef __UCLIBCXX_EXPAND_SSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_SSTREAM__
