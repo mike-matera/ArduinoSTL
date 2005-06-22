@@ -114,6 +114,60 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 }
 
 
+template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
+        basic_filebuf<wchar_t, char_traits<wchar_t> >::underflow()
+{
+	/*Some variables used internally:
+	Buffer pointers:
+
+	charT * mgbeg;
+	charT * mgnext;
+	charT * mgend;
+
+	eback() returns mgbeg
+	gptr()  returns mgnext
+	egptr() returns mgend
+
+	gbump(int n) mgnext+=n
+	*/
+
+	typedef char_traits<wchar_t> traits;
+	typedef basic_streambuf<wchar_t, traits> wstreambuf;
+
+
+	if(wstreambuf::eback() == wstreambuf::gptr() && 0 != wstreambuf::eback()){	//Buffer is full
+		return traits::to_int_type(*wstreambuf::gptr());
+	}
+
+        size_t in_size;
+
+	wchar_t c = 0;
+	wint_t wi = 0;
+	in_size = 0;
+
+	wi = fgetwc(fp);
+	if(WEOF == wi){
+		fprintf(stderr, "WEOF returned by fgetwc\n");
+		return traits::eof();
+	}
+
+	c = traits::to_char_type(wi);
+
+	if(wstreambuf::eback() == 0){
+		return traits::to_int_type(c);
+	}
+
+	for(wchar_t * i = wstreambuf::gptr(); i < wstreambuf::egptr(); ++i){
+		*(i-1) = *i;
+	}
+
+	*(wstreambuf::egptr()-1) = c;
+	
+	wstreambuf::mgnext -= 1;
+
+	return traits::to_int_type(*wstreambuf::gptr());
+}
+
 #endif // __UCLIBCXX_HAS_WCHAR__
 
 

@@ -9,8 +9,10 @@ int main(){
 	test = L"This is a test of wstring";
 	std::wcout << test << std::endl;
 
-
-
+	std::wcin >> test;
+	std::wcout << test << std::endl;
+	std::wcin >> test;
+	std::wcout << test << std::endl;
 
 
 	return 0;
