@@ -283,12 +283,14 @@ public:
 
 	_UCXXEXPORT basic_string& erase(size_type pos = 0, size_type n = npos){
 		size_type xlen = vector<Ch, A>::elements - pos;
+
 		if(xlen > n){
 			xlen = n;
 		}
 		size_type temp = vector<Ch, A>::elements;
+
 		Tr::move(vector<Ch, A>::data + pos, vector<Ch, A>::data + pos + xlen, temp - pos - xlen);
-		resize(pos + xlen);
+		resize(temp - xlen);
 		return *this;
 	}
 
