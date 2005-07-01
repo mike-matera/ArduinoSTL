@@ -120,6 +120,14 @@ int main(){
 	std::cout << a[0] << a[1] << a[2] << a[3] << a[4] << a[5] << a[6] << std::endl;
 
 
+	std::cout << "\nChecking erase()\n";
+	std::cout << "The following two lines should ber identical\n";
+	a = "this should be empty";
+	a.erase();
+	std::cout << "String value: '" << a << "'" << std::endl;
+	std::cout << "String value: ''" << std::endl;
+
+
 	std::cout << "\nChecking find on string \"" ;
 	a = "This is the string we are searching through";
 	std::cout << a << "\"\n";

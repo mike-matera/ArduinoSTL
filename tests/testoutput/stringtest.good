@@ -34,6 +34,11 @@ The following two lines should be identical
 abcdefg
 abcdefg
 
+Checking erase()
+The following two lines should ber identical
+String value: ''
+String value: ''
+
 Checking find on string "This is the string we are searching through"
 Position of "the": 8 - should be 8
 Position of 'g': 17 - should be 17
