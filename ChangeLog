@@ -22,6 +22,7 @@
 -	Implemented std::auto_ptr - don't know how I missed that one
 -	Now able to have all support libraries imported (libgcc_eh)
 -	wchar output now works properly - note that performance sucks necessarily
+-	Fix to string::erase() so it now actually erases
 
 
 0.1.10
