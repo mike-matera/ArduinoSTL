@@ -56,11 +56,11 @@ else
 SUPOBJS =
 endif
 
-$(LIBNAME).a: libgcc_eh libsupc
+$(LIBNAME).a: libgcc_eh libsupc $(EXOBJS)
 	$(AR) $(ARFLAGS) $@ $(EXOBJS) $(GCCOBJS) $(SUPOBJS)
 	$(RANLIB) $@
 
-$(SHARED_FULLNAME): libgcc_eh libsupc
+$(SHARED_FULLNAME): libgcc_eh libsupc $(EXOBJS)
 	$(CC) $(LDFLAGS) -o $@ $(EXOBJS) $(SUPOBJS) $(GCCOBJS) $(LIBS)
 	$(LN) $@ $(SHARED_MAJORNAME)
 	$(LN) $(SHARED_MAJORNAME) $(LIBNAME).so
