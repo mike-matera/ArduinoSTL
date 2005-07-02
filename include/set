@@ -149,10 +149,10 @@ protected:
 			container = m.container;
 			return *this;
 		}
-		bool operator==(const typename Set::iterator & m){
+		bool operator==(const typename Set::iterator & m) const {
 			return (m.element == element && m.container == container);
 		}
-		bool operator!=(const typename Set::iterator & m){
+		bool operator!=(const typename Set::iterator & m) const {
 			return (m.element != element || m.container != container);
 		}
 		__set_iter & operator++(){
@@ -217,10 +217,10 @@ protected:
 			container = m.container;
 			return *this;
 		}
-		bool operator==(const typename Set::const_iterator & m){
+		bool operator==(const typename Set::const_iterator & m) const {
 			return (m.element == element && m.container == container);
 		}
-		bool operator!=(const typename Set::const_iterator & m){
+		bool operator!=(const typename Set::const_iterator & m) const {
 			return (m.element != element || m.container != container);
 		}
 		__set_citer & operator++(){

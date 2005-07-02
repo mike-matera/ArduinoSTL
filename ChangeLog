@@ -1,3 +1,7 @@
+0.1.12
+-	Add missing const declarators to some data types (thanks to asierllano)
+
+
 0.1.11
 -	Expanding basic_string<char> automatically expands vector<char>, even if not
 	explicitly expanding vector for other data types.  No cost and may save space.

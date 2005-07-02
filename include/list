@@ -182,11 +182,11 @@ namespace std{
 			return current->val;
 		}
 
-		bool operator==(const list<T, Allocator>::iter_list & right){
+		bool operator==(const list<T, Allocator>::iter_list & right) const {
 			return (current == right.current);
 		}
 
-		bool operator!=(const list<T, Allocator>::iter_list & right){
+		bool operator!=(const list<T, Allocator>::iter_list & right) const {
 			return (current != right.current);
 		}
 

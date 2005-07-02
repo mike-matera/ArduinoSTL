@@ -21,6 +21,9 @@ scott: 7 Points
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Foudn error in functional.  Provided fix.
 
+asierllano: 3 Points
+2005-07-02: 1+2:  Found missing const on some data types.  Used BTS & provided patch
+
 thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
 
