@@ -38,8 +38,8 @@ config TARGET_i386
 #config TARGET_microblaze
 #	bool "microblaze"
 
-#config TARGET_mips
-#	bool "mips"
+config TARGET_mips
+	bool "mips"
 
 config TARGET_powerpc
 	bool "powerpc"
