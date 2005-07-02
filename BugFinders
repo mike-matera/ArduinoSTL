@@ -13,15 +13,15 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
+asierllano: 8 Points
+2005-07-02: 1+1:  Minor fix to list::swap. Now swaps number of elements. Used BTS & patch
+2005-07-02: 1+2:  Found invalid functionality in lower_bound and upper_bound for map
+2005-07-02: 1+2:  Found missing const on some data types.  Used BTS & provided patch
+
 scott: 7 Points
 2005-02-01: 1+2: Found problem with wchar needing ifdefs.  Used bug system and provided partial solution
 2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
-
-asierllano: 6 Points
-2005-07-02: 1+1:  Minor fix to list::swap. Now swaps number of elements. Used BTS & patch
-2005-07-02: 1+2:  Found invalid functionality in lower_bound and upper_bound for map
-2005-07-02: 1+2:  Found missing const on some data types.  Used BTS & provided patch
 
 thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
