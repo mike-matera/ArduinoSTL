@@ -19,6 +19,7 @@ scott: 7 Points
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
 
 asierllano: 6 Points
+2005-07-02: 1+1:  Minor fix to list::swap. Now swaps number of elements. Used BTS & patch
 2005-07-02: 1+2:  Found invalid functionality in lower_bound and upper_bound for map
 2005-07-02: 1+2:  Found missing const on some data types.  Used BTS & provided patch
 

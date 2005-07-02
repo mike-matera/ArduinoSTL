@@ -500,6 +500,7 @@ namespace std{
 	}
 	template<class T, class Allocator> void list<T, Allocator>::swap(list<T,Allocator>& l){
 		node * temp;
+		size_type tempel;
 
 		temp = list_start;
 		list_start = l.list_start;
@@ -508,6 +509,10 @@ namespace std{
 		temp = list_end;
 		list_end = l.list_end;
 		l.list_end = temp;
+
+		tempel = elements;
+		elements = l.elements;
+		l.elements = tempel;
 	}
 	template<class T, class Allocator> void list<T, Allocator>::clear(){
 		while(elements > 0){

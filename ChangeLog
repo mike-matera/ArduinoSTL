@@ -1,5 +1,8 @@
 0.1.12
 -	Add missing const declarators to some data types (thanks to asierllano)
+-	Fix list::swap to alter the nubmer of elements
+-	Fix map and mmap code find functions
+-	Add const operator== and operator!= to multiple containers
 
 
 0.1.11
