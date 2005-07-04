@@ -50,7 +50,7 @@ namespace std{
 		explicit basic_istream(basic_streambuf<charT,traits>* sb)
 			: basic_ios<charT, traits>(sb), sbuffer(sb), count_last_ufmt_input(0)
 		{
-//			sbuffer = sb;
+			basic_ios<charT, traits>::init(sb);
 		}
 		virtual ~basic_istream() { }
 	

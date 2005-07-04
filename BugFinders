@@ -27,7 +27,8 @@ thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
 
 Other: 2 Points
-2005-07-04: 1+1: Found string::compare ambiguity.  Useed BTS
+2005-07-04: 1+2: Found need for basic_ios().  Used BTS and provided test case.
+2005-07-04: 1+1: Found string::compare ambiguity.  Used BTS.
 
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Found error in functional.  Provided fix.

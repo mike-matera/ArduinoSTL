@@ -322,6 +322,9 @@ namespace std{
 		explicit _UCXXEXPORT basic_ios(basic_streambuf<charT,traits>* sb) : fill_char(' '), mtied(0), mstreambuf(0){
 			init(sb);
 		}
+
+		basic_ios() : mtied(0), mstreambuf(0){ }
+
 		virtual _UCXXEXPORT ~basic_ios(){
 		}
 
@@ -359,10 +362,6 @@ namespace std{
 		char_type fill_char;
 		basic_ostream<charT,traits>* mtied;
 		basic_streambuf<charT,traits>* mstreambuf;
-//		basic_ios() : mtied(0), mstreambuf(0){
-//			fprintf(stderr, "Called basic_ios with no streambuf\n");
-//			abort();
-//		}
 		_UCXXEXPORT basic_ios(const basic_ios<charT,traits> &){ }
 		_UCXXEXPORT basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		_UCXXEXPORT void init(basic_streambuf<charT,traits>* sb){
