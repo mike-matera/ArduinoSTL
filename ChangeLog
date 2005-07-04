@@ -3,6 +3,7 @@
 -	Fix list::swap to alter the nubmer of elements
 -	Fix map and mmap code find functions
 -	Add const operator== and operator!= to multiple containers
+-	Removied 3-argument string::compare and substituted 5-arguement compare with defaults
 
 
 0.1.11

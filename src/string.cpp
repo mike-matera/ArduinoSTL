@@ -63,7 +63,9 @@ namespace std{
 	template _UCXXEXPORT string::size_type string::find_first_not_of(char c, size_type) const;
 
 	template _UCXXEXPORT int string::compare(const string & str) const;
-	template _UCXXEXPORT int string::compare(size_type pos1, size_type n1, const string & str) const;
+//	template _UCXXEXPORT int string::compare(size_type pos1, size_type n1, const string & str) const;
+	template _UCXXEXPORT int string::compare(
+		size_type pos1, size_type n1, const string & str, size_type pos2, size_type n2) const;
 
 	template _UCXXEXPORT string string::substr(size_type pos, size_type n) const;
 
