@@ -14,6 +14,7 @@
 
 
 tommi: 9 Points
+2005-07-08: 1+1: Found inefficiency in sterambuf code.  Provided fix/BTS
 2005-07-08: 1+1: Found problem in ostream code with infinite loop.  Provided fix/BTS
 2005-07-08: 1+1: Found problem in ostream code calling flush().  Provided partial fix/BTS
 2005-07-04: 1+2: Found need for basic_ios().  Used BTS and provided test case.

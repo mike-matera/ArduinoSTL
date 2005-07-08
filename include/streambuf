@@ -259,7 +259,12 @@ namespace std{
 	}
 
 	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sputc(char_type c){
-		overflow( T::to_int_type(c) );
+		if(mpnext < mpend){
+			*mpnext = c;
+			++mpnext;
+		}else{
+			overflow( T::to_int_type(c) );
+		}
 		return T::to_int_type(c);
 	}
 
