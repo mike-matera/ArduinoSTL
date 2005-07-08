@@ -228,7 +228,7 @@ namespace std {
 
 		typename traits::int_type c;
 
-		while((c = sb->sgetc()) != traits::eof() ){
+		while((c = sb->sbumpc()) != traits::eof() ){
 			put(c);
 		}
 

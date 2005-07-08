@@ -13,6 +13,12 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
+tommi: 9 Points
+2005-07-08: 1+1: Found problem in ostream code with infinite loop.  Provided fix/BTS
+2005-07-08: 1+1: Found problem in ostream code calling flush().  Provided partial fix/BTS
+2005-07-04: 1+2: Found need for basic_ios().  Used BTS and provided test case.
+2005-07-04: 1+1: Found string::compare ambiguity.  Used BTS.
+
 asierllano: 8 Points
 2005-07-02: 1+1:  Minor fix to list::swap. Now swaps number of elements. Used BTS & patch
 2005-07-02: 1+2:  Found invalid functionality in lower_bound and upper_bound for map
@@ -25,10 +31,6 @@ scott: 7 Points
 
 thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
-
-tommi: 2 Points
-2005-07-04: 1+2: Found need for basic_ios().  Used BTS and provided test case.
-2005-07-04: 1+1: Found string::compare ambiguity.  Used BTS.
 
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Found error in functional.  Provided fix.
