@@ -78,6 +78,7 @@ namespace std{
 
 
 		_UCXXEXPORT virtual ~basic_filebuf(){
+			sync();
 			close();
 			delete [] pbuffer;
 			delete [] gbuffer;
@@ -152,8 +153,9 @@ namespace std{
 			return this;
 		}
 		_UCXXEXPORT basic_filebuf<charT,traits>* close(){
-			if(fp != 0){
+			if(fp != 0 && fp != stdin && fp != stdout && fp !=stderr ){
 				overflow();
+				sync();
 				int retval = fclose(fp);
 				if(retval !=0){		//Error of some sort
 					return 0;
