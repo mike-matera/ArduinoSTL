@@ -36,7 +36,7 @@ namespace std{
 
 	}
 
-	_UCXXEXPORT const char * logic_error::what(){
+	_UCXXEXPORT const char * logic_error::what() const throw(){
 		return mstring.c_str();
 	}
 
@@ -65,7 +65,7 @@ namespace std{
 
 	}
 
-	_UCXXEXPORT const char * runtime_error::what(){
+	_UCXXEXPORT const char * runtime_error::what() const throw(){
 		return mstring.c_str();
 	}
 

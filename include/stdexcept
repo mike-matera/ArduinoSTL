@@ -39,7 +39,7 @@ public:
 	logic_error(const string& what_arg);
 
 	virtual ~logic_error() throw();
-	virtual const char * what();
+	virtual const char * what() const throw();
 
 };	
 
@@ -80,7 +80,7 @@ public:
 	runtime_error(const string& what_arg);
 
 	virtual ~runtime_error();
-	virtual const char * what();
+	virtual const char * what() const throw();
 };
 
 class _UCXXEXPORT range_error : public runtime_error{

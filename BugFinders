@@ -13,7 +13,8 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
-tommi: 9 Points
+tommi: 13 Points
+2005-07-09: 1+1: Found probelm with exception declarations.  Provided Fix/BTS
 2005-07-08: 1+1: Found inefficiency in sterambuf code.  Provided fix/BTS
 2005-07-08: 1+1: Found problem in ostream code with infinite loop.  Provided fix/BTS
 2005-07-08: 1+1: Found problem in ostream code calling flush().  Provided partial fix/BTS
