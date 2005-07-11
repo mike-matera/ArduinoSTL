@@ -182,7 +182,10 @@ namespace std{
 			return traits_type::eof();
 		}
 		virtual int_type uflow(){
-			return traits_type::eof();
+			int_type ret = underflow();
+			if (!traits_type::eq_int_type(ret, traits_type::eof()))
+				gbump(1);
+			return ret;
 		}
 
 		virtual int_type pbackfail(int_type c = traits::eof()){

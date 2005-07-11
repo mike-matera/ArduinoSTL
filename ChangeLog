@@ -5,6 +5,7 @@
 -	Add const operator== and operator!= to multiple containers
 -	Removied 3-argument string::compare and substituted 5-arguement compare with defaults
 -	Re-instituted basic_ios() constructor.  istream/ostream now manually call protected init()
+-	Fixed implementation of uflow() (Thanks tommi)
 
 
 0.1.11
