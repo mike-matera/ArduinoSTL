@@ -233,7 +233,7 @@ namespace std {
 
 		typename traits::int_type c;
 
-		while(good() && (c = sb->sbumpc()) != traits::eof() ){
+		while(basic_ios<charT,traits>::good() && (c = sb->sbumpc()) != traits::eof() ){
 			put(c);
 		}
 
