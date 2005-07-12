@@ -145,7 +145,7 @@ namespace std{
 		};
 
 		istreambuf_iterator() throw() : sbuf(0) { }
-		istreambuf_iterator(istream_type& s) throw() : sbuf(&s.rdbuf()) { }
+		istreambuf_iterator(istream_type& s) throw() : sbuf(s.rdbuf()) { }
 		istreambuf_iterator(streambuf_type* s) throw() : sbuf(s) { }
 		istreambuf_iterator(const proxy& p) throw() : sbuf(&p.buf) { }
 
@@ -162,12 +162,14 @@ namespace std{
 			return(tmp);
 		}
 
-		bool equal(istreambuf_iterator& b){
-			//Fixme.  Don't know how to get this to work properly
-			return false;
+		bool equal(const istreambuf_iterator& b) const{
+			return sbuf == b.sbuf || is_eof() && b.is_eof();
 		}
 	private:
 		streambuf_type* sbuf;
+		inline bool is_eof() const{
+			return sbuf == 0 || sbuf->sgetc() == traits_type::eof();
+		}
 	};
 
 	template <class charT, class traits> _UCXXEXPORT bool

@@ -10,6 +10,7 @@
 -	fix implementation of traits::copy
 -	Call flush far less often
 -	Now with multimap::operator== (thanks to tommi)
+-	Implementation of istreambuf_iterator::equal() (Thanks to tommi)
 
 
 0.1.11
