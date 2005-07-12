@@ -266,7 +266,7 @@ namespace std{
 			*mpnext = c;
 			++mpnext;
 		}else{
-			overflow( T::to_int_type(c) );
+			return overflow( T::to_int_type(c) );
 		}
 		return T::to_int_type(c);
 	}

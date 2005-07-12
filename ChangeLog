@@ -6,6 +6,9 @@
 -	Removied 3-argument string::compare and substituted 5-arguement compare with defaults
 -	Re-instituted basic_ios() constructor.  istream/ostream now manually call protected init()
 -	Fixed implementation of uflow() (Thanks tommi)
+-	badbit now set if data not written in ostream code
+-	fix implementation of traits::copy
+-	Casll flush far less often
 
 
 0.1.11

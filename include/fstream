@@ -296,7 +296,7 @@ namespace std{
 			}
 		}
 
-		virtual _UCXXEXPORT int_type overflow (int_type c = traits::eof()){
+		virtual _UCXXEXPORT int_type overflow(int_type c = traits::eof()){
 			if(is_open() == false){
 				//Can't do much
 				return traits::eof();
@@ -322,7 +322,7 @@ namespace std{
 				return c;
 			}
 
-			size_t s = r;
+			size_t totalChars = r;
 
 			char_type *buffer = 0;
 			if(traits::eq_int_type(c,traits::eof())){
@@ -330,21 +330,21 @@ namespace std{
 			}else{
 				buffer = new char_type[r+1];
 				buffer[r] = c;
-				s++;
-			}
-			if(r!=0){	//Nothing to do
-				traits::copy(buffer, basic_streambuf<charT,traits>::pbase(), r);
+				totalChars++;
 			}
 
-			size_t retval = fwrite(buffer, sizeof(charT), s, fp);
-			if(retval !=s){
+			traits::copy(buffer, basic_streambuf<charT,traits>::pbase(), r);
+//			memcpy(buffer, basic_streambuf<charT,traits>::pbase(), r);
+
+			size_t retval = fwrite(buffer, sizeof(charT), totalChars, fp);
+			if(retval !=totalChars){
 				if(retval == 0){
 					delete [] buffer;
 					return traits::eof();
 				}
 				basic_streambuf<charT,traits>::pbump(-retval);
 				fprintf(stderr, "***** Did not write the full buffer out.  Should be: %d, actually: %d\n",
-					 s, retval);
+					 totalChars, retval);
 			}else{
 				basic_streambuf<charT,traits>::pbump(-r);
 			}

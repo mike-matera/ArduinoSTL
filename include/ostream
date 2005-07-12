@@ -85,12 +85,17 @@ namespace std {
 		basic_ostream<charT,traits>& operator<<(basic_streambuf<char_type,traits>* sb);
 
 		_UCXXEXPORT basic_ostream<charT,traits>& put(char_type c){
-			sbuffer->sputc(c);
-			flush();
+			if(basic_ostream<charT,traits>::traits_type::eq_int_type(
+				sbuffer->sputc(c),
+				basic_ostream<charT,traits>::traits_type::eof()))
+			{
+				basic_ios<charT,traits>::setstate(ios_base::eofbit);
+			}
 			return *this;
 		}
 		_UCXXEXPORT basic_ostream<charT,traits>& write(const char_type* s, streamsize n){
-			sbuffer->sputn(s, n);
+			if(basic_ostream<charT,traits>::traits_type::eq_int_type(sbuffer->sputn(s, n), basic_ostream<charT,traits>::traits_type::eof()))
+				basic_ios<charT,traits>::setstate(ios_base::eofbit);
 			return *this;
 		}
 		_UCXXEXPORT basic_ostream<charT,traits>& flush(){
@@ -228,7 +233,7 @@ namespace std {
 
 		typename traits::int_type c;
 
-		while((c = sb->sbumpc()) != traits::eof() ){
+		while(good() && (c = sb->sbumpc()) != traits::eof() ){
 			put(c);
 		}
 
