@@ -8,7 +8,8 @@
 -	Fixed implementation of uflow() (Thanks tommi)
 -	badbit now set if data not written in ostream code
 -	fix implementation of traits::copy
--	Casll flush far less often
+-	Call flush far less often
+-	Now with multimap::operator== (thanks to tommi)
 
 
 0.1.11

@@ -1053,6 +1053,19 @@ protected:
 
 
 	template <class Key, class T, class Compare, class Allocator>
+		multimap<Key, T, Compare, Allocator>::multimap<Key,T,Compare,Allocator>&
+		multimap<Key, T, Compare, Allocator>::operator=(const multimap<Key,T,Compare,Allocator>& x)
+	{
+		if( &x == this){
+			return *this;
+		}
+		c = x.c;
+		data = x.data;
+		return *this;
+	}
+
+
+	template <class Key, class T, class Compare, class Allocator>
 		typename multimap<Key, T, Compare, Allocator>::iterator
 		multimap<Key, T, Compare, Allocator>::insert(const value_type &x)
 	{
