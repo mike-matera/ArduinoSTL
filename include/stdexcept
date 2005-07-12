@@ -72,14 +72,14 @@ public:
 
 };
 
-class _UCXXEXPORT runtime_error{
+class _UCXXEXPORT runtime_error : public exception{
 protected:
 	string mstring;
 public:
 	runtime_error();
 	runtime_error(const string& what_arg);
 
-	virtual ~runtime_error();
+	virtual ~runtime_error() throw();
 	virtual const char * what() const throw();
 };
 
@@ -87,7 +87,7 @@ class _UCXXEXPORT range_error : public runtime_error{
 public:
 	range_error() : runtime_error(){}
 	range_error(const string& what_arg) : runtime_error(what_arg) {}
-	virtual ~range_error(){ }
+	virtual ~range_error() throw(){ }
 };
 
 
@@ -95,14 +95,14 @@ class _UCXXEXPORT overflow_error : public runtime_error{
 public:
 	overflow_error() : runtime_error(){}
 	overflow_error(const string& what_arg) : runtime_error(what_arg) {}
-	virtual ~overflow_error(){}
+	virtual ~overflow_error() throw(){}
 };
 
 class _UCXXEXPORT underflow_error : public runtime_error{
 public:
 	underflow_error() : runtime_error(){}
 	underflow_error(const string& what_arg) : runtime_error(what_arg) {}
-	virtual ~underflow_error(){}
+	virtual ~underflow_error() throw(){}
 };
 
 

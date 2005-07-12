@@ -61,7 +61,7 @@ namespace std{
 
 	}
 
-	_UCXXEXPORT runtime_error::~runtime_error(){
+	_UCXXEXPORT runtime_error::~runtime_error() throw(){
 
 	}
 
