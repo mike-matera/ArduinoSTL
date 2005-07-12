@@ -19,6 +19,8 @@
 #ifndef __STD_HEADER_FUNCTIONAL
 #define __STD_HEADER_FUNCTIONAL 1
 
+#include <basic_definitions>
+
 namespace std{
 
 	template <class Arg, class Result> struct unary_function;
