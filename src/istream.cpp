@@ -31,16 +31,18 @@ namespace std{
 	{
 		string temp;
 		char_traits<char>::int_type c;
-		int exitnow = 0;
-		while(exitnow == 0){
-			c = stream.get();
+		while(true){
+			c = stream.rdbuf()->sgetc();
 			if(c != char_traits<char>::eof() && isspace(c) == false){
-				temp.append(1, c);
+				stream.rdbuf()->sbumpc();
+				temp.append(1, char_traits<char>::to_char_type(c));
 			}else{
-				stream.putback(c);
-				exitnow = 1;
+				break;
 			}
 		}
+		if (temp.size() == 0)
+			stream.setstate(ios_base::eofbit|ios_base::failbit);
+
 		return temp;
         }
 

@@ -12,6 +12,7 @@
 -	Now with multimap::operator== (thanks to tommi)
 -	Implementation of istreambuf_iterator::equal() (Thanks to tommi)
 -	Fix certain exception implementations
+-	Istream now sets error bits correctly (thanks to tommi)
 
 
 0.1.11

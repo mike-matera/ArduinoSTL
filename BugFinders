@@ -14,6 +14,7 @@
 
 
 tommi: 23 Points
+2005-07-23: 1+1: Fixed setting of error flags in certain istream code. / BTS
 2005-07-12: 1+2: Fixed implemenation of certain exceptions / BTS
 2005-07-12: 1+2: Provided implemenation of istreambuf_iterator::equal() / BTS
 2005-07-12: 1+1: Set eofbit as appropriate.  Provided partial solution/BTS
