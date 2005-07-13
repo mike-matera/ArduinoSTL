@@ -65,9 +65,24 @@ Testing vectors of pointers
 3
 2
 1
+Pushing back instances of myclass created with new
+Deleting instances of myclass directly from iterator
+Deleteing myclass instance
+Calling destructor with num: 0
+Deleteing myclass instance
+Calling destructor with num: 0
+Deleteing myclass instance
+Calling destructor with num: 0
+Deleteing myclass instance
+Calling destructor with num: 0
+Deleteing myclass instance
+Calling destructor with num: 0
+Deleteing myclass instance
+Calling destructor with num: 0
+Delete completed on myclass instances
 The following two lines should be identical:
 Vector size: 4
-Vector size: 4
+Vector size: 6
 Testing resize()
 The following two lines should be identical:
 Vector size: 1

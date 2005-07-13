@@ -142,6 +142,26 @@ int main(){
 		(*mcpi)->printout();
 	}
 
+	mcp.clear();
+
+	std::cout << "Pushing back instances of myclass created with new" << std::endl;
+
+	mcp.push_back(new myclass());
+	mcp.push_back(new myclass());
+	mcp.push_back(new myclass());
+	mcp.push_back(new myclass());
+	mcp.push_back(new myclass());
+	mcp.push_back(new myclass());
+
+	std::cout << "Deleting instances of myclass directly from iterator" << std::endl;
+
+	for(mcpi = mcp.begin(); mcpi != mcp.end(); ++mcpi){
+		std::cout << "Deleteing myclass instance" << std::endl;
+		delete *mcpi;
+	}
+
+	std::cout << "Delete completed on myclass instances" << std::endl;
+
 	std::cout << "The following two lines should be identical:" << std::endl;
 	std::cout << "Vector size: 4" << std::endl;
 	std::cout << "Vector size: " << mcp.size() << std::endl;
