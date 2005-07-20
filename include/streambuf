@@ -191,8 +191,14 @@ namespace std{
 		virtual int_type pbackfail(int_type c = traits::eof()){
 			return c;
 		}
-		virtual streamsize xsputn(const char_type* , streamsize ){
-			return 0;
+		virtual streamsize xsputn(const char_type* c, streamsize n){
+			//This function is designed to be replaced by subclasses
+			for(streamsize i = 0; i< n; ++i){
+				if(sputc(c[i]) == traits::eof()){
+					return i;
+				}
+			}
+			return n;
 		}
 		virtual int_type overflow (int_type c = traits::eof()){
 			return c;

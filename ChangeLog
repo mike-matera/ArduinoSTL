@@ -13,6 +13,7 @@
 -	Implementation of istreambuf_iterator::equal() (Thanks to tommi)
 -	Fix certain exception implementations
 -	Istream now sets error bits correctly (thanks to tommi)
+-	Change implementation of streambuf::xsputn
 
 
 0.1.11
