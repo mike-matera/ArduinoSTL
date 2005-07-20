@@ -251,7 +251,7 @@ namespace std{
 	template <class Operation, class T> _UCXXEXPORT 
 		binder2nd<Operation> bind2nd(const Operation& op, const T& x)
 	{
-		return binder2nd<Operation>(op, typename Operation::second_argument_type(x));
+		return binder2nd<Operation>(op, typename Operation::first_argument_type(x));
 	}
 	
 

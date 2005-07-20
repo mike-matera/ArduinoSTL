@@ -32,10 +32,6 @@ namespace std{
 
 	}
 
-	_UCXXEXPORT logic_error::~logic_error() throw(){
-
-	}
-
 	_UCXXEXPORT const char * logic_error::what() const throw(){
 		return mstring.c_str();
 	}
@@ -49,19 +45,11 @@ namespace std{
 	
 	}
 
-	_UCXXEXPORT out_of_range::~out_of_range() throw() {
-	
-	}
-
 	_UCXXEXPORT runtime_error::runtime_error() : mstring(){
 
 	}
 
 	_UCXXEXPORT runtime_error::runtime_error(const string& what_arg) : mstring(what_arg){
-
-	}
-
-	_UCXXEXPORT runtime_error::~runtime_error() throw(){
 
 	}
 

@@ -38,7 +38,7 @@ public:
 	logic_error() throw();
 	logic_error(const string& what_arg);
 
-	virtual ~logic_error() throw();
+	virtual ~logic_error() throw() {}
 	virtual const char * what() const throw();
 
 };	
@@ -68,7 +68,7 @@ class _UCXXEXPORT out_of_range : public logic_error{
 public:
 	out_of_range();
 	out_of_range(const string & what_arg);
-	virtual ~out_of_range() throw();
+	virtual ~out_of_range() throw() {}
 
 };
 
@@ -79,7 +79,7 @@ public:
 	runtime_error();
 	runtime_error(const string& what_arg);
 
-	virtual ~runtime_error() throw();
+	virtual ~runtime_error() throw() {}
 	virtual const char * what() const throw();
 };
 
