@@ -15,6 +15,7 @@
 -	Istream now sets error bits correctly (thanks to tommi)
 -	Change implementation of streambuf::xsputn
 -	Fix of binder2nd operator implementation
+-	Elliminated unneccessary pointers in ostream and istream - use pointers in base class instead
 
 
 0.1.11

@@ -48,7 +48,7 @@ namespace std{
 		typedef traits                    traits_type;
     	
 		explicit basic_istream(basic_streambuf<charT,traits>* sb)
-			: basic_ios<charT, traits>(sb), sbuffer(sb), count_last_ufmt_input(0)
+			: basic_ios<charT, traits>(sb), count_last_ufmt_input(0)
 		{
 			basic_ios<charT, traits>::init(sb);
 		}
@@ -91,8 +91,8 @@ namespace std{
 			streamsize i = 0;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
-				sbuffer->sbumpc();
+				c = basic_ios<charT, traits>::mstreambuf->sgetc();
+				basic_ios<charT, traits>::mstreambuf->sbumpc();
 				if(c == traits::eof() ){
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -106,7 +106,7 @@ namespace std{
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
 					}
-					sbuffer->sputbackc(c);
+					basic_ios<charT, traits>::mstreambuf->sputbackc(c);
 					count_last_ufmt_input = i;
 					return *this;
 				}
@@ -124,7 +124,7 @@ namespace std{
 			streamsize i = 0;
 			int_type c;
 			while(1){		//We will exit internally based upon error conditions
-				c = sbuffer->sgetc();
+				c = basic_ios<charT, traits>::mstreambuf->sgetc();
 				if(c == traits::eof()){
 					if(i==0){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -146,7 +146,7 @@ namespace std{
 					return *this;
 				}
 				++i;
-				sbuffer->sbumpc();
+				basic_ios<charT, traits>::mstreambuf->sbumpc();
 			}		
 		}
 		
@@ -159,7 +159,7 @@ namespace std{
 			streamsize i = 0;
 			int_type c;
 			for(i=0;i<n-1;++i){
-				c= sbuffer->sgetc();
+				c = basic_ios<charT, traits>::mstreambuf->sgetc();
 				if(c == traits::eof() ){
 					if( basic_ios<charT,traits>::eof() ){
 						basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -170,7 +170,7 @@ namespace std{
 					s[i] = traits::eos();
 					return *this;
 				}
-				if(sbuffer->sbumpc()==traits::eof() ){
+				if(basic_ios<charT, traits>::mstreambuf->sbumpc()==traits::eof() ){
 					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 				}
 				if(c == delim){
@@ -189,12 +189,12 @@ namespace std{
 			streamsize i;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
+				c = basic_ios<charT, traits>::mstreambuf->sgetc();
 				if(c == traits::eof()){
 					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 					return *this;
 				}
-				sbuffer->sbumpc();
+				basic_ios<charT, traits>::mstreambuf->sbumpc();
 				if(c == delim){
 					return *this;
 				}
@@ -206,11 +206,11 @@ namespace std{
 			if(basic_ios<charT,traits>::good() == false){
 				return traits::eof();
 			}else{
-				int_type c = sbuffer->sgetc();
+				int_type c = basic_ios<charT, traits>::mstreambuf->sgetc();
 				if(c == traits::eof()){
 					basic_ios<charT,traits>::setstate(ios_base::eofbit);
 				}
-				return sbuffer->sgetc();
+				return basic_ios<charT, traits>::mstreambuf->sgetc();
 			}
 		}
 		
@@ -219,7 +219,7 @@ namespace std{
 			streamsize i;
 			int_type c;
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
+				c = basic_ios<charT, traits>::mstreambuf->sgetc();
 
 				if(c == traits::eof()){
 					basic_ios<charT,traits>::setstate(ios_base::failbit);
@@ -227,7 +227,7 @@ namespace std{
 					count_last_ufmt_input = i;
 					return *this;
 				}
-				sbuffer->sbumpc();
+				basic_ios<charT, traits>::mstreambuf->sbumpc();
 				s[i] = c;
 			}
 			count_last_ufmt_input = n;
@@ -242,22 +242,22 @@ namespace std{
 				return 0;
 			}
 			
-			if( sbuffer->in_avail()  ==  -1){
+			if( basic_ios<charT, traits>::mstreambuf->in_avail()  ==  -1){
 				count_last_ufmt_input=0;
 				basic_ios<charT,traits>::setstate(ios_base::eofbit);
 				return 0;
 			}
 			
-			if(n > sbuffer->in_avail() ){
-				n = sbuffer->in_avail();
+			if(n > basic_ios<charT, traits>::mstreambuf->in_avail() ){
+				n = basic_ios<charT, traits>::mstreambuf->in_avail();
 			}
 			
 			streamsize i;
 			int_type c;
 			
 			for(i=0;i<n;++i){
-				c = sbuffer->sgetc();
-				sbuffer->sbumpc();
+				c = basic_ios<charT, traits>::mstreambuf->sgetc();
+				basic_ios<charT, traits>::mstreambuf->sbumpc();
 				s[i] = c;
 			}
 			count_last_ufmt_input = n;
@@ -270,11 +270,11 @@ namespace std{
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 				return *this;
 			}
-			if(sbuffer == 0){
+			if(basic_ios<charT, traits>::mstreambuf == 0){
 				basic_ios<charT,traits>::setstate(ios_base::badbit);
 				return *this;
 			}
-			if(sbuffer->sputbackc(c) == traits::eof()){
+			if(basic_ios<charT, traits>::mstreambuf->sputbackc(c) == traits::eof()){
 				basic_ios<charT,traits>::setstate(ios_base::badbit);
 				return *this;
 			}
@@ -287,11 +287,11 @@ namespace std{
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 				return *this;
 			}
-			if(sbuffer == 0){
+			if(basic_ios<charT, traits>::mstreambuf == 0){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 				return *this;
 			}
-			if(sbuffer->sungetc() == traits::eof()){
+			if(basic_ios<charT, traits>::mstreambuf->sungetc() == traits::eof()){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 			}
 			return *this;
@@ -299,10 +299,10 @@ namespace std{
 		
 		_UCXXEXPORT int sync(){
 			sentry(*this, true);
-			if(sbuffer == 0){
+			if(basic_ios<charT, traits>::mstreambuf == 0){
 				return -1;
 			}
-			if(sbuffer->pubsync() == -1){
+			if(basic_ios<charT, traits>::mstreambuf->pubsync() == -1){
 				basic_ios<charT,traits>::setstate(ios_base::badbit);
 				return traits::eof();
 			}
@@ -313,26 +313,25 @@ namespace std{
 			if(basic_ios<charT,traits>::fail() !=false){
 				return pos_type(-1);
 			}
-			return sbuffer->pubseekoff(0, ios_base::cur, ios_base::in);
+			return basic_ios<charT, traits>::mstreambuf->pubseekoff(0, ios_base::cur, ios_base::in);
 		}
 		
 		_UCXXEXPORT basic_istream<charT,traits>& seekg(pos_type pos){
 			 if(basic_ios<charT,traits>::fail() !=true){
-			 	sbuffer->pubseekpos(pos);
+			 	basic_ios<charT, traits>::mstreambuf->pubseekpos(pos);
 			 }
 			return *this;		
 		}
 		
 		_UCXXEXPORT basic_istream<charT,traits>& seekg(off_type off, ios_base::seekdir dir){
 			if(basic_ios<charT,traits>::fail() !=true){
-				sbuffer->pubseekoff(off, dir);
+				basic_ios<charT, traits>::mstreambuf->pubseekoff(off, dir);
 			}
 			return *this;
 		}
 		
 	protected:
 		_UCXXEXPORT basic_istream(const basic_istream<charT,traits> &): basic_ios<charT, traits>() { }
-		basic_streambuf<charT,traits>* sbuffer;
 		_UCXXEXPORT basic_istream<charT,traits> & operator=(const basic_istream<charT,traits> &){ return *this; }
 		streamsize count_last_ufmt_input;
 
@@ -373,13 +372,13 @@ namespace std{
 	template <class charT, class traits>
 	_UCXXEXPORT typename basic_istream<charT,traits>::int_type basic_istream<charT,traits>::get(){
 		sentry(*this, true);
-		int_type retval = sbuffer->sgetc();
+		int_type retval = basic_ios<charT, traits>::mstreambuf->sgetc();
 		if(retval == traits::eof()){
 			count_last_ufmt_input = 0;
 			basic_ios<charT,traits>::setstate(ios_base::eofbit);
 		}else{
 			count_last_ufmt_input = 1;
-			sbuffer->sbumpc();
+			basic_ios<charT, traits>::mstreambuf->sbumpc();
 		}
 		return retval;
 	}
@@ -387,7 +386,7 @@ namespace std{
 	template <class charT, class traits>
 	_UCXXEXPORT basic_istream<charT,traits>& basic_istream<charT,traits>::get(char_type& c){
 		sentry(*this, true);
-		int_type retval = sbuffer->sgetc();
+		int_type retval = basic_ios<charT, traits>::mstreambuf->sgetc();
 		if(retval == traits::eof()){
 			count_last_ufmt_input = 0;
 			basic_ios<charT,traits>::setstate(ios_base::eofbit);
@@ -395,10 +394,7 @@ namespace std{
 		}else{
 			count_last_ufmt_input = 1;
 			c = traits::to_char_type(retval);
-			sbuffer->sbumpc();
-//			if(sbuffer->sbumpc() == traits::eof() || sbuffer->sgetc() == traits::eof()){
-//				basic_ios<charT,traits>::setstate(ios_base::eofbit);
-//			}
+			basic_ios<charT, traits>::mstreambuf->sbumpc();
 		}
 		return *this;
 	}

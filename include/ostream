@@ -52,7 +52,7 @@ namespace std {
 
 
 		_UCXXEXPORT basic_ostream(basic_streambuf<charT,traits>* sb)
-			: basic_ios<charT, traits>(sb), sbuffer(sb)
+			: basic_ios<charT, traits>(sb)
 		{
 			basic_ios<charT,traits>::init(sb);
 		}
@@ -86,7 +86,7 @@ namespace std {
 
 		_UCXXEXPORT basic_ostream<charT,traits>& put(char_type c){
 			if(basic_ostream<charT,traits>::traits_type::eq_int_type(
-				sbuffer->sputc(c),
+				basic_ios<charT, traits>::mstreambuf->sputc(c),
 				basic_ostream<charT,traits>::traits_type::eof()))
 			{
 				basic_ios<charT,traits>::setstate(ios_base::eofbit);
@@ -94,12 +94,16 @@ namespace std {
 			return *this;
 		}
 		_UCXXEXPORT basic_ostream<charT,traits>& write(const char_type* s, streamsize n){
-			if(basic_ostream<charT,traits>::traits_type::eq_int_type(sbuffer->sputn(s, n), basic_ostream<charT,traits>::traits_type::eof()))
+			if(basic_ostream<charT,traits>::traits_type::eq_int_type(
+				basic_ios<charT, traits>::mstreambuf->sputn(s, n), 
+				basic_ostream<charT,traits>::traits_type::eof())
+			){
 				basic_ios<charT,traits>::setstate(ios_base::eofbit);
+			}
 			return *this;
 		}
 		_UCXXEXPORT basic_ostream<charT,traits>& flush(){
-			if(sbuffer->pubsync() == -1){
+			if(basic_ios<charT, traits>::mstreambuf->pubsync() == -1){
 				basic_ios<charT,traits>::setstate(ios_base::badbit);
 			}
 			return *this;
@@ -124,7 +128,6 @@ namespace std {
 		}
 
 	protected:
-		basic_streambuf<char_type,traits>* sbuffer;
 		basic_ostream(const basic_ostream<charT,traits> &){ }
 		basic_ostream<charT,traits> & operator=(const basic_ostream<charT,traits> &){ return *this; }
 	};
