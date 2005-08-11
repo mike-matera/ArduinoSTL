@@ -354,7 +354,9 @@ namespace std{
 			return temp;
 		}
 
-		_UCXXEXPORT locale imbue(const locale& loc);
+		_UCXXEXPORT locale imbue(const locale& loc){
+			return ios_base::imbue(loc);
+		}
 		_UCXXEXPORT char narrow(char_type c, char dfault) const;
 		_UCXXEXPORT char_type widen(char c) const;
 

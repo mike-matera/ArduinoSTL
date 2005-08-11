@@ -46,6 +46,9 @@ namespace std{
 			(void)other;
 			return;
 		}
+		locale(const char *) throw(){
+			return;
+		}
 		~locale() throw(){
 			return;
 		}

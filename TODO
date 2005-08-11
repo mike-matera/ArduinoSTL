@@ -19,3 +19,6 @@ Convert bitset code to a common code-base to factor out code.  This should
 
 Clean up istream code so that a lot of the checking for stuff is put into
 	the sentry class.
+
+
+Find out why utilities pair operator= isn't working correctly

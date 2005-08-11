@@ -16,6 +16,7 @@
 -	Change implementation of streambuf::xsputn
 -	Fix of binder2nd operator implementation
 -	Elliminated unneccessary pointers in ostream and istream - use pointers in base class instead
+-	Added tests of utilities
 
 
 0.1.11

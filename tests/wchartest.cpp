@@ -5,6 +5,8 @@
 int main(){
 	setlocale(LC_ALL, "en_US.utf8");
 
+	std::wcout.imbue( std::locale("en_US.utf8") );
+
 	std::cout << "Starting wchar test" << std::endl;
 	std::wcout << "Test of wcout output" << std::endl;
 	
