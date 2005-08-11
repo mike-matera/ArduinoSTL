@@ -1,7 +1,7 @@
 #include <utility>
 #include <cstdio>
 
-using namespace std::rel_ops;
+//using namespace std::rel_ops;
 
 void test_rel_ops();
 
@@ -76,25 +76,25 @@ int main(){
 
 //The required operations aren't being generated from rel_ops 
 
-//	if( p != q ){
-//		printf("p != q (WRONG)\n");
-//	}else{
-//		printf("p !!= q (correct)\n");
-//	}
+	if( p != q ){
+		printf("p != q (WRONG)\n");
+	}else{
+		printf("p !!= q (correct)\n");
+	}
 
-//	if(q != p){
-//		printf("q != p (WRONG)\n");
-//	}else{
-//		printf("q !!= p (correct)\n");
-//	}
+	if(q != p){
+		printf("q != p (WRONG)\n");
+	}else{
+		printf("q !!= p (correct)\n");
+	}
 
 
-//	p = std::make_pair(a, b);
-//	if(p == q){
-//		printf("p == q (correct)\n");
-//	}else{
-//		printf("p != q (WRONG)\n");
-//	}
+	std::pair<Foo, Foo> r = std::make_pair(a, b);
+	if(p == r){
+		printf("p == r (correct)\n");
+	}else{
+		printf("p != r (WRONG)\n");
+	}
 
 
 
@@ -104,6 +104,7 @@ int main(){
 
 
 void test_rel_ops(){
+	using namespace std::rel_ops;
 
 	Foo a(5);
 	Foo b(5);
