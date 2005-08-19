@@ -11,9 +11,11 @@ choice
 
 config ARCH_LITTLE_ENDIAN
 	bool "Little Endian"
+	depends on ARCH_SUPPORTS_LITTLE_ENDIAN
 
 config ARCH_BIG_ENDIAN
 	bool "Big Endian"
+	depends on ARCH_SUPPORTS_BIG_ENDIAN
 
 endchoice
 

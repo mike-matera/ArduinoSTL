@@ -7,25 +7,20 @@ config TARGET_ARCH
 	default "sh" if CONFIG_SH2 || CONFIG_SH3 || CONFIG_SH4
 	default "sh64" if CONFIG_SH5
 
-config HAVE_ELF
-	bool
+config ARCH_SUPPORTS_LITTLE_ENDIAN
+	default y
+config ARCH_SUPPORTS_BIG_ENDIAN
 	default y
 
 config ARCH_CFLAGS
 	string
 
-config ARCH_LDFLAGS
-	string
-
-config LIBGCC_CFLAGS
-	string
-
 config HAVE_DOT_HIDDEN
-        bool
+	bool
 	default y
 
 config UCLIBC_COMPLETELY_PIC
-        bool
+	bool
 	default y
 
 choice

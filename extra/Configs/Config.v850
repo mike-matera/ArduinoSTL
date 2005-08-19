@@ -6,22 +6,12 @@
 config TARGET_ARCH
 	default "v850"
 
-config HAVE_ELF
-	bool
-	select ARCH_LITTLE_ENDIAN
-	select ARCH_HAS_C_SYMBOL_PREFIX
+config ARCH_SUPPORTS_LITTLE_ENDIAN
 	default y
 
 config ARCH_CFLAGS
 	string
 
-config ARCH_LDFLAGS
-	string
-
-config LIBGCC_CFLAGS
-	string
-
 config CROSS
-        string
+	string
 	default "v850e-elf-"
-

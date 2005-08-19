@@ -6,19 +6,14 @@
 config TARGET_ARCH
 	default "mips"
 
-config HAVE_ELF
-	bool
+config ARCH_SUPPORTS_LITTLE_ENDIAN
+	default y
+config ARCH_SUPPORTS_BIG_ENDIAN
 	default y
 
 config ARCH_CFLAGS
 	string
 	default "-mno-split-addresses"
-
-config ARCH_LDFLAGS
-	string
-
-config LIBGCC_CFLAGS
-	string
 
 choice
 	prompt "Target Processor Architecture"

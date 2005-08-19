@@ -3,21 +3,11 @@
 # see extra/config/Kconfig-language.txt
 #
 
-config HAVE_ELF
-	select ARCH_LITTLE_ENDIAN
-	select HAS_NO_THREADS
-	bool
-	default y
-
 config TARGET_ARCH
 	default "alpha"
 
+config ARCH_SUPPORTS_LITTLE_ENDIAN
+	default y
+
 config ARCH_CFLAGS
 	string
-
-config ARCH_LDFLAGS
-	string
-
-config LIBGCC_CFLAGS
-	string
-
