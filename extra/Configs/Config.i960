@@ -7,6 +7,7 @@ config TARGET_ARCH
 	default "i960"
 
 config ARCH_SUPPORTS_LITTLE_ENDIAN
+	bool
 	default y
 
 config ARCH_CFLAGS

@@ -8,8 +8,11 @@ config TARGET_ARCH
 	default "sh64" if CONFIG_SH5
 
 config ARCH_SUPPORTS_LITTLE_ENDIAN
+	bool
 	default y
+
 config ARCH_SUPPORTS_BIG_ENDIAN
+	bool
 	default y
 
 config ARCH_CFLAGS
