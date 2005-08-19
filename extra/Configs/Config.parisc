@@ -1,0 +1,13 @@
+#
+# For a description of the syntax of this configuration file,
+# see extra/config/Kconfig-language.txt
+#
+
+config TARGET_ARCH
+	default "parisc"
+
+config ARCH_SUPPORTS_BIG_ENDIAN
+	default y
+
+config ARCH_CFLAGS
+	string

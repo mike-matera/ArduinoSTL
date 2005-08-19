@@ -11,8 +11,8 @@ choice
 	help
 	  Stuff
 
-#config TARGET_alpha
-#	bool "alpha"
+config TARGET_alpha
+	bool "alpha"
 
 config TARGET_arm
 	bool "arm"
@@ -40,6 +40,9 @@ config TARGET_i386
 
 config TARGET_mips
 	bool "mips"
+
+config TARGET_parisc
+	bool "parisc"
 
 config TARGET_powerpc
 	bool "powerpc"
@@ -99,6 +102,10 @@ endif
 
 if TARGET_mips
 source "extra/Configs/Config.mips"
+endif
+
+if TARGET_parisc
+source "extra/Configs/Config.parisc"
 endif
 
 if TARGET_powerpc
