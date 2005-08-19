@@ -49,8 +49,11 @@ namespace std{
 
 		explicit _UCXXEXPORT basic_stringbuf(const basic_string<charT,traits,Allocator>& str,
 			ios_base::openmode which = ios_base::in | ios_base::out)
-			: data(str), ielement(0), oelement(str.length())
+			: data(str), ielement(0), oelement(0)
 		{
+			if(which & ios_base::ate){
+				oelement = data.length();
+			}
 			basic_streambuf<charT,traits>::openedFor = which;
 		}
 
@@ -63,7 +66,11 @@ namespace std{
 		_UCXXEXPORT void str(const basic_string<charT,traits,Allocator>& s){
 			data = s;
 			ielement = 0;
-			oelement = data.length();
+			if(basic_streambuf<charT,traits>::openedFor & ios_base::ate){
+				oelement = data.length();
+			}else{
+				oelement = 0;
+			}
 		}
 
 	protected:
@@ -150,20 +157,8 @@ namespace std{
 		}
 
 		virtual _UCXXEXPORT streamsize xsputn(const char_type* s, streamsize n){
-			streamsize alen = n;
-			streamsize rlen = data.length() - oelement;
-			if(alen < rlen){
-				rlen = alen;
-			}
-			if( rlen > 0 ){
-				data.replace(oelement, rlen, s);
-				oelement += rlen;
-				alen -= rlen;
-			}
-			if(alen > 0){
-				data.append(s + rlen, alen);
-				oelement += alen;
-			}
+			data.replace(oelement, n, s);
+			oelement += n;
 			return n;
 		}
 
@@ -222,13 +217,6 @@ namespace std{
 		size_type ielement;
 		size_type oelement;
 	};
-
-/*	template <class charT, class traits, class Allocator> basic_string<charT,traits,Allocator>
-		basic_stringbuf<charT,traits,Allocator>::str() const
-	{
-	}
-*/
-
 
 
 	template <class charT, class traits, class Allocator> class _UCXXEXPORT basic_istringstream
@@ -337,15 +325,6 @@ namespace std{
 	private:
 		basic_stringbuf<charT, traits> sb;
 	};
-
-/*	template <class charT, class traits, class Allocator> basic_stringstream<charT, traits, Allocator>::
-		basic_stringstream(ios_base::openmode which)
-			: basic_ios<charT, traits>(&sb), basic_iostream<charT,traits>(&sb), sb(which) {  }
-*/
-
-/*	template <class charT, class traits, class Allocator>
-		basic_stringstream<charT, traits, Allocator>::~basic_stringstream() {  }
-*/
 
 #ifdef __UCLIBCXX_EXPAND_SSTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_SSTREAM__

@@ -17,6 +17,8 @@
 -	Fix of binder2nd operator implementation
 -	Elliminated unneccessary pointers in ostream and istream - use pointers in base class instead
 -	Added tests of utilities
+-	Now handle calls to new() requesting 0 bytes without throwing exception
+-	Changed behaviour of sstream to more closely match standard, GNU libstdc++ and the rest of iostream
 
 
 0.1.11

@@ -37,7 +37,7 @@ int main(){
 	std::cout << "s (should be Test): " << s << std::endl;
 
 	a.clear();
-	std::cout << "Buffer: " << a.str() << std::endl;
+	std::cout << "Buffer after flag clear: " << a.str() << std::endl;
 
 	std::cout <<"Combining read and write activities\n";
 	a.str("Testing data");

@@ -4,6 +4,7 @@
 //using namespace std::rel_ops;
 
 void test_rel_ops();
+void test_pair_ops();
 
 class Foo{
 public:
@@ -42,6 +43,7 @@ private:
 
 int main(){
 	test_rel_ops();
+	test_pair_ops();
 
 	Foo a(1);
 	Foo b(2);
@@ -75,6 +77,12 @@ int main(){
 	}
 
 //The required operations aren't being generated from rel_ops 
+
+	if(p > q){
+		printf("p > q (WRONG)\n");
+	}else{
+		printf("p !>q (correct)\n");
+	}
 
 	if( p != q ){
 		printf("p != q (WRONG)\n");
@@ -205,4 +213,37 @@ void test_rel_ops(){
 	}else{
 		printf("c !>= a (WRONG)\n");
 	}
+}
+
+
+void test_pair_ops(){
+	std::pair<char, int> a;
+	std::pair<char, int> b;
+
+	a = std::pair<char, int>('a', 7531);
+	b = a;
+	
+	printf("Pair a (should be a, 7531): %i, %i\n", a.first, a.second);
+	printf("Pair b (should be a, 7531): %i, %i\n", b.first, b.second);
+
+	b.second=61473;
+	b.first='b';
+	printf("Pair b (should be b, 61473): %i, %i\n", b.first, b.second);
+
+	std::pair<char, int> c(b);
+	printf("Pair c (should be c, 61473): %i, %i\n", c.first, c.second);
+
+
+	std::pair<Foo, Foo> d = std::pair<Foo, Foo>(5, 18);
+	std::pair<Foo, Foo> e(d);
+
+	e = d;
+
+	if(std::pair<Foo, Foo>(5, 18) == e){
+		printf("e == (5, 18)\n");
+	}else{
+		printf("e !== (5, 18)\n");
+	}
+
+
 }

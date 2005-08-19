@@ -7,17 +7,17 @@ Character 0: a, character 1: b
 f (should be 2.35): 2.35
 i (should be 5): 5
 s (should be Test): Test
-Buffer: 2.35 5 Test
+Buffer after flag clear: 2.35 5 Test
 Combining read and write activities
-Read out: 'Testing'
-Read out: 'data2.5'
-Current buffer value: Testing data2.5 
+Read out: '2.5'
+Read out: 'ing'
+Current buffer value: 2.5 ing data
 Appending more text by a number of methods
-String stream text:Testing data2.5 trd
+String stream text:2.5 trd
 
 
 4635
-String stream test:Testing data2.5 trd
+String stream test:2.5 trd
 
 
 4635
