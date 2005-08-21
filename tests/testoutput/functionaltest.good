@@ -47,3 +47,4 @@ a < c (correct)
 c !< b (correct)
 c !< c (correct)
 The following should print 7:7
+The following should print 12:12
