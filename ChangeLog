@@ -19,6 +19,7 @@
 -	Added tests of utilities
 -	Now handle calls to new() requesting 0 bytes without throwing exception
 -	Changed behaviour of sstream to more closely match standard, GNU libstdc++ and the rest of iostream
+-	Fix implementation for man_fun to use mem_fun1_t as appropriate
 
 
 0.1.11

@@ -64,7 +64,7 @@ namespace std{
 	template<class S, class T> class mem_fun_t;
 	template<class S, class T, class A> class mem_fun1_t;
 	template<class S, class T> mem_fun_t<S,T> mem_fun(S (T::*f)());
-	template<class S, class T, class A> mem_fun1_t<S,T,A> mem_fun1(S (T::*f)(A));
+	template<class S, class T, class A> mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A));
 	template<class S, class T> class mem_fun_ref_t;
 	template<class S, class T, class A> class mem_fun1_ref_t;
 	template<class S, class T> mem_fun_ref_t<S,T> mem_fun_ref(S (T::*f)());
@@ -318,7 +318,7 @@ namespace std{
 		return mem_fun_t<S, T>(f);
 	}
 
-	template<class S, class T, class A> _UCXXEXPORT mem_fun1_t<S,T,A> mem_fun1(S (T::*f)(A)){
+	template<class S, class T, class A> _UCXXEXPORT mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A)){
 		return mem_fun1_t<S, T, A>(f);
 	}
 
