@@ -209,7 +209,7 @@ protected:
 		typename Set::value_type operator*(){
 			return container->data[element];
 		}
-		const typename Set::value_type * operator->(){
+		const typename Set::value_type * operator->() const{
 			return &(container->data[element]);
 		}
 		__set_citer & operator=(const typename Set::const_iterator & m){

@@ -155,7 +155,7 @@ template <class T> _UCXXEXPORT void return_temporary_buffer(T* p){
 		T* get() const throw(){
 			return object;
 		}
-		T* release() const throw(){
+		T* release() throw(){
 			T * temp(object);
 			object = 0;
 			return temp;

@@ -34,6 +34,7 @@ int main(){
 
 
 	std::set<int>::iterator i, j;
+	std::set<int>::const_iterator q;
 
 	std::cout << "Element list" << std::endl;
 	i = a.begin();
@@ -41,6 +42,14 @@ int main(){
 		std::cout << "Element : " << *i << std::endl;
 		++i;
 	}
+
+	std::cout << "Element list" << std::endl;
+	q = a.begin();
+	while(q != a.end() ){
+		std::cout << "Element : " << *q << std::endl;
+		++q;
+	}
+	
 
 	//Deleting element 56
 	i = a.find(56);

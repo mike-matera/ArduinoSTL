@@ -361,6 +361,20 @@ int main(){
 
 	}
 
+	if( std::min(3, 5) == 3){
+		std::cout << "The minimum of 3, 5 is 3" << std::endl;
+	}else{
+		std::cout << "The minimum of 3, 5 is NOT 3" << std::endl;
+	}
+
+	if( std::min(3, 5, std::less<int>()) == 3){
+		std::cout << "The minimum of 3, 5 is 3" << std::endl;
+	}else{
+		std::cout << "The minimum of 3, 5 is NOT 3" << std::endl;
+	}
+
+	
+
 
 	return 0;
 }

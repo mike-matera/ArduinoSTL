@@ -193,7 +193,7 @@ namespace std{
 		}
 
 		void downsize(size_type sz);
-		void resize(size_type sz, const T & c);
+		void resize(size_type sz, const T & c = T());
 
 		inline size_type capacity() const{
 			return data_size;

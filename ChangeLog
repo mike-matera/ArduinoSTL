@@ -21,6 +21,10 @@
 -	Changed behaviour of sstream to more closely match standard, GNU libstdc++ and the rest of iostream
 -	Fix implementation for man_fun to use mem_fun1_t as appropriate
 -	Fix const on mem_fun1_t
+-	Remove const from auto_ptr::release()
+-	Add const to map::const_iterator operator->()
+-	Add const to set::const_iterator operator->()
+-	Provide for default argument to vector::resize()
 
 
 0.1.11

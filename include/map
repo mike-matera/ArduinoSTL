@@ -208,10 +208,10 @@ protected:
 			: element(e), container(c) {  }
 		~__map_citer() {  }
 		
-		typename Map::value_type operator*(){
+		typename Map::value_type operator*() const{
 			return container->data[element];
 		}
-		const typename Map::value_type * operator->(){
+		const typename Map::value_type * operator->() const{
 			return &(container->data[element]);
 		}
 		__map_citer & operator=(const typename Map::const_iterator & m){
