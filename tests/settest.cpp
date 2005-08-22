@@ -241,6 +241,58 @@ int main(){
 	}
 	std::cout << std::endl;
 
+	a.clear();
+	b.clear();
+
+	a.insert(5);
+	a.insert(3);
+	a.insert(17);
+	a.insert(12);
+
+	b.insert(5);
+	b.insert(3);
+	b.insert(17);
+	b.insert(15);
+
+	if(a < b){
+		std::cout << "Set a < b" << std::endl;
+	}else{
+		std::cout << "Set a !< b" << std::endl;
+	}
+
+	if(a == b){
+		std::cout << "Set a == b" << std::endl;
+	}else{
+		std::cout << "Set a !== b" << std::endl;
+	}
+
+	if(a > b){
+		std::cout << "Set a > b" << std::endl;
+	}else{
+		std::cout << "Set a !> b" << std::endl;
+	}
+
+	if(a != b){
+		std::cout << "Set a != b" << std::endl;
+	}else{
+		std::cout << "Set a !!= b" << std::endl;
+	}
+
+	if(a <= b){
+		std::cout << "Set a <= b" << std::endl;
+	}else{
+		std::cout << "Set a !<= b" << std::endl;
+	}
+
+	if(a >= b){
+		std::cout << "Set a >= b" << std::endl;
+	}else{
+		std::cout << "Set a !>= b" << std::endl;
+	}
+
+
+
+
 
 	return 0;
 }

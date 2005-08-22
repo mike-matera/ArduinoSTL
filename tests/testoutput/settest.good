@@ -49,3 +49,9 @@ Set symmetric difference
 The following two lines should be identical:
 10 19 22 38 72 92 
 10 19 22 38 72 92 
+Set a < b
+Set a !== b
+Set a !> b
+Set a != b
+Set a <= b
+Set a !>= b

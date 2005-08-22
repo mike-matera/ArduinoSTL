@@ -26,6 +26,8 @@
 -	Add const to set::const_iterator operator->()
 -	Provide for default argument to vector::resize()
 -	Implemented std::ends
+-	Implemented [multi]set comparison operators
+-	Fixed deque operator==
 
 
 0.1.11

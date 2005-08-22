@@ -39,6 +39,7 @@ namespace std{
 
 	template <class T, class Allocator> class _UCXXEXPORT deque {
 	public:
+		friend bool operator==<>(const deque<T, Allocator>& x, const deque<T, Allocator>& y);
 		friend class deque_iter;
 		class deque_iter;
 
