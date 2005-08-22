@@ -419,6 +419,14 @@ namespace std {
 		return os;
 	}
 
+	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>&
+		ends(basic_ostream<charT,traits>& os)
+	{
+		typename basic_ostream<charT,traits>::sentry s(os);
+		os.put(traits::eos());
+		return os;
+	}
+
 	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& flush(basic_ostream<charT,traits>& os){
 		typename basic_ostream<charT,traits>::sentry s(os);
 		os.flush();

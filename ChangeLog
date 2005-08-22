@@ -25,6 +25,7 @@
 -	Add const to map::const_iterator operator->()
 -	Add const to set::const_iterator operator->()
 -	Provide for default argument to vector::resize()
+-	Implemented std::ends
 
 
 0.1.11
