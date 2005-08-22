@@ -28,6 +28,7 @@
 -	Implemented std::ends
 -	Implemented [multi]set comparison operators
 -	Fixed deque operator==
+-	Deque const_iterator now works properly
 
 
 0.1.11

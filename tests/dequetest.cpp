@@ -1,7 +1,7 @@
 #include <deque>
 #include <iostream>
 
-
+void test_const(const std::deque<double> d);
 
 int main(){
 	std::deque<double> test;
@@ -151,6 +151,28 @@ int main(){
 	std::cout << std::endl;
 	std::cout << "Returned iterator points to: " << *i << " - should be 13" << std::endl;
 
+	test.clear();
+	test.push_back(12);
+	test.push_back(13);
+	test.push_back(14);
+	test.push_back(7);
+	test.push_back(25);
+	test.push_back(0);
+	test_const(test);
+	
+
 
 	return 0;
+}
+
+void test_const(const std::deque<double> d){
+	std::cout << "Test of const_iterator" << std::endl;
+	std::cout << "The following two lines should be identical:" << std::endl;
+	std::deque<double>::const_iterator i = d.begin();
+	while(i!=d.end()){
+		std::cout << *i << " ";
+		++i;
+	}
+	std::cout << std::endl;
+	std::cout << "12 13 14 7 25 0 " << std::endl;
 }

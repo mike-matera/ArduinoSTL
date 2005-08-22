@@ -83,3 +83,7 @@ The following two lines should be identical
 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 13 14 
 Returned iterator points to: 13 - should be 13
+Test of const_iterator
+The following two lines should be identical:
+12 13 14 7 25 0 
+12 13 14 7 25 0 
