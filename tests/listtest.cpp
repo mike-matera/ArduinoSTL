@@ -447,8 +447,6 @@ int main(){
 	}
 	std::cout << std::endl;
 
-
-
 	std::cout << "\nTesting unique\n";
 
 	temp.clear();
@@ -474,7 +472,19 @@ int main(){
 	}
 	std::cout << std::endl;
 
-	
+	list_int_1.clear();
+	list_int_1.push_back(1);
+	list_int_1.push_back(2);
+	list_int_1.push_back(3);
+	list_int_1.push_back(4);
+
+	int d(3);
+	int * p = &d;
+	for( list_iter_1 = list_int_1.begin(); list_iter_1 != list_int_1.end(); ++list_iter_1){
+		if(*list_iter_1==*p){
+			std::cout << "Found 3 == 3" << std::endl;
+		}
+	}
 
 
 	return 0;

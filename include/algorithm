@@ -23,6 +23,10 @@
 #ifndef __STD_HEADER_ALGORITHM
 #define __STD_HEADER_ALGORITHM 1
 
+//Elliminate any previously defined macro
+#undef min
+#undef max
+
 namespace std{
 
 	// subclause _lib.alg.nonmodifying_, non-modifying sequence operations:

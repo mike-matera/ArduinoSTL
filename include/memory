@@ -114,60 +114,60 @@ template <class T> _UCXXEXPORT void return_temporary_buffer(T* p){
 }
 
 
-	template <class T> class _UCXXEXPORT auto_ptr{
+template <class T> class _UCXXEXPORT auto_ptr{
 
-	private:
-		T * object;
+private:
+	T * object;
 
-	public:
+public:
 
-		typedef T element_type;
+	typedef T element_type;
 
-		explicit auto_ptr(T* p =0) throw() : object(p){  }
-		auto_ptr(const auto_ptr& p) throw() : object(p.release()){ }
-		template<class Y> auto_ptr(const auto_ptr<Y>& p) throw() : object(p.release()){ }
-		auto_ptr& operator=(const auto_ptr& p) throw(){
-			if(&p == this){
-				return *this;
-			}
-			delete get();
-			object = p.release();
+	explicit auto_ptr(T* p =0) throw() : object(p){  }
+	auto_ptr(auto_ptr& p) throw() : object(p.release()){ }
+	template<class Y> auto_ptr(const auto_ptr<Y>& p) throw() : object(p.release()){ }
+	auto_ptr& operator=(const auto_ptr& p) throw(){
+		if(&p == this){
 			return *this;
 		}
-		template<class Y> auto_ptr& operator=(const auto_ptr<Y>& p) throw(){
-			if(&p == this){
-				return *this;
-			}
-			delete get();
-			object = p.release();
+		delete get();
+		object = p.release();
+		return *this;
+	}
+	template<class Y> auto_ptr& operator=(const auto_ptr<Y>& p) throw(){
+		if(&p == this){
 			return *this;
 		}
-		~auto_ptr(){
-			delete get();
-		}
+		delete get();
+		object = p.release();
+		return *this;
+	}
+	~auto_ptr(){
+		delete get();
+	}
 
-		T& operator*() const throw(){
-			return *get();
+	T& operator*() const throw(){
+		return *get();
+	}
+	T* operator->() const throw(){
+		return get();
+	}
+	T* get() const throw(){
+		return object;
+	}
+	T* release() throw(){
+		T * temp(object);
+		object = 0;
+		return temp;
+	}
+	void reset(T * p=0) throw(){
+		if(p != object){
+			delete object;
+			object = p;
 		}
-		T* operator->() const throw(){
-			return get();
-		}
-		T* get() const throw(){
-			return object;
-		}
-		T* release() throw(){
-			T * temp(object);
-			object = 0;
-			return temp;
-		}
-		void reset(T * p=0) throw(){
-			if(p != object){
-				delete object;
-				object = p;
-			}
-		}
+	}
 
-	};
+};
 
 }	//namespace std
 

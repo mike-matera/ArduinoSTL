@@ -29,6 +29,9 @@
 -	Implemented [multi]set comparison operators
 -	Fixed deque operator==
 -	Deque const_iterator now works properly
+-	Fix auto_ptr() copy constructor to not be const
+-	Better fix for deque const_iterator
+-	Undef min/max in algorithm to get rid of macro versions
 
 
 0.1.11
