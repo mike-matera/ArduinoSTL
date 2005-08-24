@@ -41,12 +41,14 @@ namespace std{
 	public:
 		friend bool operator==<>(const deque<T, Allocator>& x, const deque<T, Allocator>& y);
 		friend class deque_iter;
+		friend class deque_citer;
 		class deque_iter;
+		class deque_citer;
 
 		typedef typename Allocator::reference		reference;
 		typedef typename Allocator::const_reference	const_reference;
 		typedef deque_iter				iterator;
-		typedef deque_iter				const_iterator;
+		typedef deque_citer				const_iterator;
 		typedef typename Allocator::size_type		size_type;
 		typedef typename Allocator::difference_type	difference_type;
 		typedef T					value_type;
@@ -245,6 +247,116 @@ namespace std{
 
 	};
 
+	template<class T, class Allocator> class _UCXXEXPORT deque<T, Allocator>::deque_citer
+		: public std::iterator<
+			random_access_iterator_tag,
+			T,
+			typename Allocator::difference_type,
+			typename Allocator::pointer,
+			typename Allocator::reference
+		>
+	{
+	friend class deque<T, Allocator>;
+	protected:
+		const deque<T, Allocator> * container;
+		typename Allocator::size_type element;
+
+	public:
+		deque_citer() : container(0), element(0) {  }
+		deque_citer(const deque_citer & d) : container (d.container), element(d.element) {  }
+		deque_citer(const deque<T, Allocator> * c, typename Allocator::size_type e)
+			: container(c), element(e)
+		{
+			return;
+		}
+		~deque_citer() {  }
+		deque_citer & operator=(const deque_iter & d){
+			container = d.container;
+			element = d.element;
+			return *this;
+		}
+		const T & operator*() const{
+			return container->data[container->array_element(element)];
+		}
+		const T * operator->() const{
+			return container->data + container->array_element(element);
+		}
+		bool operator==(const deque_citer & d){
+			if(container == d.container && element == d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator!=(const deque_citer & d){
+			if(container != d.container || element  != d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator<(const deque_citer & d){
+			if(element < d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator<=(const deque_citer & d){
+			if(element <= d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator>(const deque_citer & d){
+			if(element > d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator>=(const deque_citer & d){
+			if(element >= d.element){
+				return true;
+			}
+			return false;
+		}
+		deque_citer & operator++(){
+			++element;
+			return *this;
+		}
+		deque_citer operator++(int){
+			deque_citer temp(container, element);
+			++element;
+			return temp;
+		}
+		deque_citer operator+(typename Allocator::size_type n){
+			deque_citer temp(container, element + n);
+			return temp;
+		}
+		deque_citer & operator+=(typename Allocator::size_type n){
+			element += n;
+			return *this;
+		}
+		deque_citer & operator--(){
+			--element;
+			return *this;
+		}
+		deque_citer operator--(int){
+			deque_citer temp(container, element);
+			--element;
+			return temp;
+		}
+		deque_citer operator-(typename Allocator::size_type n){
+			deque_citer temp(container, element - n);
+			return temp;
+		}
+		deque_citer & operator-=(typename Allocator::size_type n){
+			element -= n;
+			return *this;
+		}
+		typename Allocator::size_type operator-(const deque_citer & d){
+			return element - d.element;
+		}
+
+	};
+
 	template<class T, class Allocator> deque<T, Allocator>::deque(const Allocator& al)
 		: data(0), 
 //		defaultValue(T()),
@@ -370,7 +482,7 @@ namespace std{
 	template<class T, class Allocator> typename deque<T, Allocator>::const_iterator
 		deque<T, Allocator>::begin() const
 	{
-		return deque_iter(this, 0);
+		return deque_citer(this, 0);
 	}
 
 	template<class T, class Allocator> typename
@@ -382,7 +494,7 @@ namespace std{
 	template<class T, class Allocator> typename
 		deque<T, Allocator>::const_iterator deque<T, Allocator>::end() const
 	{
-		return deque_iter(this, elements);
+		return deque_citer(this, elements);
 	}
 	
 	template<class T, class Allocator> typename

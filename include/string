@@ -989,7 +989,10 @@ template<class charT, class traits, class Allocator> _UCXXEXPORT bool
 }
 
 template<class charT, class traits, class Allocator> _UCXXEXPORT void 
-	swap(basic_string<charT,traits,Allocator>& lhs, basic_string<charT,traits,Allocator>& rhs);
+	swap(basic_string<charT,traits,Allocator>& lhs, basic_string<charT,traits,Allocator>& rhs)
+{
+	lhs.swap(rhs);
+}
 
 /*template<class charT, class traits, class Allocator> _UCXXEXPORT basic_ostream<charT, traits>&
 	operator<<(basic_ostream<charT, traits>& os, const basic_string<charT,traits,Allocator>& str)

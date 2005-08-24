@@ -32,6 +32,8 @@
 -	Fix auto_ptr() copy constructor to not be const
 -	Better fix for deque const_iterator
 -	Undef min/max in algorithm to get rid of macro versions
+-	Yet Another Implementation of deque::iterator
+-	Implemented swap(string, string)
 
 
 0.1.11
