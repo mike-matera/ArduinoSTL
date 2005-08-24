@@ -376,7 +376,7 @@ namespace std{
 	}
 
 	template<class T> _UCXXEXPORT void swap(T& a, T& b){
-		T temp = a;
+		T temp(a);
 		a = b;
 		b = temp;
 	}
@@ -398,9 +398,7 @@ namespace std{
 		void
 		iter_swap(ForwardIterator1 a, ForwardIterator2 b)
 	{
-		typename iterator_traits<ForwardIterator1>::value_type temp;
-
-		temp = *a;
+		typename iterator_traits<ForwardIterator1>::value_type temp(*a);
 		*a = *b;
 		*b = temp;
 	}
