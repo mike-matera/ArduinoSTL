@@ -549,7 +549,7 @@ namespace std{
 		valarray<size_t> str;
 
 	public:
-		gslice() : sta(0);
+		gslice() : sta(0) { }
 		gslice(size_t s, const valarray<size_t>& l, const valarray<size_t>& d)
 			: sta(s), siz(l), str(d) {  }
 

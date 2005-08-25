@@ -793,7 +793,101 @@ namespace std{
 
 	}
 
+	template <class T, class Allocator>
+	bool operator==(const list<T,Allocator>& x, const list<T,Allocator>& y){
+		if(x.size() != y.size()){
+			return false;
+		}
+		typename list<T,Allocator>::const_iterator i = x.begin();
+		typename list<T,Allocator>::const_iterator j = y.begin();
 
+		while(i != x.end()){
+			if( *i != *j){
+				return false;
+			}
+			++i;
+			++j;
+		}
+		return true;
+	}
+
+	template <class T, class Allocator>
+	bool operator< (const list<T,Allocator>& x, const list<T,Allocator>& y){
+		typename list<T,Allocator>::const_iterator i = x.begin();
+		typename list<T,Allocator>::const_iterator j = y.begin();
+		while(i != x.end() && j != y.end()){
+			if( *i < *j){
+				return true;
+			}
+			if(*j < *i){
+				return false;
+			}
+			++i;
+			++j;
+		}
+		return (i == x.end() && j != y.end());
+	}
+
+	template <class T, class Allocator>
+	bool operator!=(const list<T,Allocator>& x, const list<T,Allocator>& y){
+		return !(x == y);
+	}
+
+	template <class T, class Allocator>
+	bool operator> (const list<T,Allocator>& x, const list<T,Allocator>& y){
+		typename list<T,Allocator>::const_iterator i = x.begin();
+		typename list<T,Allocator>::const_iterator j = y.begin();
+		while(i != x.end() && j != y.end()){
+			if( *i > *j){
+				return true;
+			}
+			if( *j > *i){
+				return false;
+			}
+			++i;
+			++j;
+		}
+		return (i != x.end() && j == y.end());
+	}
+
+	template <class T, class Allocator>
+	bool operator>=(const list<T,Allocator>& x, const list<T,Allocator>& y){
+		typename list<T,Allocator>::const_iterator i = x.begin();
+		typename list<T,Allocator>::const_iterator j = y.begin();
+		while(i != x.end() && j != y.end()){
+			if( *i >= *j){
+				return true;
+			}
+			if(*j >= *i){
+				return false;
+			}
+			++i;
+			++j;
+		}
+		return (i != x.end() && j == y.end());
+	}
+
+	template <class T, class Allocator>
+	bool operator<=(const list<T,Allocator>& x, const list<T,Allocator>& y){
+		typename list<T,Allocator>::const_iterator i = x.begin();
+		typename list<T,Allocator>::const_iterator j = y.begin();
+		while(i != x.end() && j != y.end()){
+			if( *i <= *j){
+				return true;
+			}
+			if(*j <= *i){
+				return false;
+			}
+			++i;
+			++j;
+		}
+		return (i == x.end());
+	}
+
+	template <class T, class Allocator>
+	void swap(list<T,Allocator>& x, list<T,Allocator>& y){
+		x.swap(y);
+	}
 
 }
 

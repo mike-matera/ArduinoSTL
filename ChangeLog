@@ -36,6 +36,7 @@
 -	Implemented swap(string, string)
 -	Change algorithms swap to use copy constructor instead of default constructor
 -	Added a little more from gslice_array
+-	Created comparison operatators for list
 
 
 0.1.11
