@@ -35,6 +35,7 @@
 -	Yet Another Implementation of deque::iterator
 -	Implemented swap(string, string)
 -	Change algorithms swap to use copy constructor instead of default constructor
+-	Added a little more from gslice_array
 
 
 0.1.11
