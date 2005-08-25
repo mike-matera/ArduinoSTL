@@ -39,6 +39,7 @@
 -	Created comparison operatators for list
 -	Added binary operators to valarray
 -	Added trig operators to valarray
+-	Fixed typos in valarray (thanks to psm)
 
 
 0.1.11

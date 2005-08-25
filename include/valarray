@@ -98,7 +98,7 @@ namespace std{
 		valarray(const slice_array<T> & sa) : data(0), length(sa.s.size()){
 			data = new T[length];
 			for(unsigned int i = 0; i < length; ++i){
-				data[i] = sa.array->data[sa.s.size() + i * sa.s.stride()];
+				data[i] = sa.array->data[sa.s.start() + i * sa.s.stride()];
 			}
 		}
 		valarray(const gslice_array<T>&);
@@ -114,16 +114,19 @@ namespace std{
 			for(size_t i =0; i< length; ++i){
 				data[i] = v.data[i];
 			}
+			return *this;
 		}
 		valarray<T>& operator=(const T& t){
 			for(size_t i = 0; i < length; ++i){
 				data[i] = t;
 			}
+			return *this;
 		}
 		valarray<T>& operator=(const slice_array<T>& sa){
 			for(size_t i =0; i < length; ++i){
 				data[i] = sa.data[sa.s.start() + i * sa.s.stride()];
 			}
+			return *this;
 		}
 		valarray<T>& operator=(const gslice_array<T>&);
 		valarray<T>& operator=(const mask_array<T>&);
@@ -667,7 +670,7 @@ namespace std{
 		retval >>= rhs;
 		return retval;
 	}
-	template<class T> valarray<T> operator>>(const T&, const valarray<T>&){
+	template<class T> valarray<T> operator>>(const T& lhs, const valarray<T>& rhs){
 		valarray<T> retval(lhs, rhs.size());
 		retval >>= rhs;
 		return retval;
@@ -919,7 +922,7 @@ namespace std{
 			retval[i] = exp(x[i]);
 		}
 	}
-	template<class T> valarray<T> log  (const valarray<T>& log){
+	template<class T> valarray<T> log  (const valarray<T>& x){
 		valarray<T> retval(x.size());
 		for(size_t i = 0; i < retval.size(); ++i){
 			retval[i] = log(x[i]);
