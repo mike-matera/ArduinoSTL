@@ -22,7 +22,7 @@ int main(){
 	}
 	std::cout << std::endl;
 
-	std::valarray<int> sl = a[std::slice(1, 5, 2)];
+	std::valarray<int> sl(a[std::slice(1, 5, 2)]);
 	std::cout << "Value of slice_array:" ;
 	for(size_t i = 0; i < sl.size(); ++i){
 		std::cout << sl[i] << " ";
