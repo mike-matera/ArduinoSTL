@@ -136,11 +136,12 @@ endmenu
 menu "String and I/O Stream Support"
 
 config UCLIBCXX_HAS_WCHAR
-	bool "Wide Character Support"
+	bool "Wide Character Support (Not Currently Supported)"
 	default n
 	help
 	  Answer Y to enable wide character support.  This will make uClibc++ 
 	  much larger.  It also requires support from the underlying C library.
+	  Note that this code is currently unmaintained and may not work.
 
 	  Most people will answer N.
 
