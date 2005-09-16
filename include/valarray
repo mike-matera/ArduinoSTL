@@ -460,14 +460,18 @@ namespace std{
 		~slice_array(){
 			array = 0;
 		}
+
 	private:
 		slice_array() : array(0){  }
+
+	public:
 		slice_array(const slice_array& sa) : array(sa.array), s(sa.s){  }
 		slice_array& operator=(const slice_array& sa){
 			array = sa.array;
 			s = sa.s;
 		}
 
+	private:
 		valarray<T> * array;
 		slice s;
 	};
