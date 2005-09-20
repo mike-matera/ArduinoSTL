@@ -126,31 +126,31 @@ public:
 	explicit auto_ptr(T* p =0) throw() : object(p){  }
 	auto_ptr(auto_ptr& p) throw() : object(p.release()){ }
 	template<class Y> auto_ptr(const auto_ptr<Y>& p) throw() : object(p.release()){ }
-	auto_ptr& operator=(const auto_ptr& p) throw(){
+	auto_ptr& operator=(auto_ptr& p) throw(){
 		if(&p == this){
 			return *this;
 		}
-		delete get();
+		delete object;
 		object = p.release();
 		return *this;
 	}
-	template<class Y> auto_ptr& operator=(const auto_ptr<Y>& p) throw(){
+	template<class Y> auto_ptr& operator=(auto_ptr<Y>& p) throw(){
 		if(&p == this){
 			return *this;
 		}
-		delete get();
+		delete object;
 		object = p.release();
 		return *this;
 	}
 	~auto_ptr(){
-		delete get();
+		delete object;
 	}
 
 	T& operator*() const throw(){
-		return *get();
+		return *object;
 	}
 	T* operator->() const throw(){
-		return get();
+		return object;
 	}
 	T* get() const throw(){
 		return object;
@@ -166,7 +166,6 @@ public:
 			object = p;
 		}
 	}
-
 };
 
 }	//namespace std
