@@ -252,8 +252,8 @@ namespace std{
 			random_access_iterator_tag,
 			T,
 			typename Allocator::difference_type,
-			typename Allocator::pointer,
-			typename Allocator::reference
+			typename Allocator::const_pointer,
+			typename Allocator::const_reference
 		>
 	{
 	friend class deque<T, Allocator>;
