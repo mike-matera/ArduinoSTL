@@ -125,7 +125,7 @@ public:
 
 	explicit auto_ptr(T* p =0) throw() : object(p){  }
 	auto_ptr(auto_ptr& p) throw() : object(p.release()){ }
-	template<class Y> auto_ptr(const auto_ptr<Y>& p) throw() : object(p.release()){ }
+	template<class Y> auto_ptr(auto_ptr<Y>& p) throw() : object(p.release()){ }
 	auto_ptr& operator=(auto_ptr& p) throw(){
 		if(&p == this){
 			return *this;
