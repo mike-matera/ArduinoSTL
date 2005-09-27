@@ -1,0 +1,10 @@
+a pointer is non-zero (GOOD)
+a value (should be 12): 12
+b pointer is non-zero (GOOD)
+a pointer is zero (GOOD)
+b value (should be 12): 12
+b pointer is non-zero (GOOD)
+b value (should be 7): 7
+c pointer is non-zero (GOOD)
+c value (should be 5): 5
+c pointer is zero (GOOD)
