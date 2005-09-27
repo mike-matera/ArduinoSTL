@@ -28,7 +28,7 @@ namespace std{
 	class _UCXXEXPORT bad_alloc : public exception {};
 
 	struct _UCXXEXPORT nothrow_t {};
-	typedef nothrow_t nothrow;
+	extern const nothrow_t nothrow;
 
 	typedef void (*new_handler)();
 	_UCXXEXPORT new_handler set_new_handler(new_handler new_p) throw();

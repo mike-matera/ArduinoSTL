@@ -20,6 +20,8 @@ Executing default sub class constructor. a: 0, f: 0.000000
 Sub class print function with a=0 and f=0.000000
 Executing sub class destructor
 Executing base class destructor
+Testing nothrow new
+Executing default base class constructor. a: 0
 Checking allocator
 Executing default base class constructor. a: 0
 Executing base class destructor

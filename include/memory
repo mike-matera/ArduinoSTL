@@ -118,6 +118,9 @@ template <class T> class _UCXXEXPORT auto_ptr{
 
 private:
 	T * object;
+	template <class Y> struct auto_ptr_ref{
+		Y * p;
+	};
 
 public:
 
@@ -125,6 +128,9 @@ public:
 
 	explicit auto_ptr(T* p =0) throw() : object(p){  }
 	auto_ptr(auto_ptr& p) throw() : object(p.release()){ }
+	auto_ptr(auto_ptr_ref<T> r) throw() : object(r.p){
+		r.p = 0;
+	}
 	template<class Y> auto_ptr(auto_ptr<Y>& p) throw() : object(p.release()){ }
 	auto_ptr& operator=(auto_ptr& p) throw(){
 		if(&p == this){
@@ -166,6 +172,18 @@ public:
 			object = p;
 		}
 	}
+	template<class Y> operator auto_ptr_ref<Y>() throw(){
+		auto_ptr_ref<Y> retval;
+		retval.p = object;
+		object = 0;
+		return retval;
+	}
+	template<class Y> operator auto_ptr<Y>() throw(){
+		auto_ptr<Y> retval(object);
+		object = 0;
+		return retval;
+	}
+	
 };
 
 }	//namespace std

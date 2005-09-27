@@ -15,7 +15,7 @@ libsupc:
 #else
 #	echo Binary
 	$(AR) x $(shell $(CC) -print-file-name=libsupc++.a)
-	$(RM) new_op*.o del_op*.o pure.o
+	$(RM) new_op*.o del_op*.o pure.o new_handler.o
 #
 #endif
 #endif

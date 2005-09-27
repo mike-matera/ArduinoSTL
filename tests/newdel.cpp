@@ -77,6 +77,10 @@ int main(){
 	delete [] b;
 	b = 0;	
 
+	printf("Testing nothrow new\n");
+
+	b = new(std::nothrow) base;
+
 	printf("Checking allocator\n");
 	std::allocator<base> al;
 	b = al.allocate(1);
