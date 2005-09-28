@@ -113,6 +113,32 @@ int main(){
 	std::cout << "The following two lines should be identical:\n";
 	std::cout << a << std::endl << b << std::endl;
 
+	std::cout << "\nChecking + operators\n";
+	a = std::string("test");
+	b = '1' + a;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "1test" << std::endl;
+	std::cout << b << std::endl;
+
+	a = std::string("test");
+	b = a + '1';
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "test1" << std::endl;
+	std::cout << b << std::endl;
+
+	a = std::string("test");
+	b = "1" + a;
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "1test" << std::endl;
+	std::cout << b << std::endl;
+
+	a = std::string("test");
+	b = a + "1";
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "test1" << std::endl;
+	std::cout << b << std::endl;
+
+
 	std::cout << "\nChecking operator[]()\n";
 	std::cout << "The following two lines should be identical\n";
 	a = "abcdefg";

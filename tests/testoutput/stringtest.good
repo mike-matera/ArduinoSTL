@@ -29,6 +29,20 @@ The following two lines should be identical:
 w
 w
 
+Checking + operators
+The following two lines should be identical
+1test
+1test
+The following two lines should be identical
+test1
+test1
+The following two lines should be identical
+1test
+1test
+The following two lines should be identical
+test1
+test1
+
 Checking operator[]()
 The following two lines should be identical
 abcdefg
