@@ -43,6 +43,7 @@
 -	Broke spec slightly in slice_array to allow copying to make borken apps/compilers work
 -	More fixes to auto_ptr const correctness
 -	Fix deque constness in deque const_iterator typenames
+-	Fix stringstream buffer xsputn implementation
 
 
 0.1.11

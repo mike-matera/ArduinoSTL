@@ -56,5 +56,25 @@ int main(){
 	std::cout << "String stream text:" << a.str() << std::endl;
 	std::cout << "String stream test:" << a.str().c_str() << std::endl;
 
+
+	std::cout << "Checking ostringstream" << std::endl;
+
+	std::ostringstream o;
+
+	s = "This is a test string";
+	s = "Test string";
+	
+	o << "Test string ";
+	o << 5 << " ";
+	o << 3.5 << " ";
+	o << "Another test string";
+	o << " " << std::endl << "abcdefghiojklmnopqrstuvwxyz";
+	o << " " << std::endl << "abcdefghiojklmnopqrstuvwxyz";
+	o << " " << std::endl << "abcdefghiojklmnopqrstuvwxyz";
+	o << " " << std::endl << "abcdefghiojklmnopqrstuvwxyz";
+	o << " " << std::endl << s << std::endl;
+
+	std::cout << o.str() << std::endl;
+
 	return 0;
 }

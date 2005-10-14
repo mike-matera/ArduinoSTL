@@ -286,8 +286,6 @@ int main(){
 	std::cout << "Position of \"This\": ";
 	std::cout << a.find_first_not_of("This") << " - should be 4\n";
 
-
-
 	return 0;
 }
 

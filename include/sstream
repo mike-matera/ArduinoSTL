@@ -157,7 +157,7 @@ namespace std{
 		}
 
 		virtual _UCXXEXPORT streamsize xsputn(const char_type* s, streamsize n){
-			data.replace(oelement, n, s);
+			data.replace(oelement, n, s, n);
 			oelement += n;
 			return n;
 		}
