@@ -1,4 +1,8 @@
 Start of map test
+Checking to make sure that map::iterator can be compared
+to map::const_iterator: OK
+Checking to make sure that map::iterator can be compared
+to map::const_iterator: OK
 Adding a few elements...
 Elements:
 test["b"] = 2 - should be 2

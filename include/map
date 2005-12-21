@@ -111,6 +111,73 @@ protected:
 
 	//Implementations
 
+	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_citer
+		: public std::iterator<
+			bidirectional_iterator_tag,
+			std::pair<Key, T>,
+			typename Allocator::difference_type,
+			std::pair<Key, T>*,
+			std::pair<Key, T>&
+		>
+	{
+	protected:
+		typedef __base_map<Key, T, Compare, Allocator> Map;
+
+		friend class __base_map<Key, T, Compare, Allocator>;
+		friend class __base_map<Key, T, Compare, Allocator>::iterator;
+
+		friend class map<Key, T, Compare, Allocator>;
+		friend class multimap<Key, T, Compare, Allocator>;
+
+		typename Map::size_type element;
+		const Map * container;
+	public:
+		__map_citer() : element(0), container(0) {  }
+		__map_citer(const typename Map::const_iterator & m) 
+			: element(m.element), container(m.container) {  }
+		__map_citer(typename Map::size_type e, const Map * const c) 
+			: element(e), container(c) {  }
+		~__map_citer() {  }
+		
+		typename Map::value_type operator*() const{
+			return container->data[element];
+		}
+		const typename Map::value_type * operator->() const{
+			return &(container->data[element]);
+		}
+		__map_citer & operator=(const typename Map::const_iterator & m){
+			element = m.element;
+			container = m.container;
+			return *this;
+		}
+		bool operator==(const typename Map::const_iterator & m) const {
+			return (m.element == element && m.container == container);
+		}
+		bool operator!=(const typename Map::const_iterator & m) const {
+			return (m.element != element || m.container != container);
+		}
+		__map_citer & operator++(){
+			++element;
+			return *this;
+		}
+		__map_citer operator++(int){
+			__map_citer temp(*this);
+			++element;
+			return temp;
+		}
+		__map_citer & operator--(){
+			--element;
+			return *this;
+		}
+		__map_citer operator--(int){
+			__map_citer temp(*this);
+			--element;
+			return temp;
+		}
+
+	};
+
+
 	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_iter
 		: public std::iterator<
 			bidirectional_iterator_tag,
@@ -157,6 +224,12 @@ protected:
 		bool operator!=(const typename Map::iterator & m) const {
 			return (m.element != element || m.container != container);
 		}
+		bool operator==(const typename Map::const_iterator & m) const {
+			return (m.element == element && m.container == container);
+		}
+		bool operator!=(const typename Map::const_iterator & m) const {
+			return (m.element != element || m.container != container);
+		}
 		__map_iter & operator++(){
 			++element;
 			return *this;
@@ -176,72 +249,8 @@ protected:
 			return temp;
 		}
 
-	};
-
-
-	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_citer
-		: public std::iterator<
-			bidirectional_iterator_tag,
-			std::pair<Key, T>,
-			typename Allocator::difference_type,
-			std::pair<Key, T>*,
-			std::pair<Key, T>&
-		>
-	{
-	protected:
-		typedef __base_map<Key, T, Compare, Allocator> Map;
-
-		friend class __base_map<Key, T, Compare, Allocator>;
-
-		friend class map<Key, T, Compare, Allocator>;
-		friend class multimap<Key, T, Compare, Allocator>;
-
-		typename Map::size_type element;
-		const Map * container;
-	public:
-		__map_citer() : element(0), container(0) {  }
-		__map_citer(const typename Map::const_iterator & m) 
-			: element(m.element), container(m.container) {  }
-		__map_citer(const typename Map::iterator & m) 
-			: element(m.element), container(m.container) {  }
-		__map_citer(typename Map::size_type e, const Map * const c) 
-			: element(e), container(c) {  }
-		~__map_citer() {  }
-		
-		typename Map::value_type operator*() const{
-			return container->data[element];
-		}
-		const typename Map::value_type * operator->() const{
-			return &(container->data[element]);
-		}
-		__map_citer & operator=(const typename Map::const_iterator & m){
-			element = m.element;
-			container = m.container;
-			return *this;
-		}
-		bool operator==(const typename Map::const_iterator & m) const {
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename Map::const_iterator & m) const {
-			return (m.element != element || m.container != container);
-		}
-		__map_citer & operator++(){
-			++element;
-			return *this;
-		}
-		__map_citer operator++(int){
-			__map_citer temp(*this);
-			++element;
-			return temp;
-		}
-		__map_citer & operator--(){
-			--element;
-			return *this;
-		}
-		__map_citer operator--(int){
-			__map_citer temp(*this);
-			--element;
-			return temp;
+		operator typename Map::const_iterator() const{
+			return typename Map::const_iterator(element, container);
 		}
 
 	};

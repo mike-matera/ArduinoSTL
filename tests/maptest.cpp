@@ -20,6 +20,29 @@ int main(){
 
 	std::cout << "Start of map test" << std::endl;
 
+	std::cout << "Checking to make sure that map::iterator can be compared" << std::endl;
+	std::cout << "to map::const_iterator: ";
+
+	i = test.begin();
+	k = test.begin();
+	if( i == k ){
+		std::cout << "OK" << std::endl;
+	}else{
+		std::cout << "FAIL" << std::endl;
+	}
+
+	std::cout << "Checking to make sure that map::iterator can be compared" << std::endl;
+	std::cout << "to map::const_iterator: ";
+
+	i = test.begin();
+	k = test.begin();
+	if( k == i ){
+		std::cout << "OK" << std::endl;
+	}else{
+		std::cout << "FAIL" << std::endl;
+	}
+
+
 	std::cout << "Adding a few elements..." << std::endl;
 
 
