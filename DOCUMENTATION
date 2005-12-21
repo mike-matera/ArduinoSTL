@@ -1,0 +1,29 @@
+Source Files
+
+All of the forward declarations and templates are defined in header files in
+the include/ directory.
+
+All of the .cpp files in the src/ directory are supposed to produce binary output
+at compile time to be linked into the library.  There is one such file per header
+file located in include.  These .cpp files may not actually contain any code or
+instanteated objects and instead simply be place holders.
+
+Source categories.
+
+Source code can be broken down into 4 separate categories:
+
+-   uClibc++ support code
+	-	new and delete operators
+
+-   GNU libstsdc++ support code
+	-	Code taken to be compatable with compiler ABI requirements
+	-	Difficult to replace
+
+- IOStream code
+	-	This code is used by almost anything.  It is extremely 
+		convoluted internally and has been rewritten on more than one
+		occasion because it is very difficult to understand
+
+-   STL Containers and Algorithms
+	-	These are hardest to keep small because of code expansion.
+	-	Fairly self-contained in their own right

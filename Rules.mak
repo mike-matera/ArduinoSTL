@@ -49,8 +49,8 @@ HOSTCXXFLAGS=-O2 -Wall
 # Unless you hang out with the gods, you should probably leave all
 # this stuff alone.
 MAJOR_VERSION:=0
-MINOR_VERSION:=1
-SUBLEVEL:=12
+MINOR_VERSION:=2
+SUBLEVEL:=1
 VERSION:=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBLEVEL)
 # Ensure consistent sort order, 'gcc -print-search-dirs' behavior, etc.
 # LC_ALL:= C

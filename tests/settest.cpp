@@ -66,6 +66,32 @@ int main(){
 	}
 
 
+	std::cout << "Checking to make sure that iterator is comparable to" << std::endl;
+	std::cout << "const_iterator: ";
+
+	i = a.begin();
+	q = a.begin();
+
+//	if( std::set<int>::const_iterator(i) == q){
+	if(i == q){
+		std::cout << "OK" << std::endl;
+	}else{
+		std::cout << "FAIL" << std::endl;
+	}
+
+	std::cout << "Checking to make sure that iterator is comparable to" << std::endl;
+	std::cout << "const_iterator: ";
+
+	i = a.begin();
+	q = a.begin();
+
+//	if( std::set<int>::const_iterator(i) == q){
+	if(q == i){
+		std::cout << "OK" << std::endl;
+	}else{
+		std::cout << "FAIL" << std::endl;
+	}
+
 	std::cout << "Set algorithms test" << std::endl;
 	std::cout << "Testing std::includes\n";
 

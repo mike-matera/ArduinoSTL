@@ -119,6 +119,72 @@ protected:
 
 	//Implementations
 
+	template<class Key, class Compare, class Allocator> class _UCXXEXPORT __set_citer
+		: public std::iterator<
+			bidirectional_iterator_tag,
+			Key,
+			typename Allocator::difference_type,
+			typename Allocator::pointer,
+			typename Allocator::reference
+		>
+	{
+	protected:
+		typedef class __base_set<Key, Compare, Allocator> Set;
+
+		friend class __base_set<Key, Compare, Allocator>;
+		friend class __base_set<Key, Compare, Allocator>::iterator;
+
+		friend class set<Key, Compare, Allocator>;
+		friend class multiset<Key, Compare, Allocator>;
+
+		typename Set::size_type element;
+		const Set * container;
+	public:
+		__set_citer() : element(0), container(0) {  }
+		__set_citer(const typename Set::const_iterator & m) 
+			: element(m.element), container(m.container) {  }
+		__set_citer(typename Set::size_type e, const Set * const c) 
+			: element(e), container(c) {  }
+		~__set_citer() {  }
+		
+		typename Set::value_type operator*(){
+			return container->data[element];
+		}
+		const typename Set::value_type * operator->() const{
+			return &(container->data[element]);
+		}
+		__set_citer & operator=(const typename Set::const_iterator & m){
+			element = m.element;
+			container = m.container;
+			return *this;
+		}
+		bool operator==(const typename Set::const_iterator & m) const {
+			return (m.element == element && m.container == container);
+		}
+		bool operator!=(const typename Set::const_iterator & m) const {
+			return (m.element != element || m.container != container);
+		}
+		__set_citer & operator++(){
+			++element;
+			return *this;
+		}
+		__set_citer operator++(int){
+			__set_citer temp(*this);
+			++element;
+			return temp;
+		}
+		__set_citer & operator--(){
+			--element;
+			return *this;
+		}
+		__set_citer operator--(int){
+			__set_citer temp(*this);
+			--element;
+			return temp;
+		}
+
+	};
+
 	template<class Key, class Compare, class Allocator> class _UCXXEXPORT __set_iter
 		: public std::iterator<
 			bidirectional_iterator_tag,
@@ -165,6 +231,12 @@ protected:
 		bool operator!=(const typename Set::iterator & m) const {
 			return (m.element != element || m.container != container);
 		}
+		bool operator==(const typename Set::const_iterator & m) const {
+			return (m.element == element && m.container == container);
+		}
+		bool operator!=(const typename Set::const_iterator & m) const {
+			return (m.element != element || m.container != container);
+		}
 		__set_iter & operator++(){
 			++element;
 			return *this;
@@ -184,75 +256,15 @@ protected:
 			return temp;
 		}
 
+		//Conversion operator
+		operator typename Set::const_iterator () const
+		{
+			typename Set::const_iterator retval(element, container);
+//			return typename Set::const_iterator(element, container);
+			return retval;
+		}
 	};
 
-
-	template<class Key, class Compare, class Allocator> class _UCXXEXPORT __set_citer
-		: public std::iterator<
-			bidirectional_iterator_tag,
-			Key,
-			typename Allocator::difference_type,
-			typename Allocator::pointer,
-			typename Allocator::reference
-		>
-	{
-	protected:
-		typedef class __base_set<Key, Compare, Allocator> Set;
-
-		friend class __base_set<Key, Compare, Allocator>;
-
-		friend class set<Key, Compare, Allocator>;
-		friend class multiset<Key, Compare, Allocator>;
-
-		typename Set::size_type element;
-		const Set * container;
-	public:
-		__set_citer() : element(0), container(0) {  }
-		__set_citer(const typename Set::const_iterator & m) 
-			: element(m.element), container(m.container) {  }
-		__set_citer(const typename Set::iterator & m) 
-			: element(m.element), container(m.container) {  }
-		__set_citer(typename Set::size_type e, const Set * const c) 
-			: element(e), container(c) {  }
-		~__set_citer() {  }
-		
-		typename Set::value_type operator*(){
-			return container->data[element];
-		}
-		const typename Set::value_type * operator->() const{
-			return &(container->data[element]);
-		}
-		__set_citer & operator=(const typename Set::const_iterator & m){
-			element = m.element;
-			container = m.container;
-			return *this;
-		}
-		bool operator==(const typename Set::const_iterator & m) const {
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename Set::const_iterator & m) const {
-			return (m.element != element || m.container != container);
-		}
-		__set_citer & operator++(){
-			++element;
-			return *this;
-		}
-		__set_citer operator++(int){
-			__set_citer temp(*this);
-			++element;
-			return temp;
-		}
-		__set_citer & operator--(){
-			--element;
-			return *this;
-		}
-		__set_citer operator--(int){
-			__set_citer temp(*this);
-			--element;
-			return temp;
-		}
-
-	};
 
 
 	//Compare the keys of the two items
@@ -1507,6 +1519,8 @@ protected:
 	{
 		x.swap(y);
 	}
+
+
 
 }
 

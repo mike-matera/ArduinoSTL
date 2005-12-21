@@ -25,6 +25,10 @@ Element : 57
 Element : 75
 Element : 103
 Element : 128
+Checking to make sure that iterator is comparable to
+const_iterator: OK
+Checking to make sure that iterator is comparable to
+const_iterator: OK
 Set algorithms test
 Testing std::includes
 The following should be 1 : 1
