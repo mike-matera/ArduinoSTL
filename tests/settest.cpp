@@ -3,11 +3,30 @@
 #include <set>
 #include <vector>
 
+class TEST_A
+{
+private:
+	std::set<int> _s;
+	std::set<int>::iterator _t;
+ 
+public:
+	TEST_A(){
+		_s.insert(1);
+		_t = _s.begin();
+	}
+
+        int f() const {
+		return *_t;
+	}
+};
+
+
 int main(){
 	std::cout << "Starting set test\n";
 	std::set<int> a;
 	std::vector<int> c;
 	std::vector<int>::iterator k, l;
+	int z;
 
 	c.clear();
 
@@ -316,9 +335,8 @@ int main(){
 		std::cout << "Set a !>= b" << std::endl;
 	}
 
-
-
-
+	TEST_A test_a;
+	z = test_a.f();
 
 	return 0;
 }

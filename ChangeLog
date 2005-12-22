@@ -1,3 +1,8 @@
+0.2.0
+-	Now can compare set iterators and const_iterators
+-	Now can compare map iterators and const_iterators
+-	Now can get a const value from operator* on set/map iterator
+
 0.1.12
 -	Add missing const declarators to some data types (thanks to asierllano)
 -	Fix list::swap to alter the nubmer of elements

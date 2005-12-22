@@ -210,6 +210,9 @@ protected:
 		typename Map::value_type & operator*(){
 			return container->data[element];
 		}
+		const typename Map::value_type & operator*() const{
+			return container->data[element];
+		}
 		typename Map::value_type * operator->(){
 			return &(container->data[element]);
 		}

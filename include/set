@@ -217,6 +217,9 @@ protected:
 		typename Set::value_type & operator*(){
 			return container->data[element];
 		}
+		const typename Set::value_type & operator*() const{
+			return container->data[element];
+		}
 		typename Set::value_type * operator->(){
 			return &(container->data[element]);
 		}

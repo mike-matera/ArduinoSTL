@@ -41,6 +41,10 @@ scott: 7 Points
 thritter: 3 Points
 2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
 
+Ciaran: 4 Points
+2005-12-21: 1+1: Found that a const iterator doesn't handle operator*
+2005-12-20: 1+1: Found that interator and const_interator weren't compatable
+
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Found error in functional.  Provided fix.
 
