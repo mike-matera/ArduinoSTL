@@ -94,6 +94,19 @@ int main()
 	std::cout << "Current position: 28\n";
 	std::cout << "Current position: " << inFile.tellg() << std::endl;
 
+	inFile.seekg(1, std::ios::cur);
+	inFile.read(&a, 1);
+	b = a;
+	if(correctValue(29) != b){
+		std::cout << "Read in invalid value.  Read in " << (int)b << ", expected " << (int)correctValue(29) << std::endl;
+	}else{
+		std::cout << "Character 29 read in correctly\n";
+	}
+
+	std::cout << "The following two lines should be identical\n";
+	std::cout << "Current position: 30\n";
+	std::cout << "Current position: " << inFile.tellg() << std::endl;
+
 
 	return 0;
 }

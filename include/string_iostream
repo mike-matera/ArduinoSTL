@@ -86,6 +86,8 @@ template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<c
 		return is;
 	}
 
+	str.erase();
+
 	streamsize i = 0;
 	typename basic_istream<charT,traits>::int_type c_i;
 	charT c;
@@ -99,7 +101,7 @@ template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<c
 		if(c == delim){
 			return is;
 		}
-		str.append(&c);
+		str.append(1, c);
 	}
 	return is;	
 }

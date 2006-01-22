@@ -378,9 +378,11 @@ namespace std{
 				return -1;
 			}
 			int whence = SEEK_SET;	// if(way == basic_ios<charT>::beg)
+			off_type position = off;
 
 			if(way == basic_ios<charT>::cur){
 				whence = SEEK_CUR;
+				position -= (basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr());
 			}else if(way == basic_ios<charT>::end){
 				whence = SEEK_END;
 			}
@@ -389,7 +391,7 @@ namespace std{
 
 			int retval = fseek(
 				fp,
-				sizeof(charT)*(off - (basic_streambuf<charT,traits>::egptr() - basic_streambuf<charT,traits>::gptr())),
+				sizeof(charT)*(position),
 				whence
 			);
 

@@ -61,6 +61,26 @@ namespace std{
 		return temp;
 	}
 
+	template <class C, class traits> _UCXXEXPORT 
+		basic_string<C, traits> _readTokenDecimal(basic_istream<C, traits>& stream)
+	{
+		basic_string<C, traits> temp;
+		typename traits::int_type c;
+		while(true){
+			c = stream.rdbuf()->sgetc();
+			if(c != traits::eof() && isspace(c) == false && (isdigit(c) || c == '.' || c == ',' )){
+				stream.rdbuf()->sbumpc();
+				temp.append(1, traits::to_char_type(c));
+			}else{
+				break;
+			}
+		}
+		if (temp.size() == 0)
+			stream.setstate(ios_base::eofbit|ios_base::failbit);
+
+		return temp;
+	}
+
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 
 	template <> _UCXXEXPORT string _readToken<char, char_traits<char> >(istream & stream);
@@ -93,20 +113,24 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, short & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
 
 			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
 				sscanf(temp.c_str(), "%hd", &var );
-			}else if( stream.flags() & ios_base::oct){
-				sscanf(temp.c_str(), "%ho", (unsigned short int *)(&var) );
-			}else if(stream.flags() & ios_base::hex){
-				if(stream.flags() & ios_base::uppercase){
-					sscanf(temp.c_str(), "%hX", (unsigned short int *)(&var) );
-				}else{
-					sscanf(temp.c_str(), "%hx", (unsigned short int *)(&var) );
-				}
 			}else{
-				sscanf(temp.c_str(), "%hi", &var);
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%ho", (unsigned short int *)(&var) );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						sscanf(temp.c_str(), "%hX", (unsigned short int *)(&var) );
+					}else{
+						sscanf(temp.c_str(), "%hx", (unsigned short int *)(&var) );
+					}
+				}else{
+					sscanf(temp.c_str(), "%hi", &var);
+		
+				}
 			}
 		}
 	};
@@ -116,20 +140,23 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, unsigned short & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
 
 			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
 				sscanf(temp.c_str(), "%hu", &var );
-			}else if( stream.flags() & ios_base::oct){
-				sscanf(temp.c_str(), "%ho", &var);
-			}else if(stream.flags() & ios_base::hex){
-				if(stream.flags() & ios_base::uppercase){
-					sscanf(temp.c_str(), "%hX", &var );
-				}else{
-					sscanf(temp.c_str(), "%hx", &var);
-				}
 			}else{
-				sscanf(temp.c_str(), "%hi", (signed short int*)(&var) );
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%ho", &var);
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						sscanf(temp.c_str(), "%hX", &var );
+					}else{
+						sscanf(temp.c_str(), "%hx", &var);
+					}
+				}else{
+					sscanf(temp.c_str(), "%hi", (signed short int*)(&var) );
+				}
 			}
 		}
 	};
@@ -139,20 +166,23 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, int & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
 
 			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
 				sscanf(temp.c_str(), "%d", &var );
-			}else if( stream.flags() & ios_base::oct){
-				sscanf(temp.c_str(), "%o", (unsigned int *)(&var) );
-			}else if(stream.flags() & ios_base::hex){
-				if(stream.flags() & ios_base::uppercase){
-					sscanf(temp.c_str(), "%X", (unsigned int *)(&var) );
-				}else{
-					sscanf(temp.c_str(), "%x", (unsigned int *)(&var) );
-				}
 			}else{
-				sscanf(temp.c_str(), "%i", &var);
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%o", (unsigned int *)(&var) );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						sscanf(temp.c_str(), "%X", (unsigned int *)(&var) );
+					}else{
+						sscanf(temp.c_str(), "%x", (unsigned int *)(&var) );
+					}
+				}else{
+					sscanf(temp.c_str(), "%i", &var);
+				}
 			}
 		}
 	};
@@ -162,21 +192,24 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, unsigned int & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
 
 			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
 				sscanf(temp.c_str(), "%u", &var );
-			}else if( stream.flags() & ios_base::oct){
-				sscanf(temp.c_str(), "%o", (unsigned int *)(&var) );
-			}else if(stream.flags() & ios_base::hex){
-				if(stream.flags() & ios_base::uppercase){
-					sscanf(temp.c_str(), "%X", (unsigned int *)(&var) );
-				}else{
-					sscanf(temp.c_str(), "%x", (unsigned int *)(&var) );
-				}
 			}else{
-				sscanf(temp.c_str(), "%i", (int *)(&var) );
-			}
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%o", (unsigned int *)(&var) );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						sscanf(temp.c_str(), "%X", (unsigned int *)(&var) );
+					}else{
+						sscanf(temp.c_str(), "%x", (unsigned int *)(&var) );
+					}
+				}else{
+					sscanf(temp.c_str(), "%i", (int *)(&var) );
+				}
+			}	
 
 		}
 	};
@@ -187,20 +220,23 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, long int & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
 
 			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
 				sscanf(temp.c_str(), "%ld", &var );
-			}else if( stream.flags() & ios_base::oct){
-				sscanf(temp.c_str(), "%lo", (unsigned long int *)(&var) );
-			}else if(stream.flags() & ios_base::hex){
-				if(stream.flags() & ios_base::uppercase){
-					sscanf(temp.c_str(), "%lX", (unsigned long int *)(&var) );
-				}else{
-					sscanf(temp.c_str(), "%lx", (unsigned long int *)(&var) );
-				}
 			}else{
-				sscanf(temp.c_str(), "%li", (long int *)(&var) );
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%lo", (unsigned long int *)(&var) );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						sscanf(temp.c_str(), "%lX", (unsigned long int *)(&var) );
+					}else{
+						sscanf(temp.c_str(), "%lx", (unsigned long int *)(&var) );
+					}
+				}else{
+					sscanf(temp.c_str(), "%li", (long int *)(&var) );
+				}
 			}
 
 		}
@@ -212,20 +248,23 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, unsigned long int & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
 
 			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
 				sscanf(temp.c_str(), "%lu", &var );
-			}else if( stream.flags() & ios_base::oct){
-				sscanf(temp.c_str(), "%lo", &var );
-			}else if(stream.flags() & ios_base::hex){
-				if(stream.flags() & ios_base::uppercase){
-					sscanf(temp.c_str(), "%lX", &var );
-				}else{
-					sscanf(temp.c_str(), "%lx", &var);
-				}
 			}else{
-				sscanf(temp.c_str(), "%li", (long int *)(&var) );
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%lo", &var );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						sscanf(temp.c_str(), "%lX", &var );
+					}else{
+						sscanf(temp.c_str(), "%lx", &var);
+					}
+				}else{
+					sscanf(temp.c_str(), "%li", (long int *)(&var) );
+				}
 			}
 		}
 	};
@@ -238,7 +277,7 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, float & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
+			temp = _readTokenDecimal( stream);
 
 			sscanf(temp.c_str(), "%g", &var);
 		}
@@ -249,7 +288,7 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, double & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
+			temp = _readTokenDecimal( stream);
 			sscanf(temp.c_str(), "%lg", &var);
 		}
 	};
@@ -259,7 +298,7 @@ namespace std{
 		inline static void readin(basic_istream<char, traits >& stream, long double & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readToken( stream);
+			temp = _readTokenDecimal( stream);
 			sscanf(temp.c_str(), "%Lg", &var);
 		}
 	};
