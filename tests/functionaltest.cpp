@@ -396,11 +396,11 @@ int main(){
 
 	
 	printf("The following should print 7:");
-	std::mem_fun(&Foo::printout)(&c, (const int)(7));
+	std::mem_fun(&Foo::printout)(&c, 7);
 	printf("\n");
 
 	printf("The following should print 12:");
-	std::mem_fun(&Foo::printout)(&f, (const int)(12));
+	std::mem_fun(&Foo::printout)(&f, 12);
 	printf("\n");
 
 	return 0;

@@ -74,8 +74,6 @@ int main(){
 
 	i = test.lower_bound("c");
 	std::cout << "lower bound for c: " << i->first << ": " << i->second << std::endl;
-	i = test.upper_bound("c");
-	std::cout << "upper bound for c: " << i->first << ": " << i->second << std::endl;
 
 	std::cout << "Erasing all \"c\" elements\n";
 	test.erase("c");

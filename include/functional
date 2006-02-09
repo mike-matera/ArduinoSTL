@@ -323,7 +323,7 @@ namespace std{
 		explicit const_mem_fun_t(S (T::*p)() const) : m(p) {  }
 		S operator()(const T* p) const { return (p->*m)(); }
 	private:
-		S (T::*m)();
+		S (T::*m)() const;
 	};
 
 
@@ -334,7 +334,7 @@ namespace std{
 		explicit const_mem_fun1_t(S (T::*p)(A) const) : m(p) {  }
 		S operator()(const T* p, A x) const { return (p->*m)(x); }
 	private:
-		S (T::*m)(A);
+		S (T::*m)(A) const;
 	};
 
 
@@ -342,11 +342,18 @@ namespace std{
 		return mem_fun_t<S, T>(f);
 	}
 
+	template<class S, class T> _UCXXEXPORT const_mem_fun_t<S,T> mem_fun(S (T::*f)() const){
+		return const_mem_fun_t<S, T>(f);
+	}
+
 	template<class S, class T, class A> _UCXXEXPORT mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A)){
 		return mem_fun1_t<S, T, A>(f);
 	}
 
-	
+	template<class S, class T, class A> _UCXXEXPORT const_mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A) const){
+		return const_mem_fun1_t<S, T, A>(f);
+	}
+
 	template <class S, class T> class _UCXXEXPORT mem_fun_ref_t
 		: public unary_function<T, S>
 	{

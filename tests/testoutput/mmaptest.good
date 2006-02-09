@@ -19,7 +19,6 @@ Count of "c" elements: 3
 Count of "d" elements: 1
 Count of "q" elements: 0
 lower bound for c: c: 3
-upper bound for c: d: 4
 Erasing all "c" elements
 Element a: 1
 Element d: 4

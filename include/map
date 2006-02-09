@@ -95,6 +95,9 @@ public:
 	size_type size() const;
 	size_type max_size() const;
 
+	iterator       lower_bound(const key_type& x);
+	const_iterator lower_bound(const key_type& x) const;
+
 	void swap(map_type & x);
 	void clear();
 
@@ -375,6 +378,43 @@ protected:
 		return data.max_size();
 	}
 
+	template <class Key, class T, class Compare, class Allocator>
+		typename __base_map<Key, T, Compare, Allocator>::iterator
+		__base_map<Key, T, Compare, Allocator>::lower_bound(const key_type &x)
+	{
+		size_type low  = 0;
+		size_type high = data.size();
+
+		while (low < high) {
+			size_type i = (low + high) / 2;
+			if( c(data[i].first, x) ){
+				low = i + 1;
+			}else{
+				high = i;
+			}
+		}
+
+		return iterator(low, this);
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+		typename __base_map<Key, T, Compare, Allocator>::const_iterator
+		__base_map<Key, T, Compare, Allocator>::lower_bound(const key_type &x) const
+	{
+		size_type low  = 0;
+		size_type high = data.size();
+
+		while (low < high) {
+			size_type i = (low + high) / 2;
+			if( c(data[i].first, x) ){
+				low = i + 1;
+			}else{
+				high = i;
+			}
+		}
+
+		return const_iterator(low, this);
+	}
 
 	template <class Key, class T, class Compare, class Allocator>
 		void __base_map<Key, T, Compare, Allocator>::swap(__base_map<Key,T,Compare,Allocator>& m)
@@ -480,8 +520,6 @@ public:
 	iterator       find(const key_type& x);
 	const_iterator find(const key_type& x) const;
 	size_type      count(const key_type& x) const;
-	iterator       lower_bound(const key_type& x);
-	const_iterator lower_bound(const key_type& x) const;
 	iterator       upper_bound(const key_type& x);
 	const_iterator upper_bound(const key_type& x) const;
 	pair<iterator,iterator>             equal_range(const key_type& x);
@@ -490,9 +528,6 @@ public:
 protected:
 	friend class base::iterator;
 	friend class base::const_iterator;
-
-	iterator ifind(const key_type& x);      //Core find functionality
-	const_iterator ifind(const key_type& x) const;      //Core find functionality
 
 	using base::data;
 	using base::c;
@@ -512,103 +547,6 @@ protected:
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::iterator
-		map<Key, T, Compare, Allocator>::ifind(const key_type &x)
-	{
-		/* This function is not from the standard. It is an internal
-		 * utility function which returns an iterator to either the
-		 * first matching element, or to the element before which
-		 * an insert should be performed.  Will not indicate if the
-		 *insert should be performed before the first element
-		 */
-
-		if(data.size() == 0){
-			return end();
-		}
-
-		if(data.size() == 1){
-			if(  c(data[0].first, x) ){
-				return end();
-			}
-			return begin();
-		}
-
-		size_type low;
-		size_type high;
-		size_type i;
-
-		low = 0;
-		high = data.size() - 1;
-
-		//This algorithm assumes no duplicates in stored information
-		while(( high - low) > 1){
-			i = low + ((high - low) /2);
-			if( c(x, data[i].first) ){
-				high = i;
-			}else{
-				low = i;
-			}
-		}
-
-		if( c(data[low].first, x) ){         // k >=high
-			i = high;
-		}else{
-			i = low;
-		}
-
-		return iterator(i, this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::const_iterator
-		map<Key, T, Compare, Allocator>::ifind(const key_type &x) const
-	{
-		/* This function is not from the standard. It is an internal
-		 * utility function which returns an iterator to either the
-		 * first matching element, or to the element before which
-		 * an insert should be performed.  Will not indicate if the
-		 *insert should be performed before the first element
-		 */
-
-		if(data.size() == 0){
-			return end();
-		}
-
-		if(data.size() == 1){
-			if( c(data[0].first, x) ){
-				return end();
-			}
-			return begin();
-		}
-
-		size_type low;
-		size_type high;
-		size_type i;
-
-		low = 0;
-		high = data.size() - 1;
-
-		//This algorithm assumes no duplicates in stored information
-		while(( high - low) > 1){
-			i = low + ((high - low) /2);
-			if( c(x, data[i].first) ){
-				high = i;
-			}else{
-				low = i;
-			}
-		}
-
-		if( c(data[low].first, x) ){         // k >=high
-			i = high;
-		}else{
-			i = low;
-		}
-
-		return const_iterator(i, this);
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
 		map<Key, T, Compare, Allocator>::map<Key,T,Compare,Allocator>&
 		map<Key, T, Compare, Allocator>::operator=(const map<Key,T,Compare,Allocator>& x)
 	{
@@ -625,7 +563,7 @@ protected:
 		typename map<Key, T, Compare, Allocator>::reference
 		map<Key, T, Compare, Allocator>::operator[](const key_type & k)
 	{
-/*		iterator i = ifind(k);
+/*		iterator i = lower_bound(k);
 		if( !c( i->first, k) && !c(k, i->first) ){
 			return i->second;
 		}
@@ -661,7 +599,7 @@ protected:
 			return retval;
                 }
 
-		retval.first = ifind(x.first);
+		retval.first = lower_bound(x.first);
 
 		//No match - this should never happen
 		if(retval.first == end()){
@@ -678,7 +616,7 @@ protected:
 		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator q(&data, retval.first.element);
 		data.insert(q, x);
 
-		retval.first = ifind(x.first);        //Need to refind because insert can move data around
+		retval.first = lower_bound(x.first);        //Need to refind because insert can move data around
 		retval.second = true;
 
 		return retval;
@@ -742,7 +680,7 @@ protected:
 			return end();
 		}
 
-		iterator retval = ifind(x);
+		iterator retval = lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -764,7 +702,7 @@ protected:
 			return end();
 		}
 
-		const_iterator retval = ifind(x);
+		const_iterator retval = lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -789,24 +727,10 @@ protected:
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::iterator 
-		map<Key, T, Compare, Allocator>::lower_bound(const key_type& x)
-	{
-		return ifind(x);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::const_iterator
-		map<Key, T, Compare, Allocator>::lower_bound(const key_type& x) const
-	{
-		return ifind(x);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
 		typename map<Key, T, Compare, Allocator>::iterator
 		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
 	{
-		typename map<Key, T, Compare, Allocator>::iterator i = ifind(x);
+		typename map<Key, T, Compare, Allocator>::iterator i = lower_bound(x);
 		if( i != end() && !c(x, i->first) ){
 			++i;
 		}
@@ -817,7 +741,7 @@ protected:
 		typename map<Key, T, Compare, Allocator>::const_iterator
 		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
-		typename map<Key, T, Compare, Allocator>::const_iterator i = ifind(x);
+		typename map<Key, T, Compare, Allocator>::const_iterator i = lower_bound(x);
 		if(i != end() && !c(x, i->first)){
 			++i;
 		}
@@ -920,8 +844,6 @@ public:
 	iterator       find(const key_type& x);
 	const_iterator find(const key_type& x) const;
 	size_type      count(const key_type& x) const;
-	iterator       lower_bound(const key_type& x);
-	const_iterator lower_bound(const key_type& x) const;
 	iterator       upper_bound(const key_type& x);
 	const_iterator upper_bound(const key_type& x) const;
 	pair<iterator,iterator>             equal_range(const key_type& x);
@@ -930,9 +852,6 @@ public:
 protected:
 	friend class base::iterator;
 	friend class base::const_iterator;
-
-	iterator ifind(const key_type& x);      //Core find functionality
-	const_iterator ifind(const key_type& x) const;      //Core find functionality
 
 	using base::data;
 	using base::c;
@@ -951,118 +870,6 @@ protected:
 			++first;
 		}
 	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::iterator
-		multimap<Key, T, Compare, Allocator>::ifind(const key_type &x)
-	{
-		/* This function is not from the standard. It is an internal
-		 * utility function which returns an iterator to either the
-		 * first matching element, or to the element before which
-		 * an insert should be performed. end() for error.
-		 */
-
-		if(data.size() == 0){
-			return end();
-		}
-
-		//Before the first element
-		if( c(x, data[0].first) ){
-			return begin();
-		}
-
-
-		//Element is larger than all known elemenst
-		if( c( data[data.size()-1].first, x) ){
-			return end();
-		}
-
-		//Or if it is the last element
-		if( !c(x, data[size()-1].first) ){
-			return iterator(data.size()-1, this);
-		}
-
-		size_type low;
-		size_type high;
-		size_type i=0;
-
-		low = 0;
-		high = data.size() - 1;
-
-		//This algorithm will accept duplicates in keys
-
-		while( c(data[i+1].first, x) || c(x, data[i].first) || !c(x, data[i+1].first) ){
-			i = low + ((high - low) /2);
-			if( c( x, data[i].first) ){
-				high = i;
-			}else{
-				low = i;
-			}
-		}
-
-		if( c(data[i].first, x) ){         // k >=high
-			++i;
-		}
-
-		return iterator(i, this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::const_iterator
-		multimap<Key, T, Compare, Allocator>::ifind(const key_type &x) const
-	{
-		/* This function is not from the standard. It is an internal
-		 * utility function which returns an iterator to either the
-		 * first matching element, or to the element before which
-		 * an insert should be performed. end() for error.
-		 */
-
-		if(data.size() == 0){
-			return end();
-		}
-
-		//Before the first element
-		if( c(x, data[0].first) ){
-			return begin();
-		}
-
-
-		//Element is larger than all known elemenst
-		if( c( data[data.size()-1].first, x) ){
-			return end();
-		}
-
-		//Or if it is the last element
-		if( !c(x, data[size()-1].first) ){
-			return const_iterator(data.size()-1, this);
-		}
-
-		size_type low;
-		size_type high;
-		size_type i=0;
-
-		low = 0;
-		high = data.size() - 1;
-
-		//This algorithm will accept duplicates in keys
-
-		while( c(data[i+1].first, x) || c(x, data[i].first) || !c(x, data[i+1].first) ){
-			i = low + ((high - low) /2);
-			if( c( x, data[i].first) ){
-				high = i;
-			}else{
-				low = i;
-			}
-		}
-
-		if( c(data[i].first, x) ){         // k >=high
-			++i;
-		}
-
-		return const_iterator(i, this);
-	}
-
 
 	template <class Key, class T, class Compare, class Allocator>
 		multimap<Key, T, Compare, Allocator>::multimap<Key,T,Compare,Allocator>&
@@ -1095,7 +902,7 @@ protected:
 			return end();
                 }
 
-		retval = ifind(x.first);
+		retval = lower_bound(x.first);
 
 		//No match - this should never happen
 		if(retval == end()){
@@ -1192,7 +999,7 @@ protected:
 			return end();
 		}
 
-		iterator retval = ifind(x);
+		iterator retval = lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -1220,7 +1027,7 @@ protected:
 		if(data.size() == 0){
 			return end();
 		}
-		const_iterator retval = ifind(x);
+		const_iterator retval = lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -1254,47 +1061,11 @@ protected:
 		return temp.second.element - temp.first.element;
 	}
 
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::iterator 
-		multimap<Key, T, Compare, Allocator>::lower_bound(const key_type& x)
-	{
-		typename multimap<Key, T, Compare, Allocator>::iterator i = find(x);
-/*		if(i == end()){
-			return i;
-		}
-		while( i.element > 0 && !c(i->first, x) && !c(x, i->first) ){
-			--i;
-		}
-		if( c(i->first, x)){
-			++i;
-		}
-*/		return i;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::const_iterator
-		multimap<Key, T, Compare, Allocator>::lower_bound(const key_type& x) const
-	{
-		//FIXME - linear search - can we do any better?
-		typename multimap<Key, T, Compare, Allocator>::const_iterator i = find(x);
-/*		if(i == end()){
-			return i;
-		}
-		while( i.element >0 && !c(i->first, x) && !c(x, i->first) ){
-			--i;
-		}
-		if( c(i->first, x)){
-			++i;
-		}
-*/		return i;
-	}
-
 	template <class Key, class T, class Compare, class Allocator>
 		typename multimap<Key, T, Compare, Allocator>::iterator
 		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
 	{
-		typename multimap<Key, T, Compare, Allocator>::iterator i = ifind(x);
+		typename multimap<Key, T, Compare, Allocator>::iterator i = lower_bound(x);
 
 		while(i != end() && !c(x, i->first)){
 			++i;
@@ -1306,7 +1077,7 @@ protected:
 		typename multimap<Key, T, Compare, Allocator>::const_iterator
 		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
-		typename multimap<Key, T, Compare, Allocator>::const_iterator i = ifind(x);
+		typename multimap<Key, T, Compare, Allocator>::const_iterator i = lower_bound(x);
 
 		while(i != end() && !c(x, i->first)){
 			++i;

@@ -139,49 +139,61 @@ namespace std
   abs(float __x)
   { return __builtin_fabsf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double
   abs(long double __x)
   { return __builtin_fabsl(__x); }
+  #endif
 
   inline float 
   acos(float __x) { return __gnu_cxx::__c99_binding::acosf(__x); }
 
   using ::acos;
   
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   acos(long double __x) { return ::acosl(__x); }
+  #endif
 
   using ::asin;
 
   inline float 
   asin(float __x) { return __gnu_cxx::__c99_binding::asinf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   asin(long double __x) { return ::asinl(__x); }
+  #endif
 
   using ::atan;
 
   inline float 
   atan(float __x) { return __gnu_cxx::__c99_binding::atanf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   atan(long double __x) { return ::atanl(__x); }
+  #endif
 
   using ::atan2;
 
   inline float 
   atan2(float __y, float __x) { return __gnu_cxx::__c99_binding::atan2f(__y, __x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   atan2(long double __y, long double __x) { return ::atan2l(__y, __x); }
+  #endif
 
   using ::ceil;
 
   inline float 
   ceil(float __x) { return __gnu_cxx::__c99_binding::ceilf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   ceil(long double __x) { return ::ceill(__x); }
+  #endif
 
   using ::cos;
 
@@ -189,25 +201,31 @@ namespace std
   cos(float __x)
   { return __builtin_cosf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double
   cos(long double __x)
   { return __builtin_cosl(__x); }
+  #endif
 
   using ::cosh;
 
   inline float 
   cosh(float __x) { return __gnu_cxx::__c99_binding::coshf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   cosh(long double __x) { return ::coshl(__x); }
+  #endif
 
   using ::exp;
 
   inline float 
   exp(float __x) { return __gnu_cxx::__c99_binding::expf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   exp(long double __x) { return ::expl(__x); }
+  #endif
 
   using ::fabs;
 
@@ -215,65 +233,81 @@ namespace std
   fabs(float __x)
   { return __builtin_fabsf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double
   fabs(long double __x)
   { return __builtin_fabsl(__x); }
+  #endif
 
   using ::floor;
 
   inline float 
   floor(float __x) { return __gnu_cxx::__c99_binding::floorf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   floor(long double __x) { return ::floorl(__x); }
+  #endif
 
   using ::fmod;
 
   inline float 
   fmod(float __x, float __y) { return __gnu_cxx::__c99_binding::fmodf(__x, __y); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   fmod(long double __x, long double __y) { return ::fmodl(__x, __y); }
+  #endif
 
   using ::frexp;
 
   inline float 
   frexp(float __x, int* __exp) { return __gnu_cxx::__c99_binding::frexpf(__x, __exp); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   frexp(long double __x, int* __exp) { return ::frexpl(__x, __exp); }
+  #endif
 
   using ::ldexp;
 
   inline float 
   ldexp(float __x, int __exp) { return __gnu_cxx::__c99_binding::ldexpf(__x, __exp); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
   inline long double 
   ldexp(long double __x, int __exp) { return ::ldexpl(__x, __exp); }
+  #endif
 
   using ::log;
 
   inline float 
   log(float __x) { return __gnu_cxx::__c99_binding::logf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   log(long double __x) { return ::logl(__x); }
+  #endif
 
   using ::log10;
 
   inline float 
   log10(float __x) { return __gnu_cxx::__c99_binding::log10f(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   log10(long double __x) { return ::log10l(__x); }
+  #endif
 
   using ::modf;
 
   inline float 
   modf(float __x, float* __iptr) { return __gnu_cxx::__c99_binding::modff(__x, __iptr); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   modf(long double __x, long double* __iptr) { return ::modfl(__x, __iptr); }
+  #endif
 
   template<typename _Tp>
     inline _Tp
@@ -289,8 +323,10 @@ namespace std
   inline float 
   pow(float __x, float __y) { return __gnu_cxx::__c99_binding::powf(__x, __y); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   pow(long double __x, long double __y) { return ::powl(__x, __y); }
+  #endif
 
   inline double 
   pow(double __x, int __i)
@@ -300,9 +336,11 @@ namespace std
   pow(float __x, int __n)
   { return __pow_helper(__x, __n); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   pow(long double __x, int __n)
   { return __pow_helper(__x, __n); }
+  #endif
 
   using ::sin;
 
@@ -310,17 +348,21 @@ namespace std
   sin(float __x)
   { return __builtin_sinf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double
   sin(long double __x)
   { return __builtin_sinl(__x); }
+  #endif
 
   using ::sinh;
 
   inline float 
   sinh(float __x) { return __gnu_cxx::__c99_binding::sinhf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   sinh(long double __x) { return ::sinhl(__x); }
+  #endif
 
   using ::sqrt;
 
@@ -328,25 +370,31 @@ namespace std
   sqrt(float __x)
   { return __builtin_sqrtf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double
   sqrt(long double __x)
   { return __builtin_sqrtl(__x); }
+  #endif
 
   using ::tan;
 
   inline float 
   tan(float __x) { return __gnu_cxx::__c99_binding::tanf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   tan(long double __x) { return ::tanl(__x); }
+  #endif
 
   using ::tanh;
 
   inline float 
   tanh(float __x) { return __gnu_cxx::__c99_binding::tanhf(__x); }
 
+  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
   inline long double 
   tanh(long double __x) { return ::tanhl(__x); }
+  #endif
 } 
 
 

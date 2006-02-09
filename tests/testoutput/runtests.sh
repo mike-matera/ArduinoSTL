@@ -11,13 +11,13 @@ for x in *.good ; do
 		cmp ${TEST}.good ${TEST}.test
 		if [ "$?" -eq "1" ]
 		then
-			echo "${TEST} 	FAILED"
+			printf "%-25sFAILED\n" ${TEST}
 			exit 1
 		else
-			echo "${TEST} 	OK"
+			printf "%-25sOK\n" ${TEST}
 		fi
 	else
-		echo "${TEST}	missing/not built"
+		printf "%-25smissing/not built\n" ${TEST}
 	fi
 done
 
@@ -33,13 +33,13 @@ if [ "$1" = "DODEBUG" ] ; then
 		cmp ${TEST}.good ${TEST}-old.test
 		if [ "$?" -eq "1" ]
 		then
-			echo "${TEST}-old 	FAILED"
+			printf "%-25sFAILED\n" ${TEST}-old
 			exit 1
 		else
-			echo "${TEST}-old 	OK"
+			printf "%-25sOK\n" ${TEST}-old
 		fi
 	else
-		echo "${TEST}-old	missing/not built"
+		printf "%-25smissing/not built\n" ${TEST}-old
 	fi
   done
 fi

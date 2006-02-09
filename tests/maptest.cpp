@@ -155,19 +155,29 @@ int main(){
 
 	j = test.lower_bound("b");
 	std::cout << "This should read 2: " << j->second << std::endl;
+	j = test.lower_bound("c");
+	std::cout << "This should read 11: " << j->second << std::endl;
+	j = test.lower_bound("z");
+	std::cout << "This should read end: " << ((j == test.end()) ? "end" : "noend") << std::endl;
 
 	k = test.lower_bound("b");
 	std::cout << "This should read 2: " << k->second << std::endl;
-
+	k = test.lower_bound("c");
+	std::cout << "This should read 11: " << k->second << std::endl;
+	k = test.lower_bound("z");
+	std::cout << "This should read end: " << ((k == test.end()) ? "end" : "noend") << std::endl;
 
 	std::cout << "This should read 11: " << test.equal_range("k").first->second << std::endl;
 
-
+	std::cout << "test roman numerals" << std::endl;
 
 	typedef std::map<char, Int, std::less<char> > maptype;
 
 	maptype map_char_myClass;
 	// Store mappings between roman numerals and decimals.
+
+	std::cout << "Inserting values now" << std::endl;
+
 	map_char_myClass['l'] = 50;
 	map_char_myClass['x'] = 20; // Deliberate mistake.
 	map_char_myClass['v'] = 5;
@@ -176,6 +186,26 @@ int main(){
 	map_char_myClass['x'] = 10; // Correct mistake.
 	std::cout << "map_char_myClass['x'] = " << map_char_myClass['x'] << std::endl;
 	std::cout << "map_char_myClass['z'] = " << map_char_myClass['z'] << std::endl; // Note default value is added.
+
+	std::cout << "Here is the bit which is currently non-compliant:" << std::endl;
+	//This needs to be fixed
+
+	std::map<int, std::string> m;
+
+	m.insert(std::make_pair(1, std::string("one")));
+	m.insert(std::make_pair(2, std::string("two")));
+	m.insert(std::make_pair(3, std::string("three")));
+
+	std::map<int, std::string>::const_iterator m_2(m.find(2));
+	std::map<int, std::string>::const_iterator m_3(m.find(3));
+
+	std::cout << "m_2 is " << m_2->second << std::endl;
+	std::cout << "m_3 is " << m_3->second << std::endl;
+
+	m.erase(1);
+
+	std::cout << "m_2 is now " << m_2->second << std::endl;
+	std::cout << "m_3 is now " << m_3->second << std::endl;
 	
 
 	return 0;

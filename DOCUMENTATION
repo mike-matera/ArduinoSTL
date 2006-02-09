@@ -19,7 +19,7 @@ Source code can be broken down into 4 separate categories:
 	-	Code taken to be compatable with compiler ABI requirements
 	-	Difficult to replace
 
-- IOStream code
+-   IOStream code
 	-	This code is used by almost anything.  It is extremely 
 		convoluted internally and has been rewritten on more than one
 		occasion because it is very difficult to understand
@@ -27,3 +27,11 @@ Source code can be broken down into 4 separate categories:
 -   STL Containers and Algorithms
 	-	These are hardest to keep small because of code expansion.
 	-	Fairly self-contained in their own right
+
+
+Deviations from spec
+-	Map and set iterators are currently invalidated if you erase or insert an
+	element into the map/set
+
+-	Locales are not supported.  This is intentional.
+
