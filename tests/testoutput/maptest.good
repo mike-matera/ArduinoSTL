@@ -57,7 +57,7 @@ Inserting values now
 map_char_myClass['x'] = 20
 map_char_myClass['x'] = 10
 map_char_myClass['z'] = 0
-Here is the bit which was previously non-compliant:
+Here is the bit which is currently non-compliant:
 m_2 is two
 m_3 is three
 m_2 is now two

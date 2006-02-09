@@ -52,10 +52,12 @@ Ciaran: 4 Points
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Found error in functional.  Provided fix.
 
+Faye2040: 2 Points
+2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
+
 Thomas Giesel: 2 Points
 2005-03-02: 2  :  Found problems in getline code with minimal test case.
 
 Anthony Lee: 1 Point
 2005-01-24: 1  : Found problem in functional which had const missing causing havok
-
 
