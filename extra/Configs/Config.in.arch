@@ -33,6 +33,16 @@ config UCLIBCXX_HAS_FLOATS
 	  will answer Y.
 	  THIS DOESN'T DO ANYTHING YET - FIXME
 
+config UCLIBCXX_HAS_LONG_DOUBLE
+	bool "Math operations with long double"
+	depends on UCLIBCXX_HAS_FLOATS
+	default y
+	help
+	  Answer Y to enable math support for long double types.
+	  It requires support from the underlying C library.
+
+
+
 config WARNINGS
 	string "Compiler Warnings"
 	default "-Wall"

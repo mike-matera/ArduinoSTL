@@ -7,6 +7,7 @@
 -	Map test now tests for some additional error conditions
 -	Map iterators still invalidated improperly
 -	Fix to functional binder using wrong type
+-	Long double suppor now depends on float support
 
 0.1.12
 -	Add missing const declarators to some data types (thanks to asierllano)

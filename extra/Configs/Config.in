@@ -145,13 +145,6 @@ config UCLIBCXX_HAS_WCHAR
 
 	  Most people will answer N.
 
-config UCLIBCXX_HAS_LONG_DOUBLE
-	bool "Math operations with long double"
-	default y
-	help
-	  Answer Y to enable math support for long double types.
-	  It requires support from the underlying C library.
-
 config UCLIBCXX_IOSTREAM_BUFSIZE
 	int "I/O stream buffer size"
 	default 32

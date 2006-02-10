@@ -52,7 +52,8 @@ Ciaran: 4 Points
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Found error in functional.  Provided fix.
 
-Faye2040: 2 Points
+Faye2040: 3 Points
+2006-02-10: 1  : Noted that long_double support should depend upon float support
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
 
 Thomas Giesel: 2 Points
