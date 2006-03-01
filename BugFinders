@@ -47,7 +47,7 @@ thritter: 3 Points
 
 Ciaran: 4 Points
 2005-12-21: 1+1: Found that a const iterator doesn't handle operator*
-2005-12-20: 1+1: Found that interator and const_interator weren't compatible
+2005-12-20: 1+1: Found that iterator and const_iterator weren't compatible
 
 Ted Schroeder: 2 Points
 2005-05-20: 1+1: Found error in functional.  Provided fix.
