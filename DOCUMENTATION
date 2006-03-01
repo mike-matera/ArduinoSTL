@@ -15,8 +15,8 @@ Source code can be broken down into 4 separate categories:
 -   uClibc++ support code
 	-	new and delete operators
 
--   GNU libstsdc++ support code
-	-	Code taken to be compatable with compiler ABI requirements
+-   GNU libstdc++ support code
+	-	Code taken to be compatible with compiler ABI requirements
 	-	Difficult to replace
 
 -   IOStream code
