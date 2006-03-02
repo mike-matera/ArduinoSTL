@@ -1,3 +1,6 @@
+0.2.1
+-	Now export std::calloc & std::realloc
+
 0.2.0
 -	Now can compare set iterators and const_iterators
 -	Now can compare map iterators and const_iterators
