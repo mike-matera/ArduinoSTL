@@ -25,7 +25,7 @@ $(WRAPPER):
 	echo 'while [ -n "$$1" ]' >> $(WRAPPER)
 	echo 'do' >> $(WRAPPER)
 	echo '	WRAPPER_OPTIONS="$$WRAPPER_OPTIONS $$1"' >> $(WRAPPER)
-	echo '	if [ "$$1" == "-c" ]' >> $(WRAPPER)
+	echo '	if [ "$$1" == "-c" ] || [ "$$1" == "-E" ] || [ "$$1" == "-S" ]' >> $(WRAPPER)
 	echo '	then' >> $(WRAPPER)
 	echo '		WRAPPER_INCLIB="N"' >> $(WRAPPER)
 	echo '	fi' >> $(WRAPPER)
