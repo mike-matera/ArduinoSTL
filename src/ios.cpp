@@ -29,7 +29,7 @@ namespace std{
 
 
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-	_UCXXEXPORT int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
+	_UCXXLOCAL int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
 
 //Create buffers first
 #ifdef __UCLIBCXX_SUPPORT_COUT__
@@ -84,7 +84,7 @@ namespace std{
 #endif
 
 
-	_UCXXEXPORT ios_base::Init::Init(){
+	_UCXXLOCAL ios_base::Init::Init(){
 		if(init_cnt == 0){	//Need to construct cout et al
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 			_cout_filebuf.fp = stdout;
@@ -134,7 +134,7 @@ namespace std{
 		init_cnt++;
 	}
 
-	_UCXXEXPORT ios_base::Init::~Init(){
+	_UCXXLOCAL ios_base::Init::~Init(){
 		--init_cnt;
 		if(init_cnt==0){
 

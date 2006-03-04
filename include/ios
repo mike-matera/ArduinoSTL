@@ -34,10 +34,10 @@ namespace std{
 	public:
 		class failure;
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-		class _UCXXEXPORT Init{
+		class _UCXXLOCAL Init{
 		public:
-			_UCXXEXPORT Init();
-			_UCXXEXPORT ~Init();
+			_UCXXLOCAL Init();
+			_UCXXLOCAL ~Init();
 		private:
 			static int init_cnt;
 		};
