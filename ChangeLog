@@ -5,6 +5,7 @@
 -	Implement istream>> (*pf)(ios_base)
 -	Implement string::find_last_not_of
 -	Convert some string functions to use traits::eq in spec compliance
+-	String now accepts resize filler character
 
 0.2.0
 -	Now can compare set iterators and const_iterators

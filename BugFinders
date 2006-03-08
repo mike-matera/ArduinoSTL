@@ -42,7 +42,8 @@ scott: 7 Points
 2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
 
-dcas: 4 Points
+dcas: 5 Points
+2006-03-07: 0+1: Found lack of string resize specifier and provided fix in BTS
 2006-03-07: 0+2: Found missing string::find_last_not_of - prop. fix in BTS
 2006-03-07: 0+2: Found missing std::ws and submitted proposed fix in BTS
 

@@ -121,8 +121,8 @@ public:
 
 	inline _UCXXEXPORT size_type length() const { return vector<Ch, A>::size(); }
 
-	void _UCXXEXPORT resize(size_type n){
-		vector<Ch, A>::resize(n, Ch() );
+	void _UCXXEXPORT resize(size_type n, Ch c = Ch()){
+		vector<Ch, A>::resize(n, c);
 	}
 
 	_UCXXEXPORT basic_string& operator+=(const basic_string& str){
