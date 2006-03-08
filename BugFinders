@@ -42,22 +42,23 @@ scott: 7 Points
 2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
 
-thritter: 3 Points
-2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
+dcas: 4 Points
+2006-03-07: 0+2: Found missing string::find_last_not_of - prop. fix in BTS
+2006-03-07: 0+2: Found missing std::ws and submitted proposed fix in BTS
 
 Ciaran: 4 Points
 2005-12-21: 1+1: Found that a const iterator doesn't handle operator*
 2005-12-20: 1+1: Found that iterator and const_iterator weren't compatible
 
-Ted Schroeder: 2 Points
-2005-05-20: 1+1: Found error in functional.  Provided fix.
-
-dcas: 3 Points
-2006-03-07: 0+2: Found missing std::ws and submitted proposed fix in BTS
+thritter: 3 Points
+2005-02-11: 1+2:  Found problem in cstdlib needing ifdefs for wchar.  Used BTS & provided solution
 
 Faye2040: 3 Points
 2006-02-10: 1  : Noted that long_double support should depend upon float support
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
+
+Ted Schroeder: 2 Points
+2005-05-20: 1+1: Found error in functional.  Provided fix.
 
 Thomas Giesel: 2 Points
 2005-03-02: 2  :  Found problems in getline code with minimal test case.

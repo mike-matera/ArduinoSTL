@@ -94,3 +94,11 @@ Position of "search": 0 - should be 0
 Position of "is" starting at character 5: 7 - should be 7
 Position of "q": 0 - should be 0
 Position of "This": 4 - should be 4
+
+Checking find_last_not_of on string "This is the string we are searching through"
+Position of "the": 41 = should be 41
+Position of 'g': 42 - should be 42
+Position of "search": 41 - should be 41
+Position of "is" starting at index 7: 7 - should be 7
+Position of "q": 42 - should be 42
+Position of "This": 41 - should be 41

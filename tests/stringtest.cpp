@@ -286,6 +286,30 @@ int main(){
 	std::cout << "Position of \"This\": ";
 	std::cout << a.find_first_not_of("This") << " - should be 4\n";
 
+	std::cout << "\nChecking find_last_not_of on string \"";
+	a = "This is the string we are searching through";
+	// length of string is 43 (including null)
+	std::cout << a << "\"\n";
+
+	std::cout << "Position of \"the\": ";
+	b = "the";
+	std::cout << a.find_last_not_of(b) << " = should be 41\n";
+
+	std::cout << "Position of \'g\': ";
+	std::cout << a.find_last_not_of('g') << " - should be 42\n";
+
+	std::cout << "Position of \"search\": ";
+	std::cout << a.find_last_not_of("search") << " - should be 41\n";
+
+	std::cout << "Position of \"is\" starting at index 7: ";
+	std::cout << a.find_last_not_of("is", 7) << " - should be 7\n";
+
+	std::cout << "Position of \"q\": ";
+	std::cout << a.find_last_not_of("q") << " - should be 42" << std::endl;
+
+	std::cout << "Position of \"This\": ";
+	std::cout << a.find_last_not_of("This") << " - should be 41\n";
+
 	return 0;
 }
 

@@ -452,7 +452,7 @@ public:
 	_UCXXEXPORT size_type find_first_of(const basic_string& str, size_type pos = 0) const{
 		for(size_type i = pos; i < length(); ++i){
 			for(size_type j = 0; j < str.length() ; ++j){
-				if(str[j] == operator[](i) ){
+				if( Tr::eq(str[j], operator[](i)) ){
 					return i;
 				}
 			}
@@ -468,7 +468,7 @@ public:
 	}
 	_UCXXEXPORT size_type find_first_of(Ch c, size_type pos = 0) const{
 		for(size_type i = pos; i< length(); ++i){
-			if(operator[](i) == c){
+			if( Tr::eq(operator[](i), c) ){
 				return i;
 			}
 		}
@@ -481,7 +481,7 @@ public:
 		}
 		for(size_type i = pos; i >0 ; --i){
 			for(size_type j = 0 ; j < str.length(); ++j){
-				if(operator[](i-1) == str[j]){
+				if( Tr::eq(operator[](i-1), str[j]) ){
 					return i-1;
 				}
 			}
@@ -499,7 +499,7 @@ public:
 			pos = length();
 		}
 		for(size_type i = pos; i >0 ; --i){
-			if(operator[](i-1) == c){
+			if( Tr::eq(operator[](i-1), c) ){
 				return i-1;
 			}
 		}
@@ -511,7 +511,7 @@ public:
 		for(size_type i = pos; i < length(); ++i){
 			foundCharacter = false;
                         for(size_type j = 0; j < str.length() ; ++j){
-                                if(str[j] == operator[](i) ){
+                                if( Tr::eq(str[j], operator[](i)) ){
 					foundCharacter = true;
                                 }
                         }
@@ -536,11 +536,36 @@ public:
 		}
 		return npos;
 	}
-/*	_UCXXEXPORT size_type find_last_not_of (const basic_string& str, size_type pos = npos) const;
-	_UCXXEXPORT size_type find_last_not_of (const charT* s, size_type pos, size_type n) const;
-	_UCXXEXPORT size_type find_last_not_of (const charT* s, size_type pos = npos) const;
-	_UCXXEXPORT size_type find_last_not_of (charT c, size_type pos = npos) const;
-*/
+	_UCXXEXPORT size_type find_last_not_of (const basic_string& str, size_type pos = npos) const{
+		size_type xpos(length() - 1);
+		if(xpos > pos){
+			xpos = pos;
+		}
+		
+		while(xpos != npos && npos != str.find_first_of(at(xpos))){
+			--xpos;
+		}
+
+		return xpos;
+	}
+
+	_UCXXEXPORT size_type find_last_not_of (const Ch* s, size_type pos, size_type n) const{
+		return find_last_not_of(basic_string<Ch, Tr, A>(s,n),pos);
+	}
+	_UCXXEXPORT size_type find_last_not_of (const Ch* s, size_type pos = npos) const{
+		return find_last_not_of(basic_string<Ch, Tr, A>(s),pos);
+	}
+	_UCXXEXPORT size_type find_last_not_of (Ch c, size_type pos = npos) const{
+		size_type xpos(length() - 1);
+		if(xpos > pos){
+			xpos = pos;
+		}
+		while(xpos != npos && Tr::eq(at(xpos), c)){
+			--xpos;
+		}
+		return xpos;
+
+	}
 
 	_UCXXEXPORT basic_string substr(size_type pos = 0, size_type n = npos) const;
 
