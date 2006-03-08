@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RETURNVALUE=0
+
 for x in *.good ; do
 	TEST=$(basename ${x} .good)
 	if [ -x ../${TEST} ] ; then
@@ -12,7 +14,7 @@ for x in *.good ; do
 		if [ "$?" -eq "1" ]
 		then
 			printf "%-25sFAILED\n" ${TEST}
-			exit 1
+			RETURNVALUE=1
 		else
 			printf "%-25sOK\n" ${TEST}
 		fi
@@ -34,7 +36,7 @@ if [ "$1" = "DODEBUG" ] ; then
 		if [ "$?" -eq "1" ]
 		then
 			printf "%-25sFAILED\n" ${TEST}-old
-			exit 1
+			RETURNVALUE=1
 		else
 			printf "%-25sOK\n" ${TEST}-old
 		fi
@@ -43,3 +45,5 @@ if [ "$1" = "DODEBUG" ] ; then
 	fi
   done
 fi
+
+exit $RETURNVALUE
