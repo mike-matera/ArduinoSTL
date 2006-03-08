@@ -316,6 +316,23 @@ namespace std{
 	};
 
 
+	template<class charT, class traits> void __skipws(basic_istream<charT,traits>& is){
+		const typename basic_istream<charT,traits>::int_type eof = traits::eof();
+		typename basic_istream<charT,traits>::int_type c;
+		//While the next character normally read doesn't equal eof
+		//and that character is a space, advance to the next read position
+		//Thus itterating through al whitespace until we get to the meaty stuff
+		while (
+			!traits::eq_int_type((c = is.rdbuf()->sgetc()),	eof)
+			&& isspace(c)
+                      )
+		{
+			is.rdbuf()->sbumpc();
+		}
+		if(traits::eq_int_type(c, eof)){
+			is.setstate(ios_base::eofbit);
+		}
+	}
 }
 
 

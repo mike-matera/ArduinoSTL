@@ -45,6 +45,7 @@ namespace std{
 		typedef typename traits::int_type int_type;
 		typedef typename traits::pos_type pos_type;
 		typedef typename traits::off_type off_type;
+		typedef basic_streambuf<charT,traits>  streambuf_type;
 		typedef traits                    traits_type;
     	
 		explicit basic_istream(basic_streambuf<charT,traits>* sb)
@@ -350,12 +351,7 @@ namespace std{
 			}
 			int_type c;
 			if(!noskipws){
-				while ( (c = os.rdbuf()->sgetc()) != traits::eof() && isspace(c)) {
-						os.rdbuf()->sbumpc();
-				}
-				if(c == traits::eof()){
-					os.setstate(ios_base::eofbit);
-				}
+				__skipws(os);
 			}
 
 			ok = true;
@@ -540,6 +536,30 @@ namespace std{
 		is.get(c, n);
 		return is;
 	}
+
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(basic_istream<charT,traits>& (*pf)(basic_istream<charT,traits>&))
+	{
+		sentry(*this);
+		pf(*this);
+		return *this;
+	}
+
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>& 
+		basic_istream<charT,traits>::operator>>(basic_ios<charT,traits>& (*pf)(basic_ios<charT,traits>&))
+	{
+		sentry(*this);
+		pf(*this);
+		return *this;
+	}
+
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
+		ws(basic_istream<charT,traits>& is)
+	{
+		__skipws(is);
+		return is;
+	}
+
 
 #ifdef __UCLIBCXX_EXPAND_ISTREAM_CHAR__
 #ifndef __UCLIBCXX_COMPILE_ISTREAM__

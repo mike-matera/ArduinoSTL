@@ -6,6 +6,21 @@
 
 //using namespace std;
 
+std::basic_istream<char, std::char_traits<char> > &
+	myIstreamTestFunction(std::basic_istream<char,std::char_traits<char> >& stream)
+{
+	std::cout << "Number of characters most recently read in: " << stream.gcount() << std::endl;
+	return stream;
+}
+
+std::basic_ios<char, std::char_traits<char> > &
+	myIosTestFunction(std::basic_ios<char,std::char_traits<char> >& stream)
+{
+	std::cout << "Good status: " << stream.good() << std::endl;
+	return stream;
+}
+
+
 int main(){
 //	double q;
 //	std::cin >> q;
@@ -48,6 +63,11 @@ int main(){
 	end = s_r.tellg();
 	s_r.seekg(cur);
 	std::cout << "Remaining bytes: " << end-cur << std::endl;
+
+	std::cout << "Test of reading istream into a function: " << std::endl;
+	s_r >> myIstreamTestFunction;
+	std::cout << "Test of reading ios into a function: " << std::endl;
+	s_r >> myIosTestFunction;
 
 	return 0;
 }
