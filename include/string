@@ -199,13 +199,11 @@ public:
 		}
 		resize(r);
 		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, r);
-//		vector<Ch, A>::elements = r;
 		return *this;
 	}
 
 	_UCXXEXPORT basic_string& assign(const Ch* s, size_type n){
 		resize(n);
-//		vector<Ch, A>::elements = n;
 		Tr::copy(vector<Ch, A>::data, s, n);
 		return *this;
 	}
@@ -245,7 +243,6 @@ public:
 		resize(vector<Ch, A>::elements + r);
 		Tr::move(vector<Ch, A>::data + pos1 + r, vector<Ch, A>::data + pos1, temp - pos1);
 		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, r);
-//		vector<Ch, A>::elements+=r;
 		return *this;
 	}
 
@@ -260,7 +257,6 @@ public:
 		resize(vector<Ch, A>::elements + n);
 		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, temp - pos);
 		Tr::copy(vector<Ch, A>::data + pos, s, n);
-//		vector<Ch, A>::elements+=n;
 		return *this;
 	}
 
@@ -280,7 +276,6 @@ public:
 		resize(vector<Ch, A>::elements + n);
 		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, temp - pos);
 		Tr::assign(vector<Ch, A>::data + pos, n, c);
-//		vector<Ch, A>::elements+=n;
 		return *this;
 	}
 
@@ -314,7 +309,6 @@ public:
 			*(position-1) = *position;
 			++position;
 		}
-//		--vector<Ch, A>::elements;
 		vector<Ch, A>::pop_back();
 		return temp;
 	}
@@ -364,7 +358,6 @@ public:
 
 		Tr::move(vector<Ch, A>::data + pos1 + rlen, vector<Ch, A>::data + pos1 + xlen, temp - pos1 - xlen);
 		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, rlen);
-//		vector<Ch, A>::elements = vector<Ch, A>::elements - xlen + rlen;
 		resize(temp - xlen + rlen);
 		return *this;
 	}
@@ -721,7 +714,6 @@ template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>&
 	vector<Ch, A>::clear();
 	resize(str.elements);
 	Tr::copy( vector<Ch, A>::data, str.vector<Ch, A>::data, str.elements);
-//	vector<Ch, A>::elements = str.elements;
 	return *this;
 }
 
