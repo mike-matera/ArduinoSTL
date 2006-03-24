@@ -6,6 +6,7 @@
 -	Implement string::find_last_not_of
 -	Convert some string functions to use traits::eq in spec compliance
 -	String now accepts resize filler character
+-	String::assign(iterator first, iterator last) now implemented
 
 0.2.0
 -	Now can compare set iterators and const_iterators

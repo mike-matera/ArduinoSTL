@@ -221,7 +221,14 @@ public:
 		return *this;
 	}
 
-//	template<class InputIterator> _UCXXEXPORT basic_string& assign(InputIterator first, InputIterator last);
+	template<class InputIterator> _UCXXEXPORT basic_string& assign(InputIterator first, InputIterator last){
+		vector<Ch, A>::resize(0, Ch());
+		while (first != last){
+			append(*first);
+			++first;
+		}
+		return *this;
+	}
 
 	_UCXXEXPORT basic_string& insert(size_type pos1, const basic_string& str, size_type pos2=0, size_type n=npos){
 		if(pos1 > vector<Ch, A>::elements || pos2 > str.elements){
