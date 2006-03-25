@@ -201,7 +201,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT - 1;
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = true;
 	static const bool is_integer = true;
 	static const bool is_exact = true;
@@ -295,7 +295,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT * sizeof(T);
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = false;
 	static const bool is_integer = true;
 	static const bool is_exact = true;
@@ -342,7 +342,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT * sizeof(T);
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = true;
 	static const bool is_integer = true;
 	static const bool is_exact = true;
@@ -389,7 +389,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT * sizeof(T);
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = false;
 	static const bool is_integer = true;
 	static const bool is_exact = true;
@@ -436,7 +436,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT * sizeof(T);
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = true;
 	static const bool is_integer = true;
 	static const bool is_exact = true;
@@ -483,7 +483,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT * sizeof(T);
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = false;
 	static const bool is_integer = true;
 	static const bool is_exact = true;
@@ -530,7 +530,7 @@ public:
 	}
 	static const int radix = 2;
 	static const int digits = CHAR_BIT * sizeof(T);
-	static const int digits10 = __bits_to_base_10<digits>::size;;
+	static const int digits10 = __bits_to_base_10<digits>::size;
 	static const bool is_signed = true;
 	static const bool is_integer = true;
 	static const bool is_exact = true;

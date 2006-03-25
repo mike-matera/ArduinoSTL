@@ -7,6 +7,9 @@
 -	Convert some string functions to use traits::eq in spec compliance
 -	String now accepts resize filler character
 -	String::assign(iterator first, iterator last) now implemented
+-	Clean up double-semicolons
+-	Add parent class scoping as appropriate
+-	Make ios::Init() exported again
 
 0.2.0
 -	Now can compare set iterators and const_iterators

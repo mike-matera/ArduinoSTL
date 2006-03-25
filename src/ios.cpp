@@ -84,7 +84,7 @@ namespace std{
 #endif
 
 
-	_UCXXLOCAL ios_base::Init::Init(){
+	_UCXXEXPORT ios_base::Init::Init(){
 		if(init_cnt == 0){	//Need to construct cout et al
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 			_cout_filebuf.fp = stdout;
@@ -134,7 +134,7 @@ namespace std{
 		init_cnt++;
 	}
 
-	_UCXXLOCAL ios_base::Init::~Init(){
+	_UCXXEXPORT ios_base::Init::~Init(){
 		--init_cnt;
 		if(init_cnt==0){
 

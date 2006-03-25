@@ -152,7 +152,7 @@ GCC_VERSION:=$(shell $(CC) -dumpversion | cut -c1-3)
 
 GEN_LIBS:=
 ifneq ($(LIBGCC_DIR),$(UCLIBCXX_RUNTIME_LIBDIR))
-GEN_LIBS += -L$(LIBGCC_DIR)
+GEN_LIBS += -L$(LIBGCC_DIR) /lib/ld-linux.so.2
 endif
 ifneq ($(IMPORT_LIBSUP),y)
   GEN_LIBS += -lsupc++

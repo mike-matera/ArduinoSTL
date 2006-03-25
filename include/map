@@ -599,7 +599,7 @@ protected:
 			return retval;
                 }
 
-		retval.first = lower_bound(x.first);
+		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x.first);
 
 		//No match - this should never happen
 		if(retval.first == end()){
@@ -616,7 +616,7 @@ protected:
 		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator q(&data, retval.first.element);
 		data.insert(q, x);
 
-		retval.first = lower_bound(x.first);        //Need to refind because insert can move data around
+		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x.first);   //Need to refind because insert can move data around
 		retval.second = true;
 
 		return retval;
@@ -680,7 +680,7 @@ protected:
 			return end();
 		}
 
-		iterator retval = lower_bound(x);
+		iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -702,7 +702,7 @@ protected:
 			return end();
 		}
 
-		const_iterator retval = lower_bound(x);
+		const_iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -730,7 +730,7 @@ protected:
 		typename map<Key, T, Compare, Allocator>::iterator
 		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
 	{
-		typename map<Key, T, Compare, Allocator>::iterator i = lower_bound(x);
+		typename map<Key, T, Compare, Allocator>::iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		if( i != end() && !c(x, i->first) ){
 			++i;
 		}
@@ -741,7 +741,7 @@ protected:
 		typename map<Key, T, Compare, Allocator>::const_iterator
 		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
-		typename map<Key, T, Compare, Allocator>::const_iterator i = lower_bound(x);
+		typename map<Key, T, Compare, Allocator>::const_iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		if(i != end() && !c(x, i->first)){
 			++i;
 		}
@@ -757,7 +757,7 @@ protected:
 		pair<   typename map<Key, T, Compare, Allocator>::iterator,
                         typename map<Key, T, Compare, Allocator>::iterator
                 > retval;
-		retval.first = lower_bound(x);
+		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		retval.second = upper_bound(x);
 		return retval;		
 	}
@@ -770,7 +770,7 @@ protected:
 		pair<   typename map<Key, T, Compare, Allocator>::const_iterator,
                         typename map<Key, T, Compare, Allocator>::const_iterator
                 > retval;
-		retval.first = lower_bound(x);
+		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		retval.second = upper_bound(x);
 		return retval;		
 	}
@@ -902,7 +902,7 @@ protected:
 			return end();
                 }
 
-		retval = lower_bound(x.first);
+		retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x.first);
 
 		//No match - this should never happen
 		if(retval == end()){
@@ -973,7 +973,7 @@ protected:
 		typename multimap<Key, T, Compare, Allocator>::size_type
 		multimap<Key, T, Compare, Allocator>::erase(const key_type& x)
 	{
-		typename multimap<Key, T, Compare, Allocator>::iterator f = lower_bound(x);
+		typename multimap<Key, T, Compare, Allocator>::iterator f = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		typename multimap<Key, T, Compare, Allocator>::iterator l = upper_bound(x);
 		size_type t = l.element - f.element;
 		erase(f, l);
@@ -999,7 +999,7 @@ protected:
 			return end();
 		}
 
-		iterator retval = lower_bound(x);
+		iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -1027,7 +1027,7 @@ protected:
 		if(data.size() == 0){
 			return end();
 		}
-		const_iterator retval = lower_bound(x);
+		const_iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 
 		if(retval == end()){
 			return retval;
@@ -1065,7 +1065,7 @@ protected:
 		typename multimap<Key, T, Compare, Allocator>::iterator
 		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
 	{
-		typename multimap<Key, T, Compare, Allocator>::iterator i = lower_bound(x);
+		typename multimap<Key, T, Compare, Allocator>::iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 
 		while(i != end() && !c(x, i->first)){
 			++i;
@@ -1077,7 +1077,7 @@ protected:
 		typename multimap<Key, T, Compare, Allocator>::const_iterator
 		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
-		typename multimap<Key, T, Compare, Allocator>::const_iterator i = lower_bound(x);
+		typename multimap<Key, T, Compare, Allocator>::const_iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 
 		while(i != end() && !c(x, i->first)){
 			++i;
@@ -1094,7 +1094,7 @@ protected:
 		pair<   typename multimap<Key, T, Compare, Allocator>::iterator,
                         typename multimap<Key, T, Compare, Allocator>::iterator
                 > retval;
-		retval.first = lower_bound(x);
+		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		retval.second = upper_bound(x);
 		return retval;		
 	}
@@ -1107,7 +1107,7 @@ protected:
 		pair<   typename multimap<Key, T, Compare, Allocator>::const_iterator,
                         typename multimap<Key, T, Compare, Allocator>::const_iterator
                 > retval;
-		retval.first = lower_bound(x);
+		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
 		retval.second = upper_bound(x);
 		return retval;		
 	}
