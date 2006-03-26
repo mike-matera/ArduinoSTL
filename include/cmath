@@ -1,552 +1,205 @@
-// -*- C++ -*- C forwarding header.
+/*	Copyright (C) 2006 Garrett A. Kajmowicz
 
-// Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002, 2003
-// Free Software Foundation, Inc.
-//
-// This file is part of the GNU ISO C++ Library.  This library is free
-// software; you can redistribute it and/or modify it under the
-// terms of the GNU General Public License as published by the
-// Free Software Foundation; either version 2, or (at your option)
-// any later version.
+	This file is part of the uClibc++ Library.
 
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
 
-// You should have received a copy of the GNU General Public License along
-// with this library; see the file COPYING.  If not, write to the Free
-// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-// USA.
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
 
-// As a special exception, you may use this file as part of a free software
-// library without restriction.  Specifically, if other files instantiate
-// templates or use macros or inline functions from this file, or you compile
-// this file and link it with other files to produce an executable, this
-// file does not by itself cause the resulting executable to be covered by
-// the GNU General Public License.  This exception does not however
-// invalidate any other reasons why the executable file might be covered by
-// the GNU General Public License.
-
-//
-// ISO C++ 14882: 26.5  C library
-//
-
-/** @file cmath
- *  This is a Standard C++ Library file.  You should @c #include this file
- *  in your programs, rather than any of the "*.h" implementation files.
- *
- *  This is the C++ version of the Standard C Library header @c math.h,
- *  and its contents are (mostly) the same as that header, but are all
- *  contained in the namespace @c std.
- */
-
-#ifndef _CPP_CMATH
-#define _CPP_CMATH 1
-
-#pragma GCC system_header
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
 
 #include <math.h>
 
-// Get rid of those macros defined in <math.h> in lieu of real functions.
-#undef abs
-#undef div
-#undef acos
-#undef asin
-#undef atan
-#undef atan2
-#undef ceil
-#undef cos
-#undef cosh
-#undef exp
-#undef fabs
-#undef floor
-#undef fmod
-#undef frexp
-#undef ldexp
-#undef log
-#undef log10
-#undef modf
-#undef pow
-#undef sin
-#undef sinh
-#undef sqrt
-#undef tan
-#undef tanh
+#ifndef __STD_HEADER_CMATH
+#define __STD_HEADER_CMATH 1
 
-// ...and in the darkness bind them...
-namespace __gnu_cxx
-{
-  namespace  __c99_binding
-  {
-#if _GLIBCPP_USE_C99_FLOAT_TRANSCENDENTALS_CHECK || \
-    _GLIBCPP_USE_C99_FLOAT_TRANSCENDENTALS_DYNAMIC || \
-    _GLIBCXX_USE_C99_FLOAT_TRANSCENDENTALS_CHECK || \
-    _GLIBCXX_USE_C99_FLOAT_TRANSCENDENTALS_DYNAMIC
-    extern "C" float (acosf)(float);
-    extern "C" float (asinf)(float);
-    extern "C" float (atanf)(float);
-    extern "C" float (atan2f)(float, float);
-    extern "C" float (ceilf)(float);
-    extern "C" float (coshf)(float);
-    extern "C" float (expf)(float);
-    extern "C" float (floorf)(float);
-    extern "C" float (fmodf)(float, float);
-    extern "C" float (frexpf)(float, int*);
-    extern "C" float (ldexpf)(float, int);
-    extern "C" float (logf)(float);
-    extern "C" float (log10f)(float);
-    extern "C" float (modff)(float, float*);
-    extern "C" float (powf)(float, float);
-    extern "C" float (sinhf)(float);
-    extern "C" float (tanf)(float);
-    extern "C" float (tanhf)(float);
-#endif
-#if !_GLIBCPP_USE_C99_FLOAT_TRANSCENDENTALS_DYNAMIC && !_GLIBCXX_USE_C99_FLOAT_TRANSCENDENTALS_DYNAMIC
-    using ::acosf;
-    using ::asinf;
-    using ::atanf;
-    using ::atan2f;
-    using ::ceilf;
-    using ::coshf;
-    using ::expf;
-    using ::floorf;
-    using ::fmodf;
-    using ::frexpf;
-    using ::ldexpf;
-    using ::logf;
-    using ::log10f;
-    using ::modff;
-    using ::powf;
-    using ::sinhf;
-    using ::tanf;
-    using ::tanhf;
-#endif /* _GLIBCPP_USE_C99_FLOAT_TRANSCENDENTALS_DYNAMIC */
-  }
+namespace std{
+	using ::acos;
+	using ::asin;
+	using ::atan;
+	using ::atan2;
+	using ::ceil;
+	using ::cos;
+	using ::cosh;
+	using ::exp;
+	using ::fabs;
+	using ::floor;
+	using ::fmod;
+	using ::frexp;
+	using ::ldexp;
+	using ::log;
+	using ::log10;
+	using ::modf;
+	using ::pow;
+	using ::sin;
+	using ::sinh;
+	using ::sqrt;
+	using ::tan;
+	using ::tanh;
+
+	inline float abs  (float x){
+		return fabsf(x);
+	}
+	inline float acos (float x){
+		return acosf(x);
+	}
+	inline float asin (float x){
+		return asinf(x);
+	}
+	inline float atan (float x){
+		return atanf(x);
+	}
+	inline float atan2(float y, float x){
+		return atan2f(y, x);
+	}
+	inline float ceil (float x){
+		return ceilf(x);
+	}
+	inline float cos  (float x){
+		return cosf(x);
+	}
+	inline float cosh (float x){
+		return coshf(x);
+	}
+	inline float exp  (float x){
+		return expf(x);
+	}
+	inline float fabs (float x){
+		return fabsf(x);
+	}
+	inline float floor(float x){
+		return floorf(x);
+	}
+	inline float fmod (float x, float y){
+		return fmodf(x, y);
+	}
+	inline float frexp(float x, int* exp){
+		return frexpf(x, exp);
+	}
+	inline float ldexp(float x, int exp){
+		return ldexpf(x, exp);
+	}
+	inline float log  (float x){
+		return logf(x);
+	}
+	inline float log10(float x){
+		return log10f(x);
+	}
+	inline float modf (float x, float* inptr){
+		return modff(x, inptr);
+	}
+	inline float pow  (float x, float y){
+		return powf(x, y);
+	}
+	inline float pow  (float x, int y){
+		return pow((double)x, (double)y);
+	}
+	inline float sin  (float x){
+		return sinf(x);
+	}
+	inline float sinh (float x){
+		return sinhf(x);
+	}
+	inline float sqrt (float x){
+		return sqrtf(x);
+	}
+	inline float tan  (float x){
+		return tanf(x);
+	}
+	inline float tanh (float x){
+		return tanhf(x);
+	}
+	inline double abs(double x){
+		return fabs(x);
+	}
+	inline double pow(double x, int y){
+		return pow((double)x, (double)y);
+	}
+
+#ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
+	inline long double abs  (long double x){
+		return fabsl(x);
+	}
+	inline long double acos (long double x){
+		return acosl(x);
+	}
+	inline long double asin (long double x){
+		return asinl(x);
+	}
+	inline long double atan (long double x){
+		return atanl(x);
+	}
+	inline long double atan2(long double y, long double x){
+		return atan2l(y, x);
+	}
+	inline long double ceil (long double x){
+		return ceill(x);
+	}
+	inline long double cos  (long double x){
+		return cosl(x);
+	}
+	inline long double cosh (long double x){
+		return coshl(x);
+	}
+	inline long double exp  (long double x){
+		return expl(x);
+	}
+	inline long double fabs (long double x){
+		return fabsl(x);
+	}
+	inline long double floor(long double x){
+		return floorl(x);
+	}
+	inline long double frexp(long double x, int* exp){
+		return frexpl(x, exp);
+	}
+	inline long double fmod (long double x, long double y){
+		return fmodl(x, y);
+	}
+	inline long double ldexp(long double x, int y){
+		return ldexpl(x, y);
+	}
+	inline long double log  (long double x){
+		return logl(x);
+	}
+	inline long double log10(long double x){
+		return log10l(x);
+	}
+	inline long double modf (long double x, long double* iptr){
+		return modfl(x, iptr);
+	}
+	inline long double pow  (long double x, long double y){
+		return powl(x, y);
+	}
+	inline long double pow  (long double x, int y){
+		return powl(x, (long double)y );
+	}
+	inline long double sin  (long double x){
+		return sinl(x);
+	}
+	inline long double sinh (long double x){
+		return sinhl(x);
+	}
+	inline long double sqrt (long double x){
+		return sqrtl(x);
+	}
+	inline long double tan  (long double x){
+		return tanl(x);
+	}
+	inline long double tanh (long double x){
+		return tanhl(x);
+	}
+#endif	//	 __UCLIBCXX_HAS_LONG_DOUBLE__
 }
 
-namespace std 
-{
-  // Forward declaration of a helper function.  This really should be
-  // an `exported' forward declaration.
-  template<typename _Tp> _Tp __cmath_power(_Tp, unsigned int);
+#endif	//__STD_HEADER_CMATH
 
-  inline double
-  abs(double __x)
-  { return __builtin_fabs(__x); }
-
-  inline float
-  abs(float __x)
-  { return __builtin_fabsf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double
-  abs(long double __x)
-  { return __builtin_fabsl(__x); }
-  #endif
-
-  inline float 
-  acos(float __x) { return __gnu_cxx::__c99_binding::acosf(__x); }
-
-  using ::acos;
-  
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  acos(long double __x) { return ::acosl(__x); }
-  #endif
-
-  using ::asin;
-
-  inline float 
-  asin(float __x) { return __gnu_cxx::__c99_binding::asinf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  asin(long double __x) { return ::asinl(__x); }
-  #endif
-
-  using ::atan;
-
-  inline float 
-  atan(float __x) { return __gnu_cxx::__c99_binding::atanf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  atan(long double __x) { return ::atanl(__x); }
-  #endif
-
-  using ::atan2;
-
-  inline float 
-  atan2(float __y, float __x) { return __gnu_cxx::__c99_binding::atan2f(__y, __x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  atan2(long double __y, long double __x) { return ::atan2l(__y, __x); }
-  #endif
-
-  using ::ceil;
-
-  inline float 
-  ceil(float __x) { return __gnu_cxx::__c99_binding::ceilf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  ceil(long double __x) { return ::ceill(__x); }
-  #endif
-
-  using ::cos;
-
-  inline float
-  cos(float __x)
-  { return __builtin_cosf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double
-  cos(long double __x)
-  { return __builtin_cosl(__x); }
-  #endif
-
-  using ::cosh;
-
-  inline float 
-  cosh(float __x) { return __gnu_cxx::__c99_binding::coshf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  cosh(long double __x) { return ::coshl(__x); }
-  #endif
-
-  using ::exp;
-
-  inline float 
-  exp(float __x) { return __gnu_cxx::__c99_binding::expf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  exp(long double __x) { return ::expl(__x); }
-  #endif
-
-  using ::fabs;
-
-  inline float
-  fabs(float __x)
-  { return __builtin_fabsf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double
-  fabs(long double __x)
-  { return __builtin_fabsl(__x); }
-  #endif
-
-  using ::floor;
-
-  inline float 
-  floor(float __x) { return __gnu_cxx::__c99_binding::floorf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  floor(long double __x) { return ::floorl(__x); }
-  #endif
-
-  using ::fmod;
-
-  inline float 
-  fmod(float __x, float __y) { return __gnu_cxx::__c99_binding::fmodf(__x, __y); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  fmod(long double __x, long double __y) { return ::fmodl(__x, __y); }
-  #endif
-
-  using ::frexp;
-
-  inline float 
-  frexp(float __x, int* __exp) { return __gnu_cxx::__c99_binding::frexpf(__x, __exp); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  frexp(long double __x, int* __exp) { return ::frexpl(__x, __exp); }
-  #endif
-
-  using ::ldexp;
-
-  inline float 
-  ldexp(float __x, int __exp) { return __gnu_cxx::__c99_binding::ldexpf(__x, __exp); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__ 
-  inline long double 
-  ldexp(long double __x, int __exp) { return ::ldexpl(__x, __exp); }
-  #endif
-
-  using ::log;
-
-  inline float 
-  log(float __x) { return __gnu_cxx::__c99_binding::logf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  log(long double __x) { return ::logl(__x); }
-  #endif
-
-  using ::log10;
-
-  inline float 
-  log10(float __x) { return __gnu_cxx::__c99_binding::log10f(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  log10(long double __x) { return ::log10l(__x); }
-  #endif
-
-  using ::modf;
-
-  inline float 
-  modf(float __x, float* __iptr) { return __gnu_cxx::__c99_binding::modff(__x, __iptr); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  modf(long double __x, long double* __iptr) { return ::modfl(__x, __iptr); }
-  #endif
-
-  template<typename _Tp>
-    inline _Tp
-    __pow_helper(_Tp __x, int __n)
-    {
-      return __n < 0
-        ? _Tp(1)/__cmath_power(__x, -__n)
-        : __cmath_power(__x, __n);
-    }
-
-  using ::pow;
-
-  inline float 
-  pow(float __x, float __y) { return __gnu_cxx::__c99_binding::powf(__x, __y); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  pow(long double __x, long double __y) { return ::powl(__x, __y); }
-  #endif
-
-  inline double 
-  pow(double __x, int __i)
-  { return __pow_helper(__x, __i); }
-
-  inline float 
-  pow(float __x, int __n)
-  { return __pow_helper(__x, __n); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  pow(long double __x, int __n)
-  { return __pow_helper(__x, __n); }
-  #endif
-
-  using ::sin;
-
-  inline float
-  sin(float __x)
-  { return __builtin_sinf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double
-  sin(long double __x)
-  { return __builtin_sinl(__x); }
-  #endif
-
-  using ::sinh;
-
-  inline float 
-  sinh(float __x) { return __gnu_cxx::__c99_binding::sinhf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  sinh(long double __x) { return ::sinhl(__x); }
-  #endif
-
-  using ::sqrt;
-
-  inline float
-  sqrt(float __x)
-  { return __builtin_sqrtf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double
-  sqrt(long double __x)
-  { return __builtin_sqrtl(__x); }
-  #endif
-
-  using ::tan;
-
-  inline float 
-  tan(float __x) { return __gnu_cxx::__c99_binding::tanf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  tan(long double __x) { return ::tanl(__x); }
-  #endif
-
-  using ::tanh;
-
-  inline float 
-  tanh(float __x) { return __gnu_cxx::__c99_binding::tanhf(__x); }
-
-  #ifdef __UCLIBCXX_HAS_LONG_DOUBLE__
-  inline long double 
-  tanh(long double __x) { return ::tanhl(__x); }
-  #endif
-} 
-
-
-#if _GLIBCPP_USE_C99 || _GLIBCXX_USE_C99
-#if !_GLIBCPP_USE_C99_FP_MACROS_DYNAMIC && !_GLIBCXX_USE_C99_FP_MACROS_DYNAMIC
-// These are possible macros imported from C99-land. For strict
-// conformance, remove possible C99-injected names from the global
-// namespace, and sequester them in the __gnu_cxx extension namespace. 
-namespace __gnu_cxx
-{
-  template<typename _Tp>
-    int 
-    __capture_fpclassify(_Tp __f) { return fpclassify(__f); }
-
-  template<typename _Tp>
-    int 
-    __capture_isfinite(_Tp __f) { return isfinite(__f); }
-
-  template<typename _Tp>
-    int 
-    __capture_isinf(_Tp __f) { return isinf(__f); }
-
-  template<typename _Tp>
-    int 
-    __capture_isnan(_Tp __f) { return isnan(__f); }
-
-  template<typename _Tp>
-    int 
-    __capture_isnormal(_Tp __f) { return isnormal(__f); }
-
-  template<typename _Tp>
-    int 
-    __capture_signbit(_Tp __f) { return signbit(__f); }
-
-  template<typename _Tp>
-    int 
-    __capture_isgreater(_Tp __f1, _Tp __f2)
-    { return isgreater(__f1, __f2); }
-
-  template<typename _Tp>
-     int 
-     __capture_isgreaterequal(_Tp __f1, _Tp __f2) 
-     { return isgreaterequal(__f1, __f2); }
-
-  template<typename _Tp>
-     int 
-     __capture_isless(_Tp __f1, _Tp __f2) { return isless(__f1, __f2); }
-
-  template<typename _Tp>
-     int 
-     __capture_islessequal(_Tp __f1, _Tp __f2) 
-     { return islessequal(__f1, __f2); }
-
-  template<typename _Tp>
-     int 
-     __capture_islessgreater(_Tp __f1, _Tp __f2) 
-     { return islessgreater(__f1, __f2); }
-
-  template<typename _Tp>
-     int 
-     __capture_isunordered(_Tp __f1, _Tp __f2) 
-     { return isunordered(__f1, __f2); }
-} 
-#endif /* _GLIBCPP_USE_C99_FP_MACROS_DYNAMIC */
-#endif
-
-#undef fpclassify
-#undef isfinite
-#undef isinf
-#undef isnan
-#undef isnormal
-#undef signbit
-#undef isgreater
-#undef isgreaterequal
-#undef isless
-#undef islessequal
-#undef islessgreater
-#undef isunordered
-
-#if _GLIBCPP_USE_C99 || _GLIBCXX_USE_C99
-#if !_GLIBCPP_USE_C99_FP_MACROS_DYNAMIC && !_GLIBCXX_USE_C99_FP_MACROS_DYNAMIC
-namespace __gnu_cxx
-{
-  template<typename _Tp>
-    int
-    fpclassify(_Tp __f) { return __capture_fpclassify(__f); }
-
-  template<typename _Tp>
-    int
-    isfinite(_Tp __f) { return __capture_isfinite(__f); }
-
-  template<typename _Tp>
-    int 
-    isinf(_Tp __f) { return __capture_isinf(__f); }
-
-  template<typename _Tp>
-    int 
-    isnan(_Tp __f) { return __capture_isnan(__f); }
-
-  template<typename _Tp>
-    int 
-    isnormal(_Tp __f) { return __capture_isnormal(__f); }
-
-  template<typename _Tp>
-    int 
-    signbit(_Tp __f) { return __capture_signbit(__f); }
-
-  template<typename _Tp>
-    int 
-    isgreater(_Tp __f1, _Tp __f2) { return __capture_isgreater(__f1, __f2); }
-
-  template<typename _Tp>
-    int 
-    isgreaterequal(_Tp __f1, _Tp __f2) 
-    { return __capture_isgreaterequal(__f1, __f2); }
-
-  template<typename _Tp>
-    int 
-    isless(_Tp __f1, _Tp __f2) { return __capture_isless(__f1, __f2); }
-
-  template<typename _Tp>
-    int 
-    islessequal(_Tp __f1, _Tp __f2) 
-    { return __capture_islessequal(__f1, __f2); }
-
-  template<typename _Tp>
-    int 
-    islessgreater(_Tp __f1, _Tp __f2) 
-    { return __capture_islessgreater(__f1, __f2); }
-
-  template<typename _Tp>
-    int 
-    isunordered(_Tp __f1, _Tp __f2) 
-    { return __capture_isunordered(__f1, __f2); }
-}
-
-namespace std
-{
-  using __gnu_cxx::fpclassify;
-  using __gnu_cxx::isfinite;
-  using __gnu_cxx::isinf;
-  using __gnu_cxx::isnan;
-  using __gnu_cxx::isnormal;
-  using __gnu_cxx::signbit;
-  using __gnu_cxx::isgreater;
-  using __gnu_cxx::isgreaterequal;
-  using __gnu_cxx::isless;
-  using __gnu_cxx::islessequal;
-  using __gnu_cxx::islessgreater;
-  using __gnu_cxx::isunordered;
-}
-#endif /* _GLIBCPP_USE_C99_FP_MACROS_DYNAMIC */
-#endif
-  
-#endif
