@@ -1,6 +1,6 @@
 # Rules.mak
 
-# Copyright Garrett Kajmowicz, 2004
+# Copyright Garrett Kajmowicz, 2004-2006
 # Copyright (C) 2000 by Lineo, inc.
 # Copyright (C) 2000-2002 Erik Andersen <andersen@uclibc.org>
 #
@@ -148,11 +148,13 @@ CXXFLAGS:=$(CFLAGS)
 LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
 
-GCC_VERSION:=$(shell $(CC) -dumpversion | cut -c1-3)
+#GCC_VERSION?=$(shell $(CC) -dumpversion | cut -c1-3)
+GCC_MAJOR_VER?=$(shell $(CC) -dumpversion | cut -c1)
+#GCC_MINOR_VER?=$(shell $(CC) -dumpversion | cut -c3)
 
 GEN_LIBS:=
 ifneq ($(LIBGCC_DIR),$(UCLIBCXX_RUNTIME_LIBDIR))
-GEN_LIBS += -L$(LIBGCC_DIR) /lib/ld-linux.so.2
+GEN_LIBS += -L$(LIBGCC_DIR)
 endif
 ifneq ($(IMPORT_LIBSUP),y)
   GEN_LIBS += -lsupc++
@@ -162,12 +164,12 @@ GEN_LIBS += -lc -lgcc
 LIBS := $(GEN_LIBS)
 STATIC_LIBS := $(GEN_LIBS)
 #ifeq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
-ifeq ($(GCC_VERSION),4.0)
+ifneq ($(GCC_MAJOR_VER),3)
 LIBS += $(call check_as_needed)
 endif
 ifneq ($(IMPORT_LIBGCC_EH),y)
   STATIC_LIBS += -lgcc_eh
-ifneq ($(GCC_VERSION),4.0)
+ifeq ($(GCC_MAJOR_VER),3)
   LIBS += -lgcc_eh
 endif
 endif

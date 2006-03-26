@@ -36,8 +36,8 @@ namespace std{
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 		class _UCXXLOCAL Init{
 		public:
-			_UCXXLOCAL Init();
-			_UCXXLOCAL ~Init();
+			_UCXXEXPORT Init();
+			_UCXXEXPORT ~Init();
 		private:
 			static int init_cnt;
 		};

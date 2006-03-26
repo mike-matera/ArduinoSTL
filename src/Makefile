@@ -39,7 +39,7 @@ endif
 libgcc_eh:
 ifeq ($(IMPORT_LIBGCC_EH),y)
 	$(MAKE) -C abi/libgcc_eh all
-ifneq ($(GCC_VERSION),4.0)
+ifeq ($(GCC_MAJOR_VER),3)
 GCCOBJS = $(wildcard abi/libgcc_eh/*.o)
 else
 GCCOBJS =
