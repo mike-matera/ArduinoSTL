@@ -586,26 +586,6 @@ public:
 		return retval;
 	}
 
-/*	_UCXXEXPORT int compare(size_type pos1, size_type n1, const basic_string& str) const{
-		size_type rlen = vector<Ch, A>::elements - pos1;
-		if(rlen > n1){
-			rlen = n1;
-		}
-		if(rlen > str.elements){
-			rlen = str.elements;
-		}
-		int retval = Tr::compare(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data, rlen);
-		if(retval == 0){
-			if(vector<Ch, A>::elements - pos1 < str.elements){
-				retval = -1;
-			}
-			if(vector<Ch, A>::elements - pos1 > str.elements){
-				retval = 1;
-			}
-		}
-		return retval;
-	}
-*/
 	_UCXXEXPORT int compare(size_type pos1, size_type n1, const basic_string& str,
 		size_type pos2=0, size_type n2=npos) const{
 		size_type len1 = vector<Ch, A>::elements - pos1;
@@ -787,7 +767,6 @@ template<class Ch,class Tr,class A>
 	template <> _UCXXEXPORT string::size_type string::find_first_not_of(char c, size_type) const;
 
 	template <> _UCXXEXPORT int string::compare(const string & str) const;
-//	template <> _UCXXEXPORT int string::compare(size_type pos1, size_type n1, const string & str) const;
 	template <> _UCXXEXPORT int string::compare(
 		size_type pos1, size_type n1, const string & str, size_type pos2, size_type n2) const;
 
