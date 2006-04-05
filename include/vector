@@ -40,15 +40,6 @@ namespace std{
 	template <class T, class Allocator> bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator> void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 
-//	template <class Allocator> bool operator==(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-//	template <class Allocator> bool operator< (const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-//	template <class Allocator> bool operator!=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-//	template <class Allocator> bool operator> (const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-//	template <class Allocator> bool operator>=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-//	template <class Allocator> bool operator<=(const vector<bool,Allocator>& x, const vector<bool,Allocator>& y);
-//	template <class Allocator> void swap(vector<bool,Allocator>& x, vector<bool,Allocator>& y);
-
-
 	template <class T, class Allocator> class _UCXXEXPORT vector {
 	public:
 
@@ -142,7 +133,6 @@ namespace std{
 		}
 
 		template <class Size, class U> _UCXXEXPORT void assign(Size n, const U& u = U()){
-//		void assign(size_type n, const T& u ){
 			clear();
 			resize(n, u);
 		}
@@ -247,7 +237,6 @@ namespace std{
 		}
 
 		inline void pop_back(){
-//			resize(size() - 1, defaultValue);
 			downsize(size() - 1);
 		}
 
