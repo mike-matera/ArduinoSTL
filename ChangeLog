@@ -10,6 +10,8 @@
 -	Clean up double-semicolons
 -	Add parent class scoping as appropriate
 -	Make ios::Init() exported again
+-	Replace cwchar and cstdio with my own versions, getting rid of GNU badness
+-	Add eh_alloc to source - replacing more objects from the GNU implementation
 
 0.2.0
 -	Now can compare set iterators and const_iterators
