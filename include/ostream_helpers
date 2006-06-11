@@ -18,6 +18,7 @@
 */
 
 #include <basic_definitions>
+#include <cstddef>
 #include <ios>
 #include <cctype>
 #include <string>
@@ -245,14 +246,14 @@ namespace std{
 			int length;
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					length = snprintf(buffer, 32, "%*E", static_cast<unsigned int>(stream.width()), f);
+					length = snprintf(buffer, 32, "%*.*E", static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
 				}else{
-					length = snprintf(buffer, 32, "%*e", static_cast<unsigned int>(stream.width()), f);
+					length = snprintf(buffer, 32, "%*.*e", static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				length = snprintf(buffer, 32, "%*f", static_cast<unsigned int>(stream.width()), f);
+				length = snprintf(buffer, 32, "%*.*f",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
 			} else {
-				length = snprintf(buffer, 32, "%*g", static_cast<unsigned int>(stream.width()), f);
+				length = snprintf(buffer, 32, "%*.*g",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
 			}
 			stream.write(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
@@ -269,14 +270,14 @@ namespace std{
 			int length;
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					length = snprintf(buffer, 32, "%*LE", static_cast<unsigned int>(stream.width()), f);
+					length = snprintf(buffer, 32, "%*.*LE", static_cast<int>(stream.width()), static_cast<int>(stream.precision()), f);
 				}else{
-					length = snprintf(buffer, 32, "%*Le", static_cast<unsigned int>(stream.width()), f);
+					length = snprintf(buffer, 32, "%*.*Le", static_cast<int>(stream.width()), static_cast<int>(stream.precision()), f);
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				length = snprintf(buffer, 32, "%*Lf", static_cast<unsigned int>(stream.width()), f);
+				length = snprintf(buffer, 32, "%*.*Lf", static_cast<int>(stream.width()), static_cast<int>(stream.precision()), f);
 			} else {
-				length = snprintf(buffer, 32, "%*Lg", static_cast<unsigned int>(stream.width()), f);
+				length = snprintf(buffer, 32, "%*.*Lg", static_cast<int>(stream.width()), static_cast<int>(stream.precision()), f);
 			}
 			stream.write(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
@@ -433,17 +434,17 @@ namespace std{
 		static void printout(basic_ostream<wchar_t, traits >& stream, const double f)
 		{
 			wchar_t buffer[32];
-			wchar_t format_string[20];
+			wchar_t format_string[32];
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					swprintf(format_string, 20, L"%%%uE", static_cast<unsigned int>(stream.width()));
+					swprintf(format_string, 32, L"%%%u.%uE", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()),);
 				}else{
-					swprintf(format_string, 20, L"%%%ue", static_cast<unsigned int>(stream.width()));
+					swprintf(format_string, 32, L"%%%u.%ue", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()),);
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				swprintf(format_string, 20, L"%%%uf", static_cast<unsigned int>(stream.width()));
+				swprintf(format_string, 32, L"%%%u.%uf", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()),);
 			} else {
-				swprintf(format_string, 20, L"%%%ug", static_cast<unsigned int>(stream.width()));
+				swprintf(format_string, 32, L"%%%u.%ug", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 			}
 			stream.write(buffer, swprintf(buffer, 32, format_string, f) );
 			if(stream.flags() & ios_base::unitbuf){
@@ -457,17 +458,17 @@ namespace std{
 		static void printout(basic_ostream<wchar_t, traits >& stream, const long double f)
 		{
 			wchar_t buffer[32];
-			wchar_t format_string[20];
+			wchar_t format_string[32];
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					swprintf(format_string, 20, L"%%%uLE", static_cast<unsigned int>(stream.width()));
+					swprintf(format_string, 32, L"%%%u.%uLE", static_cast<unsigned int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 				}else{
-					swprintf(format_string, 20, L"%%%uLe", static_cast<unsigned int>(stream.width()));
+					swprintf(format_string, 32, L"%%%u.%uLe", static_cast<unsigned int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				swprintf(format_string, 20, L"%%%uLf", static_cast<unsigned int>(stream.width()));
+				swprintf(format_string, 32, L"%%%u.%uLf", static_cast<unsigned int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 			} else {
-				swprintf(format_string, 20, L"%%%uLg", static_cast<unsigned int>(stream.width()));
+				swprintf(format_string, 32, L"%%%u.%uLg", static_cast<unsigned int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 			}
 			stream.write(buffer, swprintf(buffer, 32, format_string, f) );
 			if(stream.flags() & ios_base::unitbuf){
