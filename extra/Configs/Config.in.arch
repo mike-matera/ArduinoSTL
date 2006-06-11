@@ -41,13 +41,26 @@ config UCLIBCXX_HAS_LONG_DOUBLE
 	  Answer Y to enable math support for long double types.
 	  It requires support from the underlying C library.
 
-
+config UCLIBCXX_HAS_TLS
+	bool "Toolchain supports Thread-Local Storage"
+	default y
+	help
+	  Answer Y if your toolchain supports Thread-Local Storage.  This should
+	  work with GCC versions 3.4 and greater, depending on platform.  Answering
+	  no will use non thread-safe exception handling.
 
 config WARNINGS
 	string "Compiler Warnings"
 	default "-Wall"
 	help
 	  Set this to the set of gcc warnings you wish to see while compiling.
+
+config BUILD_EXTRA_LIBRARIES
+	string "Extra Library Link Flags"
+	default ""
+	help
+	  Set this to link against extra libries when building the library.  This is
+	  useful if you need to link in POSIX threads or TLS support.
 
 config HAVE_DOT_CONFIG
 	bool

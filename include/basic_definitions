@@ -31,7 +31,11 @@
 
 #endif
 
-
+#ifdef __UCLIBCXX_HAS_TLS__
+	#define __UCLIBCXX_TLS __thread
+#else
+	#define __UCLIBCXX_TLS
+#endif
 
 
 
