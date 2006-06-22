@@ -3,7 +3,7 @@ include $(TOPDIR)Rules.mak
 
 WR_CXX := WRAPPER_INCLUDEDIR=-I$(TOPDIR)include $(TOPDIR)bin/g++-uc
 
-LDFLAGS += -nodefaultlibs -shared -Wl,-soname,$(SHARED_MAJORNAME) $(BUILD_EXTRA_LIBRARIES)
+LDFLAGS += -nodefaultlibs -shared -Wl,-soname,$(SHARED_MAJORNAME) `echo $(BUILD_EXTRA_LIBRARIES)`
 ifneq ($(DODEBUG),y)
 LDFLAGS += -Wl,-s
 endif
