@@ -14,6 +14,7 @@
 -	Add eh_alloc to source - replacing more objects from the GNU implementation
 -	Add configurable use of TLS as appropriate (migrating this way - no support deprecated)
 -	Make ostream formating more accurately reflect specification (curtesy Gavin Lambert)
+-	Make streams respect the ios_base::app flag.  Added test case to check for this in fstream
 
 0.2.0
 -	Now can compare set iterators and const_iterators

@@ -86,6 +86,9 @@ namespace std{
 		int_type sputc(char_type c);
 
 		streamsize sputn(const char_type* s, streamsize n){
+			if(openedFor & ios_base::app){
+				seekoff(0, ios_base::end, ios_base::out);
+			}
 			return xsputn(s, n);
 		}
 
@@ -268,6 +271,9 @@ namespace std{
 	}
 
 	template <class C, class T> typename basic_streambuf<C, T>::int_type basic_streambuf<C, T>::sputc(char_type c){
+		if(openedFor & ios_base::app){
+			seekoff(0, ios_base::end, ios_base::out);
+		}
 		if(mpnext < mpend){
 			*mpnext = c;
 			++mpnext;

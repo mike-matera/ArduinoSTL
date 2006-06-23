@@ -12,6 +12,10 @@ int main()
 		outFile << a;
 	}
 	outFile.close();
+	outFile.open("fstreamtest.out", std::ios::app | std::ios::out);
+	outFile.seekp(0);
+	outFile << "This should be at the end";
+	outFile.close();
 
 	std::ifstream inFile;
 	inFile.open("fstreamtest.out", std::ios::in | std::ios::binary );

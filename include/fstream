@@ -67,6 +67,7 @@ namespace std{
 
 		_UCXXEXPORT basic_filebuf()	: basic_streambuf<charT, traits>(), fp(0), pbuffer(0), gbuffer(0)
 		{
+			append=false;
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
@@ -101,27 +102,39 @@ namespace std{
 			if(is_open() !=false){	//Must call close() first
 				return 0;
 			}
+			basic_streambuf<charT,traits>::openedFor = mode;
 			mode = mode & ~ios_base::ate;
+
 			if(mode == ios_base::out || mode == (ios_base::out | ios_base::trunc)){
 				fp = fopen(s, "w" );
-			}else if(mode == (ios_base::out | ios_base::app)){
-				fp = fopen(s, "a");
+			}else if((mode & ios_base::app) && ! (mode & ios_base::trunc)){
+				if(mode & ios_base::binary){
+					if(mode & ios_base::in){
+						fp = fopen(s, "a+b");
+					}else{
+						fp = fopen(s, "ab");
+					}
+				}else{
+					if(mode & ios_base::in){
+						fp = fopen(s, "a+");
+					}else{
+						fp = fopen(s, "a");
+					}
+				}
 			}else if(mode == ios_base::in){
 				fp = fopen(s, "r");
 			}else if(mode == (ios_base::in | ios_base::out)){
 				fp = fopen(s, "r+");
 			}else if(mode == (ios_base::in | ios_base::out | ios_base::trunc)){
 				fp = fopen(s, "w+");
-			}else if(mode == (ios_base::binary | ios_base::out) 
-				|| mode==(ios_base::binary | ios_base::out | ios_base::trunc))
-			{
+			}else if(mode == (ios_base::binary | ios_base::out)){
 				fp = fopen(s, "wb");
-			}else if(mode == (ios_base::binary | ios_base::out | ios_base::app)){
-				fp = fopen(s, "ab");
 			}else if(mode == (ios_base::in | ios_base::binary)){
 				fp = fopen(s, "rb");
 			}else if(mode == (ios_base::in | ios_base::binary | ios_base::out)){
 				fp = fopen(s, "r+b");
+			}else if(mode==(ios_base::binary | ios_base::out | ios_base::trunc)){
+				fp = fopen(s, "w+b");
 			}else if(mode == (ios_base::in | ios_base::binary | ios_base::out | ios_base::trunc)){
 				fp = fopen(s, "w+b");
 			}
@@ -462,6 +475,7 @@ namespace std{
 		FILE * fp;
 		char_type * pbuffer;
 		char_type * gbuffer;
+		bool append;
 	};
 
 
