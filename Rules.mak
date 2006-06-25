@@ -82,7 +82,6 @@ check_as_needed=$(shell if $(LD) --help | grep -q 'as-needed' ; \
 	then echo "-Wl,--as-needed -lgcc_s -Wl,--no-as-needed"; else echo "-lgcc_s"; fi)
 
 # Make certain these contain a final "/", but no "//"s.
-TARGET_ARCH:=$(strip $(subst ",, $(strip $(TARGET_ARCH))))
 UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX))))))
 UCLIBCXX_RUNTIME_LIBDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)))))))
 UCLIBCXX_RUNTIME_BINDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_BIN_SUBDIR)))))))
@@ -92,31 +91,11 @@ export UCLIBCXX_RUNTIME_PREFIX UCLIBCXX_RUNTIME_LIBDIR UCLIBCXX_RUNTIME_BINDIR U
 OPTIMIZATION:=
 PICFLAG:=-fPIC
 
-# Some nice CPU specific optimizations
-#ifeq ($(strip $(TARGET_ARCH)),i386)
-#	OPTIMIZATION+=$(call check_gcc,-mpreferred-stack-boundary=2,)
-#	OPTIMIZATION+=$(call check_gcc,-falign-jumps=0 -falign-loops=0,-malign-jumps=0 -malign-loops=0)
-#	CPU_CFLAGS-$(CONFIG_386)+=-march=i386
-#	CPU_CFLAGS-$(CONFIG_486)+=-march=i486
-#	CPU_CFLAGS-$(CONFIG_586)+=-march=i586
-#	CPU_CFLAGS-$(CONFIG_586MMX)+=$(call check_gcc,-march=pentium-mmx,-march=i586)
-#	CPU_CFLAGS-$(CONFIG_686)+=-march=i686
-#	CPU_CFLAGS-$(CONFIG_PENTIUMIII)+=$(call check_gcc,-march=pentium3,-march=i686)
-#	CPU_CFLAGS-$(CONFIG_PENTIUM4)+=$(call check_gcc,-march=pentium4,-march=i686)
-#	CPU_CFLAGS-$(CONFIG_K6)+=$(call check_gcc,-march=k6,-march=i586)
-#	CPU_CFLAGS-$(CONFIG_K7)+=$(call check_gcc,-march=athlon,-malign-functions=4 -march=i686)
-#	CPU_CFLAGS-$(CONFIG_CRUSOE)+=-march=i686 -malign-functions=0 -malign-jumps=0 -malign-loops=0
-#	CPU_CFLAGS-$(CONFIG_WINCHIPC6)+=$(call check_gcc,-march=winchip-c6,-march=i586)
-#	CPU_CFLAGS-$(CONFIG_WINCHIP2)+=$(call check_gcc,-march=winchip2,-march=i586)
-#	CPU_CFLAGS-$(CONFIG_CYRIXIII)+=$(call check_gcc,-march=c3,-march=i586)
-#endif
-
 # use '-Os' optimization if available, else use -O2, allow Config to override
 OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 
 # Add a bunch of extra pedantic annoyingly strict checks
 XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -pedantic
-XARCH_CFLAGS=$(subst ",, $(strip $(ARCH_CFLAGS)))
 CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
 
 # Some nice CFLAGS to work with
@@ -129,7 +108,7 @@ ifeq ($(DODEBUG),y)
     CFLAGS += -O0 -g3 
     STRIPTOOL:= true -Since_we_are_debugging
 else
-    CFLAGS += $(OPTIMIZATION) $(XARCH_CFLAGS)
+    CFLAGS += $(OPTIMIZATION)
 endif
 
 ifneq ($(BUILD_ONLY_STATIC_LIB),y)

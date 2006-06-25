@@ -55,14 +55,6 @@ void sym_init(void)
 	p = getenv("VERSION");
 	if (p)
 		sym_add_default(sym, p);
-
-	sym = sym_lookup("TARGET_ARCH", 0);
-	sym->type = S_STRING;
-	sym->flags |= SYMBOL_AUTO;
-	p = getenv("TARGET_ARCH");
-	if (p)
-		sym_add_default(sym, p);
-
 }
 
 enum symbol_type sym_get_type(struct symbol *sym)

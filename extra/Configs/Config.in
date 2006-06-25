@@ -4,130 +4,7 @@
 #
 mainmenu "uClibc++ C++ Library Configuration"
 
-
-choice
-	prompt "Target Architecture"
-	default TARGET_i386
-	help
-	  Stuff
-
-config TARGET_alpha
-	bool "alpha"
-
-config TARGET_arm
-	bool "arm"
-
-#config TARGET_cris
-#	bool "cris"
-
-#config TARGET_e1
-#	bool "e1"
-
-#config TARGET_h8300
-#	bool "h8300"
-
-config TARGET_i386
-	bool "i386"
-
-#config TARGET_i960
-#	bool "i960"
-
-#config TARGET_m68k
-#	bool "m68k"
-
-#config TARGET_microblaze
-#	bool "microblaze"
-
-config TARGET_mips
-	bool "mips"
-
-config TARGET_parisc
-	bool "parisc"
-
-config TARGET_powerpc
-	bool "powerpc"
-
-#config TARGET_sh
-#	bool "SuperH"
-
-#config TARGET_sparc
-#	bool "sparc"
-
-#config TARGET_v850
-#	bool "v850"
-
-config TARGET_x86_64
-	bool "x86_64"
-
-endchoice
-
-
-menu "Target Architecture Features and Options"
-
-if TARGET_alpha
-source "extra/Configs/Config.alpha"
-endif
-
-if TARGET_arm
-source "extra/Configs/Config.arm"
-endif
-
-if TARGET_cris
-source "extra/Configs/Config.cris"
-endif
-
-if TARGET_e1
-source "extra/Configs/Config.e1"
-endif
-
-if TARGET_h8300
-source "extra/Configs/Config.h8300"
-endif
-
-if TARGET_i386
-source "extra/Configs/Config.i386"
-endif
-
-if TARGET_i960
-source "extra/Configs/Config.i960"
-endif
-
-if TARGET_m68k
-source "extra/Configs/Config.m68k"
-endif
-
-if TARGET_microblaze
-source "extra/Configs/Config.microblaze"
-endif
-
-if TARGET_mips
-source "extra/Configs/Config.mips"
-endif
-
-if TARGET_parisc
-source "extra/Configs/Config.parisc"
-endif
-
-if TARGET_powerpc
-source "extra/Configs/Config.powerpc"
-endif
-
-if TARGET_sh
-source "extra/Configs/Config.sh"
-endif
-
-if TARGET_sparc
-source "extra/Configs/Config.sparc"
-endif
-
-if TARGET_v850
-source "extra/Configs/Config.v850"
-endif
-
-if TARGET_x86_64
-source "extra/Configs/Config.x86_64"
-endif
-
+menu "Target Features and Options"
 
 source "extra/Configs/Config.in.arch"
 
@@ -374,7 +251,7 @@ menu "Library Installation Options"
 
 config UCLIBCXX_RUNTIME_PREFIX
 	string "uClibc++ runtime prefix directory"
-	default "/usr/$(TARGET_ARCH)-linux-uclibc"
+	default "/usr/uClibc++"
 	help
 	 UCLIBCXX_ RUNTIME_PREFIX is the directory into which the uClibc++
 	  runtime libraries will be installed.

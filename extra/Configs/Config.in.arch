@@ -3,22 +3,6 @@
 # see extra/config/Kconfig-language.txt
 #
 
-choice
-	prompt "Target Processor Endianness"
-	help
-	  This is the endianness you wish to build use.  Choose either Big
-	  Endian, or Little Endian.
-
-config ARCH_LITTLE_ENDIAN
-	bool "Little Endian"
-	depends on ARCH_SUPPORTS_LITTLE_ENDIAN
-
-config ARCH_BIG_ENDIAN
-	bool "Big Endian"
-	depends on ARCH_SUPPORTS_BIG_ENDIAN
-
-endchoice
-
 config UCLIBCXX_HAS_FLOATS
 	bool "Enable floating point number support"
 	default y

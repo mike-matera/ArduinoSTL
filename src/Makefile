@@ -39,11 +39,11 @@ endif
 libgcc_eh:
 ifeq ($(IMPORT_LIBGCC_EH),y)
 	$(MAKE) -C abi/libgcc_eh all
-ifeq ($(GCC_MAJOR_VER),3)
+#ifeq ($(GCC_MAJOR_VER),3)
 GCCOBJS = $(wildcard abi/libgcc_eh/*.o)
-else
-GCCOBJS =
-endif
+#else
+#GCCOBJS =
+#endif
 else
 GCCOBJS =
 endif

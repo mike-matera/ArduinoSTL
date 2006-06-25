@@ -75,3 +75,5 @@ include/system_configuration.h: .config
 	fi;
 	@./extra/config/conf -o extra/Configs/Config.in
 
+.config:
+	$(MAKE) defconfig
