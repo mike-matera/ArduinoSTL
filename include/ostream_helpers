@@ -437,12 +437,12 @@ namespace std{
 			wchar_t format_string[32];
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
-					swprintf(format_string, 32, L"%%%u.%uE", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()),);
+					swprintf(format_string, 32, L"%%%u.%uE", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 				}else{
-					swprintf(format_string, 32, L"%%%u.%ue", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()),);
+					swprintf(format_string, 32, L"%%%u.%ue", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 				}
 			} else if(stream.flags() & ios_base::fixed){
-				swprintf(format_string, 32, L"%%%u.%uf", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()),);
+				swprintf(format_string, 32, L"%%%u.%uf", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 			} else {
 				swprintf(format_string, 32, L"%%%u.%ug", static_cast<int>(stream.width()), static_cast<unsigned int>(stream.precision()));
 			}
