@@ -349,7 +349,6 @@ namespace std{
 			if(os.tie() != 0){
 				os.tie()->flush();
 			}
-			int_type c;
 			if(!noskipws){
 				__skipws(os);
 			}
