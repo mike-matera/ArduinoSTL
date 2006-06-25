@@ -564,6 +564,45 @@ public:
 	static T signaling_NaN();
 };
 
+template <> class numeric_limits<double> {
+	typedef double numeric_type;
+
+	static const bool is_specialized = true;
+	static numeric_type min () { return __DBL_MIN__; }
+	static numeric_type max () { return __DBL_MAX__; }
+	static const int radix = __FLT_RADIX__;
+	static const int digits = __DBL_MANT_DIG__;
+	static const int digits10 = __DBL_DIG__;
+	static const bool is_signed = true;
+	static const bool is_integer = false;
+	static const bool is_exact = false;
+	static const bool traps = false; // this is a guess
+	static const bool is_modulo = false;
+	static const bool is_bounded = true;
+
+	// Floating point specific.
+
+	static numeric_type epsilon () { return __DBL_EPSILON__; }
+	static numeric_type round_error () { return 0.5; }
+	static const int min_exponent10 = -1; //How do I properly get this?
+	static const int max_exponent10 = -1; //How do I properly get this?
+	static const int min_exponent   = -1; //How do I properly get this?
+	static const int max_exponent   = -1; //How do I properly get this?
+	static const bool has_infinity  = false; //I don't know, so until I can find out, I'm saying no
+	static const bool has_quiet_NaN = false; //I don't know, so until I can find out, I'm saying no
+	static const bool has_signaling_NaN = false; //I don't know, so until I can find out, I'm saying no
+	static const bool has_denorm = false; //I don't know, so until I can find out, I'm saying no
+
+	static const bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
+	static const bool tinyness_before = false; // more questions
+	static const float_round_style round_style = round_to_nearest; // more questions
+	static numeric_type denorm_min () { return -1; } //How do I properly get this?
+	static numeric_type infinity () { return -1; } //How do I properly get this?
+	static numeric_type quiet_NaN () { return -1; } //How do I properly get this?
+	static numeric_type signaling_NaN () { return -1; } //How do I properly get this?
+};
+
+
 
 
 

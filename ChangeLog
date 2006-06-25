@@ -16,6 +16,8 @@
 -	Make ostream formating more accurately reflect specification (curtesy Gavin Lambert)
 -	Make streams respect the ios_base::app flag.  Added test case to check for this in fstream
 -	Elliminate unuse architecture config code (Thanks to Mike Frysinger)
+-	Added preliminary implementation of <limits>
+
 
 0.2.0
 -	Now can compare set iterators and const_iterators
