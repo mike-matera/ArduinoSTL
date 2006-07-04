@@ -49,3 +49,10 @@ namespace std{
 
 #endif
 
+
+#ifdef __DODEBUG__
+	#define UCLIBCXX_DEBUG 1
+#else
+	#define UCLIBCXX_DEBUG 0
+#endif
+

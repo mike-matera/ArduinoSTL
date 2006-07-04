@@ -17,3 +17,8 @@ A few notes:
 	longer required AFTER COMPILATION.  Thus you can build uClibc++ on a development
 	system against libstdc++, but when deployed you will not need any of the GNU library
 	files.
+
+-	The debugging option now has an impact on produced code.  For now it simply zeros out
+	pointers used internally which should never be used, or which are considered to be
+	invalidated anyways.  This will help track down bugs easier (this change was in result
+	of a memory-related error).
