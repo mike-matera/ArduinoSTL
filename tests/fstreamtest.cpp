@@ -85,6 +85,12 @@ int main()
 	std::cout << "Now reading other input file to see what wonderful goodness we can discover" << std::endl;
 
 	inFile.open("fstreamtest.input", std::ios::in | std::ios::binary );
+	if( !inFile.is_open()){
+		std::cout << "Could not open fstreamtest.input" << std::endl;
+		std::cout << "Are you in the correct directory?" << std::endl;
+		std::cout << "This test wasn't designed to run without the uClibc++ driver behind it" << std::endl;
+		return 1;
+	}
 	inFile.seekg(27);
 	inFile.read(&a, 1);
 	b = a;
