@@ -18,6 +18,7 @@
 -	Elliminate unuse architecture config code (Thanks to Mike Frysinger)
 -	Added preliminary implementation of <limits>
 -	Fixed memory error in list::remove implementation
+-	Fix memory leak in vector
 
 
 0.2.0

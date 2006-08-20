@@ -338,7 +338,7 @@ namespace std{
 		}
 
 		_UCXXEXPORT void clear(){
-			elements = 0;
+			downsize(0);
 		}
 
 	protected:
