@@ -1,5 +1,5 @@
 0.2.2
-
+-	Fixed default flags for ios
 
 0.2.1
 -	Now export std::calloc & std::realloc
