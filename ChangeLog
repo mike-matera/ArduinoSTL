@@ -1,3 +1,6 @@
+0.2.2
+
+
 0.2.1
 -	Now export std::calloc & std::realloc
 -	Implement std::ws
