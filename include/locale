@@ -19,6 +19,7 @@
 
 #include <basic_definitions>
 #include <cstddef>
+#include <string>
 
 #ifndef __HEADER_STD_LOCALE
 #define __HEADER_STD_LOCALE 1
@@ -56,6 +57,7 @@ namespace std{
 		const locale& operator=(const locale&) throw(){
 			return *this;
 		}
+		std::string name() const { return "C"; }
 	};
 
 	class _UCXXEXPORT locale::facet {

@@ -13,7 +13,8 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
-tommi: 30 Points
+tommi: 33 Points
+2006-09-04: 1+1: Wanted implementation of locale::name, used BTS and provided patch
 2006-09-04: 1+1: Found problem with default flags for ios plus provided patch
 2005-07-20: 1+2: Compared code sizes and sent patch to minimize code size / BTS
 2005-07-20: 1+1: Found problem in streambuf::xsputn / BTS
