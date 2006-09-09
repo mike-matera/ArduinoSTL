@@ -7,8 +7,7 @@ clean:
 
 distclean:
 
+HEADERS = $(filter-out .svn CVS Makefile,$(wildcard *))
 install:
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
-	$(INSTALL) -m 644 `ls --color=never --ignore="CVS" --ignore="Makefile"` \
-		$(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
-
+	$(INSTALL) -m 644 $(HEADERS) $(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
