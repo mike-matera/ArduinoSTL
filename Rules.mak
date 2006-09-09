@@ -153,3 +153,5 @@ ifeq ($(GCC_MAJOR_VER),3)
 endif
 endif
 #endif
+
+.PHONY: all clean distclean install
