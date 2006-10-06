@@ -1,29 +1,5 @@
-a !!= b (correct)
-b !!= a (correct)
-a != c (correct)
-a != c (correct)
-a !> b (correct)
-b !> a (correct)
-a !> c (correct)
-c > a (correct)
-a <= b (correct)
-b <= a (correct)
-c !<= a (correct)
-a <= c (correct)
-a >= b (correct)
-b >= a (correct)
-a !>= c (correct)
-c >= a (correct)
-Pair a (should be a, 7531): 97, 7531
-Pair b (should be a, 7531): 97, 7531
-Pair b (should be b, 61473): 98, 61473
-Pair c (should be c, 61473): 98, 61473
-e == (5, 18)
-p == q (correct)
-p == q (correct)
-p !< q (correct)
-q !< p (correct)
-p !>q (correct)
-p !!= q (correct)
-q !!= p (correct)
-p == r (correct)
+......................
+------------------------------
+Ran 22 tests
+
+OK
