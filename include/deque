@@ -171,37 +171,37 @@ namespace std{
 		const T * operator->() const{
 			return container->data + container->array_element(element);
 		}
-		bool operator==(const deque_iter & d){
+		bool operator==(const deque_iter & d) const{
 			if(container == d.container && element == d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator!=(const deque_iter & d){
+		bool operator!=(const deque_iter & d) const{
 			if(container != d.container || element  != d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator<(const deque_iter & d){
+		bool operator<(const deque_iter & d) const{
 			if(element < d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator<=(const deque_iter & d){
+		bool operator<=(const deque_iter & d) const{
 			if(element <= d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator>(const deque_iter & d){
+		bool operator>(const deque_iter & d) const{
 			if(element > d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator>=(const deque_iter & d){
+		bool operator>=(const deque_iter & d) const{
 			if(element >= d.element){
 				return true;
 			}
@@ -281,31 +281,31 @@ namespace std{
 		const T * operator->() const{
 			return container->data + container->array_element(element);
 		}
-		bool operator==(const deque_citer & d){
+		bool operator==(const deque_citer & d) const{
 			if(container == d.container && element == d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator!=(const deque_citer & d){
+		bool operator!=(const deque_citer & d) const{
 			if(container != d.container || element  != d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator<(const deque_citer & d){
+		bool operator<(const deque_citer & d) const{
 			if(element < d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator<=(const deque_citer & d){
+		bool operator<=(const deque_citer & d) const{
 			if(element <= d.element){
 				return true;
 			}
 			return false;
 		}
-		bool operator>(const deque_citer & d){
+		bool operator>(const deque_citer & d) const{
 			if(element > d.element){
 				return true;
 			}
