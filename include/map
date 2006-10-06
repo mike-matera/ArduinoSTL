@@ -529,6 +529,8 @@ protected:
 	friend class base::iterator;
 	friend class base::const_iterator;
 
+	friend bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
+
 	using base::data;
 	using base::c;
 
@@ -778,7 +780,7 @@ protected:
 	template <class Key, class T, class Compare, class Allocator> bool operator==
 		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
 	{
-		if(x.c == y.c && x.data = y.data){
+		if(x.c == y.c && x.data == y.data){
 			return true;
 		}
 		return false;

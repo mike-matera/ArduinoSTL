@@ -1,6 +1,7 @@
 0.2.2
 -	Fixed default flags for ios
 -	Implemented locale::name() for compatability reasons
+-	Found embarassing = instead of == in code.  Fixed.
 
 0.2.1
 -	Now export std::calloc & std::realloc
