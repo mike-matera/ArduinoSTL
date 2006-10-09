@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <functional>
 #include <vector>
+#include <set>
+#include "testframework.h"
 
 
 template <class T> class less_than : public std::unary_function <T, bool>{
@@ -12,70 +14,84 @@ public:
 };
 
 
-int main(){
-	std::cout << "Begining algorithm test" << std::endl;
+std::vector<int> giveVec(int a, int b, int c, int d){
+	std::vector<int> retval;
+	retval.push_back(a);
+	retval.push_back(b);
+	retval.push_back(c);
+	retval.push_back(d);
+	return retval;
+}
 
-	std::vector<double> a, b, c;
 
-	std::vector<double>::iterator i, j;
-	a.push_back(12.5);
-	a.push_back(32.7);
-	a.push_back(85.3);
-	a.push_back(25.8);
-	a.push_back(63.8);
-	a.push_back(92.7);
 
-	std::cout << "Starting element list:\n";
+bool canSortList(){
+	int s[6] = {12, 26, 33, 64, 85, 93};
 
-	i = a.begin();
-	while(i != a.end()){
-		std::cout << *i << std::endl;
-		++i;
+	std::vector<int> a;
+	a.push_back(12);
+	a.push_back(33);
+	a.push_back(85);
+	a.push_back(26);
+	a.push_back(64);
+	a.push_back(93);
+
+	std::sort<std::vector<int>::iterator>(a.begin(), a.end());
+
+	for(int i = 0; i < 6; ++i){
+		if(a[i] != s[i]){
+			return false;
+		}
 	}
 
-	std::sort<std::vector<double>::iterator>(a.begin(), a.end());
-
-	std::cout << "Sorted elements:\n";
-
-	i = a.begin();
-	while(i != a.end()){
-		std::cout << *i << std::endl;
-		++i;
+	if(a.size() != 6){
+		return false;
 	}
 
-	std::cout << "Searching\n";
-	std::cout << "The following should be 1 : ";
-	std::cout << std::binary_search(a.begin(), a.end(), 32.7);
-	std::cout << std::endl;
+	return true;
+}
 
-	std::cout << "The following should be 0 : ";
-	std::cout << std::binary_search(a.begin(), a.end(), 99.9);
-	std::cout << std::endl;
+bool canSearchList(){
+	std::vector<int> a;
+	a.push_back(12);
+	a.push_back(33);
+	a.push_back(85);
+	a.push_back(26);
+	a.push_back(64);
+	a.push_back(93);
 
-	std::cout << "The following should be 0 : ";
-	std::cout << std::binary_search(a.begin(), a.end(), 1.0);
-	std::cout << std::endl;
+	std::sort<std::vector<int>::iterator>(a.begin(), a.end());
 
-	std::cout << "The following should be 0 : ";
-	std::cout << std::binary_search(a.begin(), a.end(), 27.7);
-	std::cout << std::endl;
 
-	std::cout << "The following should be 0 : ";
-	std::cout << std::binary_search(a.begin(), a.end(), -26);
-	std::cout << std::endl;
+	if(1 != std::binary_search(a.begin(), a.end(), 33)){
+		return false;
+	}
+	if(0 != std::binary_search(a.begin(), a.end(), 99)){
+		return false;
+	}
+	if(0 != std::binary_search(a.begin(), a.end(), 1)){
+		return false;
+	}
+	if(0 != std::binary_search(a.begin(), a.end(), 28)){
+		return false;
+	}
+	if(0 != std::binary_search(a.begin(), a.end(), -26)){
+		return false;
+	}
+	if(1 != std::binary_search(a.begin(), a.end(), 12)){
+		return false;
+	}
+	return true;
+}
 
-	std::cout << "The following should be 1 : ";
-	std::cout << std::binary_search(a.begin(), a.end(), 12.5);
-	std::cout << std::endl;
-
-	std::cout << "Bounds checks\n";
-	std::cout << "The following should read 32.7 : ";
-	std::cout << *(std::lower_bound(a.begin(), a.end(), 32.7));
-	std::cout << std::endl;
-
-	std::cout << "The following should read 32.7 : ";
-	std::cout << *(std::lower_bound(a.begin(), a.end(), 27.5));
-	std::cout << std::endl;
+bool canLowerBound(){
+	std::vector<int> a, b;
+	a.push_back(12);
+	a.push_back(26);
+	a.push_back(33);
+	a.push_back(64);
+	a.push_back(85);
+	a.push_back(93);
 
 	b.clear();
 	b.push_back(2);
@@ -87,294 +103,482 @@ int main(){
 	b.push_back(8);
 	b.push_back(9);
 
-	std::cout << "The following should read 3 : ";
-	std::cout << *(std::lower_bound(b.begin(), b.end(), 3));
-	std::cout << std::endl;
-
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "3 3 3 4 7 8 9 \n";
-	i = std::lower_bound(b.begin(), b.end(), 3);
-	while( i != b.end()){
-		std::cout << *i << " ";
-		++i;
+	if(33 != *(std::lower_bound(a.begin(), a.end(), 33))){
+		return false;
 	}
-	std::cout << std::endl;
+	if(3 != *(std::lower_bound(b.begin(), b.end(), 3))){
+		return false;
+	}
+	if(2 != *(std::lower_bound(b.begin(), b.end(), 1))){
+		return false;
+	}
 
+	return true;
+}
 
-	std::cout << "The following should read 32.7 : ";
-	std::cout << *(std::upper_bound(a.begin(), a.end(), 27.5));
-	std::cout << std::endl;
+bool canUpperBound(){
+	std::vector<int> a, b;
+	a.push_back(12);
+	a.push_back(26);
+	a.push_back(33);
+	a.push_back(64);
+	a.push_back(85);
+	a.push_back(93);
 
-	std::cout << "The following should read 2 : ";
-	std::cout << *(std::lower_bound(b.begin(), b.end(), 1));
-	std::cout << std::endl;
+	if(33 != *(std::upper_bound(a.begin(), a.end(), 27))){
+		return false;
+	}
 
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "4 7 8 9 \n";
+	b.push_back(2);
+	b.push_back(3);
+	b.push_back(3);
+	b.push_back(3);
+	b.push_back(4);
+	b.push_back(7);
+	b.push_back(8);
+	b.push_back(9);
+
+	int v[4] = {4, 7, 8, 9};
+
+	std::vector<int>::iterator i;
 	i = std::upper_bound(b.begin(), b.end(), 3);
-	while( i != b.end()){
-		std::cout << *i << " ";
+	for(int j = 0; j < 4; ++j){
+		if(*i != v[j]){
+			return false;
+		}
 		++i;
 	}
-	std::cout << std::endl;
 
+	return true;
+}
 
-	std::cout << "Partition Tests\n";
-	b.clear();
-	b.push_back(12.5);
-	b.push_back(32.7);
-	b.push_back(10.8);
-	b.push_back(92.7);
-	b.push_back(12.5);
-	b.push_back(22.7);
-	b.push_back(38.4);
-	b.push_back(52.9);
-	b.push_back(72.3);
-	b.push_back(19.6);
+bool canIterateFromLowerBound(){
+	std::vector<int> b;
+	std::vector<int>::iterator i;
 
+	int v[7] = {3, 3, 3, 4, 7, 8, 9};
 
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "32.7 92.7 22.7 38.4 52.9 72.3" << std::endl;
+	b.push_back(2);
+	b.push_back(3);
+	b.push_back(3);
+	b.push_back(3);
+	b.push_back(4);
+	b.push_back(7);
+	b.push_back(8);
+	b.push_back(9);
+
+	i = std::lower_bound(b.begin(), b.end(), 3);
+	for(int j = 0; j < 7; ++j){
+		if(v[j] != *i){
+			return false;
+		}
+		++i;
+	}
+
+	if(b.end() != i){
+		return false;
+	}
+
+	return true;
+}
+
+bool testStablePartition(){
+	std::vector<int> b;
+	std::vector<int>::iterator i, j;
+	
+	b.push_back(12);
+	b.push_back(33);
+	b.push_back(11);
+	b.push_back(93);
+	b.push_back(23);
+	b.push_back(12);
+	b.push_back(39);
+	b.push_back(53);
+	b.push_back(72);
+	b.push_back(20);
+
+	std::multiset<int> testValues;
+	std::multiset<int>::iterator k;
+	
+
+	testValues.clear();
+	testValues.insert(33);
+	testValues.insert(23);
+	testValues.insert(39);
+	testValues.insert(53);
+	testValues.insert(72);
+	testValues.insert(20);
+	testValues.insert(93);
+
 	i = std::stable_partition(b.begin(), b.end(), less_than<double>(20) );
 	j = i;
 	while(j != b.end()){
-		std::cout << *j << " ";
+		k = testValues.find(*j);
+		if(k == testValues.end()){
+			//Value in partion which shouldn't be there
+			return false;
+		}
+		testValues.erase(k);
 		++j;
 	}
-	std::cout << std::endl;
 
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "12.5 10.8 12.5 19.6" << std::endl;
+	//At this point, testValues should be empty
+	if(0 != testValues.size()){
+		return false;
+	}
+
+	testValues.insert(12);
+	testValues.insert(11);
+	testValues.insert(12);
+
 	j = b.begin();
 	while(j != i){
-		std::cout << *j << " ";
+		k = testValues.find(*j);
+		if(k == testValues.end()){
+			//Value in partion which shouldn't be there
+			return false;
+		}
+		testValues.erase(k);
 		++j;
 	}
-	std::cout << std::endl;
 
+	//At this point, testValues should be empty
+	if(0 != testValues.size()){
+		return false;
+	}
 
+	return true;
+}
 
-	std::cout << "Push heap\n";
+bool testPushHeap(){
+	std::vector<int> a;
+
+	a.push_back(12);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	if(1 != a.size() || a[0] != 12){
+		return false;
+	}
 
 	a.clear();
-	a.push_back(12.5);
+	a.push_back(12);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(7);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(27);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(22);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(93);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(36);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(55);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(5);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(68);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
 
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "12.5 " << std::endl;
+	std::multiset<int> testValues;
+	std::multiset<int>::iterator k;
+	testValues.insert(93);
+	testValues.insert(68);
+	testValues.insert(55);
+	testValues.insert(36);
+	testValues.insert(27);
+	testValues.insert(22);
+	testValues.insert(12);
+	testValues.insert(7);
+	testValues.insert(5);
+
+	std::vector<int>::iterator i;
+
+	//BUG - we need to make sure that all elements are in the vector after push_heap, even though
+	//they aren't guaranteed to be sorted.  Do multiset thing again?
+
+	if(a[0] != 93){
+		printf("Largest value isn't at the start of the heap\n");
+		return false;
+	}
+
 	i = a.begin();
 	while(i != a.end()){
-		std::cout << *i << " ";
+		k = testValues.find(*i);
+		if(k == testValues.end()){
+			printf("Could not find epexted value %i\n", *i);
+			return false;
+		}
+		testValues.erase(k);
 		++i;
 	}
-	std::cout << std::endl;
-
-	a.clear();
-	a.push_back(12.5);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(7.2);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(27.4);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(21.8);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(93.4);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(36.3);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(55.5);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(5.2);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(67.9);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "93.4 67.9 55.5 36.6 27.4 21.8 12.5 7.2 5.2 " << std::endl;
-	i = a.begin();
-	while(i != a.end()){
-		std::cout << *i << " ";
-		++i;
+	if(a.size() != 9){
+		printf("a not 9 elements long\n");
+		return false;
 	}
-	std::cout << std::endl;
-
-
-	std::cout << "Push heap\n";
-	a.clear();
-	a.push_back(12.5);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(7.2);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(27.4);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(21.8);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(93.4);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(36.3);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(55.5);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(5.2);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(67.9);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-
-	std::pop_heap<std::vector<double>::iterator>(a.begin(), a.end());
-
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "67.9 55.5 36.6 27.4 21.8 12.5 7.2 5.2 93.4 " << std::endl;
-	i = a.begin();
-	while(i != a.end()){
-		std::cout << *i << " ";
-		++i;
+	if(testValues.size() != 0){
+		printf("Testvalues not empty\n");
+		return false;
 	}
-	std::cout << std::endl;
 
+	return true;
+}
 
-	std::cout << "Sort Heap\n";
-	a.clear();
-	a.push_back(12.5);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(7.2);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(27.4);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(21.8);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(93.4);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(36.3);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(55.5);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(5.2);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
-	a.push_back(67.9);
-	std::push_heap<std::vector<double>::iterator>(a.begin(), a.end());
+bool testSortHeap(){
+	std::vector<int> a;
+	int v[9] = {93, 68, 55, 36, 27, 22, 12, 7, 5};
 
-	std::sort_heap<std::vector<double>::iterator, std::greater<double> >(a.begin(), a.end(), std::greater<double>() );
+	a.push_back(12);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(7);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(27);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(22);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(93);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(36);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(55);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(5);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
+	a.push_back(68);
+	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
 
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "93.4 67.9 55.5 36.6 27.4 21.8 12.5 7.2 5.2 " << std::endl;
-	i = a.begin();
-	while(i != a.end()){
-		std::cout << *i << " ";
-		++i;
+	std::sort_heap<std::vector<int>::iterator, std::greater<int> >(a.begin(), a.end(), std::greater<int>() );
+
+	for(int j = 0; j < 9; ++j){
+		if(v[j] != a[j]){
+			printf("Key %i should be %i but is %i\n", j, v[j], a[j]);
+			return false;
+		}
 	}
-	std::cout << std::endl;
 
+	return true;
+}
 
-	std::cout << "Partial sort test\n";
-	a.clear();
-	a.push_back(12.5);
-	a.push_back(32.7);
-	a.push_back(10.8);
-	a.push_back(92.7);
-	a.push_back(12.5);
-	a.push_back(22.7);
-	a.push_back(38.4);
-	a.push_back(52.9);
-	a.push_back(72.3);
-	a.push_back(19.6);
+bool testPartialSort(){
+	std::vector<int> a;
+	std::vector<int>::iterator i;
+	int v[5] = {11, 12, 12, 20, 23};
+
+	a.push_back(12);
+	a.push_back(32);
+	a.push_back(11);
+	a.push_back(93);
+	a.push_back(12);
+	a.push_back(23);
+	a.push_back(38);
+	a.push_back(53);
+	a.push_back(72);
+	a.push_back(20);
 
 	i = a.begin();
 	i+=4;
 
-	std::partial_sort<std::vector<double>::iterator>(a.begin(), i, a.end());
+	std::partial_sort<std::vector<int>::iterator>(a.begin(), i, a.end());
 
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "10.8 12.5 12.5 19.6 22.7 " << std::endl;
-
-	for(int k = 0; k < 5; ++k){
-		std::cout << a[k] << " ";
+	for(int j = 0; j < 4; ++j){
+		if(v[j] != a[j]){
+			printf("Key %i should be %i but is %i\n", j, v[j], a[j]);
+			return false;
+		}
 	}
-	std::cout << std::endl;
 
+	return true;
+}
 
-	std::cout << "Merge test\n";
-	a.clear();
-	a.push_back(10.8);
-	a.push_back(12.5);
-	a.push_back(32.7);
-	a.push_back(72.3);
+bool testInplaceMerge(){
+	std::vector<int> a;
+	std::vector<int>::iterator i;
 
-	i = a.end();
+	a.push_back(11);
+	a.push_back(12);
+	a.push_back(33);
+	a.push_back(72);
 
-	a.push_back(12.5);
-	a.push_back(19.6);
-	a.push_back(22.7);
-	a.push_back(38.4);
-	a.push_back(52.9);
-	a.push_back(92.7);
+	a.push_back(12);
+	a.push_back(19);
+	a.push_back(23);
+	a.push_back(38);
+	a.push_back(53);
+	a.push_back(93);
 
-	std::inplace_merge<std::vector<double>::iterator>(a.begin(), i, a.end());
+	i = a.begin();
+	i = i + 4;
 
-	std::cout << "The following two lines should be identical:\n";
-	std::cout << "10.8 12.5 12.5 19.6 22.7 32.7 38.4 52.9 72.3 92.7 " << std::endl;
+	std::inplace_merge<std::vector<int>::iterator>(a.begin(), i, a.end());
 
-	j = a.begin();
-	while(j != a.end()){
-		std::cout << *j << " ";
-		++j;
+	int v[10] = {11, 12, 12, 19, 23, 33, 38, 53, 72, 93};
+
+	for(int j = 0; j < 5; ++j){
+		if(v[j] != a[j]){
+			printf("Key %i should be %i but is %i\n", j, v[j], a[j]);
+			return false;
+		}
 	}
-	std::cout << std::endl;
 
+	return true;
+}
 
-	std::cout << "Permutation test\n";
+bool testNextPermutation(){
+	std::vector<int> a;
 
-	a.clear();
 	a.push_back(1);
 	a.push_back(2);
 	a.push_back(3);
 	a.push_back(4);
 
-	i = a.begin();
-	while(i != a.end() ){
-		std::cout << *i << " " ;
-		++i;
-	}
-	std::cout << std::endl;
+	std::multiset<std::vector<int> > testValues;
+	std::multiset<std::vector<int> >::iterator k;
+	std::vector<int> vec;
 
+
+	//OK - populate the multiset with the possible permutations
+	testValues.insert(giveVec(1, 2, 3, 4));
+	testValues.insert(giveVec(1, 2, 4, 3));
+	testValues.insert(giveVec(1, 3, 2, 4));
+	testValues.insert(giveVec(1, 3, 4, 2));
+	testValues.insert(giveVec(1, 4, 2, 3));
+	testValues.insert(giveVec(1, 4, 3, 2));
+	testValues.insert(giveVec(2, 1, 3, 4));
+	testValues.insert(giveVec(2, 1, 4, 3));
+	testValues.insert(giveVec(2, 3, 1, 4));
+	testValues.insert(giveVec(2, 3, 4, 1));
+	testValues.insert(giveVec(2, 4, 1, 3));
+	testValues.insert(giveVec(2, 4, 3, 1));
+	testValues.insert(giveVec(3, 1, 2, 4));
+	testValues.insert(giveVec(3, 1, 4, 2));
+	testValues.insert(giveVec(3, 2, 1, 4));
+	testValues.insert(giveVec(3, 2, 4, 1));
+	testValues.insert(giveVec(3, 4, 1, 2));
+	testValues.insert(giveVec(3, 4, 2, 1));
+	testValues.insert(giveVec(4, 1, 2, 3));
+	testValues.insert(giveVec(4, 1, 3, 2));
+	testValues.insert(giveVec(4, 2, 1, 3));
+	testValues.insert(giveVec(4, 2, 3, 1));
+	testValues.insert(giveVec(4, 3, 1, 2));
+	testValues.insert(giveVec(4, 3, 2, 1));
 
 	for(int x = 0; x < 24; ++x){
 		std::next_permutation(a.begin(), a.end());
-		i = a.begin();
-		while(i != a.end() ){
-			std::cout << *i << " " ;
-			++i;
-		}
-		std::cout << std::endl;
+		vec.clear();
+		vec.push_back(a[0]);
+		vec.push_back(a[1]);
+		vec.push_back(a[2]);
+		vec.push_back(a[3]);
 
+		k = testValues.find(vec);
+		if(k == testValues.end()){
+			//Value in partion which shouldn't be there
+			printf("Expected to find value %i, %i, %i, %i, but didn't\n", a[0], a[1], a[2], a[3]);
+			return false;
+		}
+		testValues.erase(k);
 	}
 
-	std::cout << "Previous permutation:\n";
+	if( testValues.size() != 0 ){
+		printf("Left over values in testValues\n");
+		return false;
+	}
+
+	return true;
+}
+
+bool testPrevPermutation(){
+	std::vector<int> a;
+
+	a.push_back(1);
+	a.push_back(2);
+	a.push_back(3);
+	a.push_back(4);
+
+	std::multiset<std::vector<int> > testValues;
+	std::multiset<std::vector<int> >::iterator k;
+	std::vector<int> vec;
+
+
+	//OK - populate the multiset with the possible permutations
+	testValues.insert(giveVec(1, 2, 3, 4));
+	testValues.insert(giveVec(1, 2, 4, 3));
+	testValues.insert(giveVec(1, 3, 2, 4));
+	testValues.insert(giveVec(1, 3, 4, 2));
+	testValues.insert(giveVec(1, 4, 2, 3));
+	testValues.insert(giveVec(1, 4, 3, 2));
+	testValues.insert(giveVec(2, 1, 3, 4));
+	testValues.insert(giveVec(2, 1, 4, 3));
+	testValues.insert(giveVec(2, 3, 1, 4));
+	testValues.insert(giveVec(2, 3, 4, 1));
+	testValues.insert(giveVec(2, 4, 1, 3));
+	testValues.insert(giveVec(2, 4, 3, 1));
+	testValues.insert(giveVec(3, 1, 2, 4));
+	testValues.insert(giveVec(3, 1, 4, 2));
+	testValues.insert(giveVec(3, 2, 1, 4));
+	testValues.insert(giveVec(3, 2, 4, 1));
+	testValues.insert(giveVec(3, 4, 1, 2));
+	testValues.insert(giveVec(3, 4, 2, 1));
+	testValues.insert(giveVec(4, 1, 2, 3));
+	testValues.insert(giveVec(4, 1, 3, 2));
+	testValues.insert(giveVec(4, 2, 1, 3));
+	testValues.insert(giveVec(4, 2, 3, 1));
+	testValues.insert(giveVec(4, 3, 1, 2));
+	testValues.insert(giveVec(4, 3, 2, 1));
 
 	for(int x = 0; x < 24; ++x){
 		std::prev_permutation(a.begin(), a.end());
-		i = a.begin();
-		while(i != a.end() ){
-			std::cout << *i << " " ;
-			++i;
+		vec.clear();
+		vec.push_back(a[0]);
+		vec.push_back(a[1]);
+		vec.push_back(a[2]);
+		vec.push_back(a[3]);
+
+		k = testValues.find(vec);
+		if(k == testValues.end()){
+			//Value in partion which shouldn't be there
+			printf("Expected to find value %i, %i, %i, %i, but didn't\n", a[0], a[1], a[2], a[3]);
+			return false;
 		}
-		std::cout << std::endl;
-
+		testValues.erase(k);
 	}
 
-	if( std::min(3, 5) == 3){
-		std::cout << "The minimum of 3, 5 is 3" << std::endl;
-	}else{
-		std::cout << "The minimum of 3, 5 is NOT 3" << std::endl;
+	if( testValues.size() != 0 ){
+		printf("Left over values in testValues\n");
+		return false;
 	}
 
-	if( std::min(3, 5, std::less<int>()) == 3){
-		std::cout << "The minimum of 3, 5 is 3" << std::endl;
-	}else{
-		std::cout << "The minimum of 3, 5 is NOT 3" << std::endl;
-	}
+	return true;
+}
 
-	
+bool checkMinDefault(){
+	return std::min(3, 5) == 3;
+}
 
+bool checkMinLess(){
+	return std::min(3, 5, std::less<int>()) == 3;
+}
+
+int main(){
+	std::cout << "Begining algorithm test" << std::endl;
+
+        TestFramework::init();
+
+        TestFramework::AssertReturns<bool>(canSortList, true);
+        TestFramework::AssertReturns<bool>(canSearchList, true);
+        TestFramework::AssertReturns<bool>(canUpperBound, true);
+        TestFramework::AssertReturns<bool>(canLowerBound, true);
+        TestFramework::AssertReturns<bool>(canIterateFromLowerBound, true);
+        TestFramework::AssertReturns<bool>(testStablePartition, true);
+        TestFramework::AssertReturns<bool>(testPushHeap, true);
+        TestFramework::AssertReturns<bool>(testSortHeap, true);
+        TestFramework::AssertReturns<bool>(testPartialSort, true);
+        TestFramework::AssertReturns<bool>(testInplaceMerge, true);
+        TestFramework::AssertReturns<bool>(testNextPermutation, true);
+        TestFramework::AssertReturns<bool>(testPrevPermutation, true);
+	TestFramework::AssertReturns<bool>(checkMinDefault, true);
+	TestFramework::AssertReturns<bool>(checkMinLess, true);
+
+        TestFramework::results();
 
 	return 0;
 }
