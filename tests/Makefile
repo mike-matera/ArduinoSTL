@@ -16,6 +16,9 @@ ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 TEST_SRCS	:= $(filter-out excepttest.cpp,$(TEST_SRCS))
 endif
 
+UTILITY_OBJS	:= $(patsubst %.cpp,%.o, $(UTILITY_SRCS))
+OLDUTILITY_OBJS	:= $(patsubst %.cpp,%-old.o, $(UTILITY_SRCS))
+
 EXOBJS		:= $(patsubst %.cpp,%.o, $(TEST_SRCS))
 OLDOBJS		:= $(patsubst %.cpp,%-old.o, $(TEST_SRCS))
 
@@ -37,15 +40,21 @@ clean:
 test:	all
 	$(MAKE) -C testoutput test
 
-$(ALLBIN): $(EXOBJS)
-	$(WR_CXX) $(LDFLAGS) $(UTILITY_SRCS) -o $@ $@.o
+$(ALLBIN): $(EXOBJS) $(UTILITY_OBJS)
+	$(WR_CXX) $(LDFLAGS) $(UTILITY_OBJS) -o $@ $@.o
 
-$(OLDBIN): $(OLDOBJS)
-	$(HOSTCXX) $(LDFLAGS) $(UTILITY_SRCS) -o $@ $@.o
+$(OLDBIN): $(OLDOBJS) $(OLDUTILITY_OBJS)
+	$(HOSTCXX) $(LDFLAGS) $(UTILITY_OBJS) -o $@ $@.o
 
 $(EXOBJS): %.o : %.cpp
 	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(OLDOBJS): %-old.o : %.cpp
+	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
+
+$(UTILITY_OBJS): %.o : %.cpp
+	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
+
+$(OLDUTILITY_OBJS): %-old.o : %.cpp
 	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
 

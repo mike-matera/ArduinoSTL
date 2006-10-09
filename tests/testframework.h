@@ -20,11 +20,17 @@ namespace TestFramework{
 		++totalcount;
 		printf(".");
 		T retval;
-		retval = f();
-		if( val == retval){
-			++goodcount;
-		}else{
-			printf("(%lu)", totalcount);
+		try{
+			retval = f();
+			if( val == retval){
+				++goodcount;
+			}else{
+				printf("(%lu)", totalcount);
+				++badcount;
+			}
+		}
+		catch (...) {
+			printf("(e%lu)", totalcount);
 			++badcount;
 		}
 	}
