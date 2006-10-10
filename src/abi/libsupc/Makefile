@@ -1,5 +1,5 @@
-TOPDIR=../../../
-include $(TOPDIR)Rules.mak
+TOPDIR=../../..
+include $(TOPDIR)/Rules.mak
 
 all:	libsupc
 
@@ -14,8 +14,8 @@ libsupc:
 #
 #else
 #	echo Binary
-	$(AR) x $(shell $(CC) -print-file-name=libsupc++.a)
-	$(RM) new_op*.o del_op*.o pure.o new_handler.o eh_alloc.o eh_globals.o
+	$(AR) x $(shell CC=$(CC) $(TOPDIR)/scripts/find_libsupc.sh)
+	$(RM) -f new_op*.o del_op*.o pure.o new_handler.o eh_alloc.o eh_globals.o
 #
 #endif
 #endif

@@ -16,7 +16,6 @@ unwind-c.o:
 #
 #else
 #	echo Binary
-#	CC=$(CC) $(TOPDIR)/scripts/find_libgcc_eh.sh
 	$(AR) x $(shell CC=$(CC) $(TOPDIR)/scripts/find_libgcc_eh.sh)
 #endif
 #endif
