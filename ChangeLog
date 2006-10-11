@@ -2,6 +2,8 @@
 -	Fixed default flags for ios
 -	Implemented locale::name() for compatability reasons
 -	Found embarassing = instead of == in code.  Fixed.
+-	Made algotest active.
+-	Ifdef out GCC specific pragmas and attribute foo to be more portable.  Thanks to asierllano.
 
 0.2.1
 -	Now export std::calloc & std::realloc

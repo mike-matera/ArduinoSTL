@@ -31,6 +31,12 @@
 
 #endif
 
+#ifdef __GCC__
+#define __UCLIBCXX_NORETURN __attribute__ ((__noreturn__))
+#else
+#define __UCLIBCXX_NORETURN
+#endif
+
 #ifdef __UCLIBCXX_HAS_TLS__
 	#define __UCLIBCXX_TLS __thread
 #else
@@ -55,4 +61,3 @@ namespace std{
 #else
 	#define UCLIBCXX_DEBUG 0
 #endif
-

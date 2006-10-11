@@ -43,7 +43,9 @@
 #ifndef _CPP_CSTDDEF
 #define _CPP_CSTDDEF 1
 
+#ifdef __GCC__
 #pragma GCC system_header
+#endif
 
 #include <stddef.h>
 
