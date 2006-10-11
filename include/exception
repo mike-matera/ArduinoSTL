@@ -37,6 +37,8 @@
 #ifndef __EXCEPTION__
 #define __EXCEPTION__
 
+#include <basic_definitions>
+
 extern "C++" {
 
 namespace std 

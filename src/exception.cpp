@@ -20,12 +20,17 @@
 
 #include <exception>
 
+//We can't do this yet because gcc is too stupid to be able to handle
+//different implementations of exception class.
+
+#undef __UCLIBCXX_EXCEPTION_SUPPORT__
+
 #ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
 
 namespace std{
 	_UCXXEXPORT static char * __std_exception_what_value = "exception";
 
-	/*We are providing our own versions to be sneaky*/
+	//We are providing our own versions to be sneaky
 
 
 	_UCXXEXPORT exception::~exception() throw(){
