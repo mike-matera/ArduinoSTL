@@ -29,7 +29,7 @@ namespace std{
 
 	namespace rel_ops {
 		template<class T> inline bool operator!=(const T& x, const T& y){
-			return (x < y || y < x);
+			return !(x == y);
 		}
 
 		template<class T> inline bool operator> (const T& x, const T& y){
@@ -44,7 +44,6 @@ namespace std{
 			return !(x < y);
 		}
 	}
-
 
 	template <class T1, class T2> struct _UCXXEXPORT pair {
 		typedef T1 first_type;
@@ -68,16 +67,13 @@ namespace std{
 		return !(x == y);
 	}
 	template <class T1, class T2> bool operator> (const pair<T1,T2>& x, const pair<T1,T2>& y){
-		using namespace rel_ops;
-		return ((x.first > y.first) || (!(y.first > x.first) && x.second > y.second));
+		return y < x;
 	}
 	template <class T1, class T2> bool operator>=(const pair<T1,T2>& x, const pair<T1,T2>& y){
-		using namespace rel_ops;
-		return x.first >= y.first || (!(y.first >= x.first) && x.second >= y.second);
+		return !(x < y);
 	}
 	template <class T1, class T2> bool operator<=(const pair<T1,T2>& x, const pair<T1,T2>& y){
-		using namespace rel_ops;
-		return x.first <= y.first || (!(y.first <= x.first) && x.second <= y.second);
+		return !(y < x);
 	}
 	template <class T1, class T2> pair<T1,T2> make_pair(const T1& x, const T2& y){
 		return pair<T1,T2>(x, y);

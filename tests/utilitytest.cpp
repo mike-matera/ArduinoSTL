@@ -2,10 +2,7 @@
 #include <cstdio>
 #include "testframework.h"
 
-//using namespace std::rel_ops;
-
-void test_rel_ops();
-void test_pair_ops();
+using namespace std::rel_ops;
 
 class Foo{
 public:
@@ -208,8 +205,6 @@ bool checkpair_opsReplacementAssignment(){
 
 
 int main(){
-//	test_pair_ops();
-
 	TestFramework::init();
 
 	TestFramework::AssertReturns<bool>(checkInvalidrel_ops_not_equals, false);
@@ -241,23 +236,4 @@ int main(){
 	TestFramework::results();
 
 	return 0;
-}
-
-
-void test_pair_ops(){
-	std::pair<char, int> a;
-	std::pair<char, int> b;
-
-	std::pair<Foo, Foo> d = std::pair<Foo, Foo>(5, 18);
-	std::pair<Foo, Foo> e(d);
-
-	e = d;
-
-	if(std::pair<Foo, Foo>(5, 18) == e){
-		printf("e == (5, 18)\n");
-	}else{
-		printf("e !== (5, 18)\n");
-	}
-
-
 }
