@@ -121,7 +121,6 @@ namespace std{
 		}
 
 		T * data;
-//		T defaultValue;
 		size_type data_size;		//Physical size of array
 		size_type elements;		//Elements in array
 		size_type first_element;	//Element number of array 0..n
@@ -359,7 +358,6 @@ namespace std{
 
 	template<class T, class Allocator> deque<T, Allocator>::deque(const Allocator& al)
 		: data(0), 
-//		defaultValue(T()),
 		data_size(0), elements(0), first_element(0), last_element(0), a(al)
 	{
 		data_size = __UCLIBCXX_STL_BUFFER_SIZE__;
@@ -372,7 +370,6 @@ namespace std{
 	template<class T, class Allocator> deque<T, Allocator>::deque(
 		size_type n, const T& value, const Allocator& al)
 		: data(0),
-//		defaultValue(value),
 		elements(n), first_element(0), last_element(0), a(al)
 	{
 		data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
@@ -389,7 +386,6 @@ namespace std{
 	template<class T, class Allocator> template <class InputIterator> 
 		deque<T, Allocator>::deque(InputIterator first, InputIterator last, const Allocator& al)
 		: data(0),
-//		defaultValue(T()),
 		data_size(0), elements(0), first_element(0), last_element(0), a(al)
 	{
 		data_size = __UCLIBCXX_STL_BUFFER_SIZE__;
@@ -405,7 +401,6 @@ namespace std{
 
 	template<class T, class Allocator> deque<T, Allocator>::deque(const deque<T,Allocator>& x)
 		: data(0),
-//		defaultValue(x.defaultValue),
 		elements(0), first_element(0), last_element(0), a(x.a)
 	{
 		data_size = x.elements + __UCLIBCXX_STL_BUFFER_SIZE__;
@@ -421,10 +416,6 @@ namespace std{
 	template<class T, class Allocator> deque<T, Allocator>::~deque(){
 		clear();
 		a.deallocate(data, data_size);
-		data = 0;
-		data_size = 0;
-		first_element = 0;
-		last_element = 0;
 	}
 
 	template<class T, class Allocator> deque<T,Allocator>& deque<T, Allocator>::
@@ -433,7 +424,6 @@ namespace std{
 		if(&x == this){
 			return *this;
 		}
-//		resize(x.elements, defaultValue);
 		resize(x.elements);
 		for(size_t i = 0; i < elements; ++i){
 			data[array_element(i)] = x[i];
@@ -780,18 +770,12 @@ namespace std{
 	template <class T, class Allocator> bool operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> _UCXXEXPORT void swap(deque<T,Allocator>& x, deque<T,Allocator>& y){
 		T * temp_data;
-//		T temp_value;
 		typename deque<T,Allocator>::size_type temp_size;
 
 		//Swap data pointers
 		temp_data = x.data;
 		x.data = y.data;
 		y.data = temp_data;
-
-		//Swap temp values;
-//		temp_value = x.defaultValue;
-//		x.defaultValue = y.defaultValue;
-//		y.defaultValue = temp_value;
 
 		//Swap array sizes
 		temp_size = x.data_size;
