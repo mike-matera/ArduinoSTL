@@ -376,6 +376,7 @@ namespace std{
 #ifndef __UCLIBCXX_COMPILE_IOS__
 	
 	template <> _UCXXEXPORT void basic_ios<char, char_traits<char> >::clear(iostate state);
+	template <> _UCXXEXPORT void basic_ios<char, char_traits<char> >::setstate(iostate state);
 
 #endif
 #endif
