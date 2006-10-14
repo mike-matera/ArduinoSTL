@@ -745,6 +745,9 @@ template<class Ch,class Tr,class A>
 
 #endif
 
+	template <> _UCXXEXPORT string & string::append(const char * s, size_type n);
+
+
 	template <> _UCXXEXPORT string::size_type string::find(const string & str, size_type pos) const;
 	template <> _UCXXEXPORT string::size_type string::find(const char* s, size_type pos) const;
 	template <> _UCXXEXPORT string::size_type string::find (char c, size_type pos) const;
