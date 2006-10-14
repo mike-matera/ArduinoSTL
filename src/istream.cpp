@@ -66,7 +66,7 @@ namespace std{
 	template _UCXXEXPORT istream & istream::operator>>(long double &f);
 #endif
 
-
+	template _UCXXEXPORT void __skipws(basic_istream<char, char_traits<char> >& is);
 
 #endif
 

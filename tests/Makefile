@@ -3,7 +3,7 @@ include $(TOPDIR)Rules.mak
 
 WR_CXX := WRAPPER_INCLUDEDIR=-I$(TOPDIR)include WRAPPER_LIBDIR=-L$(TOPDIR)src $(TOPDIR)bin/g++-uc
 
-CXXOFLAGS := -Wall -pedantic -O0 -g3 -ansi $(EH_CXXFLAGS)
+CXXOFLAGS := -Wall -pedantic -Os -g3 -ansi $(EH_CXXFLAGS)
 
 TEST_SRCS	:= $(wildcard *test.cpp)
 UTILITY_SRCS	:= testframework.cpp
@@ -50,11 +50,11 @@ $(EXOBJS): %.o : %.cpp
 	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(OLDOBJS): %-old.o : %.cpp
-	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
+	$(HOSTCXX) $(CXXFLAGS) -o $@ -c $<
 
 $(UTILITY_OBJS): %.o : %.cpp
 	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(OLDUTILITY_OBJS): %-old.o : %.cpp
-	$(HOSTCXX) $(CXXOFLAGS) -o $@ -c $<
+	$(HOSTCXX) $(CXXFLAGS) -o $@ -c $<
 

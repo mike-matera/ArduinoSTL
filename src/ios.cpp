@@ -146,6 +146,7 @@ namespace std{
 #ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
 
 	template _UCXXEXPORT void basic_ios<char, char_traits<char> >::clear(iostate state);
+	template _UCXXEXPORT void basic_ios<char, char_traits<char> >::setstate(iostate state);
 
 #endif
 

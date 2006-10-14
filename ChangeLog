@@ -4,6 +4,7 @@
 -	Found embarassing = instead of == in code.  Fixed.
 -	Made algotest active.
 -	Ifdef out GCC specific pragmas and attribute foo to be more portable.  Thanks to asierllano.
+-	Stop initializing variables in destructor.
 
 0.2.1
 -	Now export std::calloc & std::realloc

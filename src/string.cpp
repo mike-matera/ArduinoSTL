@@ -40,6 +40,8 @@ namespace std{
 
 #endif // __UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS__
 
+	template _UCXXEXPORT string & string::append(const char * s, size_type n);
+
 	template _UCXXEXPORT string::size_type string::find(const string & str, size_type pos) const;
 	template _UCXXEXPORT string::size_type string::find(const char* s, size_type pos) const;
 	template _UCXXEXPORT string::size_type string::find (char c, size_type pos) const;
