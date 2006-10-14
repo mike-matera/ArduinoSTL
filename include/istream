@@ -584,7 +584,7 @@ namespace std{
 
 	template <> _UCXXEXPORT istream & operator>>(istream & is, char & c);
 
-
+	template <> _UCXXEXPORT void __skipws(basic_istream<char,char_traits<char> >& is);
 
 #endif
 #endif
