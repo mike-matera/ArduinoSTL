@@ -357,9 +357,6 @@ namespace std{
 			a.destroy(data + i);
 		}
 		a.deallocate(data, data_size);
-		data = 0;
-		elements = 0;
-		data_size=0;
 	}
 
 
