@@ -321,7 +321,7 @@ namespace std{
 		typename basic_istream<charT,traits>::int_type c;
 		//While the next character normally read doesn't equal eof
 		//and that character is a space, advance to the next read position
-		//Thus itterating through al whitespace until we get to the meaty stuff
+		//Thus itterating through all whitespace until we get to the meaty stuff
 		while (
 			!traits::eq_int_type((c = is.rdbuf()->sgetc()),	eof)
 			&& isspace(c)
