@@ -135,6 +135,7 @@ namespace std {
 	//Implementations of template functions.  To allow for partial specialization
 
 	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>::~basic_ostream(){
+		flush();
 	}
 	
 	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(bool n){

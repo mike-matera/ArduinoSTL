@@ -78,6 +78,10 @@ Ted Schroeder: 2 Points
 Thomas Giesel: 2 Points
 2005-03-02: 2  :  Found problems in getline code with minimal test case.
 
+Manjuantha Srinivasan: 1 Point
+2006-11-28: 1 : Found that the iostream library did not flush contents on destruction.
+
+
 Anthony Lee: 1 Point
 2005-01-24: 1  : Found problem in functional which had const missing causing havok
 
