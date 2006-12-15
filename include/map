@@ -627,9 +627,10 @@ protected:
 
 	template <class Key, class T, class Compare, class Allocator>
 		typename map<Key, T, Compare, Allocator>::iterator
-		map<Key, T, Compare, Allocator>::insert(iterator position, const value_type& x)
+		map<Key, T, Compare, Allocator>::insert(iterator, const value_type& x)
 	{
 		//Just reusing code.  It's hard to make improvements over existing algo.
+		//We aren't using the iterator parameter, but it's only a hint and not required to be used.
 		insert(x);
 		return find(x.first);
 	}

@@ -7,6 +7,7 @@
 -	Stop initializing variables in destructor.
 -	Have destruction of ostream objects cause the buffers to be flushed.
 -	Implement deque::swap
+-	Remove variable name to avoid unused variable declaration warning.
 
 0.2.1
 -	Now export std::calloc & std::realloc

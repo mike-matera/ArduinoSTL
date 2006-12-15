@@ -44,6 +44,11 @@ scott: 7 Points
 2005-01-20: 1+1: Found problem in string internal typedefs.  Used bug system
 2005-01-18: 1+1: Found duplicate declaration of size_t.  Used bug system
 
+Peter Schueller: 5 Points
+2006-12-14: 1 :  Provided a fix for an unused variable warning.  Used BTS.
+2006-12-14: 1+1: Provided implementation of deque::swap.  Used BTS.
+2006-10-06: 1+1: Found map = instead of equals error.  Use BTS, provided solution.
+
 dcas: 5 Points
 2006-03-07: 0+1: Found lack of string resize specifier and provided fix in BTS
 2006-03-07: 0+2: Found missing string::find_last_not_of - prop. fix in BTS
@@ -59,10 +64,6 @@ thritter: 3 Points
 Faye2040: 3 Points
 2006-02-10: 1  : Noted that long_double support should depend upon float support
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
-
-Peter Schueller: 2 Points
-2006-12-14: 1+1: Provided implementation of deque::swap.  Used BTS.
-2006-10-06: 1+1: Found map = instead of equals error.  Use BTS, provided solution.
 
 Thomas Volpini: 2 Points
 2006-08-11: Found memory leak in vector.  Provided test case and fix.
