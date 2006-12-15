@@ -61,6 +61,7 @@ Faye2040: 3 Points
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
 
 Peter Schueller: 2 Points
+2006-12-14: 1+1: Provided implementation of deque::swap.  Used BTS.
 2006-10-06: 1+1: Found map = instead of equals error.  Use BTS, provided solution.
 
 Thomas Volpini: 2 Points

@@ -700,9 +700,35 @@ namespace std{
 		return deque_iter(this, first.element);
 	}
 
-	template<class T, class Allocator> void deque<T, Allocator>::swap(deque<T,Allocator>&)
+	template<class T, class Allocator> void deque<T, Allocator>::swap(deque<T,Allocator>& x)
 	{
-		abort();
+		T * temp_data;
+		typename deque<T,Allocator>::size_type temp_size;
+
+		//Swap data pointers
+		temp_data = x.data;
+		x.data = data;
+		data = temp_data;
+
+		//Swap array sizes
+		temp_size = x.data_size;
+		x.data_size = data_size;
+		data_size = temp_size;
+
+		//Swap num array elements
+		temp_size  = x.elements;
+		x.elements = elements;
+		elements = temp_size;
+
+		//Swap first_pointer
+		temp_size = x.first_element;
+		x.first_element = first_element;
+		first_element = temp_size;
+
+		//Swap last_pointer
+		temp_size = x.last_element;
+		x.last_element = last_element;
+		last_element = temp_size;
 	}
 
 	template<class T, class Allocator> void deque<T, Allocator>::clear()
@@ -769,33 +795,7 @@ namespace std{
 	template <class T, class Allocator> bool operator>=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> bool operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
 	template <class T, class Allocator> _UCXXEXPORT void swap(deque<T,Allocator>& x, deque<T,Allocator>& y){
-		T * temp_data;
-		typename deque<T,Allocator>::size_type temp_size;
-
-		//Swap data pointers
-		temp_data = x.data;
-		x.data = y.data;
-		y.data = temp_data;
-
-		//Swap array sizes
-		temp_size = x.data_size;
-		x.data_size = y.data_size;
-		y.data_size = temp_size;
-
-		//Swap num array elements
-		temp_size  = x.elements;
-		x.elements = y.elements;
-		y.elements = temp_size;
-
-		//Swap first_pointer
-		temp_size = x.first_element;
-		x.first_element = y.first_element;
-		y.first_element = temp_size;
-
-		//Swap last_pointer
-		temp_size = x.last_element;
-		x.last_element = y.last_element;
-		y.last_element = temp_size;
+		x.swap(y);
 	}
 
 

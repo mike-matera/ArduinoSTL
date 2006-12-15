@@ -87,3 +87,8 @@ Test of const_iterator
 The following two lines should be identical:
 12 13 14 7 25 0 
 12 13 14 7 25 0 
+..
+------------------------------
+Ran 2 tests
+
+OK

@@ -1,7 +1,68 @@
 #include <deque>
 #include <iostream>
+#include "testframework.h"
 
 void test_const(const std::deque<double> d);
+
+bool canSwapUnary(){
+	std::deque<int> a, b;
+
+	a.push_back(1);
+	a.push_back(3);
+	a.push_back(5);
+	a.push_back(7);
+	a.push_back(9);
+	b.push_back(2);
+	b.push_back(4);
+	b.push_back(6);
+	b.push_back(8);
+
+	a.swap(b);
+
+	for(int i = 0; i < 5; ++i){
+		if(b[i] != ((2 * i) + 1) ){
+			return false;
+		}
+	}
+
+	for(int i = 0; i < 4; ++i){
+		if(a[i] != (2 * (i + 1)) ){
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool canSwapBinary(){
+	std::deque<int> a, b;
+
+	a.push_back(1);
+	a.push_back(3);
+	a.push_back(5);
+	a.push_back(7);
+	a.push_back(9);
+	b.push_back(2);
+	b.push_back(4);
+	b.push_back(6);
+	b.push_back(8);
+
+	std::swap(a, b);
+
+	for(int i = 0; i < 5; ++i){
+		if(b[i] != ((2 * i) + 1) ){
+			return false;
+		}
+	}
+
+	for(int i = 0; i < 4; ++i){
+		if(a[i] != (2 * (i + 1)) ){
+			return false;
+		}
+	}
+
+	return true;
+}
 
 int main(){
 	std::deque<double> test;
@@ -9,6 +70,8 @@ int main(){
 	unsigned int k;
 
 	std::cout << "deque test start" << std::endl;
+
+	TestFramework::init();
 
 	i = test.begin();
 
@@ -160,7 +223,10 @@ int main(){
 	test.push_back(0);
 	test_const(test);
 	
+	TestFramework::AssertReturns<bool>(canSwapUnary, true);
+	TestFramework::AssertReturns<bool>(canSwapBinary, true);
 
+	TestFramework::results();
 
 	return 0;
 }
