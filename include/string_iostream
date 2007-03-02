@@ -29,6 +29,8 @@
 #ifndef __HEADER_STD_STRING_IOSTREAM
 #define __HEADER_STD_STRING_IOSTREAM 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 
 
@@ -137,6 +139,8 @@ template<> _UCXXEXPORT basic_ostream<char, char_traits<char> >&
 
 
 }
+
+#pragma GCC visibility pop
 
 #endif
 

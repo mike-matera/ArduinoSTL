@@ -25,6 +25,8 @@
 #ifndef __HEADER_STD_IOSFWD
 #define __HEADER_STD_IOSFWD 1
 
+#pragma GCC visibility push(default)
+
 namespace std {
 	class ios_base;
 	template<> class char_traits<char>;
@@ -107,6 +109,6 @@ namespace std {
 #endif
 }
 
-
+#pragma GCC visibility pop
 
 #endif

@@ -8,6 +8,7 @@
 -	Have destruction of ostream objects cause the buffers to be flushed.
 -	Implement deque::swap
 -	Remove variable name to avoid unused variable declaration warning.
+-	Add #pragma GCC visibility push/pop in header files at the request of Peter S. Mazinger
 
 0.2.1
 -	Now export std::calloc & std::realloc

@@ -23,6 +23,8 @@
 #ifndef __HEADER_STD_QUEUE
 #define __HEADER_STD_QUEUE 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 	
 	template <class T, class Container = deque<T> > class _UCXXEXPORT queue{
@@ -117,6 +119,7 @@ namespace std{
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 

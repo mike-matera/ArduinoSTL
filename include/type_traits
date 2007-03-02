@@ -25,6 +25,8 @@
 #ifndef __HEADER_TYPE_TRAITS
 #define __HEADER_TYPE_TRAITS 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 
 	struct _UCXXEXPORT __true_type{};
@@ -83,6 +85,8 @@ namespace std{
 
 
 }
+
+#pragma GCC visibility pop
 
 #endif
 

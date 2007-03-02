@@ -26,6 +26,8 @@
 #ifndef __STD_HEADER_ISTREAM
 #define __STD_HEADER_ISTREAM 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 
 	typedef basic_istream<char> istream;
@@ -591,9 +593,9 @@ namespace std{
 	
 
 
-
-
 }
+
+#pragma GCC visibility pop
 
 #endif
 

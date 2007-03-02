@@ -21,7 +21,7 @@
 #include <iterator>
 #include <stdexcept>
 
-
+#pragma GCC visibility push(default)
 
 #ifndef __STD_HEADER_DEQUE
 #define __STD_HEADER_DEQUE
@@ -802,6 +802,7 @@ namespace std{
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 

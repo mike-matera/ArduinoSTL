@@ -23,6 +23,8 @@
 #ifndef __STD_NUMERIC_HEADER
 #define __STD_NUMERIC_HEADER 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 	template <class InputIterator, class T> _UCXXEXPORT 
 		T accumulate(InputIterator first, InputIterator last, T init)
@@ -152,6 +154,8 @@ namespace std{
 	}
 
 }
+
+#pragma GCC visibility pop
 
 #endif
 

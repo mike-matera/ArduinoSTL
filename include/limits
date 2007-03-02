@@ -23,6 +23,8 @@
 
 #warning limits header is nowhere complete or accurate
 
+#pragma GCC visibility push(default)
+
 namespace std{
 
 enum float_round_style{
@@ -607,5 +609,7 @@ template <> class numeric_limits<double> {
 
 
 }
+
+#pragma GCC visibility pop
 
 #endif

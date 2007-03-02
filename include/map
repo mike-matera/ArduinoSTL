@@ -28,6 +28,7 @@
 #ifndef __STD_HEADER_MAP
 #define __STD_HEADER_MAP
 
+#pragma GCC visibility push(default)
 
 namespace std{
 
@@ -1155,6 +1156,7 @@ protected:
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 

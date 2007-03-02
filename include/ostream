@@ -27,6 +27,8 @@
 #include <cstdio>
 #include <ostream_helpers>
 
+#pragma GCC visibility push(default)
+
 namespace std {
 	template <class charT, class traits > class basic_ostream;
 	typedef basic_ostream<char> ostream;
@@ -477,6 +479,7 @@ template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 

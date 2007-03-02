@@ -38,6 +38,7 @@
 #include <cwctype>
 #endif //__UCLIBCXX_HAS_WCHAR__
 
+#pragma GCC visibility push(default)
 
 namespace std{
 
@@ -664,6 +665,8 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 
 
 }
+
+#pragma GCC visibility pop
 
 #endif
 

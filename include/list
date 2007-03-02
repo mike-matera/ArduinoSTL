@@ -24,6 +24,7 @@
 #ifndef __STD_HEADER_LIST
 #define __STD_HEADER_LIST 1
 
+#pragma GCC visibility push(default)
 
 namespace std{
 
@@ -919,6 +920,7 @@ namespace std{
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 

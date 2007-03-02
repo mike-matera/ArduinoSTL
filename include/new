@@ -24,6 +24,8 @@
 #ifndef __STD_NEW_OPERATOR
 #define __STD_NEW_OPERATOR 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 	class _UCXXEXPORT bad_alloc : public exception {};
 
@@ -55,6 +57,8 @@ inline void operator delete(void* , void *) throw() { }
 	
 inline void* operator new[](std::size_t, void *p) throw() { return p; }
 inline void operator delete[](void* , void *) throw() {}
+
+#pragma GCC visibility pop
 
 #endif
 

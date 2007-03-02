@@ -26,6 +26,7 @@
 #ifndef __STD_HEADER_OSTREAM_HELPERS
 #define __STD_HEADER_OSTREAM_HELPERS 1
 
+#pragma GCC visibility push(default)
 
 namespace std{
 
@@ -481,6 +482,7 @@ namespace std{
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 

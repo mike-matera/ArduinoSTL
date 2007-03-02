@@ -24,6 +24,8 @@
 #ifndef __HEADER_STD_LOCALE
 #define __HEADER_STD_LOCALE 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 	class _UCXXEXPORT locale {
 	public:
@@ -76,7 +78,6 @@ namespace std{
 
 }
 
+#pragma GCC visibility pop
+
 #endif
-
-
-

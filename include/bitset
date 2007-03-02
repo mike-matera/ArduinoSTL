@@ -27,6 +27,8 @@
 #ifndef __STD_BITSET_HEADER
 #define __STD_BITSET_HEADER 1
 
+#pragma GCC visibility push(default)
+
 namespace std{
 	template <size_t N> class bitset;
 
@@ -415,6 +417,7 @@ namespace std{
 
 }
 
+#pragma GCC visibility pop
 
 #endif
 
