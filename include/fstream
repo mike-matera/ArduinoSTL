@@ -601,7 +601,7 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 	};
 
 	template <class charT, class traits> _UCXXEXPORT basic_ofstream<charT, traits>::~basic_ofstream(){
-	
+		basic_ostream<charT, traits>::flush();
 	}
 
 

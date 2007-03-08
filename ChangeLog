@@ -10,6 +10,7 @@
 -	Remove variable name to avoid unused variable declaration warning.
 -	Add #pragma GCC visibility push/pop in header files at the request of Peter S. Mazinger
 -	Convert string test suite to use new test framework.
+-	Don't have ostream do flushing - leave that to subclasses.
 
 0.2.1
 -	Now export std::calloc & std::realloc

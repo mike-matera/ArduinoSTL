@@ -1,4 +1,4 @@
-//This file lists everybody who has sent me bug problems/fixes as of Jan 24, 2005
+//This file lists everybody who has sent me bug problems/fixes starting Jan 24, 2005
 //The list will be in order of total number of points, with the most at the top
 //Anybody who sends me a bug listing with some sample code gets 1 point
 //If that sample code is a minimal test case, it becomes 2 points
@@ -13,7 +13,8 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
-tommi: 32 Points
+tommi: 34 Points
+2007-03-07: 1+1: Found that ostream was improperly flushing on destruction
 2006-09-04: 1+1: Wanted implementation of locale::name, used BTS and provided patch
 2006-09-04: 1+1: Found problem with default flags for ios plus provided patch
 2005-07-20: 1+2: Compared code sizes and sent patch to minimize code size / BTS
