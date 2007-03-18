@@ -11,6 +11,8 @@
 -	Add #pragma GCC visibility push/pop in header files at the request of Peter S. Mazinger
 -	Convert string test suite to use new test framework.
 -	Don't have ostream do flushing - leave that to subclasses.
+-	Now support ios::exception properly
+-	istream::get(char *s, streamsize n) is now more standards-compliant.
 
 0.2.1
 -	Now export std::calloc & std::realloc

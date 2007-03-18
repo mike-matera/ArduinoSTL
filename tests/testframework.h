@@ -35,6 +35,25 @@ namespace TestFramework{
 		}
 	}
 
+	template <typename T> void AssertThrows( void (*f)()){
+		++totalcount;
+		printf(".");
+		try {
+			f();
+			//No exception thrown - something unexpected happened
+			printf("N %lu", totalcount);
+			++badcount;
+		}
+		catch (const T & e) {
+			++goodcount;
+		}
+		catch (...) {
+			printf("(e %lu)", totalcount);
+			//Caught the wrong type of exception
+			++badcount;
+		}
+
+	}
 
 
 }

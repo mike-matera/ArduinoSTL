@@ -35,6 +35,16 @@ namespace std{
 	class _UCXXEXPORT ios_base {
 	public:
 		class failure;
+#ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
+		class failure : public exception {
+		public:
+			explicit failure(const std::string& msg) { }
+			explicit failure() { }
+			virtual const char* what() const throw() {
+				return "std::ios_base failure exception";
+			}
+		};
+#endif
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 		class _UCXXLOCAL Init{
 		public:
@@ -293,6 +303,11 @@ namespace std{
 		}
 		_UCXXEXPORT void setstate(iostate state) {
 			clear(rdstate()  | state);
+#ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
+			if(rdstate() & throw_mask){
+				throw failure();
+			}
+#endif
 		}
 
 		_UCXXEXPORT bool good() const{
@@ -318,8 +333,12 @@ namespace std{
 			return false;
 		}
 
-		_UCXXEXPORT iostate exceptions() const;
-		_UCXXEXPORT void exceptions(iostate except);
+		_UCXXEXPORT iostate exceptions() const{
+			return throw_mask;
+		}
+		_UCXXEXPORT void exceptions(iostate except){
+			throw_mask = except;
+		}
 
 		explicit _UCXXEXPORT basic_ios(basic_streambuf<charT,traits>* sb) : fill_char(' '), mtied(0), mstreambuf(0){
 			init(sb);
@@ -366,11 +385,13 @@ namespace std{
 		char_type fill_char;
 		basic_ostream<charT,traits>* mtied;
 		basic_streambuf<charT,traits>* mstreambuf;
+		iostate throw_mask;
 		_UCXXEXPORT basic_ios(const basic_ios<charT,traits> &){ }
 		_UCXXEXPORT basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		_UCXXEXPORT void init(basic_streambuf<charT,traits>* sb){
 			mstreambuf = sb;
 			mstate = goodbit;
+			throw_mask = goodbit;
 		}
 	};
 
