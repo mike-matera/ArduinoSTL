@@ -16,9 +16,10 @@ config UCLIBCXX_HAS_WCHAR
 	bool "Wide Character Support (Not Currently Supported)"
 	default n
 	help
-	  Answer Y to enable wide character support.  This will make uClibc++ 
-	  much larger.  It also requires support from the underlying C library.
-	  Note that this code is currently unmaintained and may not work.
+	  Answer Y to enable wide character support.  This will make
+	  uClibc++ much larger.  It also requires support from the underlying
+	  C library. Note that this code is currently unmaintained and may
+	  not work.
 
 	  Most people will answer N.
 
@@ -45,10 +46,12 @@ config UCLIBCXX_HAS_LFS
 	default y
 	depends on !CONFIG_CRIS
 	help
-	  If you wish to build uClibc++ with support for accessing large files 
-	  (i.e. files greater then 2 GiB) then answer Y.  Do not enable this 
-	  if you are using an older Linux kernel (2.0.x) that lacks large file 
-	  support.  Enabling this option will increase the size of uClibc.
+	  If you wish to build uClibc++ with support for accessing large
+	  files (i.e. files greater then 2 GiB) then answer Y.  Do not enable
+	  this if you are using an older Linux kernel (2.0.x) that lacks
+	  large file support.  Enabling this option will increase the size
+	  of uClibc++. 
+
 	  THIS DOESN'T WORK YET - FIXME
 
 
@@ -163,13 +166,14 @@ config UCLIBCXX_CODE_EXPANSION
 
 config UCLIBCXX_EXPAND_CONSTRUCTORS_DESTRUCTORS
 	bool "Expand constructors and destructors"
-	default n
+	default y
 	depends on UCLIBCXX_CODE_EXPANSION
 	help
 	  Some compilers will produce warnings or errors if some
-	  techniques are used for code expansion.  Say yes to 
-	  minimize the size of compiled applications.  Say no to
-	  avoid these errors and warnings.  You should say N.
+	  techniques are used for code expansion (notably old versions
+	  of gcc).  Say yes to minimize the size of compiled
+	  applications.  Say no to avoid these errors and warnings.
+	  You should say Y.
 
 config UCLIBCXX_EXPAND_STRING_CHAR
 	bool "Expand std::basic_string for <char>"
@@ -310,17 +314,17 @@ config IMPORT_LIBSUP
 	depends on UCLIBCXX_EXCEPTION_SUPPORT
 	default y
 	help
-	  libsupc++.a is a file which comes with the g++ compiler and provides
-	  all of the language support features required for C++ programs to 
-	  run, such as exception support, rtti support, as well as support for
-	  the C++ ABI.  This is largely compiler dependent.
+	  libsupc++.a is a file which comes with the g++ compiler and
+	  provides all of the language support features required for C++
+	  programs to run, such as exception support, rtti support, as well
+	  as support for the C++ ABI.  This is largely compiler dependent.
 
 	  Since the library is statically compiled, this code would normally
 	  need to be compiled into each executable.  However, it can also be
 	  imported into this library and shared. uClibc++ imports this code.
 
-	  There is no point in importing this if you disable exception and rtti
-	  support above.
+	  There is no point in importing this if you disable exception and
+	  rtti support above.
 
 	  You should say yes.
 
@@ -329,13 +333,13 @@ config IMPORT_LIBGCC_EH
 	depends on UCLIBCXX_EXCEPTION_SUPPORT
 	default y
 	help
-	  libgcc_eh.a is a file which comes with the g++ compiler and provides
-	  unwind support for static apps (the dynamically linked apps use libgcc_s.so
-	  instead).
+	  libgcc_eh.a is a file which comes with the g++ compiler and
+	  provides unwind support for static apps (the dynamically linked
+	  apps use libgcc_s.so instead).
 	  This code is largely compiler dependent.
 	  
-	  Currently for gcc-4.0.0 it is imported only into libuClibc++.a, the shared
-	  library will depend on libgcc_s.so.
+	  Currently for gcc-4.0.0 it is imported only into libuClibc++.a, the
+	  shared library will depend on libgcc_s.so.
 
 config BUILD_STATIC_LIB
 	bool "Build static library"
