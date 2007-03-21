@@ -1,4 +1,4 @@
-/*	Copyright (C) 2004 Garrett A. Kajmowicz
+/*	Copyright (C) 2004-2007 Garrett A. Kajmowicz
 	This file is part of the uClibc++ Library.
 
 	This library is free software; you can redistribute it and/or
@@ -18,11 +18,12 @@
 
 
 
-#include<memory>
-#include<utility>
-#include<iterator>
+#include <memory>
+#include <utility>
+#include <iterator>
 #include <deque>
-#include<functional>
+#include <functional>
+#include <associative_base>
 
 
 #ifndef __STD_HEADER_MAP
@@ -33,238 +34,12 @@
 namespace std{
 
 
-template<class Key, class T, class Compare = less<Key>, class Allocator = allocator<T> > class __base_map;
 template<class Key, class T, class Compare = less<Key>, class Allocator = allocator<T> > class map;
 template<class Key, class T, class Compare = less<Key>, class Allocator = allocator<T> > class multimap;
 
-template<class Key, class T, class Compare, class Allocator> class __map_iter;
-template<class Key, class T, class Compare, class Allocator> class __map_citer;
-
-/* The code for the map containers is split up into two classes.
- * The first class, __base_map holds all of the data and does much of the iterator-based
- * work.  Then the classes map and multimap inherit from there.  This was done to reduce
- * the redundancy of code (And thus errors which might crop up), as well as possibly
- * reducing the size of binaries if both map and multimap are used, along with the same
- * template parameters.
- */
-
-
-
-//All base classes first (__base_map, iterators, value_compare) and it's associated code
-
-
-template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __base_map{
-
-protected:
-	friend class __map_iter<Key, T, Compare, Allocator>;
-	friend class __map_citer<Key, T, Compare, Allocator>;
-
-public:
-	typedef __base_map<Key,T,Compare,Allocator>			map_type;
-	typedef Key							key_type;
-	typedef T							mapped_type;
-	typedef pair<Key, T>						value_type;
-	typedef Compare							key_compare;
-	typedef Allocator						allocator_type;
-	typedef typename Allocator::reference				reference;
-	typedef typename Allocator::const_reference			const_reference;
-	typedef __map_iter<Key, T, Compare, Allocator>			iterator;
-	typedef __map_citer<Key, T, Compare, Allocator>			const_iterator;
-	typedef typename Allocator::size_type				size_type;
-	typedef typename Allocator::difference_type			difference_type;
-	typedef typename Allocator::pointer				pointer;
-	typedef typename Allocator::const_pointer			const_pointer;
-	typedef typename std::reverse_iterator<iterator>		reverse_iterator;
-	typedef typename std::reverse_iterator<const_iterator>		const_reverse_iterator;
-
-	class value_compare;
-
-	explicit __base_map(const Compare& comp = Compare(), const Allocator& al = Allocator());
-	__base_map(const map_type& x);
-	~__base_map();
-
-	iterator               begin();
-	const_iterator         begin() const;
-	iterator               end();
-	const_iterator         end() const;
-	reverse_iterator       rbegin();
-	const_reverse_iterator rbegin() const;
-	reverse_iterator       rend();
-	const_reverse_iterator rend() const;
-
-	bool      empty() const;
-	size_type size() const;
-	size_type max_size() const;
-
-	iterator       lower_bound(const key_type& x);
-	const_iterator lower_bound(const key_type& x) const;
-
-	void swap(map_type & x);
-	void clear();
-
-	key_compare   key_comp() const;
-//	value_compare value_comp() const;
-
-protected:
-
-	deque<pair<Key, T>, allocator<pair<Key, T> > > data;
-	Compare c;
-
-};
-
-
-	//Implementations
-
-	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_citer
-		: public std::iterator<
-			bidirectional_iterator_tag,
-			std::pair<Key, T>,
-			typename Allocator::difference_type,
-			std::pair<Key, T>*,
-			std::pair<Key, T>&
-		>
-	{
-	protected:
-		typedef __base_map<Key, T, Compare, Allocator> Map;
-
-		friend class __base_map<Key, T, Compare, Allocator>;
-		friend class __base_map<Key, T, Compare, Allocator>::iterator;
-
-		friend class map<Key, T, Compare, Allocator>;
-		friend class multimap<Key, T, Compare, Allocator>;
-
-		typename Map::size_type element;
-		const Map * container;
-	public:
-		__map_citer() : element(0), container(0) {  }
-		__map_citer(const typename Map::const_iterator & m) 
-			: element(m.element), container(m.container) {  }
-		__map_citer(typename Map::size_type e, const Map * const c) 
-			: element(e), container(c) {  }
-		~__map_citer() {  }
-		
-		typename Map::value_type operator*() const{
-			return container->data[element];
-		}
-		const typename Map::value_type * operator->() const{
-			return &(container->data[element]);
-		}
-		__map_citer & operator=(const typename Map::const_iterator & m){
-			element = m.element;
-			container = m.container;
-			return *this;
-		}
-		bool operator==(const typename Map::const_iterator & m) const {
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename Map::const_iterator & m) const {
-			return (m.element != element || m.container != container);
-		}
-		__map_citer & operator++(){
-			++element;
-			return *this;
-		}
-		__map_citer operator++(int){
-			__map_citer temp(*this);
-			++element;
-			return temp;
-		}
-		__map_citer & operator--(){
-			--element;
-			return *this;
-		}
-		__map_citer operator--(int){
-			__map_citer temp(*this);
-			--element;
-			return temp;
-		}
-
-	};
-
-
-	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT __map_iter
-		: public std::iterator<
-			bidirectional_iterator_tag,
-			std::pair<Key, T>,
-			typename Allocator::difference_type,
-			std::pair<Key, T>*,
-			std::pair<Key, T>&
-		>
-	{
-	protected:
-		typedef class __base_map<Key, T, Compare, Allocator> Map;
-
-		//FIXME - Find a way to use template parameters or something.  This will do for now
-		friend class __base_map<Key, T, Compare, Allocator>;
-		friend class __base_map<Key, T, Compare, Allocator>::const_iterator;
-
-		friend class map<Key, T, Compare, Allocator>;
-		friend class multimap<Key, T, Compare, Allocator>;
-
-		typename Map::size_type element;
-		Map * container;
-	public:
-		__map_iter() : element(0), container(0) {  }
-		__map_iter(const typename Map::iterator & m) 
-			: element(m.element), container(m.container) {  }
-		__map_iter(typename Map::size_type e, Map * c) 
-			: element(e), container(c) {  }
-		~__map_iter() {  }
-		
-		typename Map::value_type & operator*(){
-			return container->data[element];
-		}
-		const typename Map::value_type & operator*() const{
-			return container->data[element];
-		}
-		typename Map::value_type * operator->(){
-			return &(container->data[element]);
-		}
-		__map_iter & operator=(const typename Map::iterator & m){
-			element = m.element;
-			container = m.container;
-			return *this;
-		}
-		bool operator==(const typename Map::iterator & m) const {
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename Map::iterator & m) const {
-			return (m.element != element || m.container != container);
-		}
-		bool operator==(const typename Map::const_iterator & m) const {
-			return (m.element == element && m.container == container);
-		}
-		bool operator!=(const typename Map::const_iterator & m) const {
-			return (m.element != element || m.container != container);
-		}
-		__map_iter & operator++(){
-			++element;
-			return *this;
-		}
-		__map_iter operator++(int){
-			__map_iter temp(*this);
-			++element;
-			return temp;
-		}
-		__map_iter & operator--(){
-			--element;
-			return *this;
-		}
-		__map_iter operator--(int){
-			__map_iter temp(*this);
-			--element;
-			return temp;
-		}
-
-		operator typename Map::const_iterator() const{
-			return typename Map::const_iterator(element, container);
-		}
-
-	};
-
 
 	//Compare the keys of the two items
-	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT 
+/*	template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT 
 		__base_map<Key, T, Compare, Allocator>::value_compare : public binary_function<
 			typename map<Key, T, Compare, Allocator>::value_type,
 			typename map<Key, T, Compare, Allocator>::value_type,
@@ -280,171 +55,9 @@ protected:
 			return comp(x.first, y.first);
 		}
 	};
-
-	template <class Key, class T, class Compare, class Allocator> 
-		__base_map<Key, T, Compare, Allocator>::__base_map(const Compare& comp, const Allocator&)
-		: data(), c(comp)
-	{
-		
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		__base_map<Key, T, Compare, Allocator>::__base_map(const __base_map<Key,T,Compare,Allocator>& x)
-		: data(x.data), c(x.c)
-	{
-
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		__base_map<Key, T, Compare, Allocator>::~__base_map()
-	{
-		
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::iterator
-		__base_map<Key, T, Compare, Allocator>::begin()
-	{
-		return iterator(0, this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::const_iterator
-		__base_map<Key, T, Compare, Allocator>::begin() const
-	{
-		return const_iterator(0, this);
-
-	}
-	
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::iterator
-		__base_map<Key, T, Compare, Allocator>::end()
-	{
-		return iterator(data.size(), this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::const_iterator
-		__base_map<Key, T, Compare, Allocator>::end() const
-	{
-		return const_iterator(data.size(), this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::reverse_iterator
-		__base_map<Key, T, Compare, Allocator>::rbegin()
-	{
-		return reverse_iterator(end());
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::const_reverse_iterator
-		__base_map<Key, T, Compare, Allocator>::rbegin() const
-	{
-		return const_reverse_iterator(end());
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::reverse_iterator
-		__base_map<Key, T, Compare, Allocator>::rend()
-	{
-		return reverse_iterator(begin());
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::const_reverse_iterator
-		__base_map<Key, T, Compare, Allocator>::rend() const
-	{
-		return const_reverse_iterator(begin());
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		bool __base_map<Key, T, Compare, Allocator>::empty() const
-	{
-		return (data.size() == 0);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::size_type
-		__base_map<Key, T, Compare, Allocator>::size() const
-	{
-		return data.size();
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::size_type 
-		__base_map<Key, T, Compare, Allocator>::max_size() const
-	{
-		return data.max_size();
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::iterator
-		__base_map<Key, T, Compare, Allocator>::lower_bound(const key_type &x)
-	{
-		size_type low  = 0;
-		size_type high = data.size();
-
-		while (low < high) {
-			size_type i = (low + high) / 2;
-			if( c(data[i].first, x) ){
-				low = i + 1;
-			}else{
-				high = i;
-			}
-		}
-
-		return iterator(low, this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::const_iterator
-		__base_map<Key, T, Compare, Allocator>::lower_bound(const key_type &x) const
-	{
-		size_type low  = 0;
-		size_type high = data.size();
-
-		while (low < high) {
-			size_type i = (low + high) / 2;
-			if( c(data[i].first, x) ){
-				low = i + 1;
-			}else{
-				high = i;
-			}
-		}
-
-		return const_iterator(low, this);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		void __base_map<Key, T, Compare, Allocator>::swap(__base_map<Key,T,Compare,Allocator>& m)
-	{
-		Compare n = c;
-		c = m.c;
-		m.c = n;
-
-		data.swap(m.data);
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		void __base_map<Key, T, Compare, Allocator>::clear()
-	{
-		data.clear();
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename __base_map<Key, T, Compare, Allocator>::key_compare
-		__base_map<Key, T, Compare, Allocator>::key_comp() const
-	{
-		return c;
-	}
+*/
 
 //	value_compare value_comp() const;
-
-
 
 
 
@@ -457,39 +70,42 @@ protected:
 
 
 
-
-
 //Implementation of map
 
 
 template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT map
-	: public __base_map<Key, T, Compare, Allocator>
+	: public __single_associative<Key, pair<Key, T>, Compare, Allocator>
 {
 		//Default value of allocator does not meet C++ standard specs, but it works for this library
 		//Deal with it
+
 public:
 
-	typedef	__base_map<Key, T, Compare, Allocator>		base;
-	typedef typename base::key_type				key_type;
-	typedef typename base::mapped_type			mapped_type;
-	typedef typename base::value_type			value_type;
-	typedef typename base::key_compare			key_compare;
-	typedef typename base::allocator_type			allocator_type;
-	typedef typename base::reference			reference;
-	typedef typename base::const_reference			const_reference;
-	typedef typename base::iterator				iterator;
-	typedef typename base::const_iterator			const_iterator;
-	typedef typename base::size_type			size_type;
-	typedef typename base::difference_type			difference_type;
-	typedef typename base::pointer				pointer;
-	typedef typename base::const_pointer			const_pointer;
-	typedef typename base::reverse_iterator			reverse_iterator;
-	typedef typename base::const_reverse_iterator		const_reverse_iterator;
+	typedef	__single_associative<Key, pair<Key, T>, Compare, Allocator>	base;
+	typedef T 								mapped_type;
+	typedef typename base::key_type						key_type;
+	typedef typename base::value_type					value_type;
+	typedef typename base::key_compare					key_compare;
+	typedef typename base::allocator_type					allocator_type;
+	typedef typename base::reference					reference;
+	typedef typename base::const_reference					const_reference;
+	typedef typename base::iterator						iterator;
+	typedef typename base::const_iterator					const_iterator;
+	typedef typename base::size_type					size_type;
+	typedef typename base::difference_type					difference_type;
+	typedef typename base::pointer						pointer;
+	typedef typename base::const_pointer					const_pointer;
+	typedef typename base::reverse_iterator					reverse_iterator;
+	typedef typename base::const_reverse_iterator				const_reverse_iterator;
 
-	using base::value_compare;
+	static const key_type v_t_k(const value_type v){
+		return v.first;
+	}
+
+//	using base::value_compare;
 
 	explicit map(const Compare& comp = Compare(), const Allocator& al = Allocator())
-		: base(comp, al) {  }
+		: base(comp, al, v_t_k) {  }
 
 	template <class InputIterator> map(InputIterator first, InputIterator last,
 		const Compare& comp = Compare(), const Allocator& = Allocator());
@@ -497,17 +113,12 @@ public:
 	map(const map<Key,T,Compare,Allocator>& x) : base(x) {  }
 	~map() {  }
 
-	map<Key,T,Compare,Allocator>& operator=(const map<Key,T,Compare,Allocator>& x);
+	using base::operator=;
+	using base::operator==;
+	using base::operator!=;
 
-	reference operator[](const key_type& k);
-
-	pair<iterator, bool> insert(const value_type& x);
-	iterator             insert(iterator position, const value_type& x);
-
-	template <class InputIterator> void insert(InputIterator first, InputIterator last);
-	void      erase(iterator position);
-	size_type erase(const key_type& x);
-	void      erase(iterator first, iterator last);
+	using base::insert;
+	using base::erase;
 
 	using base::begin;
 	using base::end;
@@ -518,307 +129,68 @@ public:
 	using base::size;
 	using base::max_size;
 
-	iterator       find(const key_type& x);
-	const_iterator find(const key_type& x) const;
-	size_type      count(const key_type& x) const;
-	iterator       upper_bound(const key_type& x);
-	const_iterator upper_bound(const key_type& x) const;
-	pair<iterator,iterator>             equal_range(const key_type& x);
-	pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+	using base::find;
+	using base::count;
+	using base::lower_bound;
+	using base::upper_bound;
+	using base::equal_range;
+
+	reference operator[](const key_type& k){
+		//This is from the spec and is quite ugly.
+		return (*((insert(make_pair(k, T()))).first)).second;
+	}
 
 protected:
-	friend class base::iterator;
-	friend class base::const_iterator;
-
-	friend bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
-
-	using base::data;
-	using base::c;
-
+	using base::backing;
 };
 
 
 	template <class Key, class T, class Compare, class Allocator> template <class InputIterator>
 		map<Key, T, Compare, Allocator>::
 		map(InputIterator first, InputIterator last, const Compare& comp, const Allocator& al)
-		: base(comp, al)
+		: base(comp, al, v_t_k)
 	{
 		while(first !=last){
 			insert(*first);
 			++first;
 		}
 	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		map<Key, T, Compare, Allocator>::map<Key,T,Compare,Allocator>&
-		map<Key, T, Compare, Allocator>::operator=(const map<Key,T,Compare,Allocator>& x)
-	{
-		if( &x == this){
-			return *this;
-		}
-		c = x.c;
-		data = x.data;
-		return *this;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::reference
-		map<Key, T, Compare, Allocator>::operator[](const key_type & k)
-	{
-/*		iterator i = lower_bound(k);
-		if( !c( i->first, k) && !c(k, i->first) ){
-			return i->second;
-		}
-		pair<Key, T> t;
-		t.first = k;
-		t.second = T();
-		return insert(t).first->second;
-*/
-		//This is from the spec and is quite ugly.
-		return (*((insert(make_pair(k, T()))).first)).second;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		pair<typename map<Key, T, Compare, Allocator>::iterator, bool>
-		map<Key, T, Compare, Allocator>::insert(const value_type& x)
-	{
-		pair<typename map<Key, T, Compare, Allocator>::iterator, bool> retval;
-
-		//Either set is empty or element to insert goes at the begining
-		if(data.size() == 0 || c(x.first, data[0].first) ){
-			data.push_front(x);
-			retval.first = begin();
-			retval.second = true;
-			return retval;
-		}
-
-		//Element to insert goes at the end
-		if( c(data[data.size() - 1].first, x.first) ){
-			data.push_back(x);
-			retval.first = end();
-			--retval.first;
-			retval.second = true;
-			return retval;
-                }
-
-		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x.first);
-
-		//No match - this should never happen
-		if(retval.first == end()){
-			retval.second = false;
-			return retval;
-		}
-		
-		//If we have an exact match
-		if( !c( retval.first->first, x.first) && !c(x.first, retval.first->first ) ){
-			retval.second = false;
-			return retval;
-		}
-
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator q(&data, retval.first.element);
-		data.insert(q, x);
-
-		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x.first);   //Need to refind because insert can move data around
-		retval.second = true;
-
-		return retval;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::iterator
-		map<Key, T, Compare, Allocator>::insert(iterator, const value_type& x)
-	{
-		//Just reusing code.  It's hard to make improvements over existing algo.
-		//We aren't using the iterator parameter, but it's only a hint and not required to be used.
-		insert(x);
-		return find(x.first);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		template <class InputIterator> void 
-		map<Key, T, Compare, Allocator>::insert(InputIterator first, InputIterator last)
-	{
-		while(first !=last){
-			insert(*first);
-			++first;
-		}
-	}
-
-	template <class Key, class T, class Compare, class Allocator> void 
-		map<Key, T, Compare, Allocator>::erase(iterator position)
-	{
-		//Create a deque iterator from position information and then
-		//Use built in erase feature because it is handy.
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator pos(&data, position.element);
-		data.erase(pos);		
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::size_type
-		map<Key, T, Compare, Allocator>::erase(const key_type& x)
-	{
-		typename map<Key, T, Compare, Allocator>::iterator i = find(x);
-		if(i!=end()){
-			erase(i);
-			return 1;
-		}
-		return 0;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		void map<Key, T, Compare, Allocator>::erase(iterator first, iterator last)
-	{
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator f(&data, first.element);
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator l(&data, last.element);
-		data.erase(f, l);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::iterator
-		map<Key, T, Compare, Allocator>::
-		find(const typename map<Key, T, Compare, Allocator>::key_type& x)
-	{
-		if(data.size() == 0){
-			return end();
-		}
-
-		iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-
-		if(retval == end()){
-			return retval;
-		}
-
-                //Make sure we have an exact match....
-                if(!c( retval->first, x) && !c(x, retval->first )){
-                        return retval;
-                }
-                return end();
-
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::const_iterator
-		map<Key, T, Compare, Allocator>::find(const key_type& x) const
-	{
-		if(data.size() == 0){
-			return end();
-		}
-
-		const_iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-
-		if(retval == end()){
-			return retval;
-		}
-
-                //Make sure we have an exact match....
-                if(!c( retval->first, x) && !c(x, retval->first )){
-                        return retval;
-                }
-                return end();
-
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::size_type
-		map<Key, T, Compare, Allocator>::count(const typename map<Key, T, Compare, Allocator>::key_type& x) const
-	{
-		if( find(x) == end()){
-			return 0;
-		}
-		return 1;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::iterator
-		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
-	{
-		typename map<Key, T, Compare, Allocator>::iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		if( i != end() && !c(x, i->first) ){
-			++i;
-		}
-		return i;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename map<Key, T, Compare, Allocator>::const_iterator
-		map<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
-	{
-		typename map<Key, T, Compare, Allocator>::const_iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		if(i != end() && !c(x, i->first)){
-			++i;
-		}
-		return i;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		pair<	typename map<Key, T, Compare, Allocator>::iterator,
-			typename map<Key, T, Compare, Allocator>::iterator
-		> map<Key, T, Compare, Allocator>::equal_range(const key_type& x)
-	{
-		pair<   typename map<Key, T, Compare, Allocator>::iterator,
-                        typename map<Key, T, Compare, Allocator>::iterator
-                > retval;
-		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		retval.second = upper_bound(x);
-		return retval;		
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		pair<	typename map<Key, T, Compare, Allocator>::const_iterator,
-			typename map<Key, T, Compare, Allocator>::const_iterator
-		> map<Key, T, Compare, Allocator>::equal_range(const key_type& x) const
-	{
-		pair<   typename map<Key, T, Compare, Allocator>::const_iterator,
-                        typename map<Key, T, Compare, Allocator>::const_iterator
-                > retval;
-		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		retval.second = upper_bound(x);
-		return retval;		
-	}
-
-	template <class Key, class T, class Compare, class Allocator> bool operator==
-		(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
-	{
-		if(x.c == y.c && x.data == y.data){
-			return true;
-		}
-		return false;
-	}
-
 
 
 //Implementation of multimap
 
 
 template<class Key, class T, class Compare, class Allocator> class _UCXXEXPORT multimap
-	: public __base_map<Key, T, Compare, Allocator>
+	: public __multi_associative<Key, pair<Key, T>, Compare, Allocator>
+
 {
 		//Default value of allocator does not meet C++ standard specs, but it works for this library
 		//Deal with it
 public:
 
-	typedef	__base_map<Key, T, Compare, Allocator>		base;
-	typedef typename base::key_type				key_type;
-	typedef typename base::mapped_type			mapped_type;
-	typedef typename base::value_type			value_type;
-	typedef typename base::key_compare			key_compare;
-	typedef typename base::allocator_type			allocator_type;
-	typedef typename base::reference			reference;
-	typedef typename base::const_reference			const_reference;
-	typedef typename base::iterator				iterator;
-	typedef typename base::const_iterator			const_iterator;
-	typedef typename base::size_type			size_type;
-	typedef typename base::difference_type			difference_type;
-	typedef typename base::pointer				pointer;
-	typedef typename base::const_pointer			const_pointer;
-	typedef typename base::reverse_iterator			reverse_iterator;
-	typedef typename base::const_reverse_iterator		const_reverse_iterator;
+	typedef	__multi_associative<Key, pair<Key, T>, Compare, Allocator>	base;
+	typedef T 								mapped_type;
+	typedef typename base::key_type						key_type;
+	typedef typename base::value_type					value_type;
+	typedef typename base::key_compare					key_compare;
+	typedef typename base::allocator_type					allocator_type;
+	typedef typename base::reference					reference;
+	typedef typename base::const_reference					const_reference;
+	typedef typename base::iterator						iterator;
+	typedef typename base::const_iterator					const_iterator;
+	typedef typename base::size_type					size_type;
+	typedef typename base::difference_type					difference_type;
+	typedef typename base::pointer						pointer;
+	typedef typename base::const_pointer					const_pointer;
+	typedef typename base::reverse_iterator					reverse_iterator;
+	typedef typename base::const_reverse_iterator				const_reverse_iterator;
+
+	static const key_type v_t_k(const value_type v){
+		return v.first;
+	}
 
 	explicit multimap(const Compare& comp = Compare(), const Allocator& al = Allocator())
-		: base(comp, al) {  }
+		: base(comp, al, v_t_k) {  }
 
 	template <class InputIterator> multimap(InputIterator first, InputIterator last,
 		const Compare& comp = Compare(), const Allocator& = Allocator());
@@ -826,15 +198,12 @@ public:
 	multimap(const multimap<Key,T,Compare,Allocator>& x) : base(x) {  }
 	~multimap() {  }
 
-	multimap<Key,T,Compare,Allocator>& operator=(const multimap<Key,T,Compare,Allocator>& x);
+	using base::operator=;
+	using base::operator==;
+	using base::operator!=;
 
-	iterator insert(const value_type& x);
-	iterator insert(iterator position, const value_type& x);
-	template <class InputIterator> void insert(InputIterator first, InputIterator last);
-
-	void      erase(iterator position);
-	size_type erase(const key_type& x);
-	void      erase(iterator first, iterator last);
+	using base::insert;
+	using base::erase;
 
 	using base::begin;
 	using base::end;
@@ -845,19 +214,14 @@ public:
 	using base::size;
 	using base::max_size;
 
-	iterator       find(const key_type& x);
-	const_iterator find(const key_type& x) const;
-	size_type      count(const key_type& x) const;
-	iterator       upper_bound(const key_type& x);
-	const_iterator upper_bound(const key_type& x) const;
-	pair<iterator,iterator>             equal_range(const key_type& x);
-	pair<const_iterator,const_iterator> equal_range(const key_type& x) const;
+	using base::find;
+	using base::count;
+	using base::lower_bound;
+	using base::upper_bound;
+	using base::equal_range;
 
 protected:
-	friend class base::iterator;
-	friend class base::const_iterator;
 
-	using base::data;
 	using base::c;
 
 };
@@ -867,256 +231,13 @@ protected:
 	template <class Key, class T, class Compare, class Allocator> template <class InputIterator>
 		multimap<Key, T, Compare, Allocator>::
 		multimap(InputIterator first, InputIterator last, const Compare& comp, const Allocator& al)
-		: base(comp, al)
+		: base(comp, al, v_t_k)
 	{
 		while(first !=last){
 			insert(*first);
 			++first;
 		}
 	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		multimap<Key, T, Compare, Allocator>::multimap<Key,T,Compare,Allocator>&
-		multimap<Key, T, Compare, Allocator>::operator=(const multimap<Key,T,Compare,Allocator>& x)
-	{
-		if( &x == this){
-			return *this;
-		}
-		c = x.c;
-		data = x.data;
-		return *this;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::iterator
-		multimap<Key, T, Compare, Allocator>::insert(const value_type &x)
-	{
-		iterator retval;
-
-		//Either set is empty or element to insert goes at the begining
-		if(data.size() == 0 || c(x.first, data[0].first) ){
-			data.push_front(x);
-			return begin();
-		}
-
-		//Element to insert goes at the end
-		if( c(data[data.size() - 1].first, x.first) ){
-			data.push_back(x);
-			return end();
-                }
-
-		retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x.first);
-
-		//No match - this should never happen
-		if(retval == end()){
-			return retval;
-		}
-
-		if( !c(x.first, retval->first) ){
-			++retval;
-		}
-		
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator q(&data, retval.element);
-		data.insert(q, x);
-
-		return retval;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::iterator 
-		multimap<Key, T, Compare, Allocator>::insert(iterator position, const value_type& x)
-	{
-
-		//Inserting at begining
-		if(position == begin() && !c(position->first, x.first) ){
-			data.push_front(x);
-			return position;
-		}
-		//Inserting at end
-		if(position == end() && !c(x.first, data[data.size() - 1].first) ){
-			data.push_back(x);
-			return position;
-		}
-
-		//Inserting in middle
-		iterator temp = position;
-		--temp;
-		if( !c(position->first, x.first) && !c(x.first, temp->first) ){
-			typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator q(&data, position.element);
-			data.insert(q, x);
-			return position;
-		}
-
-		return insert(x);
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		template <class InputIterator> void 
-		multimap<Key, T, Compare, Allocator>::insert(InputIterator first, InputIterator last)
-	{
-		while(first !=last){
-			insert(*first);
-			++first;
-		}
-	}
-
-
-
-	template <class Key, class T, class Compare, class Allocator> void 
-		multimap<Key, T, Compare, Allocator>::erase(iterator position)
-	{
-		//Create a deque iterator from position information and then
-		//Use built in erase feature because it is handy.
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator pos(&data, position.element);
-		data.erase(pos);		
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::size_type
-		multimap<Key, T, Compare, Allocator>::erase(const key_type& x)
-	{
-		typename multimap<Key, T, Compare, Allocator>::iterator f = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		typename multimap<Key, T, Compare, Allocator>::iterator l = upper_bound(x);
-		size_type t = l.element - f.element;
-		erase(f, l);
-		return t;
-	}
-
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		void multimap<Key, T, Compare, Allocator>::erase(iterator first, iterator last)
-	{
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator f(&data, first.element);
-		typename deque<pair<Key, T>, allocator<pair<Key, T> > >::iterator l(&data, last.element);
-		data.erase(f, l);
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::iterator 
-		multimap<Key, T, Compare, Allocator>::find(const key_type& x)
-	{
-		if(data.size() == 0){
-			return end();
-		}
-
-		iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-
-		if(retval == end()){
-			return retval;
-		}
-
-		if( c(x, retval->first) || c(retval->first, x) ){
-			return end();
-		}
-
-		while( retval.element > 0 && !c(retval->first, x) && !c(x, retval->first) ){
-			--retval;
-		}
-		if( c(retval->first, x)){
-			++retval;
-		}
-
-		return retval;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::const_iterator
-		multimap<Key, T, Compare, Allocator>::find(const key_type& x) const
-	{
-		if(data.size() == 0){
-			return end();
-		}
-		const_iterator retval = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-
-		if(retval == end()){
-			return retval;
-		}
-
-		if( c(x, retval->first) || c(retval->first, x) ){
-			return end();
-		}
-
-		while( retval.element > 0 && !c(retval->first, x) && !c(x, retval->first) ){
-			--retval;
-		}
-		if( c(retval->first, x)){
-			++retval;
-		}
-
-
-		return retval;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::size_type
-		multimap<Key, T, Compare, Allocator>::
-		count(const typename multimap<Key, T, Compare, Allocator>::key_type& x) const
-	{
-		pair<   typename multimap<Key, T, Compare, Allocator>::const_iterator,
-			typename multimap<Key, T, Compare, Allocator>::const_iterator
-		> temp = equal_range(x);
-
-		return temp.second.element - temp.first.element;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::iterator
-		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x)
-	{
-		typename multimap<Key, T, Compare, Allocator>::iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-
-		while(i != end() && !c(x, i->first)){
-			++i;
-		}
-		return i;
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		typename multimap<Key, T, Compare, Allocator>::const_iterator
-		multimap<Key, T, Compare, Allocator>::upper_bound(const key_type& x) const
-	{
-		typename multimap<Key, T, Compare, Allocator>::const_iterator i = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-
-		while(i != end() && !c(x, i->first)){
-			++i;
-		}
-		return i;
-	}
-
-
-	template <class Key, class T, class Compare, class Allocator>
-		pair<	typename multimap<Key, T, Compare, Allocator>::iterator,
-			typename multimap<Key, T, Compare, Allocator>::iterator
-		> multimap<Key, T, Compare, Allocator>::equal_range(const key_type& x)
-	{
-		pair<   typename multimap<Key, T, Compare, Allocator>::iterator,
-                        typename multimap<Key, T, Compare, Allocator>::iterator
-                > retval;
-		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		retval.second = upper_bound(x);
-		return retval;		
-	}
-
-	template <class Key, class T, class Compare, class Allocator>
-		pair<	typename multimap<Key, T, Compare, Allocator>::const_iterator,
-			typename multimap<Key, T, Compare, Allocator>::const_iterator
-		> multimap<Key, T, Compare, Allocator>::equal_range(const key_type& x) const
-	{
-		pair<   typename multimap<Key, T, Compare, Allocator>::const_iterator,
-                        typename multimap<Key, T, Compare, Allocator>::const_iterator
-                > retval;
-		retval.first = __base_map<Key, T, Compare, Allocator>::lower_bound(x);
-		retval.second = upper_bound(x);
-		return retval;		
-	}
-
-
 
 
 

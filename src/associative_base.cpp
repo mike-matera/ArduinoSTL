@@ -21,9 +21,6 @@
 
 namespace std{
 
-//	__base_associative<int, double> q;
-//	__base_associative<int, double>::const_iterator a;
-
 
 
 }

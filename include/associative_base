@@ -25,8 +25,8 @@
 #include<list>
 
 
-#ifndef __STD_HEADER_MAP
-#define __STD_HEADER_MAP
+#ifndef __STD_HEADER_ASSOCIATIVE_BASE
+#define __STD_HEADER_ASSOCIATIVE_BASE
 
 #pragma GCC visibility push(default)
 
@@ -54,8 +54,6 @@ template<class Key, class ValueType, class Compare = less<Key>, class Allocator 
 template<class Key, class ValueType, class Compare, class Allocator> class _UCXXEXPORT __base_associative{
 
 protected:
-//	friend class _associative_iter<Key, T, Compare, Allocator>;
-//	friend class _associative_citer<Key, T, Compare, Allocator>;
 
 public:
 	typedef Key							key_type;
@@ -76,8 +74,8 @@ public:
 	typedef typename std::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 
-	explicit __base_associative(const Compare& comp = Compare(), const Allocator& A = Allocator())
-		: c(comp) { }
+	explicit __base_associative(const Compare& comp, const Allocator& A, const key_type (*v_to_k)(const value_type))
+		: c(comp), value_to_key(v_to_k) { }
 protected:
 	__base_associative(const associative_type& x)
 		: c(x.c), backing(x.backing) { }
@@ -90,7 +88,7 @@ public:
 		return backing.empty();
 	}
 	size_type size() const{
-		return backing.sie();
+		return backing.size();
 	}
 	size_type max_size() const{
 		return backing.max_size();
@@ -112,6 +110,23 @@ public:
 		return const_iterator(backing.end());
 	}
 
+	reverse_iterator rbegin(){
+		return reverse_iterator(end());
+	}
+
+	const_reverse_iterator rbegin() const{
+		return const_reverse_iterator(end());
+	}
+
+	reverse_iterator rend(){
+		return reverse_iterator(begin());
+	}
+
+	const_reverse_iterator rend() const{
+		return const_reverse_iterator(begin());
+	}
+
+
 	iterator lower_bound(const key_type &x);
 	const_iterator lower_bound(const key_type &x) const;
 	iterator upper_bound(const key_type &x);
@@ -121,7 +136,7 @@ public:
 		pair<iterator, iterator> retval;
 		retval.first = lower_bound(x);
 		retval.second = retval.first;
-		while(retval.second != end() && !c(x, *retval.second)){
+		while(retval.second != end() && !c(x, value_to_key(*retval.second))){
 			++retval.second;
 		}
 		return retval;
@@ -130,7 +145,7 @@ public:
 		pair<const_iterator, const_iterator> retval;
 		retval.first = lower_bound(x);
 		retval.second = retval.first;
-		while(retval.second != end() && !c(x, *retval.second)){
+		while(retval.second != end() && !c(x, value_to_key(*retval.second))){
 			++retval.second;
 		}
 		return retval;
@@ -138,14 +153,14 @@ public:
 
 	iterator find(const key_type& x){
 		iterator retval = lower_bound(x);
-		if(c(x, *retval)){
+		if(c(x, value_to_key(*retval))){
 			return end();
 		}
 		return retval;
 	}
         const_iterator find(const key_type& x) const{
 		const_iterator retval = lower_bound(x);
-		if(c(x, *retval)){
+		if(c(x, value_to_key(*retval))){
 			return end();
 		}
 		return retval;
@@ -153,7 +168,7 @@ public:
         size_type count(const key_type& x) const{
 		size_type retval(0);
 		const_iterator first = lower_bound(x);
-		while(first != end() && !c(x, *first)){
+		while(first != end() && !c(x, value_to_key(*first))){
 			++retval;
 			++first;
 		}
@@ -168,12 +183,14 @@ public:
 		backing.erase(pos.base_iterator());
 	}
         size_type erase(const key_type& x){
+		size_type count(0);
 		iterator start = lower_bound(x);
 		iterator end = upper_bound(x);
 		while(start != end){
-			backing.erase(start.base_iterator());
-			++start;
+			start = backing.erase(start.base_iterator());
+			++count;
 		}
+		return count;
 	}
         void erase(iterator first, iterator last){
 		while(first != last){
@@ -191,12 +208,20 @@ public:
 		backing = x.backing;
 		return *this;
 	}
+	bool operator==(const __base_associative & x){
+		return (x.c == c && x.backing == backing);
+	}
+	bool operator!=(const __base_associative & x){
+		return (x.c != c || x.backing != backing);
+	}
 
 protected:
 	void swap(__base_associative & x);
 
 	Compare c;
 	std::list<value_type> backing;
+
+	const key_type (*value_to_key)(const value_type);
 
 };
 
@@ -218,7 +243,7 @@ protected:
 	typedef std::list<ValueType> listtype;
 
 	typename listtype::const_iterator base_iter;
-	
+	friend class _associative_iter<ValueType, Compare, Allocator>;
 public:
 	_associative_citer() { }
 	_associative_citer(const _associative_citer & m)
@@ -227,19 +252,19 @@ public:
 		: base_iter(m) { }
 	~_associative_citer() { }
 	ValueType operator*() const{
-		return base_iter->value;
+		return *base_iter;
 	}
 	const ValueType * operator->() const{
-		return base_iter->value;
+		return &(*base_iter);
 	}
 	_associative_citer & operator=(const _associative_citer & m){
 		base_iter = m.base_iter;
 		return *this;
 	}
-	bool operator==(const _associative_citer & m){
+	bool operator==(const _associative_citer & m) const{
 		return m.base_iter == base_iter;
 	}
-	bool operator!=(const _associative_citer & m){
+	bool operator!=(const _associative_citer & m) const{
 		return m.base_iter != base_iter;
 	}
 	_associative_citer & operator++(){
@@ -286,6 +311,8 @@ protected:
 	typedef std::list<ValueType> listtype;
 
 	typename listtype::iterator base_iter;
+	typedef _associative_citer<ValueType, Compare, Allocator> _associative_citer;
+
 	
 public:
 	_associative_iter() { }
@@ -294,20 +321,32 @@ public:
 	_associative_iter(const typename listtype::iterator & m)
 		: base_iter(m) { }
 	~_associative_iter() { }
-	ValueType & operator*() const{
+	const ValueType & operator*() const{
 		return *base_iter;
 	}
-	const ValueType & operator->() const{
+	ValueType & operator*(){
 		return *base_iter;
+	}
+	ValueType * operator->(){
+		return &(*base_iter);
+	}
+	const ValueType * operator->() const{
+		return &(*base_iter);
 	}
 	_associative_iter & operator=(const _associative_iter & m){
 		base_iter = m.base_iter;
 		return *this;
 	}
-	bool operator==(const _associative_iter & m){
+	bool operator==(const _associative_iter & m) const{
 		return m.base_iter == base_iter;
 	}
-	bool operator!=(const _associative_iter & m){
+	bool operator==(const _associative_citer & m) const{
+		return m.base_iter == base_iter;
+	}
+	bool operator!=(const _associative_iter & m) const{
+		return m.base_iter != base_iter;
+	}
+	bool operator!=(const _associative_citer & m) const{
 		return m.base_iter != base_iter;
 	}
 	_associative_iter & operator++(){
@@ -332,8 +371,8 @@ public:
 		--temp;
 		return temp;
 	}
-	operator _associative_citer<ValueType, Compare, Allocator>() const{
-		return _associative_citer<ValueType, Compare, Allocator>(base_iter);
+	operator _associative_citer() const{
+		return _associative_citer(base_iter);
 	}
 	typename listtype::iterator base_iterator(){
 		return base_iter;
@@ -345,7 +384,7 @@ public:
 };
 
 
-	// The lower_bound code is really crapping linear search.  However, it is a dead
+	// The lower_bound code is really crappy linear search.  However, it is a dead
 	// simple implimentation (easy to audit).  It can also be easily replaced.
 
 
@@ -354,7 +393,7 @@ public:
 		__base_associative<Key, ValueType, Compare, Allocator>::lower_bound(const key_type &x)
 	{
 		iterator retval = begin();
-		while(retval != end() && c(*retval, x)){
+		while(retval != end() && c(value_to_key(*retval), x)){
 			++retval;
 		}
 		return retval;
@@ -365,7 +404,7 @@ public:
 		__base_associative<Key, ValueType, Compare, Allocator>::lower_bound(const key_type &x) const
 	{
 		const_iterator retval = begin();
-		while(retval != end() && c(*retval, x)){
+		while(retval != end() && c(value_to_key(*retval), x)){
 			++retval;
 		}
 		return retval;
@@ -379,7 +418,7 @@ public:
 		__base_associative<Key, ValueType, Compare, Allocator>::upper_bound(const key_type &x)
 	{
 		iterator retval = lower_bound(x);
-		while(retval != end() && !c(x, *retval)){
+		while(retval != end() && !c(x, value_to_key(*retval))){
 			++retval;
 		}
 		return retval;
@@ -390,7 +429,7 @@ public:
 		__base_associative<Key, ValueType, Compare, Allocator>::upper_bound(const key_type &x) const
 	{
 		const_iterator retval = begin();
-		while(retval != end() && !c(x, *retval)){
+		while(retval != end() && !c(x, value_to_key(*retval))){
 			++retval;
 		}
 		return retval;
@@ -448,23 +487,30 @@ public:
 	using base::upper_bound;
 	using base::equal_range;
 
+	using base::operator=;
+	using base::operator==;
+	using base::operator!=;
+
+	explicit __single_associative(const Compare& comp, const Allocator& A, const key_type (*v_to_k)(const value_type))
+		: base(comp, A, v_to_k) { }
+
 	pair<iterator, bool> insert(const value_type& x){
 		pair<iterator, bool> retval;
-		iterator location = lower_bound(x);
-		if(c(x, *location)){
-			retval.second = true;
-			if(location == begin()){
-				backing.push_front(x);
-				retval.first = begin();
-			}else{
-				--location;
-				backing.insert(location, x);
-				++location;
-				retval.first = location;
-			}
+		iterator location = lower_bound(value_to_key(x));
+		retval.second = true;
+		//Empty list or need to insert at end
+		if(end() == location){
+			backing.push_back(x);
+			retval.first = --(end());
+			return retval;
+		}
+		//Something in the list
+		if(c(value_to_key(x), value_to_key(*location))){
+			location = backing.insert(location.base_iterator(), x);
+			retval.first = location;
 		}else{
 			retval.second = false;
-			retval.first=end();
+			retval.first = location;
 		}
 		return retval;
 	}
@@ -481,6 +527,7 @@ public:
 			++last;
 		}
 	}
+
 };
 
 
@@ -524,16 +571,21 @@ public:
 	using base::upper_bound;
 	using base::equal_range;
 
+	using base::operator=;
+	using base::operator==;
+
+
+	explicit __multi_associative(const Compare& comp, const Allocator& A, const key_type (*v_to_k)(const value_type))
+		: base(comp, A, v_to_k) { }
+
 	iterator insert(const value_type& x){
-		iterator location = lower_bound(x);
+		iterator location = lower_bound(value_to_key(x));
 
 		if(location == begin()){
 			backing.push_front(x);
 			location = begin();
 		}else{
-			--location;
-			backing.insert(location, x);
-			++location;
+			location = backing.insert(location.base_iterator(), x);
 		}
 		return location;
 	}
@@ -559,6 +611,6 @@ public:
 
 #pragma GCC visibility pop
 
-#endif
+#endif	//__STD_HEADER_ASSOCIATIVE_BASE
 
 	

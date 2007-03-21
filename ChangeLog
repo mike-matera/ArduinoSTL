@@ -14,6 +14,8 @@
 -	Now support ios::exception properly
 -	istream::get(char *s, streamsize n) is now more standards-compliant.
 -	Added new base to be used for associative containers (map, set, multimap, multiset).
+-	Fixed iterator returned by list::erase when erasing first element in list.
+-	Map and multimap classes have been rewritten with the new associative base.  Now passes test suite!
 
 0.2.1
 -	Now export std::calloc & std::realloc

@@ -493,7 +493,7 @@ namespace std{
 		if(position != end() ){
 			node * temp = position.link_struct();
 			if(temp == list_start){
-				position = end();
+				++position;
 				temp->next->previous = 0;
 				list_start = temp->next;
 			}else{

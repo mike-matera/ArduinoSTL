@@ -1,8 +1,147 @@
 #include <map>
 #include <iostream>
+#include "testframework.h"
+
+bool test_added_elements(){
+	std::multimap<std::string, double> test;
+	std::multimap<std::string, double>::iterator i;
+	std::pair<std::string, double> a;
+	
+	a.first="a";
+	a.second=1;
+	test.insert(a);
+
+	a.first="c";
+	a.second=3;
+	test.insert(a);
+
+	a.first="c";
+	a.second=3.1;
+	test.insert(a);
+
+	a.first="d";
+	a.second=4;
+	test.insert(a);
+
+	a.first="g";
+	a.second=7;
+	test.insert(a);
+
+
+	if(test.count("a") != 1){
+		return false;
+	}
+	if(test.count("c") != 2){
+		return false;
+	}
+	if(test.count("d") != 1){
+		return false;
+	}
+	if(test.count("g") != 1){
+		return false;
+	}
+	if(test.count("q") != 0){
+		return false;
+	}
+
+	std::map<double, double> b;
+	for(i = test.lower_bound("c"); i != test.upper_bound("c"); ++i){
+		b.insert(std::pair<double, double>(i->second, (*i).second));
+	}
+	if(b.count(3.1) != 1){
+		return false;
+	}
+	if(b.count(3) != 1){
+		return false;
+	}
+	if(b.size() != 2){
+		return false;
+	}
+	return true;
+}
+
+bool test_positioned_insert(){
+	std::multimap<std::string, double> test;
+	std::multimap<std::string, double>::iterator i;
+	std::pair<std::string, double> a;
+	
+	a.first="a";
+	a.second=1;
+	test.insert(a);
+
+	a.first="c";
+	a.second=3;
+	test.insert(a);
+
+	a.first="c";
+	a.second=3.1;
+	test.insert(a);
+
+	a.first="d";
+	a.second=4;
+	test.insert(a);
+
+	a.first="g";
+	a.second=7;
+	test.insert(a);
+
+	a.first="c";
+	a.second=3.14;
+	i=test.begin();
+	++i;
+	++i;
+
+	test.insert(i, a);
+
+	if(test.count("a") != 1){
+		return false;
+	}
+	if(test.count("c") != 3){
+		return false;
+	}
+	if(test.count("d") != 1){
+		return false;
+	}
+	if(test.count("g") != 1){
+		return false;
+	}
+	if(test.count("q") != 0){
+		return false;
+	}
+
+	std::map<double, double> b;
+	for(i = test.lower_bound("c"); i != test.upper_bound("c"); ++i){
+		b.insert(std::pair<double, double>(i->second, (*i).second));
+	}
+	if(b.count(3.1) != 1){
+		return false;
+	}
+	if(b.count(3) != 1){
+		return false;
+	}
+	if(b.count(3.14) != 1){
+		return false;
+	}
+	if(b.size() != 3){
+		return false;
+	}
+
+
+	return true;
+}
 
 
 int main(){
+
+        TestFramework::init();
+
+        TestFramework::AssertReturns<bool>(test_added_elements, true);
+        TestFramework::AssertReturns<bool>(test_positioned_insert, true);
+
+        TestFramework::results();
+
+
+
 	std::multimap<std::string, double> test;
 	std::multimap<std::string, double>::iterator i, j;
 	std::multimap<std::string, double>::const_iterator k;
@@ -10,7 +149,6 @@ int main(){
 	std::cout << "Start of multimap test" << std::endl;
 
 	std::cout << "Adding a few elements..." << std::endl;
-
 
 	std::pair<std::string, double> a;
 	std::pair<std::string, double> b;
@@ -36,44 +174,17 @@ int main(){
 	a.second=7;
 	test.insert(a);
 
-	i = test.begin();
-	while(i != test.end()){
-		std::cout << "Element " << i->first << ": " << i->second << std::endl;
-		++i;
-	}
-
 	std::cout << "Checking locations\n";
 
 	i = test.find("c");
-	std::cout << "Element c: " << i->first << ": " << i->second << std::endl;
+	std::cout << "Element c: " << i->first << ": " << std::endl;
 
 	i = test.find("d");
-	std::cout << "Element d: " << i->first << ": " << i->second << std::endl;
-
-
-	a.first="c";
-	a.second=3.14;
-	i=test.begin();
-	++i;
-	++i;
-
-	test.insert(i, a);
-
-	std::cout << "Testing positioned inserting\n";
-
-	i = test.begin();
-	while(i != test.end()){
-		std::cout << "Element " << i->first << ": " << i->second << std::endl;
-		++i;
-	}
-
-	std::cout << "Count of \"c\" elements: " << test.count("c") << std::endl;
-	std::cout << "Count of \"d\" elements: " << test.count("d") << std::endl;
-	std::cout << "Count of \"q\" elements: " << test.count("q") << std::endl;
+	std::cout << "Element d: " << i->first << ": " << std::endl;
 
 
 	i = test.lower_bound("c");
-	std::cout << "lower bound for c: " << i->first << ": " << i->second << std::endl;
+	std::cout << "lower bound for c: " << i->first << std::endl;
 
 	std::cout << "Erasing all \"c\" elements\n";
 	test.erase("c");
@@ -95,8 +206,6 @@ int main(){
 		std::cout << "Element " << i->first << ": " << i->second << std::endl;
 		++i;
 	}
-
-
 	
 	return 0;
 }

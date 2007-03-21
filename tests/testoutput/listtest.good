@@ -45,6 +45,13 @@ j: 52.8
 j: 12
 j: 33.3
 j: 33.3
+Erasing first element
+j: 52.4
+j: 52.8
+j: 12
+j: 33.3
+j: 33.3
+Proper iterator returned
 
 Testing reverse
 The following two lines should be identical:

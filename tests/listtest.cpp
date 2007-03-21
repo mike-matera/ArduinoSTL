@@ -88,6 +88,18 @@ int main(){
 		std::cout << "j: " << *j << std::endl;
 	}
 
+	std::cout << "Erasing first element\n";
+
+	i = temp.begin();
+	i = temp.erase(i);
+	for(j = temp.begin(); j!=temp.end(); j++){
+		std::cout << "j: " << *j << std::endl;
+	}
+	if(i == temp.begin()){
+		std::cout << "Proper iterator returned\n";
+	}else{
+		std::cout << "Incorrect iterator returned\n";
+	}
 
 	std::cout << "\nTesting reverse\n";
 	temp.clear();
