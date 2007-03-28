@@ -78,7 +78,7 @@ public:
 		: c(comp), value_to_key(v_to_k) { }
 protected:
 	__base_associative(const associative_type& x)
-		: c(x.c), backing(x.backing) { }
+		: c(x.c), value_to_key(x.value_to_key), backing(x.backing) { }
 
 public:
 	~__base_associative(){
@@ -206,13 +206,14 @@ public:
 	__base_associative &operator=(const __base_associative & x){
 		c = x.c;
 		backing = x.backing;
+		value_to_key = x.value_to_key;
 		return *this;
 	}
 	bool operator==(const __base_associative & x){
-		return (x.c == c && x.backing == backing);
+		return x.backing == backing;
 	}
 	bool operator!=(const __base_associative & x){
-		return (x.c != c || x.backing != backing);
+		return !(x.backing == backing);
 	}
 
 protected:
