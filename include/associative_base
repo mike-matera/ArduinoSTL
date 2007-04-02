@@ -78,7 +78,7 @@ public:
 		: c(comp), value_to_key(v_to_k) { }
 protected:
 	__base_associative(const associative_type& x)
-		: c(x.c), value_to_key(x.value_to_key), backing(x.backing) { }
+		: c(x.c), backing(x.backing), value_to_key(x.value_to_key) { }
 
 public:
 	~__base_associative(){
@@ -495,6 +495,16 @@ public:
 	explicit __single_associative(const Compare& comp, const Allocator& A, const key_type (*v_to_k)(const value_type))
 		: base(comp, A, v_to_k) { }
 
+	template <class InputIterator> __single_associative(
+		InputIterator first,
+		InputIterator last,
+		const Compare& comp,
+		const Allocator& A,
+		const key_type (*v_to_k)(const value_type)
+	) : base(comp, A, v_to_k) {
+		insert(first, last);
+	}
+
 	pair<iterator, bool> insert(const value_type& x){
 		pair<iterator, bool> retval;
 		iterator location = lower_bound(value_to_key(x));
@@ -525,7 +535,7 @@ public:
 	template <class InputIterator> void insert(InputIterator first, InputIterator last){
 		while(first != last){
 			insert(*first);
-			++last;
+			++first;
 		}
 	}
 
@@ -579,6 +589,16 @@ public:
 	explicit __multi_associative(const Compare& comp, const Allocator& A, const key_type (*v_to_k)(const value_type))
 		: base(comp, A, v_to_k) { }
 
+	template <class InputIterator> __multi_associative(
+		InputIterator first,
+		InputIterator last,
+		const Compare& comp,
+		const Allocator& A,
+		const key_type (*v_to_k)(const value_type)
+	) : base(comp, A, v_to_k) {
+		insert(first, last);
+	}
+
 	iterator insert(const value_type& x){
 		iterator location = lower_bound(value_to_key(x));
 
@@ -600,7 +620,7 @@ public:
 	template <class InputIterator> void insert(InputIterator first, InputIterator last){
 		while(first != last){
 			insert(*first);
-			++last;
+			++first;
 		}
 	}
 };

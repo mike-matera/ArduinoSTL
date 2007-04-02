@@ -108,7 +108,8 @@ public:
 		: base(comp, al, v_t_k) {  }
 
 	template <class InputIterator> map(InputIterator first, InputIterator last,
-		const Compare& comp = Compare(), const Allocator& = Allocator());
+		const Compare& comp = Compare(), const Allocator& al = Allocator())
+		: base(first, last, comp, al, v_t_k) {  }
 
 	map(const map<Key,T,Compare,Allocator>& x) : base(x) {  }
 	~map() {  }
@@ -143,18 +144,6 @@ public:
 protected:
 	using base::backing;
 };
-
-
-	template <class Key, class T, class Compare, class Allocator> template <class InputIterator>
-		map<Key, T, Compare, Allocator>::
-		map(InputIterator first, InputIterator last, const Compare& comp, const Allocator& al)
-		: base(comp, al, v_t_k)
-	{
-		while(first !=last){
-			insert(*first);
-			++first;
-		}
-	}
 
 
 //Implementation of multimap
@@ -193,7 +182,9 @@ public:
 		: base(comp, al, v_t_k) {  }
 
 	template <class InputIterator> multimap(InputIterator first, InputIterator last,
-		const Compare& comp = Compare(), const Allocator& = Allocator());
+		const Compare& comp = Compare(), const Allocator& al = Allocator())
+		: base(first, last, comp, al, v_t_k) {  }
+
 
 	multimap(const multimap<Key,T,Compare,Allocator>& x) : base(x) {  }
 	~multimap() {  }
@@ -225,20 +216,6 @@ protected:
 	using base::c;
 
 };
-
-
-
-	template <class Key, class T, class Compare, class Allocator> template <class InputIterator>
-		multimap<Key, T, Compare, Allocator>::
-		multimap(InputIterator first, InputIterator last, const Compare& comp, const Allocator& al)
-		: base(comp, al, v_t_k)
-	{
-		while(first !=last){
-			insert(*first);
-			++first;
-		}
-	}
-
 
 
 /* Non-member functions.  These are at the end because they are not associated with any

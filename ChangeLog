@@ -17,6 +17,7 @@
 -	Fixed iterator returned by list::erase when erasing first element in list.
 -	Map and multimap classes have been rewritten with the new associative base.  Now passes test suite!
 -	Set and multiset classes have been rewritten with the new associative base.
+-	Set and Map now should insert from iterators correctly.
 
 0.2.1
 -	Now export std::calloc & std::realloc

@@ -81,7 +81,8 @@ public:
 		: base(comp, al, v_t_k) {  }
 
 	template <class InputIterator> set(InputIterator first, InputIterator last,
-		const Compare& comp = Compare(), const Allocator& = Allocator());
+		const Compare& comp = Compare(), const Allocator& al = Allocator())
+		: base(first, last, comp, al, v_t_k) {  }
 
 	set(const set<Key, Compare,Allocator>& x) : base(x) {  }
 	~set() {  }
@@ -148,7 +149,9 @@ public:
 		: base(comp, al, v_t_k) {  }
 
 	template <class InputIterator> multiset(InputIterator first, InputIterator last,
-		const Compare& comp = Compare(), const Allocator& = Allocator());
+		const Compare& comp = Compare(), const Allocator& al = Allocator())
+		: base(first, last, comp, al, v_t_k) {  }
+
 
 	multiset(const multiset<Key, Compare, Allocator>& x) : base(x) {  }
 	~multiset() {  }

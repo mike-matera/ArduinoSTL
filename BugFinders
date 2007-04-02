@@ -55,6 +55,10 @@ dcas: 5 Points
 2006-03-07: 0+2: Found missing string::find_last_not_of - prop. fix in BTS
 2006-03-07: 0+2: Found missing std::ws and submitted proposed fix in BTS
 
+Vijay: 4 Points
+2007-04-01: 2: Found problem with set construct-from-iterators.  Provided test case.
+2007-03-10: 2: Found lack of ios::exception support
+
 Ciaran: 4 Points
 2005-12-21: 1+1: Found that a const iterator doesn't handle operator*
 2005-12-20: 1+1: Found that iterator and const_iterator weren't compatible
@@ -65,9 +69,6 @@ thritter: 3 Points
 Faye2040: 3 Points
 2006-02-10: 1  : Noted that long_double support should depend upon float support
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
-
-Vijay: 2 Points
-2007-03-10: Found lack of ios::exception support
 
 Thomas Volpini: 2 Points
 2006-08-11: Found memory leak in vector.  Provided test case and fix.
