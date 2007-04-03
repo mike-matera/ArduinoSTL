@@ -276,7 +276,7 @@ public:
 		//The following approach ensures that we only need to 
 		//provide code for ++ in one place (above)
 		_associative_citer temp(base_iter);
-		++temp;
+		++base_iter;
 		return temp;
 	}
 	_associative_citer & operator--(){
@@ -287,7 +287,7 @@ public:
 		//The following approach ensures that we only need to 
 		//provide code for -- in one place (above)
 		_associative_citer temp(base_iter);
-		--temp;
+		--base_iter;
 		return temp;
 	}
 
@@ -358,7 +358,7 @@ public:
 		//The following approach ensures that we only need to 
 		//provide code for ++ in one place (above)
 		_associative_iter temp(base_iter);
-		++temp;
+		++base_iter;
 		return temp;
 	}
 	_associative_iter & operator--(){
@@ -369,7 +369,7 @@ public:
 		//The following approach ensures that we only need to 
 		//provide code for -- in one place (above)
 		_associative_iter temp(base_iter);
-		--temp;
+		--base_iter;
 		return temp;
 	}
 	operator _associative_citer() const{

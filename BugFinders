@@ -56,6 +56,7 @@ dcas: 5 Points
 2006-03-07: 0+2: Found missing std::ws and submitted proposed fix in BTS
 
 Vijay: 4 Points
+2007-04-03: 2: Found problem with set and map iterators - provided test case.
 2007-04-01: 2: Found problem with set construct-from-iterators.  Provided test case.
 2007-03-10: 2: Found lack of ios::exception support
 

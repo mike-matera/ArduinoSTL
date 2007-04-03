@@ -1,5 +1,6 @@
 #include <map>
 #include <iostream>
+#include "testframework.h"
 
 
 struct Int {
@@ -9,6 +10,27 @@ struct Int {
 
 std::ostream& operator<<(std::ostream& s, Int x)
   { return s << x.val; }
+
+
+bool canForwardIterateCorrectly(){
+	std::map<int, int> a;
+
+	a[3] = 13;
+	a[5] = 15;
+
+	std::map<int, int>::iterator i;
+	int count;
+
+	for(i = a.begin(), count=0; i != a.end() && count < 20; i++, count++){
+		std::cout << "Count: " << count << std::endl;
+		int temp = i->first;
+	}
+
+	if(2 == count){
+		return 2;
+	}
+	return false;
+}
 
 
 int main(){
@@ -206,7 +228,14 @@ int main(){
 
 	std::cout << "m_2 is now " << m_2->second << std::endl;
 	std::cout << "m_3 is now " << m_3->second << std::endl;
+
+        std::cout << "Begining map test" << std::endl;
+
+        TestFramework::init();
 	
+	TestFramework::AssertReturns<bool>(canForwardIterateCorrectly, true);
+
+	TestFramework::results();
 
 	return 0;
 }
