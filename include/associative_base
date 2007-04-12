@@ -153,6 +153,9 @@ public:
 
 	iterator find(const key_type& x){
 		iterator retval = lower_bound(x);
+		if(retval == end()){
+			return retval;
+		}
 		if(c(x, value_to_key(*retval))){
 			return end();
 		}
@@ -160,6 +163,9 @@ public:
 	}
         const_iterator find(const key_type& x) const{
 		const_iterator retval = lower_bound(x);
+		if(retval == end()){
+			return retval;
+		}
 		if(c(x, value_to_key(*retval))){
 			return end();
 		}

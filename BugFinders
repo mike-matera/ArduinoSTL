@@ -71,6 +71,9 @@ Faye2040: 3 Points
 2006-02-10: 1  : Noted that long_double support should depend upon float support
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
 
+Christian Taedcke: 2 Points
+2007-04-11: 1+1: Found a problem with find dereferencing end().  Provided fix.
+
 Thomas Volpini: 2 Points
 2006-08-11: Found memory leak in vector.  Provided test case and fix.
 
