@@ -2,6 +2,7 @@
 #include <iostream>
 
 unsigned char correctValue(unsigned long int pos);
+bool testIFStreamUnderflowOnUnopened();
 
 
 int main()
@@ -117,6 +118,15 @@ int main()
 	std::cout << "Current position: 30\n";
 	std::cout << "Current position: " << inFile.tellg() << std::endl;
 
+	std::cout << "Checking input on an unopened fstream: " << std::endl;
+
+	if( testIFStreamUnderflowOnUnopened() ){
+		std::cout << "OK\n";
+	}else{
+		std::cout << "ERROR\n";
+	}
+	
+
 
 	return 0;
 }
@@ -128,4 +138,13 @@ unsigned char correctValue(unsigned long int pos){
 	}
 	return (pos - 16);
 
+}
+
+
+bool testIFStreamUnderflowOnUnopened(){
+	std::ifstream test;
+	if(test.get() == std::char_traits<char>::eof() ){
+		return true;
+	}
+	return false;
 }

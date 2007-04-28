@@ -286,3 +286,5 @@ Character 29 read in correctly
 The following two lines should be identical
 Current position: 30
 Current position: 30
+Checking input on an unopened fstream: 
+OK

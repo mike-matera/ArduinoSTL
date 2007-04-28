@@ -202,6 +202,10 @@ namespace std{
 
 			*/
 
+			if(!is_open()){
+				return traits::eof();
+			}
+
 			if(basic_streambuf<charT,traits>::eback() == 0){
 				//No buffer, so...
 				charT c;

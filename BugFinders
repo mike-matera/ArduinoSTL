@@ -13,7 +13,8 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
-tommi: 34 Points
+tommi: 36 Points
+2007-04-27: 1+1: Found problem with fstreambuf reading closed file descriptor / BTS
 2007-03-07: 1+1: Found that ostream was improperly flushing on destruction
 2006-09-04: 1+1: Wanted implementation of locale::name, used BTS and provided patch
 2006-09-04: 1+1: Found problem with default flags for ios plus provided patch
