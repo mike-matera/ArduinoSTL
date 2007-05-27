@@ -389,6 +389,7 @@ namespace std{
 		_UCXXEXPORT basic_ios(const basic_ios<charT,traits> &){ }
 		_UCXXEXPORT basic_ios<charT,traits> & operator=(const basic_ios<charT,traits> &){ return *this; }
 		_UCXXEXPORT void init(basic_streambuf<charT,traits>* sb){
+			ios_base::mformat = skipws|dec;
 			mstreambuf = sb;
 			mstate = goodbit;
 			throw_mask = goodbit;

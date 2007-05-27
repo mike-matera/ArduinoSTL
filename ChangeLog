@@ -19,6 +19,7 @@
 -	Set and multiset classes have been rewritten with the new associative base.
 -	Set and Map now should insert from iterators correctly.
 -	Fix fstreambuf to not segfault on reading from a closed file descripter.
+-	Have ios_Base::init reset the stream flags as per the spec.
 
 0.2.1
 -	Now export std::calloc & std::realloc

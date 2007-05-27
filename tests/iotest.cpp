@@ -20,7 +20,6 @@ std::basic_ios<char, std::char_traits<char> > &
 	return stream;
 }
 
-
 int main(){
 //	double q;
 //	std::cin >> q;
