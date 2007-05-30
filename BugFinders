@@ -13,7 +13,8 @@
 //Using the bug tracking system at bugs.uclibc.org gets you a bonus point
 
 
-tommi: 37 Points
+tommi: 39 Points
+2007-05-29: 1+1: Found problem with string.compare(), provided solution / BTS
 2007-04-27: 1  : Found missing formatflags initialization in ios_base::init / BTS
 2007-04-27: 1+1: Found problem with fstreambuf reading closed file descriptor / BTS
 2007-03-07: 1+1: Found that ostream was improperly flushing on destruction

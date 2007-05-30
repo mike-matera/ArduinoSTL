@@ -596,7 +596,7 @@ public:
 		if(len1 > n1){
 			len1 = n1;
 		}
-		size_type len2 = vector<Ch, A>::elements - pos2;
+		size_type len2 = str.vector<Ch, A>::elements - pos2;
 		if(len2 > n2){
 			len2 = n2;
 		}

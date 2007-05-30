@@ -9,6 +9,14 @@ bool checkStringCompareEquals(){
 	return (b == c);
 }
 
+bool checkStringCompareCompare(){
+	std::string l = "Tommi Maekitalo";
+	std::string s = "Mae";
+	int c = l.compare(6, 3, s);
+
+	return (0 == c);
+}
+
 bool checkStringCompareNotEquals(){
 	std::string b = "This is test string b";
 	std::string c = "This is test string c";
@@ -405,6 +413,7 @@ int main(){
 	std::cout << std::endl << "You entered: " << a << std::endl;
 
 	TestFramework::AssertReturns<bool>(checkStringCompareEquals, false);
+	TestFramework::AssertReturns<bool>(checkStringCompareCompare, true);
 	TestFramework::AssertReturns<bool>(checkStringCompareNotEquals, true);
 
 	TestFramework::AssertReturns<bool>(checkStringCompareForwardsEqual, true);
