@@ -21,6 +21,7 @@
 -	Fix fstreambuf to not segfault on reading from a closed file descripter.
 -	Have ios_Base::init reset the stream flags as per the spec.
 -	Fixed string.compare() to do math on the correct variables.
+-	Added location for complex tests, plus a preliminary test attempting to reproduce suspected issue.
 
 0.2.1
 -	Now export std::calloc & std::realloc
