@@ -12,7 +12,7 @@ template <class T> void testClass(std::string tname){
 	typename std::char_traits<T>::int_type i1, i2;	
 	typename std::char_traits<T>::char_type c1, c2;	
 	const T* a1 = "teststring";
-	const T* a2 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()_+{}|[]\\:;\"'<>?,./";
+	// const T* a2 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()_+{}|[]\\:;\"'<>?,./";
 	
 	//Check to make sure that EOF values are comparable and set properly
 	i1 = std::char_traits<T>::eof();

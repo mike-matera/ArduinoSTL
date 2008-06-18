@@ -69,7 +69,12 @@ namespace std{
 		typename traits::int_type c;
 		while(true){
 			c = stream.rdbuf()->sgetc();
-			if(c != traits::eof() && isspace(c) == false && (isdigit(c) || c == '.' || c == ',' )){
+			if(c != traits::eof() && isspace(c) == false && (
+				isdigit(c) ||
+				c == '.' ||
+				c == ',' ||
+				((c == '-' || c == '+') && temp.size() == 0) )
+			){
 				stream.rdbuf()->sbumpc();
 				temp.append(1, traits::to_char_type(c));
 			}else{

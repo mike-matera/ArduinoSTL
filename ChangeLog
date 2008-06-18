@@ -1,3 +1,8 @@
+0.2.3
+-	Add support for ostream adjustwidth support
+-	Add support for bool limits support
+-	Misc fstream fixes
+
 0.2.2
 -	Fixed default flags for ios
 -	Implemented locale::name() for compatability reasons

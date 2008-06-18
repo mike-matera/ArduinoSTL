@@ -1,4 +1,4 @@
-/*	Copyright (C) 2004 Garrett A. Kajmowicz
+/*	Copyright (C) 2004-2008 Garrett A. Kajmowicz
 
 	This file is part of the uClibc++ Library.
 
@@ -129,17 +129,24 @@ namespace std {
 			return *this;
 		}
 
-		_UCXXEXPORT void printout(const char_type* s, streamsize n)
-                {
-                  int extra = ios::width() - n;
-                  if ((ios::flags()&ios::adjustfield) == ios::right)
-                    while (extra-- > 0)
-                      put(ios::fill());
-                  write(s, n);
-                  if ((ios::flags()&ios::adjustfield) == ios::left)
-                    while (extra-- > 0)
-                      put(ios::fill());
-                }
+		_UCXXEXPORT void printout(const char_type* s, streamsize n){
+			streamsize extra = ios::width() - n;
+			if ((ios::flags()&ios::adjustfield) == ios::right){
+				while (extra > 0) {
+					--extra;
+					put(ios::fill());
+				}
+			}
+			write(s, n);
+			if ((ios::flags()&ios::adjustfield) == ios::left) {
+				while (extra > 0) {
+					--extra;
+					put(ios::fill());
+				}
+			}
+			// Width value only applies for the next output operation.  Reset to zero.
+			ios::width(0);
+		}
 
 	protected:
 		basic_ostream(const basic_ostream<charT,traits> &){ }

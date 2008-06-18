@@ -92,9 +92,12 @@ Ted Schroeder: 2 Points
 Thomas Giesel: 2 Points
 2005-03-02: 2  :  Found problems in getline code with minimal test case.
 
+Peter Nixon: 3 Points
+2008-06-18: 2 : Found that limits<bool> asn't definied and provided implementation.
+2008-06-18: 1 : Found that ios_base::width was not being honored and provided partial fix.
+
 Manjuantha Srinivasan: 1 Point
 2006-11-28: 1 : Found that the iostream library did not flush contents on destruction.
-
 
 Anthony Lee: 1 Point
 2005-01-24: 1  : Found problem in functional which had const missing causing havok

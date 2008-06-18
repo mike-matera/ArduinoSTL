@@ -580,7 +580,7 @@ template <> _UCXXEXPORT basic_filebuf<wchar_t, char_traits<wchar_t> >::int_type
 		explicit _UCXXEXPORT basic_ofstream(const char* s, ios_base::openmode mode = ios_base::out | ios_base::trunc) :
 			basic_ios<charT, traits>(&sb), basic_ostream<charT,traits>(&sb)
 		{
-			if(sb.open(s, mode) == 0){
+			if(sb.open(s, mode | ios_base::out ) == 0){
 				basic_ios<charT,traits>::setstate(ios_base::failbit);
 			}
 		}

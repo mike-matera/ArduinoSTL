@@ -14,3 +14,7 @@ Test of reading istream into a function:
 Number of characters most recently read in: 0
 Test of reading ios into a function: 
 Good status: true
+         55.1000005.2
+66.1000006.2
+77.1000007.2
+88.1000008.2
