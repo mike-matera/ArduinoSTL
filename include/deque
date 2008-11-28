@@ -176,7 +176,19 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator==(const deque_citer & d) const{
+			if(container == d.container && element == d.element){
+				return true;
+			}
+			return false;
+		}
 		bool operator!=(const deque_iter & d) const{
+			if(container != d.container || element  != d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator!=(const deque_citer & d) const{
 			if(container != d.container || element  != d.element){
 				return true;
 			}
@@ -188,7 +200,19 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator<(const deque_citer & d) const{
+			if(element < d.element){
+				return true;
+			}
+			return false;
+		}
 		bool operator<=(const deque_iter & d) const{
+			if(element <= d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator<=(const deque_citer & d) const{
 			if(element <= d.element){
 				return true;
 			}
@@ -200,7 +224,19 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator>(const deque_citer & d) const{
+			if(element > d.element){
+				return true;
+			}
+			return false;
+		}
 		bool operator>=(const deque_iter & d) const{
+			if(element >= d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator>=(const deque_citer & d) const{
 			if(element >= d.element){
 				return true;
 			}
@@ -263,6 +299,7 @@ namespace std{
 	public:
 		deque_citer() : container(0), element(0) {  }
 		deque_citer(const deque_citer & d) : container (d.container), element(d.element) {  }
+		deque_citer(const deque_iter & d) : container (d.container), element(d.element) {  }
 		deque_citer(const deque<T, Allocator> * c, typename Allocator::size_type e)
 			: container(c), element(e)
 		{
@@ -286,7 +323,19 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator==(const deque_iter & d) const{
+			if(container == d.container && element == d.element){
+				return true;
+			}
+			return false;
+		}
 		bool operator!=(const deque_citer & d) const{
+			if(container != d.container || element  != d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator!=(const deque_iter & d) const{
 			if(container != d.container || element  != d.element){
 				return true;
 			}
@@ -298,7 +347,19 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator<(const deque_iter & d) const{
+			if(element < d.element){
+				return true;
+			}
+			return false;
+		}
 		bool operator<=(const deque_citer & d) const{
+			if(element <= d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator<=(const deque_iter & d) const{
 			if(element <= d.element){
 				return true;
 			}
@@ -310,7 +371,19 @@ namespace std{
 			}
 			return false;
 		}
+		bool operator>(const deque_iter & d) const{
+			if(element > d.element){
+				return true;
+			}
+			return false;
+		}
 		bool operator>=(const deque_citer & d){
+			if(element >= d.element){
+				return true;
+			}
+			return false;
+		}
+		bool operator>=(const deque_iter & d){
 			if(element >= d.element){
 				return true;
 			}

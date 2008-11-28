@@ -32,6 +32,27 @@ bool canForwardIterateCorrectly(){
 	return false;
 }
 
+bool canCompareConstNonConstIter() {
+	std::map<long, double> m;
+	m[5] = 2.3;
+	m[6] = 3.3;
+	m[7] = 3.4;
+	std::map<long, double>::const_iterator i = m.begin();
+	std::map<long, double>::iterator j = m.begin();
+	std::map<long, double>::iterator k = m.end();
+
+        if (i == i && i == j && j == i && j == j) {
+                // Do nothing
+        } else {
+                return false;
+        }
+
+        if (i != i || i != j || j != i || j != j) {
+                return false;
+        }
+
+        return true;
+}
 
 int main(){
 	std::map<std::string, double> test;
@@ -234,6 +255,7 @@ int main(){
         TestFramework::init();
 	
 	TestFramework::AssertReturns<bool>(canForwardIterateCorrectly, true);
+	TestFramework::AssertReturns<bool>(canCompareConstNonConstIter, true);
 
 	TestFramework::results();
 

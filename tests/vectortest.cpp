@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "testframework.h"
 
 class myclass{
 private:
@@ -23,6 +24,28 @@ public:
 		num = i;
 	}
 };
+
+bool canCompareConstNonConstIter() {
+	std::vector<long> v;
+	v.push_back(5);
+	v.push_back(6);
+	v.push_back(7);
+	std::vector<long>::const_iterator i = v.begin();
+	std::vector<long>::iterator j = v.begin();
+	std::vector<long>::iterator k = v.end();
+
+	if (i == i && i == j && j == i && j == j) {
+		// Do nothing
+	} else {
+		return false;
+	}
+
+	if (i != i || i != j || j != i || j != j) {
+		return false;
+	}
+
+	return true;
+}
 
 
 int main(){
@@ -210,6 +233,12 @@ int main(){
 
 	mcp.clear();
 	delete m6;
+
+	TestFramework::init();
+
+        TestFramework::AssertReturns<bool>(canCompareConstNonConstIter, true);
+
+        TestFramework::results();
 
 	return 0;
 }

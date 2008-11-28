@@ -2,6 +2,7 @@
 -	Add support for ostream adjustwidth support
 -	Add support for bool limits support
 -	Misc fstream fixes
+-	Add support for comparison between deque iteractors and deque const_iterators
 
 0.2.2
 -	Fixed default flags for ios

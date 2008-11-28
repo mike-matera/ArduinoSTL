@@ -64,6 +64,28 @@ bool canSwapBinary(){
 	return true;
 }
 
+bool canCompareConstNonConstIter() {
+	std::deque<long> d;
+	d.push_back(5);
+	d.push_back(6);
+	d.push_back(7);
+	std::deque<long>::const_iterator i = d.begin();
+	std::deque<long>::iterator j = d.begin();
+	std::deque<long>::iterator k = d.end();
+
+	if (i == i && i == j && j == i && j == j) {
+		// Do nothing
+	} else {
+		return false;
+	}
+
+	if (i != i || i != j || j != i || j != j) {
+		return false;
+	}
+
+	return true;
+}
+
 int main(){
 	std::deque<double> test;
 	std::deque<double>::iterator i,j;
@@ -225,6 +247,7 @@ int main(){
 	
 	TestFramework::AssertReturns<bool>(canSwapUnary, true);
 	TestFramework::AssertReturns<bool>(canSwapBinary, true);
+	TestFramework::AssertReturns<bool>(canCompareConstNonConstIter, true);
 
 	TestFramework::results();
 

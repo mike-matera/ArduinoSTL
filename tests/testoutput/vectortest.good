@@ -103,6 +103,11 @@ The following two lines should be identical:
 Vector size: 103
 Vector size: 103
 Calling destructor with num: 6
+.
+------------------------------
+Ran 1 tests
+
+OK
 Calling destructor with num: 5
 Calling destructor with num: 4
 Calling destructor with num: 3
