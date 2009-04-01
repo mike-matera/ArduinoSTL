@@ -1,4 +1,5 @@
 0.2.3
+-	Ensure that map and mmap swap functions are properly exported
 -	Add support for ostream adjustwidth support
 -	Add support for bool limits support
 -	Misc fstream fixes

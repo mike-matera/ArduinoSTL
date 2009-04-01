@@ -22,12 +22,10 @@ bool canForwardIterateCorrectly(){
 	int count;
 
 	for(i = a.begin(), count=0; i != a.end() && count < 20; i++, count++){
-		std::cout << "Count: " << count << std::endl;
-		int temp = i->first;
 	}
 
 	if(2 == count){
-		return 2;
+		return true;
 	}
 	return false;
 }
@@ -53,6 +51,69 @@ bool canCompareConstNonConstIter() {
 
         return true;
 }
+
+
+bool canSwapCorrectly(){
+	std::map<int, int> a, b;
+
+	a[3] = 13;
+	a[5] = 15;
+
+	b[3] = 23;
+	b[9] = 27;
+
+	std::map<int, int>::iterator i;
+
+	i = a.find(3);
+	if (i == a.end()) {
+		return false;
+	}
+	i = a.find(9);
+	if (i != a.end()) {
+		return false;
+	}
+
+	i = b.find(3);
+	if (i == b.end()) {
+		return false;
+	}
+
+	i = b.find(5);
+	if (i != b.end()) {
+		return false;
+	}
+
+	a.swap(b);
+
+	i = a.find(3);
+	if (i == a.end()) {
+		return false;
+	}
+	i = a.find(5);
+	if (i != a.end()) {
+		return false;
+	}
+	i = a.find(9);
+	if (i == a.end()) {
+		return false;
+	}
+
+	i = b.find(3);
+	if (i == b.end()) {
+		return false;
+	}
+	i = b.find(5);
+	if (i == b.end()) {
+		return false;
+	}
+	i = b.find(9);
+	if (i != b.end()) {
+		return false;
+	}
+
+	return true;
+}
+
 
 int main(){
 	std::map<std::string, double> test;
@@ -256,6 +317,7 @@ int main(){
 	
 	TestFramework::AssertReturns<bool>(canForwardIterateCorrectly, true);
 	TestFramework::AssertReturns<bool>(canCompareConstNonConstIter, true);
+	TestFramework::AssertReturns<bool>(canSwapCorrectly, true);
 
 	TestFramework::results();
 

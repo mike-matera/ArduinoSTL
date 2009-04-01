@@ -135,6 +135,7 @@ public:
 	using base::lower_bound;
 	using base::upper_bound;
 	using base::equal_range;
+	using base::swap;
 
 	reference operator[](const key_type& k){
 		//This is from the spec and is quite ugly.
@@ -210,6 +211,7 @@ public:
 	using base::lower_bound;
 	using base::upper_bound;
 	using base::equal_range;
+	using base::swap;
 
 protected:
 

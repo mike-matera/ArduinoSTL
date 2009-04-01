@@ -96,9 +96,13 @@ Peter Nixon: 3 Points
 2008-06-18: 2 : Found that limits<bool> asn't definied and provided implementation.
 2008-06-18: 1 : Found that ios_base::width was not being honored and provided partial fix.
 
+Vladimir Dronnikov: 1 Point
+2009-04-01: 1: Found a problem with map and mmap now exporting swap correctly.
+
 Manjuantha Srinivasan: 1 Point
 2006-11-28: 1 : Found that the iostream library did not flush contents on destruction.
 
 Anthony Lee: 1 Point
 2005-01-24: 1  : Found problem in functional which had const missing causing havok
 
+ 
