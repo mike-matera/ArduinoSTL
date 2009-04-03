@@ -138,8 +138,11 @@ public:
 	using base::swap;
 
 	reference operator[](const key_type& k){
-		//This is from the spec and is quite ugly.
-		return (*((insert(make_pair(k, T()))).first)).second;
+		iterator i = lower_bound(k);
+		if (i == end() || base::c(k, i->first)) {
+			i = insert(make_pair(k, T())).first;
+		}
+		return i->second;
 	}
 
 protected:

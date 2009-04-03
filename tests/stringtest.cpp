@@ -382,6 +382,14 @@ bool checkFindLastNotOfThis(){
 	return 41 == retval;
 }
 
+bool checkInsertAtInteractor() {
+	std::string a = "abcd";
+	a.insert(a.end(), 'q');
+	if (a != "abcdq") {
+		return false;
+	}
+	return true;
+}
 
 int main(){
 	TestFramework::init();
@@ -480,6 +488,8 @@ int main(){
 	TestFramework::AssertReturns<bool>(checkFindLastNotOfIsChar7, true);
 	TestFramework::AssertReturns<bool>(checkFindLastNotOfQ, true);
 	TestFramework::AssertReturns<bool>(checkFindLastNotOfThis, true);
+
+	TestFramework::AssertReturns<bool>(checkInsertAtInteractor, true);
 
 	TestFramework::results();
 

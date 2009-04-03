@@ -325,7 +325,7 @@ bool testPushHeap(){
 
 bool testSortHeap(){
 	std::vector<int> a;
-	int v[9] = {93, 68, 55, 36, 27, 22, 12, 7, 5};
+	int v[9] = {5, 7, 12, 22, 27, 36, 55, 68, 93};
 
 	a.push_back(12);
 	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
@@ -346,7 +346,7 @@ bool testSortHeap(){
 	a.push_back(68);
 	std::push_heap<std::vector<int>::iterator>(a.begin(), a.end());
 
-	std::sort_heap<std::vector<int>::iterator, std::greater<int> >(a.begin(), a.end(), std::greater<int>() );
+	std::sort_heap<std::vector<int>::iterator>(a.begin(), a.end() );
 
 	for(int j = 0; j < 9; ++j){
 		if(v[j] != a[j]){

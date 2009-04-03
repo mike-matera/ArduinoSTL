@@ -34,11 +34,11 @@ namespace std{
 
 
 /*
- *	The basic premis here is that most of the code used by map, multimap, set and 
+ *	The basic premise here is that most of the code used by map, multimap, set and 
  *	multiset is really common.  There are a number of interface additions, and
  *	considerations about how to address multiple enteries with the same key.
  *	The goal is that the code tree/storage code should be here, and managing
- * 	single or moultiple counts will be loeft to subclasses.
+ * 	single or multiple counts will be left to subclasses.
  *	Yes, inheritence for the purpose of code sharing is usually a bad idea.  However,
  * 	since our goal is to reduce tht total amount of code written and the overall binary
  *	size, this seems to be the best approach possible.

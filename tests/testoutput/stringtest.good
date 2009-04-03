@@ -8,8 +8,8 @@ a = b + c: This is test string bThis is test string c
 a = "Test cstring" + b: Test cstringThis is test string b
 Please enter a test string:
 You entered: word1
-........................................................
+.........................................................
 ------------------------------
-Ran 56 tests
+Ran 57 tests
 
 OK

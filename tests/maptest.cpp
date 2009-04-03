@@ -114,6 +114,30 @@ bool canSwapCorrectly(){
 	return true;
 }
 
+class my_type {
+public:
+	my_type() : id(count++) { }
+	void test() { }
+
+	int id;
+	static int count;
+};
+
+int my_type::count = 0;
+
+
+bool canSubscriptWithoutExtraObjectCreation() {
+	std::map<int, my_type> mymap;
+	mymap[1].test();
+	mymap[1].test();
+
+	if (my_type::count != 1) {
+		return false;
+	}
+
+	return true;
+}
+
 
 int main(){
 	std::map<std::string, double> test;
@@ -188,7 +212,6 @@ int main(){
 	std::cout << "Elements in reverse order:\n";
 	ri = test.rbegin();
 	while(ri != test.rend()){
-//		std::cout << ri->first << ": " << ri->second << std::endl;
 		std::cout << (*ri).first << ": " << (*ri).second << std::endl;
 		++ri;
 	}
@@ -318,6 +341,7 @@ int main(){
 	TestFramework::AssertReturns<bool>(canForwardIterateCorrectly, true);
 	TestFramework::AssertReturns<bool>(canCompareConstNonConstIter, true);
 	TestFramework::AssertReturns<bool>(canSwapCorrectly, true);
+	TestFramework::AssertReturns<bool>(canSubscriptWithoutExtraObjectCreation, true);
 
 	TestFramework::results();
 

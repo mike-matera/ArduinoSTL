@@ -1,4 +1,6 @@
 0.2.3
+-	Have string use some of the base class insert functions to be more complete
+-	Change map::operator[] to not create unnecessary temp objects.
 -	Ensure that map and mmap swap functions are properly exported
 -	Add support for ostream adjustwidth support
 -	Add support for bool limits support

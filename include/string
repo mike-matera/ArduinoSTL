@@ -283,7 +283,7 @@ public:
 		return *this;
 	}
 
-//	iterator insert(iterator p, charT c = charT());
+	using vector<Ch, A>::insert;
 //	void insert(iterator p, size_type n, charT c);
 //	template<class InputIterator> void insert(iterator p, InputIterator first, InputIterator last);
 

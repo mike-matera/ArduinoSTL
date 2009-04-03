@@ -4,6 +4,8 @@
 #include <fstream>
 #include <istream>
 
+#include "testframework.h"
+
 //using namespace std;
 
 std::basic_istream<char, std::char_traits<char> > &
@@ -18,6 +20,15 @@ std::basic_ios<char, std::char_traits<char> > &
 {
 	std::cout << "Good status: " << stream.good() << std::endl;
 	return stream;
+}
+
+bool canSeeIosBaseProperties() {
+	std::ios_base::openmode a;
+	a = std::ios_base::app;
+	a = std::ios_base::in;
+	a = std::ios_base::out;
+
+	return true;
 }
 
 void testFieldWidth() {
@@ -104,6 +115,13 @@ int main(){
 	s_r >> myIosTestFunction;
 
 	testFieldWidth();
+
+
+        TestFramework::AssertReturns<bool>(canSeeIosBaseProperties, true);
+
+        TestFramework::results();
+
+
 
 	return 0;
 }

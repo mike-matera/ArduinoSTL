@@ -74,6 +74,13 @@ Faye2040: 3 Points
 2006-02-10: 1  : Noted that long_double support should depend upon float support
 2006-02-09: 1+1: Found problem with functional binder.  Used BTS.
 
+Peter Nixon: 3 Points
+2008-06-18: 2 : Found that limits<bool> asn't definied and provided implementation.
+2008-06-18: 1 : Found that ios_base::width was not being honored and provided partial fix.
+
+Olivier Hochreutiner: 2 Points
+2009-04-03: 1+1: Found a problem with map::operator[] and provided test case.
+
 Christian Taedcke: 2 Points
 2007-04-11: 1+1: Found a problem with find dereferencing end().  Provided fix.
 
@@ -91,10 +98,6 @@ Ted Schroeder: 2 Points
 
 Thomas Giesel: 2 Points
 2005-03-02: 2  :  Found problems in getline code with minimal test case.
-
-Peter Nixon: 3 Points
-2008-06-18: 2 : Found that limits<bool> asn't definied and provided implementation.
-2008-06-18: 1 : Found that ios_base::width was not being honored and provided partial fix.
 
 Vladimir Dronnikov: 1 Point
 2009-04-01: 1: Found a problem with map and mmap now exporting swap correctly.
