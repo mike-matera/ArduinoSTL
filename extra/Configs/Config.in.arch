@@ -43,7 +43,7 @@ config BUILD_EXTRA_LIBRARIES
 	string "Extra Library Link Flags"
 	default ""
 	help
-	  Set this to link against extra libries when building the library.  This is
+	  Set this to link against extra libraries when building the library.  This is
 	  useful if you need to link in POSIX threads or TLS support.
 
 config HAVE_DOT_CONFIG
