@@ -76,11 +76,11 @@ namespace std{
 
 	template _UCXXEXPORT bool operator==(const string & lhs, const string & rhs);
 	template _UCXXEXPORT bool operator==(const char * lhs, const string & rhs);
-	template _UCXXEXPORT bool operator==(const string & rhs, const char * rhs);
+	template _UCXXEXPORT bool operator==(const string & lhs, const char * rhs);
 
 	template _UCXXEXPORT bool operator!=(const string & lhs, const string & rhs);
 	template _UCXXEXPORT bool operator!=(const char * lhs, const string & rhs);
-	template _UCXXEXPORT bool operator!=(const string & rhs, const char * rhs);
+	template _UCXXEXPORT bool operator!=(const string & lhs, const char * rhs);
 
 	template _UCXXEXPORT string operator+(const string & lhs, const char* rhs);
 	template _UCXXEXPORT string operator+(const char* lhs, const string & rhs);
