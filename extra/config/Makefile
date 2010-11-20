@@ -22,6 +22,10 @@ include $(TOPDIR)Rules.mak
 all: ncurses conf mconf
 
 LIBS = -lncurses
+ifeq (/usr/include/ncursesw/ncurses.h, $(wildcard /usr/include/ncursesw/ncurses.h))
+	HOSTNCURSES += -I/usr/include/ncursesw -DCURSES_LOC="<ncurses.h>"
+	LIBS = -lncursesw
+else
 ifeq (/usr/include/ncurses/ncurses.h, $(wildcard /usr/include/ncurses/ncurses.h))
 	HOSTNCURSES += -I/usr/include/ncurses -DCURSES_LOC="<ncurses.h>"
 else
@@ -38,6 +42,7 @@ ifeq (/usr/include/ncurses.h, $(wildcard /usr/include/ncurses.h))
 	HOSTNCURSES += -DCURSES_LOC="<ncurses.h>"
 else
 	HOSTNCURSES += -DCURSES_LOC="<curses.h>"
+endif
 endif
 endif
 endif
