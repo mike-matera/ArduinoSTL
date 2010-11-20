@@ -317,7 +317,7 @@ protected:
 	typedef std::list<ValueType> listtype;
 
 	typename listtype::iterator base_iter;
-	typedef _associative_citer<ValueType, Compare, Allocator> _associative_citer;
+	typedef _associative_citer<ValueType, Compare, Allocator> __associative_citer;
 
 public:
 	_associative_iter() { }
@@ -345,13 +345,13 @@ public:
 	bool operator==(const _associative_iter & m) const{
 		return m.base_iter == base_iter;
 	}
-	bool operator==(const _associative_citer & m) const{
+	bool operator==(const __associative_citer & m) const{
 		return m.base_iter == base_iter;
 	}
 	bool operator!=(const _associative_iter & m) const{
 		return m.base_iter != base_iter;
 	}
-	bool operator!=(const _associative_citer & m) const{
+	bool operator!=(const __associative_citer & m) const{
 		return m.base_iter != base_iter;
 	}
 	_associative_iter & operator++(){
@@ -376,8 +376,8 @@ public:
 		--base_iter;
 		return temp;
 	}
-	operator _associative_citer() const{
-		return _associative_citer(base_iter);
+	operator __associative_citer() const{
+		return __associative_citer(base_iter);
 	}
 	typename listtype::iterator base_iterator(){
 		return base_iter;
