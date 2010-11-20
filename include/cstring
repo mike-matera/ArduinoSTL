@@ -48,9 +48,8 @@ namespace std{
 	using ::strtok;
 	using ::strxfrm;
 
-
+#ifndef __CORRECT_ISO_CPP_STRING_H_PROTO
 	//Extra definitions required in c++ spec
-
 
 	inline void* memchr(void* s, int c, size_t n){
 		return memchr(const_cast<const void *>(s), c, n);
@@ -71,7 +70,7 @@ namespace std{
 	inline char* strstr(char* s1, const char* s2){
 		return strstr(const_cast<const char *>(s1), s2);
 	}
-
+#endif
 }
 
 #endif
