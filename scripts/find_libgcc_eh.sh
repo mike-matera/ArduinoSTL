@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #This purpose of this file is to return the filename for libgcc_eh to be used.  We use the script so that it
 #can be easily replaced by system developers and cross-compilers so that the user doesn't require an installed

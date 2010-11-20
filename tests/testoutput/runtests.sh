@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 RETURNVALUE=0
 
@@ -11,8 +11,7 @@ for x in *.good ; do
 			LD_LIBRARY_PATH="../../src" ../${TEST} > ${TEST}.test
 		fi
 		cmp ${TEST}.good ${TEST}.test
-		if [ "$?" -eq "1" ]
-		then
+		if [ $? -eq 1 ] ; then
 			printf "%-25sFAILED\n" ${TEST}
 			RETURNVALUE=1
 		else
@@ -33,8 +32,7 @@ if [ "$1" = "DODEBUG" ] ; then
 			../${TEST}-old > ${TEST}-old.test
 		fi
 		cmp ${TEST}.good ${TEST}-old.test
-		if [ "$?" -eq "1" ]
-		then
+		if [ $? -eq 1 ] ; then
 			printf "%-25sFAILED\n" ${TEST}-old
 			RETURNVALUE=1
 		else
