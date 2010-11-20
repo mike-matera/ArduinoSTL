@@ -45,8 +45,8 @@
 namespace __cxxabiv1
 {
 
-// A C++ exception object consists of a header, which is a wrapper around
-// an unwind object header with additional C++ specific information,
+// A primary C++ exception object consists of a header, which is a wrapper
+// around an unwind object header with additional C++ specific information,
 // followed by the exception object itself.
 
 struct __cxa_exception
@@ -79,6 +79,40 @@ struct __cxa_exception
   _Unwind_Exception unwindHeader;
 };
 
+
+// A dependent C++ exception object consists of a header, which is a wrapper
+// around an unwind object header with additional C++ specific information,
+// followed by the exception object itself.
+struct __cxa_dependent_exception
+{
+  // The primary exception
+  void *primaryException;
+
+  // The C++ standard has entertaining rules wrt calling set_terminate
+  // and set_unexpected in the middle of the exception cleanup process.
+  std::unexpected_handler unexpectedHandler;
+  std::terminate_handler terminateHandler;
+
+  // The caught exception stack threads through here.
+  __cxa_exception *nextException;
+
+  // How many nested handlers have caught this exception.  A negated
+  // value is a signal that this object has been rethrown.
+  int handlerCount;
+
+  // Cache parsed handler data from the personality routine Phase 1
+  // for Phase 2 and __cxa_call_unexpected.
+  int handlerSwitchValue;
+  const unsigned char *actionRecord;
+  const unsigned char *languageSpecificData;
+  _Unwind_Ptr catchTemp;
+  void *adjustedPtr;
+
+  // The generic exception header.  Must be last.
+  _Unwind_Exception unwindHeader;
+};
+
+
 // Each thread in a C++ program has access to a __cxa_eh_globals object.
 struct __cxa_eh_globals
 {
@@ -94,11 +128,15 @@ struct __cxa_eh_globals
 extern "C" __cxa_eh_globals *__cxa_get_globals () throw();
 extern "C" __cxa_eh_globals *__cxa_get_globals_fast () throw();
 
-// Allocate memory for the exception plus the thown object.
+// Allocate memory for the primary exception plus the thrown object.
 extern "C" void *__cxa_allocate_exception(std::size_t thrown_size) throw();
+// Allocate memory for dependent exception.
+extern "C" __cxa_dependent_exception *__cxa_allocate_dependent_exception() throw();
 
-// Free the space allocated for the exception.
+// Free the space allocated for the primary exception.
 extern "C" void __cxa_free_exception(void *thrown_exception) throw();
+// Free the space allocated for the dependent exception.
+extern "C" void __cxa_free_dependent_exception(__cxa_dependent_exception *dependent_exception) throw();
 
 // Throw the exception.
 extern "C" void __cxa_throw (void *thrown_exception,
