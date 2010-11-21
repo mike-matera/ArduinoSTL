@@ -2,7 +2,7 @@
 #include <sstream>
 
 int main(){
-	std::cout << "Begining sstream test\n";
+	std::cout << "Beginning sstream test\n";
 	
 	std::stringstream a;
 	float f;

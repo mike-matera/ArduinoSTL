@@ -210,7 +210,7 @@ int main(){
 	}
 	std::cout << std::endl;
 
-	std::cout << "\nErase near begining:" << std::endl;
+	std::cout << "\nErase near beginning:" << std::endl;
 	std::cout << "The following two lines should be identical\n";
 	std::cout << "22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 12 27 13 14 \n";
 	i = test.begin();

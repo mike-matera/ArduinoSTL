@@ -130,21 +130,21 @@ template <class T> void testClass(std::string tname){
 	}
 
 	if(std::char_traits<T>::find(a1, sizeof(a1), 't') == a1){
-		std::cout << "find() properly locates the location of 't' starting at the begining for " << tname << std::endl;
+		std::cout << "find() properly locates the location of 't' starting at the beginning for " << tname << std::endl;
 	}else{
-		std::cout << "find() does not properly locate the location of 't' starting at the begining for " << tname << std::endl;
+		std::cout << "find() does not properly locate the location of 't' starting at the beginning for " << tname << std::endl;
 	}
 
 	if(std::char_traits<T>::find(a1 + 1, sizeof(a1) - 1, 't') == (a1 + 3)){
 		std::cout << "find() properly locates the location of 't' with offset 1 for " << tname << std::endl;
 	}else{
-		std::cout << "find() does not properly locate the location of 't' starting at the begining for " << tname << std::endl;
+		std::cout << "find() does not properly locate the location of 't' starting at the beginning for " << tname << std::endl;
 	}
 
 	if(std::char_traits<T>::find(a1 + 3, sizeof(a1) - 3, 't') == (a1 + 3)){
 		std::cout << "find() properly locates the location of 't' with offset 3 for " << tname << std::endl;
 	}else{
-		std::cout << "find() does not properly locate the location of 't' starting at the begining for " << tname << std::endl;
+		std::cout << "find() does not properly locate the location of 't' starting at the beginning for " << tname << std::endl;
 	}
 
 	if(std::char_traits<T>::find(a1, 0, 't') == 0){

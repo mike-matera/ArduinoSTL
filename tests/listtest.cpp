@@ -36,7 +36,7 @@ int main(){
 	std::list<int>::iterator list_iter_2;
 
 
-	test = "Begining of list test";
+	test = "Beginning of list test";
 
 	std::cout << test << std::endl;
 	for(i = temp.begin(); i!=temp.end(); i++){

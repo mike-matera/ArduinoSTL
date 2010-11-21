@@ -14,7 +14,7 @@ compare() properly compares different sized identical strings for char
 length() properly computes length of 'test' for char
 length() properly computes length of '' for char
 length() properly computes length of 'a0b1c2' for char
-find() properly locates the location of 't' starting at the begining for char
+find() properly locates the location of 't' starting at the beginning for char
 find() properly locates the location of 't' with offset 1 for char
 find() properly locates the location of 't' with offset 3 for char
 find() properly returns NULL in 0-sized searches for char

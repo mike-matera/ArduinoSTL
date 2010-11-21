@@ -29,7 +29,7 @@ void no_found_throws(){
 }
 
 int main(){
-	std::cout << "Begining ioexception test" << std::endl;
+	std::cout << "Beginning ioexception test" << std::endl;
 
 	TestFramework::init();
 

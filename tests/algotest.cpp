@@ -559,7 +559,7 @@ bool checkMinLess(){
 }
 
 int main(){
-	std::cout << "Begining algorithm test" << std::endl;
+	std::cout << "Beginning algorithm test" << std::endl;
 
         TestFramework::init();
 

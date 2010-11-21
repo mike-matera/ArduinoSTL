@@ -334,7 +334,7 @@ int main(){
 	std::cout << "m_2 is now " << m_2->second << std::endl;
 	std::cout << "m_3 is now " << m_3->second << std::endl;
 
-        std::cout << "Begining map test" << std::endl;
+        std::cout << "Beginning map test" << std::endl;
 
         TestFramework::init();
 	

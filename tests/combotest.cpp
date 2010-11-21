@@ -52,7 +52,7 @@ bool canInsertIntoVectorInMap() {
 
 int main() {
 
-	std::cout << "Begining combo tests" << std::endl;
+	std::cout << "Beginning combo tests" << std::endl;
 
         TestFramework::init();
 
