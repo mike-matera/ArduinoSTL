@@ -32,6 +32,14 @@ distclean: clean
 	$(RM) .config .config.cmd .config.old
 	$(RM) include/system_configuration.h
 
+release:
+	$(RM) ../uClibc++-$(VERSION).tar
+	git archive --format=tar --prefix=uClibc++-$(VERSION)/ HEAD \
+		> ../uClibc++-$(VERSION).tar
+	cat ../uClibc++-$(VERSION).tar | bzip2 -c9 > ../uClibc++-$(VERSION).tar.bz2
+	cat ../uClibc++-$(VERSION).tar | xz -e -c8 > ../uClibc++-$(VERSION).tar.xz
+	du -b ../uClibc++-$(VERSION).tar.{bz2,xz}
+
 headers: include/system_configuration.h
 
 install:
