@@ -38,7 +38,7 @@ namespace std{
 #ifdef __UCLIBCXX_EXCEPTION_SUPPORT__
 		class failure : public exception {
 		public:
-			explicit failure(const std::string& msg) { }
+			explicit failure(const std::string&) { }
 			explicit failure() { }
 			virtual const char* what() const throw() {
 				return "std::ios_base failure exception";
