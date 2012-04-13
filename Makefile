@@ -51,37 +51,40 @@ install:
 #Menu configuration system
 
 extra/config/conf:
-	make -C extra/config conf
+	@$(MAKE) -C extra/config conf
 
 extra/config/mconf:
-	make -C extra/config ncurses mconf
+	@$(MAKE) -C extra/config ncurses mconf
 
 menuconfig: extra/config/mconf
-	@./extra/config/mconf extra/Configs/Config.in
+	@$< extra/Configs/Config.in
 
 config: extra/config/conf
-	@./extra/config/conf extra/Configs/Config.in
+	@$< extra/Configs/Config.in
 
 oldconfig: extra/config/conf
-	@./extra/config/conf -o extra/Configs/Config.in
+	@$< -o extra/Configs/Config.in
+
+silentoldconfig: extra/config/conf
+	@$< -s extra/Configs/Config.in
 
 randconfig: extra/config/conf
-	@./extra/config/conf -r extra/Configs/Config.in
+	@$< -r extra/Configs/Config.in
 
 allyesconfig: extra/config/conf
-	@./extra/config/conf -y extra/Configs/Config.in
+	@$< -y extra/Configs/Config.in
 
 allnoconfig: extra/config/conf
-	@./extra/config/conf -n extra/Configs/Config.in
+	@$< -n extra/Configs/Config.in
 
 defconfig: extra/config/conf
-	@./extra/config/conf -d extra/Configs/Config.in
+	@$< -d extra/Configs/Config.in
 
 include/system_configuration.h: .config
 	@if [ ! -x ./extra/config/conf ] ; then \
-		make -C extra/config conf; \
+		$(MAKE) -C extra/config conf; \
 	fi;
-	@./extra/config/conf -o extra/Configs/Config.in
+	@$< -o extra/Configs/Config.in
 
 .config:
 	$(MAKE) defconfig
