@@ -70,6 +70,6 @@ clean:
 	$(MAKE) -C abi/libsupc clean
 	$(RM) *.o abi/*.o libuClibc++* core
 
-.cpp.o:
+%.o: %.cpp $(TOPDIR)bin/g++-uc
 	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
 	$(STRIPTOOL) -x -R .note -R .comment $@
