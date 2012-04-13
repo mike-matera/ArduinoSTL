@@ -82,11 +82,17 @@ check_gxx_visibility=$(shell if $(CXX) -fvisibility-inlines-hidden -S -o /dev/nu
 check_as_needed=$(shell if $(LD) --help | grep -q 'as-needed' ; \
 	then echo "-Wl,--as-needed -lgcc_s -Wl,--no-as-needed"; else echo "-lgcc_s"; fi)
 
+# strip quotes
+qstrip = $(strip $(subst ",,$(1)))
+#"))
+
+BUILD_EXTRA_LIBRARIES:=$(call qstrip,$(BUILD_EXTRA_LIBRARIES))
+
 # Make certain these contain a final "/", but no "//"s.
-UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX))))))
-UCLIBCXX_RUNTIME_LIBDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR)))))))
-UCLIBCXX_RUNTIME_BINDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_BIN_SUBDIR)))))))
-UCLIBCXX_RUNTIME_INCLUDEDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(subst ",, $(strip $(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR)))))))
+UCLIBCXX_RUNTIME_PREFIX:=$(strip $(subst //,/, $(subst ,/, $(call qstrip,$(UCLIBCXX_RUNTIME_PREFIX)))))
+UCLIBCXX_RUNTIME_LIBDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(call qstrip,$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_LIB_SUBDIR))))))
+UCLIBCXX_RUNTIME_BINDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(call qstrip,$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_BIN_SUBDIR))))))
+UCLIBCXX_RUNTIME_INCLUDEDIR:=$(strip $(subst //,/, $(subst //,/, $(subst ,/, $(call qstrip,$(UCLIBCXX_RUNTIME_PREFIX)$(UCLIBCXX_RUNTIME_INCLUDE_SUBDIR))))))
 export UCLIBCXX_RUNTIME_PREFIX UCLIBCXX_RUNTIME_LIBDIR UCLIBCXX_RUNTIME_BINDIR UCLIBCXX_RUNTIME_INCLUDEDIR
 
 OPTIMIZATION:=
@@ -96,8 +102,8 @@ PICFLAG:=-fPIC
 OPTIMIZATION+=$(call check_gcc,-Os,-O2)
 
 # Add a bunch of extra pedantic annoyingly strict checks
-XWARNINGS=$(subst ",, $(strip $(WARNINGS))) -Wno-trigraphs -pedantic
-CPU_CFLAGS=$(subst ",, $(strip $(CPU_CFLAGS-y)))
+XWARNINGS=$(call qstrip,$(WARNINGS)) -Wno-trigraphs -pedantic
+CPU_CFLAGS=$(call qstrip,$(CPU_CFLAGS-y))
 
 # Some nice CFLAGS to work with
 GEN_CFLAGS:=-fno-builtin
