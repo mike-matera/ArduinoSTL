@@ -27,14 +27,13 @@ all:	libgcc_eh libsupc $(EXOBJS) $(ALLBIN)
 
 install:
 	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
-ifneq ($(BUILD_ONLY_STATIC_LIB),y)
-	$(INSTALL) -m 755 $(SHARED_FULLNAME) \
-		$(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
-	cp -fa $(SHARED_MAJORNAME) $(LIBNAME).so $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
-endif
-ifeq ($(BUILD_STATIC_LIB),y)
-	$(INSTALL) -m 644 $(LIBNAME).a $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
-endif
+	($(TAR) -cf - \
+	 $(if $(BUILD_STATIC_LIB),$(LIBNAME).a,) \
+	 $(if $(BUILD_ONLY_STATIC_LIB),, \
+		$(SHARED_FULLNAME) \
+		$(SHARED_MAJORNAME) $(LIBNAME).so \
+	  ) \
+	) | $(TAR) -xf - -C $(PREFIX)$(UCLIBCXX_RUNTIME_LIBDIR)
 
 libgcc_eh:
 ifeq ($(IMPORT_LIBGCC_EH),y)

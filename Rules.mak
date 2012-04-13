@@ -35,6 +35,7 @@ STRIPTOOL= $(CROSS)strip
 INSTALL= install
 LN= ln -s -f
 RM= rm -f
+TAR= tar
 
 ARFLAGS:= rcs
 
