@@ -14,7 +14,7 @@ libsupc:
 #
 #else
 #	echo Binary
-	$(AR) x $(shell CC=$(CC) $(TOPDIR)/scripts/find_libsupc.sh)
+	$(AR) x $(shell CC="$(CC)" $(TOPDIR)/scripts/find_libsupc.sh)
 	$(RM) -f new_op*.o del_op*.o pure.o new_handler.o eh_alloc.o eh_globals.o
 #
 #endif
