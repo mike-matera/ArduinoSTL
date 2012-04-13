@@ -1,0 +1,36 @@
+#
+# Never ignore these
+#
+!.gitignore
+
+#
+# Generated files
+#
+*.a
+*.i
+*.o
+*.depend
+.config*
+.*.dep
+/*.log
+cscope.*
+bin/g++-uc
+libuClibc++*.so
+libuClibc++*.so.0
+include/system_configuration.h
+
+#
+# Debugging files
+#
+.gdb_history
+.gdbinit
+core
+
+#
+# Backups / patches
+#
+*~
+*.orig
+*.rej
+/*.patch
+/*.diff
