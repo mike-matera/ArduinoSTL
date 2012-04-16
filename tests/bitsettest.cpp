@@ -33,6 +33,7 @@ int main(){
 
 
 	a.reset();
+	std::cout << a.to_string<char, std::char_traits<char>, std::allocator<char> >() << std::endl;
 
 	a[2] = true;
 	a[3] = ~a[5];
