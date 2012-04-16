@@ -8,7 +8,7 @@ clean:
 
 test:
 ifeq ($(DODEBUG),y)
-	./runtests.sh DODEBUG
+	V="$(V)" ./runtests.sh DODEBUG
 else
-	./runtests.sh
+	V="$(V)" ./runtests.sh
 endif

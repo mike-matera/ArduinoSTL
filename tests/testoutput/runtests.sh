@@ -2,6 +2,11 @@
 
 RETURNVALUE=0
 
+case "$V" in
+	1|2) DODIFF=1 ;;
+	*) DODOFF=0 ;;
+esac
+
 for x in *.good ; do
 	TEST=$(basename ${x} .good)
 	if [ -x ../${TEST} ] ; then
@@ -14,6 +19,7 @@ for x in *.good ; do
 		if [ $? -eq 1 ] ; then
 			printf "%-25sFAILED\n" ${TEST}
 			RETURNVALUE=1
+			[ $DODIFF -eq 1 ] && diff -u ${TEST}.good ${TEST}.test
 		else
 			printf "%-25sOK\n" ${TEST}
 		fi
@@ -34,6 +40,7 @@ if [ "$1" = "DODEBUG" ] ; then
 		cmp ${TEST}.good ${TEST}-old.test
 		if [ $? -eq 1 ] ; then
 			printf "%-25sFAILED\n" ${TEST}-old
+			[ $DODIFF -eq 1 ] && diff -u ${TEST}.good ${TEST}-old.test
 			RETURNVALUE=1
 		else
 			printf "%-25sOK\n" ${TEST}-old
