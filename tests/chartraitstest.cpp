@@ -168,7 +168,7 @@ template <class T> void testClass(std::string tname){
 		std::cout << "eof() does not work properly for " << tname << std::endl;
 	}
 	
-	i1 == std::char_traits<T>::eof();
+	i1 = std::char_traits<T>::eof();
 	if(std::char_traits<T>::not_eof(i1) != i1){
 		std::cout << "not_eof() works properly for " << tname << std::endl;
 	}else{
