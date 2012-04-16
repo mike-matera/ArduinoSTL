@@ -103,11 +103,21 @@ int main(){
 	std::istream & s_r = std::cin;
 
 	cur = s_r.tellg();
+	std::streampos o_pos(cur);
+
 	std::cout << "Current position in stream: " << cur << std::endl;
 	s_r.seekg(0, std::ios::end);
 	end = s_r.tellg();
+	std::streampos n_pos(end);
 	s_r.seekg(cur);
 	std::cout << "Remaining bytes: " << end-cur << std::endl;
+
+	std::cout << "fpos o_pos == n_pos ? " <<
+		(o_pos == n_pos ? "true" : "false") << std::endl;
+	std::cout << "fpos !(o_pos == n_pos) ? " <<
+		(!(o_pos == n_pos) ? "true" : "false") << std::endl;
+	std::cout << "fpos o_pos != n_pos ? " <<
+		(o_pos != n_pos ? "true" : "false") << std::endl;
 
 	std::cout << "Test of reading istream into a function: " << std::endl;
 	s_r >> myIstreamTestFunction;
@@ -116,11 +126,9 @@ int main(){
 
 	testFieldWidth();
 
+	TestFramework::AssertReturns<bool>(canSeeIosBaseProperties, true);
 
-        TestFramework::AssertReturns<bool>(canSeeIosBaseProperties, true);
-
-        TestFramework::results();
-
+	TestFramework::results();
 
 
 	return 0;
