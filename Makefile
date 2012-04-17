@@ -3,7 +3,7 @@ SUBDIRS = bin include src
 
 # User defines:
 
-noconfig_targets := menuconfig config oldconfig randconfig \
+noconfig_targets := menuconfig config oldconfig silentoldconfig randconfig \
 	defconfig allyesconfig allnoconfig clean distclean \
 	release tags TAGS
 
@@ -84,7 +84,7 @@ include/system_configuration.h: .config
 	@if [ ! -x ./extra/config/conf ] ; then \
 		$(MAKE) -C extra/config conf; \
 	fi;
-	@$< -o extra/Configs/Config.in
+	@extra/config/conf -o extra/Configs/Config.in
 
 .config:
 	$(MAKE) defconfig
