@@ -25,7 +25,7 @@ $(WRAPPER): Makefile
 	echo 'while [ -n "$$1" ]' >> $(WRAPPER)
 	echo 'do' >> $(WRAPPER)
 	echo '	WRAPPER_OPTIONS="$$WRAPPER_OPTIONS $$1"' >> $(WRAPPER)
-	echo '	if [ "$$1" = "-c" -o "$$1" = "-E" -o "$$1" = "-S" ]' >> $(WRAPPER)
+	echo '	if [ "$$1" = "-c" -o "$$1" = "-E" -o "$$1" = "-S" -o "$$1" = "-MF" ]' >> $(WRAPPER)
 	echo '	then' >> $(WRAPPER)
 	echo '		WRAPPER_INCLIB="N"' >> $(WRAPPER)
 	echo '	fi' >> $(WRAPPER)
