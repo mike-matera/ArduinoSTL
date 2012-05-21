@@ -4,7 +4,7 @@ RETURNVALUE=0
 
 case "$V" in
 	1|2) DODIFF=1 ;;
-	*) DODOFF=0 ;;
+	*) DODIFF=0 ;;
 esac
 
 for x in *.good ; do
