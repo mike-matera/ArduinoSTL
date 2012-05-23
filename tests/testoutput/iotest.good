@@ -3,6 +3,18 @@ Test string: Test string
 This is the number 200:200.100000
 This is the number 200:200
 True: true
+True: true
+not True: true(the string), 1
+boolalpha set: true
+not True: 1
+not True: -1
+not True: 1
+False: false
+False: false
+not False: 0
+not False: 0
+not False: 0
+not False: 0
 Pointer: 0xbc614e
 Please enter two floats:You entered: 14564.264648 98347.000000
 Checking ostream_iterator

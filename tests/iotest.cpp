@@ -80,6 +80,21 @@ int main(){
 	std::cout << "This is the number 200:" << 200.1 << std::endl;
 	std::cout << "This is the number 200:" << (short)200 << std::endl;
 	std::cout << "True: " << true << std::endl;
+	std::cout << "True: " << (bool)1 << std::endl;
+	std::cout << "not True: " << std::noboolalpha << "true" << "(the string), " << true << std::boolalpha << std::endl;
+	std::cout << "boolalpha set: " << (bool)(std::cout.flags() & std::ios_base::boolalpha) << std::endl;
+	std::cout << "not True: " << 1U << std::endl;
+	std::cout << "not True: " << -1L << std::endl;
+	std::cout << "not True: " << (1?1:0) << std::endl;
+	//std::cout << "not True: " << __builtin_constant_p(-1) << std::endl;
+	std::cout << "False: " << false << std::endl;
+	std::cout << "False: " << (bool)0 << std::endl;
+	std::cout << "not False: " << 0 << std::endl;
+	//std::cout << "not False: " << '\0' << std::endl;
+	//std::cout << "not False: " << L'\0' << std::endl;
+	std::cout << "not False: " << -0 << std::endl;
+	std::cout << "not False: " << -0U << std::endl;
+	std::cout << "not False: " << -0L << std::endl;
 	
 	float i = 0;
 	long double j = 0;

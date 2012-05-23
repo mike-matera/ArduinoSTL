@@ -1,4 +1,5 @@
 0.2.4
+-   istream: fix readin<traits, char, bool>
 
 0.2.3
 -   eh: Add alloc/free for dependent exception
