@@ -1,7 +1,7 @@
 #include <exception>
 #include <stdexcept>
-#include <string>
 #include <cstdio>
+#include <cstring>
 
 int main(){
 	printf("Starting exception testing\n");
@@ -47,9 +47,6 @@ int main(){
 	}catch(...){
 		printf("Caught generic exception (good)\n");
 	}
-	
-
-
 
 	return 0;
 }
