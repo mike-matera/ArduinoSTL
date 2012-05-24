@@ -1,4 +1,9 @@
+0.2.4
+
 0.2.3
+-   eh: Add alloc/free for dependent exception
+-   cstring: Provide inlines only if __CORRECT_ISO_CPP_STRING_H_PROTO is not defined
+-   Several compile fixes for recent gcc versions
 -	Have string use some of the base class insert functions to be more complete
 -	Change map::operator[] to not create unnecessary temp objects.
 -	Ensure that map and mmap swap functions are properly exported
