@@ -26,6 +26,8 @@ ALLBIN	:= $(patsubst %.cpp,%, $(TEST_SRCS))
 
 OLDBIN	:= $(patsubst %.cpp,%-old, $(TEST_SRCS))
 
+LDFLAGS-valarraytest := -lm
+
 ifeq ($(DODEBUG),y)
 all:	$(ALLBIN) $(OLDBIN)
 else
@@ -41,16 +43,16 @@ test:	all
 	$(MAKE) -C testoutput test
 
 $(ALLBIN): $(EXOBJS) $(UTILITY_OBJS)
-	$(WR_CXX) $(LDFLAGS) $(UTILITY_OBJS) -o $@ $@.o
+	$(WR_CXX) $(LDFLAGS) $(UTILITY_OBJS) -o $@ $@.o $(LDFLAGS-$(notdir $(@)))
 
 $(OLDBIN): $(OLDOBJS) $(OLDUTILITY_OBJS)
-	$(HOSTCXX) $(LDFLAGS) $(UTILITY_OBJS) -o $@ $@.o
+	$(HOSTCXX) $(LDFLAGS) $(UTILITY_OBJS) -o $@ $@.o $(LDFLAGS-$(notdir $(@)))
 
 $(EXOBJS): %.o : %.cpp
-	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<
+	$(WR_CXX) $(CXXFLAGS) $(CXXFLAGS-$(notdir $(*))) -o $@ -c $<
 
 $(OLDOBJS): %-old.o : %.cpp
-	$(HOSTCXX) $(CXXFLAGS) -o $@ -c $<
+	$(HOSTCXX) $(CXXFLAGS) $(CXXFLAGS-$(notdir $(*))) -o $@ -c $<
 
 $(UTILITY_OBJS): %.o : %.cpp
 	$(WR_CXX) $(CXXFLAGS) -o $@ -c $<

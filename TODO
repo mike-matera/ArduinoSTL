@@ -22,3 +22,5 @@ Clean up istream code so that a lot of the checking for stuff is put into
 
 
 Find out why utilities pair operator= isn't working correctly
+
+slice_array: remove fill(), constify operator=

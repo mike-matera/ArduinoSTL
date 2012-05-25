@@ -1,4 +1,15 @@
 0.2.4
+-   valarray: Fix operator=(const valarray<T>&) DR 630
+-   valarray: Adjust constness of operator[](size_t)
+-   valarray: Properly implement class member valarray<bool> operator!()
+-   valarray: Fix operator|= (const T&) to or, not not
+-   valarray: Fix both shift() and cshift() for any overrun and +- offsets
+-   valarray: Fix slice_array& operator=(const slice_array&) to return properly
+-   valarray: Adjust class gslice default constructor DR 543
+-   valarray: Fix valarray<bool> operator>(const T&, const valarray<T>&)
+-   valarray: Return the result of all algo
+-   valarray: Fix copy'n paster error in atan2() inner fn call
+-   valarray: Fix pow  (const T& const valarray<T>&)
 -   istream: fix readin<traits, char, bool>
 
 0.2.3
