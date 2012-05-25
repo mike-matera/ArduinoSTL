@@ -1,0 +1,42 @@
+#
+# Never ignore these
+#
+!.gitignore
+#
+# Generated files
+#
+*.test
+#
+# Executable test
+#
+*_glibc
+*_uc
+*-old
+*.out
+algotest
+bitsettest
+chartraitstest
+combotest
+dequetest
+excepttest
+fstreamtest
+functionaltest
+ioexceptiontest
+iotest
+listtest
+maptest
+memorytest
+mmaptest
+newdeltest
+numerictest
+settest
+sstreamtest
+stacktest
+streambuftest
+streamitertest
+stringtest
+testframework
+utilitytest
+valarraytest
+vectortest
+wchartest
