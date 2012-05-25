@@ -11,6 +11,12 @@
 -   valarray: Fix copy'n paster error in atan2() inner fn call
 -   valarray: Fix pow  (const T& const valarray<T>&)
 -   istream: fix readin<traits, char, bool>
+-   fix compilation with >= gcc-4.7
+-   ios: Fix typo in operator!=
+-   tests: Fix typo in chartraitstest
+-   bitset: reset(), flip(): Fix off-by-one error
+-   tests: Show diff when V=1 was given
+-   buildsys: several fixes (ccache, Makefile deps, portability)
 
 0.2.3
 -   eh: Add alloc/free for dependent exception
