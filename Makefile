@@ -1,4 +1,4 @@
-MAKE    = make
+MAKE   ?= make
 SUBDIRS = bin include src
 
 # User defines:
