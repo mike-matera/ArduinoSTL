@@ -21,30 +21,8 @@
 # other sundry sources.  Files within this library are copyright by their
 # respective copyright holders.
 
-TOPDIR=../
-include $(TOPDIR)Rules.mak
-LIBC=$(TOPDIR)libc.a
-
-
-DIRS = 
-EXTRA_DIRS_TO_CLEAN = config
-
-all: subdirs
-
-tags:
-	ctags -R
-
-clean: subdirs_clean
-	$(RM) *.[oa] *~ core
-
-subdirs: $(patsubst %, _dir_%, $(DIRS))
-subdirs_clean: $(patsubst %, _dirclean_%, $(DIRS) $(EXTRA_DIRS_TO_CLEAN))
-
-$(patsubst %, _dir_%, $(DIRS)) : dummy
-	$(MAKE) -C $(patsubst _dir_%, %, $@)
-
-$(patsubst %, _dirclean_%, $(DIRS) $(EXTRA_DIRS_TO_CLEAN)) : dummy
-	$(MAKE) -C $(patsubst _dirclean_%, %, $@) clean
-
-.PHONY: dummy
-
+top_srcdir=../
+top_builddir=../
+all:
+include $(top_srcdir)Rules.mak
+include Makefile.in

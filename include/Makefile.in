@@ -1,0 +1,7 @@
+DISTCLEAN_include:
+	$(do_rm) $(top_builddir)include/system_configuration.h
+
+headers-y = $(filter-out .svn bits CVS Makefile Makefile.in,$(notdir $(wildcard $(top_srcdir)include/*)))
+install-include: | $(DESTDIR)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
+	@$(disp_install) include/
+	$(Q)$(INSTALL) -m 0644 $(addprefix $(top_srcdir)include/, $(headers-y)) $(DESTDIR)$(UCLIBCXX_RUNTIME_INCLUDEDIR)

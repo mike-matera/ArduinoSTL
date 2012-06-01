@@ -1,0 +1,7 @@
+TESTOUTPUT_DIR := $(TESTS_DIR)testoutput/
+TESTOUTPUT_OUT := $(TESTS_OUT)testoutput/
+test: all
+	cd $(TESTOUTPUT_DIR) && V="$(V)" ./runtests.sh $(if $(DODEBUG),DODEBUG)
+
+CLEAN_testoutput:
+	$(do_rm) $(addprefix $(TESTOUTPUT_OUT),*.test *.out)

@@ -1,7 +1,7 @@
 
-TOPDIR = ../../
-EXTRA_LOCALE_DIR:=${shell cd $(TOPDIR)/extra/locale && pwd}
-include $(TOPDIR)Rules.mak
+top_srcdir = ../../
+EXTRA_LOCALE_DIR:=${shell cd $(top_srcdir)/extra/locale && pwd}
+include $(top_srcdir)Rules.mak
 
 CFLAGS_wc8bit=-DCTYPE_PACKED=1
 CFLAGS_mmap=

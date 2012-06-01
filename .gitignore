@@ -15,6 +15,7 @@
 /*.log
 cscope.*
 bin/g++-uc
+bin/env_check
 libuClibc++*.so
 libuClibc++*.so.0
 include/system_configuration.h

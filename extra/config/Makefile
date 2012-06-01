@@ -16,8 +16,8 @@
 # along with this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-TOPDIR=../../
-include $(TOPDIR)Rules.mak
+top_srcdir=../../
+include $(top_srcdir)Rules.mak
 
 all: ncurses conf mconf
 
@@ -57,7 +57,7 @@ CONF_OBJS =$(patsubst %.c,%.o, $(CONF_SRC))
 MCONF_OBJS=$(patsubst %.c,%.o, $(MCONF_SRC))
 SHARED_OBJS=$(patsubst %.c,%.o, $(SHARED_SRC))
 
-conf: $(CONF_OBJS) $(SHARED_OBJS) 
+conf: $(CONF_OBJS) $(SHARED_OBJS)
 	$(HOSTCC) $(NATIVE_LDFLAGS) $^ -o $@
 
 mconf: $(MCONF_OBJS) $(SHARED_OBJS)
@@ -123,7 +123,6 @@ ncurses:
 		exit 1 ;\
 	fi
 
-clean:
-	$(RM) *.o *~ core $(TARGETS) $(MCONF_OBJS) $(CONF_OBJS) \
+CLEAN_extra/config:
+	$(do_rm) *.o *~ core $(TARGETS) $(MCONF_OBJS) $(CONF_OBJS) \
 		conf mconf zconf.tab.c zconf.tab.h lex.zconf.c lkc_defs.h
-

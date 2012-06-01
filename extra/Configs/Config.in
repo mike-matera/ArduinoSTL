@@ -257,7 +257,7 @@ config UCLIBCXX_RUNTIME_PREFIX
 	string "uClibc++ runtime prefix directory"
 	default "/usr/uClibc++"
 	help
-	 UCLIBCXX_ RUNTIME_PREFIX is the directory into which the uClibc++
+	 UCLIBCXX_RUNTIME_PREFIX is the directory into which the uClibc++
 	  runtime libraries will be installed.
 
 	  For a typical target system this should be set to "/usr", so

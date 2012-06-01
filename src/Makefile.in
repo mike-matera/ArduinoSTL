@@ -1,0 +1,54 @@
+WR_CXX := WRAPPER_INCLUDEDIR=-I$(top_srcdir)include $(WRAPPER)
+
+LDFLAGS-$(DODEBUG)-$(LIBNAME).so += -Wl,-s
+LDFLAGS-$(LIBNAME).so += -nodefaultlibs -shared
+LIBS-$(LIBNAME).so += $(BUILD_EXTRA_LIBRARIES) $(LIBS)
+
+SRC_DIR := $(top_srcdir)src/
+SRC_OUT := $(top_builddir)src/
+
+SRCS =	$(notdir $(wildcard $(SRC_DIR)*.cpp))
+SRCS := $(filter-out support.cpp,$(SRCS))
+SRCS := $(filter-out typeinfo.cpp,$(SRCS))
+SRCS += abi/abi.cpp
+EXOBJS := $(patsubst %.cpp,$(SRC_OUT)%.o, $(SRCS))
+
+libs-y :=
+libs-$(BUILD_STATIC_LIB) += $(SRC_OUT)$(LIBNAME).a
+libs-$(if $(BUILD_ONLY_STATIC_LIB),,y) += $(SRC_OUT)$(LIBNAME).so
+
+lib: $(libs-y)
+
+include $(top_srcdir)src/abi/libgcc_eh/Makefile.in
+include $(top_srcdir)src/abi/libsupc/Makefile.in
+
+install-lib: lib | $(DESTDIR)$(UCLIBCXX_RUNTIME_LIBDIR)
+	@$(if $(BUILD_STATIC_LIB),$(disp_install) $(LIBNAME).a)
+	@$(if $(BUILD_ONLY_STATIC_LIB),,$(disp_install) \
+			$(SHARED_FULLNAME) $(SHARED_MAJORNAME) $(LIBNAME).so)
+	$(Q)(cd $(SRC_OUT); \
+	 $(TAR) -cf - \
+	 $(if $(BUILD_STATIC_LIB),$(LIBNAME).a,) \
+	 $(if $(BUILD_ONLY_STATIC_LIB),, \
+		$(SHARED_FULLNAME) \
+		$(SHARED_MAJORNAME) $(LIBNAME).so \
+	  ) \
+	) | $(TAR) -xf - -C $(DESTDIR)$(UCLIBCXX_RUNTIME_LIBDIR)
+
+libcxx-a-y = $(EXOBJS) $(libgcc_eh-y) $(libsupc-y)
+libcxx-so-y = $(EXOBJS) $(libgcc_eh-y) $(libsupc-y)
+
+$(EXOBJS) $(libgcc_eh-y) $(libsupc-y) : $(WRAPPER)
+
+$(top_builddir)src/$(LIBNAME).a: $(libcxx-a-y)
+	$(Q)$(RM) $@
+	$(do_ar)
+	$(do_ranlib)
+
+$(top_builddir)src/$(LIBNAME).so: $(libcxx-so-y)
+	$(call link.so,$(SRC_OUT)$(SHARED_FULLNAME),$(ABI_VERSION))
+
+CLEAN_src:
+	$(do_rm) $(addprefix $(SRC_OUT), *.o abi/*.o libuClibc++* core)
+DISTCLEAN_src: DISTCLEAN_libgcc_eh DISTCLEAN_libsupc
+

@@ -1,13 +1,5 @@
-TOPDIR=../
-include $(TOPDIR)Rules.mak
-
-all:
-
-clean:
-
-distclean:
-
-HEADERS = $(filter-out .svn CVS Makefile,$(wildcard *))
-install:
-	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
-	$(INSTALL) -m 644 $(HEADERS) $(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
+top_srcdir=../
+top_builddir=../
+include $(top_srcdir)Rules.mak
+include Makefile.in
+include $(top_srcdir)Makefile.end

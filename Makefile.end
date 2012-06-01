@@ -1,0 +1,44 @@
+# Rules.mak
+# vi: ft=make :
+
+# Copyright Garrett Kajmowicz, 2004-2006
+# Copyright (C) 2000 by Lineo, inc.
+# Copyright (C) 2000-2002 Erik Andersen <andersen@uclibc.org>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU Library General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option) any
+# later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+# This file and most of the menuconfiguration system have been taken wholesale from
+# the uClibc package availalble at www.uclibc.org
+
+ifeq ($(HAVE_DOT_CONFIG),y)
+# dependency tracking
+files.dep := $(libcxx-a-y) $(libcxx-so-y) $(libcxx-nonshared-y) \
+	$(libgcc_eh-y) $(libsupc-y)
+.depends.dep := \
+	$(patsubst %.s,%.s.dep,$(filter %.s,$(files.dep))) \
+	$(patsubst %.o,%.o.dep,$(filter %.o,$(files.dep)))
+# Oh, and prepend a dot to the basename so i don't have to change my habit of
+# calling 'size thefile.o*'
+.depends.dep := $(foreach f,$(.depends.dep),$(dir $(f)).$(notdir $(f)))
+.depends.dep := $(wildcard $(.depends.dep)) $(manual.depends.dep)
+
+ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
+ifneq ($(strip $(.depends.dep)),)
+.NOEXPORT:
+-include $(.depends.dep)
+endif # filter
+endif # any .dep file
+
+endif # ifeq ($(HAVE_DOT_CONFIG),y)
