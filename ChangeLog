@@ -1,3 +1,6 @@
+0.2.5
+-   unwind: Fix for __ARM_EABI_UNWINDER__
+
 0.2.4
 -   valarray: Fix operator=(const valarray<T>&) DR 630
 -   valarray: Adjust constness of operator[](size_t)
