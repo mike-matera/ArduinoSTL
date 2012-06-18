@@ -56,11 +56,9 @@ namespace std{
 
 #pragma GCC visibility pop
 
-#endif
-
-
-#ifdef __DODEBUG__
+# ifdef __DODEBUG__
 	#define UCLIBCXX_DEBUG 1
-#else
+# else
 	#define UCLIBCXX_DEBUG 0
+# endif
 #endif
