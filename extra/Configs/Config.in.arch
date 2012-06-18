@@ -35,7 +35,7 @@ config UCLIBCXX_HAS_TLS
 
 	  Answering no will use non thread-safe exception handling.
 
-config WARNINGS
+config UCLIBCXX_WARNINGS
 	string "Compiler Warnings"
 	default "-Wall"
 	help

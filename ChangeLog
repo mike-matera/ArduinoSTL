@@ -1,4 +1,5 @@
 0.2.5
+-   buildsys: rename .config WARNINGS to UCLIBCXX_WARNINGS
 -   unwind: Fix for __ARM_EABI_UNWINDER__
 
 0.2.4
