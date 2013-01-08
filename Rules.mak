@@ -69,7 +69,8 @@ PREFIX = $(DESTDIR)
 
 # Pull in the user's uClibc++ configuration
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
--include $(TOPDIR).config
+# Prevent make from searching
+-include $(abspath $(TOPDIR).config)
 endif
 
 # A nifty macro to make testing gcc features easier
