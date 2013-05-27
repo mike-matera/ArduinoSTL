@@ -83,7 +83,7 @@ template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<c
 template<class charT, class traits, class Allocator> _UCXXEXPORT basic_istream<charT,traits>&
 	getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str, charT delim)
 {
-	typename basic_istream<charT,traits>::sentry s(is);
+	typename basic_istream<charT,traits>::sentry s(is, true);
 	if(s == false){
 		return is;
 	}
