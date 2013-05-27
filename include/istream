@@ -555,6 +555,14 @@ namespace std{
 	}
 
 	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
+		basic_istream<charT,traits>::operator>>(ios_base& (*pf)(ios_base&))
+	{
+		sentry(*this);
+		pf(*this);
+		return *this;
+	}
+
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		ws(basic_istream<charT,traits>& is)
 	{
 		__skipws(is);
