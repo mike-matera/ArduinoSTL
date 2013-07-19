@@ -82,7 +82,7 @@ public:
 		if(n == npos){
 			__throw_out_of_range();
 		}
-		if(s > 0){
+		if (*s > 0){
 			resize(n);
 			Tr::copy(vector<Ch, A>::data, s, vector<Ch, A>::elements);
 		}
