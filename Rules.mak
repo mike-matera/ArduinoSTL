@@ -291,7 +291,7 @@ endif
 
 show_objs = $(subst $(top_builddir),,$(subst ../,,$@))
 define show_defs
-	$(filter -D%,$(1))
+	$(filter -D%,$(call unwrapper,$(1)))
 endef
 define show_ldflags
 	$(subst $(comma), ,$(subst -Wl$(comma),,$(filter -Wl%,$(1))))
