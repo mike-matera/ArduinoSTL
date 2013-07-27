@@ -19,7 +19,7 @@ for x in *.good ; do
 		if [ $? -eq 1 ] ; then
 			printf "%-25sFAILED\n" ${TEST}
 			RETURNVALUE=1
-			[ $DODIFF -eq 1 ] && diff -u ${TEST}.good ${TEST}.test
+			[ $DODIFF -eq 1 ] && diff -a -u ${TEST}.good ${TEST}.test
 		else
 			printf "%-25sOK\n" ${TEST}
 		fi
@@ -40,7 +40,7 @@ if [ "$1" = "DODEBUG" ] ; then
 		cmp ${TEST}.good ${TEST}-old.test
 		if [ $? -eq 1 ] ; then
 			printf "%-25sFAILED\n" ${TEST}-old
-			[ $DODIFF -eq 1 ] && diff -u ${TEST}.good ${TEST}-old.test
+			[ $DODIFF -eq 1 ] && diff -a -u ${TEST}.good ${TEST}-old.test
 			RETURNVALUE=1
 		else
 			printf "%-25sOK\n" ${TEST}-old
