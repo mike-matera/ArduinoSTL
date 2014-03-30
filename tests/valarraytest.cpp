@@ -40,12 +40,14 @@ void print_array(std::string s, std::valarray<float>& a) {
 	std::cout << std::endl;
 }
 #if defined __UCLIBCXX_HAS_LONG_DOUBLE__ || defined _GLIBCXX_USE_C99_MATH_TR1
+#include <iomanip>
 void print_array(std::string s, std::valarray<long double>& a) {
-	std::cout << s;
+	std::streamsize old_precision = std::cout.precision();
+	std::cout << s << std::setprecision(old_precision - 1);
 	for (size_t i = 0; i < a.size(); ++i){
 		std::cout << " " << a[i];
 	}
-	std::cout << std::endl;
+	std::cout << std::setprecision(old_precision) << std::endl;
 }
 #endif
 
