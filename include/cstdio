@@ -47,7 +47,9 @@ namespace std{
 	using ::fwrite;
 	using ::getc;
 	using ::getchar;
+#if __cplusplus <= 201103L
 	using ::gets;
+#endif
 	using ::perror;
 	using ::printf;
 	using ::putc;
