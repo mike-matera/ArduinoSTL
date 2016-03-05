@@ -5,7 +5,8 @@ WR_CXX := WRAPPER_INCLUDEDIR=-I$(top_srcdir)include WRAPPER_LIBDIR=-L$(top_build
 
 LDFLAGS := $(LDFLAGS-$(LIBNAME).so) $(call link.asneeded,-lgcc_s)
 
-TESTS_SRCS-y := $(wildcard *test.cpp)
+TESTS_SRCS   := $(wildcard *test.cpp)
+TESTS_SRCS-y := $(TESTS_SRCS)
 UTILITY_SRCS := testframework.cpp
 
 TESTS_OMIT-$(UCLIBCXX_HAS_WCHAR) := wchartest.cpp
@@ -36,6 +37,10 @@ $(ALLBIN): % : %.o $(UTILITY_OBJS)
 $(HOST_BIN): % : %.o $(HOST_UTILITY_OBJS)
 
 CLEAN_tests:
-	$(do_rm) $(addprefix $(TESTS_OUT),$(ALLBIN) $(HOST_BIN) *.o core)
+	$(do_rm) $(addprefix $(TESTS_OUT),$(patsubst %.cpp,%, $(TESTS_SRCS)) $(patsubst %.cpp,%-old, $(TESTS_SRCS)) *.o core)
 
-clean: CLEAN_testoutput CLEAN_tests
+distclean: clean
+	$(Q)$(RM) $(addprefix $(TESTS_OUT), .*.dep)
+
+clean: CLEAN_tests/testoutput CLEAN_tests
+

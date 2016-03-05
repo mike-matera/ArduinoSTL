@@ -86,7 +86,7 @@ endif
 endif
 DESTDIR ?= $(PREFIX)
 
-clean_targets := clean distclean CLEAN_% DISTCLEAN_%
+clean_targets := clean realclean distclean CLEAN_% DISTCLEAN_%
 noconfig_targets := conf mconf \
 	menuconfig config oldconfig silentoldconfig randconfig \
 	defconfig allyesconfig allnoconfig $(clean_targets) \

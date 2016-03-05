@@ -11,6 +11,9 @@ include $(top_srcdir)extra/Makefile.in
 
 $(headers-y) $(libcxx-a-y) $(libcxx-so-y): include/system_configuration.h
 
+DISTCLEAN_tests:
+	$(Q)$(MAKE) -C tests distclean
+
 tests: lib
 	$(Q)$(MAKE) -C tests all
 
@@ -30,7 +33,7 @@ install: install-bin install-include install-lib
 clean: CLEAN_bin CLEAN_src
 	#$(MAKE) -C $(top_builddir)extra/locale clean
 
-realclean: clean DISTCLEAN_extra DISTCLEAN_include DISTCLEAN_src
+realclean: clean DISTCLEAN_extra DISTCLEAN_include DISTCLEAN_src DISTCLEAN_tests
 distclean: realclean DISTCLEAN_.config
 DISTCLEAN_.config:
 	$(do_rm) $(addprefix $(top_builddir),.config .config.cmd .config.old)

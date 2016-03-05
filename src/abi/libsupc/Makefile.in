@@ -14,11 +14,11 @@ endif
 ifneq ($(libsupc-y),)
 $(libsupc-y): $(LIBSUP)
 endif
-$(LIBSUP_DEP): $(LIBSUP)
+$(LIBSUP_DEP): $(LIBSUP) $(LIBSUPC_OUT)Makefile.in
 	$(Q)$(RM) $(LIBSUPC_OUT).*dep $(LIBSUPC_OUT)*.o
 	$(Q)$(if $(LIBSUP),(cd $(LIBSUPC_OUT) && $(AR) x $(LIBSUP) && $(RM) $(OBJS-OMIT)))
 	$(Q)echo "libsupc-y := \$$(addprefix \$$(LIBSUPC_OUT),$(libsupc-y))" > $@
 
-CLEAN_libsupc: ;
-DISTCLEAN_libsupc:
+CLEAN_src/abi/libsupc: ;
+DISTCLEAN_src/abi/libsupc:
 	$(do_rm) $(addprefix $(LIBSUPC_OUT), .*dep *.o)

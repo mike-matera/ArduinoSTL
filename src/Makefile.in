@@ -50,5 +50,6 @@ $(top_builddir)src/$(LIBNAME).so: $(libcxx-so-y)
 
 CLEAN_src:
 	$(do_rm) $(addprefix $(SRC_OUT), *.o abi/*.o libuClibc++* core)
-DISTCLEAN_src: DISTCLEAN_libgcc_eh DISTCLEAN_libsupc
+DISTCLEAN_src: DISTCLEAN_src/abi/libgcc_eh DISTCLEAN_src/abi/libsupc
+	$(do_rm) $(addprefix $(SRC_OUT), .*.dep abi/.*.dep)
 
