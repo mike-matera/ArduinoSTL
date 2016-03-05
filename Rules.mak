@@ -105,6 +105,9 @@ space:= #
 check_gcc=$(shell \
 	if $(CC) $(1) -S -o /dev/null -xc /dev/null > /dev/null 2>&1; \
 	then echo "$(1)"; else echo "$(2)"; fi)
+check_gxx=$(shell \
+	if $(CXX) $(1) -S -o /dev/null -xc++ /dev/null > /dev/null 2>&1; \
+	then echo "$(1)"; else echo "$(2)"; fi)
 check_as=$(shell \
 	if $(CC) -Wa,$(1) -Wa,-Z -c -o /dev/null -xassembler /dev/null > /dev/null 2>&1; \
 	then echo "-Wa,$(1)"; fi)
@@ -129,6 +132,11 @@ endef
 # Export the variable CFLAG_<flag> if it does.
 define check-gcc-var
 $(call check-tool-var,check_gcc,CFLAG,$(1))
+endef
+# Check the C++ compiler to see if it supports <flag>.
+# Export the variable CXXFLAG_<flag> if it does.
+define check-gxx-var
+$(call check-tool-var,check_gxx,CXXFLAG,$(1))
 endef
 # Usage: check-as-var,<flag>
 # Check the assembler to see if it supports <flag>.  Export the
@@ -188,7 +196,7 @@ $(eval $(call check-gcc-var,-O2))
 OPTIMIZATION += $(CFLAG_-O2)
 endif
 
-$(eval $(call check-gcc-var,-fvisibility-inlines-hidden))
+$(eval $(call check-gxx-var,-fvisibility-inlines-hidden))
 
 # Add a bunch of extra pedantic annoyingly strict checks
 XWARNINGS=$(call qstrip,$(UCLIBCXX_WARNINGS)) -Wno-trigraphs -pedantic
@@ -196,7 +204,7 @@ CPU_CFLAGS=$(call qstrip,$(CPU_CFLAGS-y))
 
 # Some nice CFLAGS to work with
 GEN_CFLAGS:=-fno-builtin
-CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS) -ansi
+CFLAGS:=$(XWARNINGS) $(CPU_CFLAGS)
 
 LDFLAGS-$(LIBNAME).so:=-Wl,--warn-common -Wl,--warn-once -Wl,-z,combreloc -Wl,-z,defs
 
@@ -219,8 +227,9 @@ ifneq ($(UCLIBCXX_EXCEPTION_SUPPORT),y)
 endif
 
 GEN_CXXFLAGS:=-nostdinc++
-GEN_CXXFLAGS+=$(if $(CFLAG_-fvisibility-inlines-hidden),-DGCC_HASCLASSVISIBILITY)
+GEN_CXXFLAGS+=$(if $(CXXFLAG_-fvisibility-inlines-hidden),-DGCC_HASCLASSVISIBILITY)
 CXXFLAGS:=$(CFLAGS)
+CFLAGS += -ansi
 
 LIBGCC:=$(shell $(CC) -print-libgcc-file-name)
 LIBGCC_DIR:=$(dir $(LIBGCC))
