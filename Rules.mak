@@ -197,6 +197,8 @@ OPTIMIZATION += $(CFLAG_-O2)
 endif
 
 $(eval $(call check-gxx-var,-fvisibility-inlines-hidden))
+$(eval $(call check-gxx-var,-std=gnu++14))
+$(eval $(call check-gxx-var,-Wno-sized-deallocation))
 
 # Add a bunch of extra pedantic annoyingly strict checks
 XWARNINGS=$(call qstrip,$(UCLIBCXX_WARNINGS)) -Wno-trigraphs -pedantic

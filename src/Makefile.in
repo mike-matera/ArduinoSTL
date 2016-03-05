@@ -48,6 +48,9 @@ $(top_builddir)src/$(LIBNAME).a: $(libcxx-a-y)
 $(top_builddir)src/$(LIBNAME).so: $(libcxx-so-y)
 	$(call link.so,$(SRC_OUT)$(SHARED_FULLNAME),$(ABI_VERSION))
 
+CXXFLAGS-del_ops.o = $(CXXFLAG_-std=gnu++14) $(CXXFLAG_-Wno-sized-deallocation)
+CXXFLAGS-del_opvs.o = $(CXXFLAG_-std=gnu++14) $(CXXFLAG_-Wno-sized-deallocation)
+
 CLEAN_src:
 	$(do_rm) $(addprefix $(SRC_OUT), *.o abi/*.o libuClibc++* core)
 DISTCLEAN_src: DISTCLEAN_src/abi/libgcc_eh DISTCLEAN_src/abi/libsupc

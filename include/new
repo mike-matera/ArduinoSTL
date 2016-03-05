@@ -39,9 +39,15 @@ namespace std{
 
 _UCXXEXPORT void* operator new(std::size_t numBytes) throw(std::bad_alloc);
 _UCXXEXPORT void operator delete(void* ptr) throw();
+#if __cpp_sized_deallocation
+_UCXXEXPORT void operator delete(void* ptr, std::size_t) throw();
+#endif
 
 _UCXXEXPORT void* operator new[](std::size_t numBytes) throw(std::bad_alloc);
 _UCXXEXPORT void operator delete[](void * ptr) throw();
+#if __cpp_sized_deallocation
+_UCXXEXPORT void operator delete[](void * ptr, std::size_t) throw();
+#endif
 
 #ifndef NO_NOTHROW
 _UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) throw();
