@@ -219,14 +219,15 @@ public:
 
 	_UCXXEXPORT basic_string& assign(size_type n, Ch c){
 		vector<Ch, A>::clear();
-		vector<Ch, A>::resize(n, Ch() );
+		vector<Ch, A>::resize(n, c);
 		return *this;
 	}
 
 	template<class InputIterator> _UCXXEXPORT basic_string& assign(InputIterator first, InputIterator last){
 		vector<Ch, A>::resize(0, Ch());
 		while (first != last){
-			append(*first);
+			const Ch x = *first;
+			append(&x);
 			++first;
 		}
 		return *this;
