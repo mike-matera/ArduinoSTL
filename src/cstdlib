@@ -55,10 +55,11 @@ namespace std{
 	using ::wcstombs;
 #endif
 
+/* Defined in Arduino
 	inline long abs(long i){
 		return labs(i);
 	}
-
+*/
 	inline ldiv_t div(long i, long j){
 		return ldiv(i, j);
 	}
