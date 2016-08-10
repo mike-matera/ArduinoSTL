@@ -239,12 +239,20 @@ namespace std{
 
 #endif	//__STRICT_ANSI__
 
+// FIXME: Improve printing of doubles and floats.
+
 	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, double>{
 	public:
 		static void printout(basic_ostream<char, traits >& stream, const double f)
 		{
 			char buffer[32];
 			int length;
+
+			double temp = abs(f);
+			temp = temp * 100.0 - floor(temp) * 100.0;
+			length = snprintf(buffer, 32, "%d.%d", (int)f, (int) temp);
+
+/*
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
 					length = snprintf(buffer, 32, "%*.*E", static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
@@ -256,6 +264,7 @@ namespace std{
 			} else {
 				length = snprintf(buffer, 32, "%*.*g",static_cast<int>(stream.width()),static_cast<int>(stream.precision()), f);
 			}
+*/
 			stream.printout(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
@@ -263,12 +272,18 @@ namespace std{
 		}
 	};
 
-	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, long double>{
+	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, float>{
 	public:
-		static void printout(basic_ostream<char, traits >& stream, const long double f)
+		static void printout(basic_ostream<char, traits >& stream, const float f)
 		{
 			char buffer[32];
 			int length;
+
+			double temp = abs(f);
+			temp = temp * 100.0 - floor(temp) * 100.0;
+			length = snprintf(buffer, 32, "%d.%d", (int)f, (int) temp);
+
+/*
 			if(stream.flags() & ios_base::scientific){
 				if(stream.flags() & ios_base::uppercase){
 					length = snprintf(buffer, 32, "%*.*LE", static_cast<int>(stream.width()), static_cast<int>(stream.precision()), f);
@@ -280,11 +295,11 @@ namespace std{
 			} else {
 				length = snprintf(buffer, 32, "%*.*Lg", static_cast<int>(stream.width()), static_cast<int>(stream.precision()), f);
 			}
+*/
 			stream.printout(buffer, length);
 			if(stream.flags() & ios_base::unitbuf){
 				stream.flush();
 			}
-
 		}
 	};
 

@@ -303,24 +303,61 @@ namespace std{
 
 #ifdef __UCLIBCXX_HAS_FLOATS__
 
+// NB: The Arduino AVR compiler contains an implementation of printf() and scanf()
+//     that lacks support for floating point numbers. Also, the AVR C library doesn't
+//     support the double datatype. In AVR it's the same as float.
+
+
 	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, float>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, float & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readTokenDecimal( stream);
-
-			sscanf(temp.c_str(), "%g", &var);
+			temp = _readTokenDecimal(stream);
+			bool isneg=false;
+			if (temp[0] == '-') {
+			  isneg=true;
+			  temp.erase(0,1);
+			}else if (temp[0] == '+') {
+			  isneg=false;
+			  temp.erase(0,1);
+			}
+			int dec = temp.find('.', 0);
+			if (dec == string::npos) {
+			  var = atoi(temp.c_str());
+			}else{
+			  var = atoi(temp.substr(0,dec).c_str());
+			  var += ((double) atoi(temp.substr(dec+1).c_str())) / pow(10.0,temp.size()-dec-1);
+			}
+			if (isneg)
+			  var = -var;
 		}
 	};
+
 
 	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, double>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, double & var)
 		{
 			basic_string<char, traits > temp;
-			temp = _readTokenDecimal( stream);
-			sscanf(temp.c_str(), "%lg", &var);
+			temp = _readTokenDecimal(stream);
+			bool isneg=false;
+			if (temp[0] == '-') {
+			  isneg=true;
+			  temp.erase(0,1);
+			}else if (temp[0] == '+') {
+			  isneg=false;
+			  temp.erase(0,1);
+			}
+			int dec = temp.find('.', 0);
+			if (dec == string::npos) {
+			  var = atoi(temp.c_str());
+			}else{
+			  var = atoi(temp.substr(0,dec).c_str());
+			  var += ((double) atoi(temp.substr(dec+1).c_str())) / pow(10.0,temp.size()-dec-1);
+			}
+			if (isneg)
+			  var = -var;
 		}
 	};
 
