@@ -322,7 +322,7 @@ namespace std{
 			  isneg=false;
 			  temp.erase(0,1);
 			}
-			int dec = temp.find('.', 0);
+			unsigned int dec = temp.find('.', 0);
 			if (dec == string::npos) {
 			  var = atoi(temp.c_str());
 			}else{
@@ -349,7 +349,7 @@ namespace std{
 			  isneg=false;
 			  temp.erase(0,1);
 			}
-			int dec = temp.find('.', 0);
+			unsigned int dec = temp.find('.', 0);
 			if (dec == string::npos) {
 			  var = atoi(temp.c_str());
 			}else{

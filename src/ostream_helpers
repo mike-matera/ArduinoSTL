@@ -22,6 +22,7 @@
 #include <ios>
 #include <cctype>
 #include <string>
+#include <math.h> // for floor()
 
 #ifndef __STD_HEADER_OSTREAM_HELPERS
 #define __STD_HEADER_OSTREAM_HELPERS 1
