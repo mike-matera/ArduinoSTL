@@ -4,6 +4,7 @@
  *
  *  Created on: 2 Jan 2011
  *      Author: Andy Brown
+ *      Modfied: Mike Matera
  *
  *  http://andybrown.me.uk/ws/terms-and-conditions
  */
@@ -18,8 +19,7 @@
 #include <istream>
 #include <ostream>
 #include <iostream>
-#include <HardwareSerial.h>
-
+#include <Stream.h>
 
 namespace std
 {
@@ -303,10 +303,11 @@ namespace std
 	};
 
 
-using ::HardwareSerial;
-template <class charT, class traits = char_traits<charT>, class Tserial=HardwareSerial> class basic_serialbuf;
-template <class charT, class traits = char_traits<charT>, class Tserial=HardwareSerial> class basic_iserialstream;
-template <class charT, class traits = char_traits<charT>, class Tserial=HardwareSerial> class basic_oserialstream;
+using ::Stream;
+
+template <class charT, class traits = char_traits<charT>, class Tserial=Stream> class basic_serialbuf;
+template <class charT, class traits = char_traits<charT>, class Tserial=Stream> class basic_iserialstream;
+template <class charT, class traits = char_traits<charT>, class Tserial=Stream> class basic_oserialstream;
 
 typedef basic_iserialstream<char> ihserialstream;
 typedef basic_oserialstream<char> ohserialstream;
