@@ -50,11 +50,12 @@ void loop() {
 
 ## Known Issues
 
-Always use the latest Arduino IDE. This library uses the Arduino IDE Library Specification rev.2.1 with features only available on Arduino 1.6.10 and higher. The specification can be found here:
-
-https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification
+Printing of floats and doubles using cout ignores format specifiers. 
 
 uClibc seems to be fairly complete. Strings and vectors both work, even with the limited amount of heap available to Arduino. The uClibc++ status page can be found here: 
 
 https://cxx.uclibc.org/status.html
 
+Always use the latest Arduino IDE. This library uses the Arduino IDE Library Specification rev.2.1 with features only available on Arduino 1.6.10 and higher. The specification can be found here:
+
+https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification
