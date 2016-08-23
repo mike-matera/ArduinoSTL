@@ -11,6 +11,16 @@ namespace std
   ihserialstream cin(Serial);
 }
 
+/*
+ * Implementation of printf() is highly libc dependent.
+ *
+ * This implementation is tested on:
+ *
+ *   ARDUINO_ARCH_AVR (Classic Arduinos) - Working
+ *   TEENSYDUINO (ARM-based Teensy) - cin/cout work, printf doesn't
+ *   ARDUINO_ARCH_* - ARMs are probably the same as above.
+ */
+#if defined(ARDUINO_ARCH_AVR)
 //
 // This is a hack to make C stdio work on "Serial" without
 // having to be manually initialized. It works becuase I can
@@ -59,3 +69,6 @@ __Arduino_STDIO_hack::__Arduino_STDIO_hack(Stream *u) {
   uart = u;
   fdevopen(arduino_putchar, arduino_getchar); 
 }
+#else
+#warning "printf() will not be functional on this platform."
+#endif
