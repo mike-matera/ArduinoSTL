@@ -11,9 +11,9 @@ for x in *.good ; do
 	TEST=$(basename ${x} .good)
 	if [ -x ../${TEST} ] ; then
 		if [ -f ${TEST}.input ] ; then
-			LD_LIBRARY_PATH="../../src" ../${TEST} < ${TEST}.input > ${TEST}.test
+			LD_LIBRARY_PATH="../../src" ${SIM} ../${TEST} < ${TEST}.input > ${TEST}.test
 		else
-			LD_LIBRARY_PATH="../../src" ../${TEST} > ${TEST}.test
+			LD_LIBRARY_PATH="../../src" ${SIM} ../${TEST} > ${TEST}.test
 		fi
 		cmp ${TEST}.good ${TEST}.test
 		if [ $? -eq 1 ] ; then
