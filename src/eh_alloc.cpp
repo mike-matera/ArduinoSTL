@@ -24,29 +24,32 @@
 //This is a system-specific header which does all of the error-handling management
 #include <unwind-cxx.h>
 
-namespace __cxxabiv1{
+namespace __cxxabiv1
+{
 
 extern "C" void * __cxa_allocate_exception(std::size_t thrown_size) throw(){
-	void *retval;
-	//The sizeof crap is required by Itanium ABI because we need to provide space for
-	//accounting information which is implementaion (gcc) specified
-	retval = malloc (thrown_size + sizeof(__cxa_exception));
-	if (0 == retval){
+	void *e;
+	// The sizeof crap is required by Itanium ABI because we need to
+	// provide space for accounting information which is implementation
+	// (gcc) defined.
+	e = malloc (thrown_size + sizeof(__cxa_refcounted_exception));
+	if (0 == e){
 		std::terminate();
 	}
-	memset (retval, 0, sizeof(__cxa_exception));
-	return (void *)((unsigned char *)retval + sizeof(__cxa_exception));
+	memset (e, 0, sizeof(__cxa_refcounted_exception));
+	return (void *)((unsigned char *)e + sizeof(__cxa_refcounted_exception));
 }
 
 extern "C" void __cxa_free_exception(void *vptr) throw(){
-	free( (char *)(vptr) - sizeof(__cxa_exception) );
+	free( (char *)(vptr) - sizeof(__cxa_refcounted_exception) );
 }
 
 
 extern "C" __cxa_dependent_exception * __cxa_allocate_dependent_exception() throw(){
 	__cxa_dependent_exception *retval;
-	//The sizeof crap is required by Itanium ABI because we need to provide space for
-	//accounting information which is implementaion (gcc) specified
+	// The sizeof crap is required by Itanium ABI because we need to
+	// provide space for accounting information which is implementation
+	// (gcc) defined.
 	retval = static_cast<__cxa_dependent_exception*>(malloc (sizeof(__cxa_dependent_exception)));
 	if (0 == retval){
 		std::terminate();
@@ -58,4 +61,5 @@ extern "C" __cxa_dependent_exception * __cxa_allocate_dependent_exception() thro
 extern "C" void __cxa_free_dependent_exception(__cxa_dependent_exception *vptr) throw(){
 	free( (char *)(vptr) );
 }
-}
+
+}  /* namespace __cxxabiv1 */

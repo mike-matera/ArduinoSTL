@@ -40,6 +40,14 @@
 #include <cstddef>
 #include "unwind.h"
 
+#ifdef __aarch64__
+typedef long _Atomic_word;
+#elif defined __cris__
+typedef int _Atomic_word __attribute__ ((__aligned__ (4)));
+#else
+typedef int _Atomic_word;
+#endif
+
 #pragma GCC visibility push(default)
 
 namespace __cxxabiv1
@@ -79,6 +87,13 @@ struct __cxa_exception
   _Unwind_Exception unwindHeader;
 };
 
+struct __cxa_refcounted_exception
+{
+  // Manage this header.
+  _Atomic_word referenceCount;
+  // __cxa_exception must be last, and no padding can be after it.
+  __cxa_exception exc;
+};
 
 // A dependent C++ exception object consists of a header, which is a wrapper
 // around an unwind object header with additional C++ specific information,
@@ -162,7 +177,7 @@ extern "C" void __cxa_call_unexpected (void *) __attribute__((noreturn));
 
 // Invokes given handler, dying appropriately if the user handler was
 // so inconsiderate as to return.
-extern void __terminate(std::terminate_handler) __attribute__((noreturn));
+extern void __terminate(std::terminate_handler) throw () __attribute__((noreturn));
 extern void __unexpected(std::unexpected_handler) __attribute__((noreturn));
 
 // The current installed user handlers.
@@ -208,6 +223,21 @@ static inline __cxa_exception *
 __get_exception_header_from_ue (_Unwind_Exception *exc)
 {
   return reinterpret_cast<__cxa_exception *>(exc + 1) - 1;
+}
+
+// Acquire the C++ refcounted exception header from the C++ object.
+static inline __cxa_refcounted_exception *
+__get_refcounted_exception_header_from_obj (void *ptr)
+{
+  return reinterpret_cast<__cxa_refcounted_exception *>(ptr) - 1;
+}
+
+// Acquire the C++ refcounted exception header from the generic exception
+// header.
+static inline __cxa_refcounted_exception *
+__get_refcounted_exception_header_from_ue (_Unwind_Exception *exc)
+{
+  return reinterpret_cast<__cxa_refcounted_exception *>(exc + 1) - 1;
 }
 
 } /* namespace __cxxabiv1 */

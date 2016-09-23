@@ -15,7 +15,7 @@ public:
 	base() : a(0){
 		printf("Executing default base class constructor. a: %i\n", a);
 	}
-	
+
 	virtual ~base(){
 		printf("Executing base class destructor\n");
 	}
@@ -75,7 +75,7 @@ int main(){
 	b = new sub[1];
 	b[0].print();
 	delete [] b;
-	b = 0;	
+	b = 0;
 
 	printf("Testing nothrow new\n");
 
