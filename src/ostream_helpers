@@ -31,6 +31,8 @@
 
 namespace std{
 
+int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer_size);
+
 	/* We are making the following template class for serveral reasons.  Firstly,
 	 * we want to keep the main ostream code neat and tidy.  Secondly, we want it
 	 * to be easy to do partial specialization of the ostream code so that it can
@@ -248,10 +250,7 @@ namespace std{
 		{
 			char buffer[32];
 			int length;
-
-			double temp = abs(f);
-			temp = temp * 100.0 - floor(temp) * 100.0;
-			length = snprintf(buffer, 32, "%d.%d", (int)f, (int) temp);
+			length = arduinoPrintFloat(f, 2, &buffer[0], 32);
 
 /*
 			if(stream.flags() & ios_base::scientific){
@@ -279,10 +278,7 @@ namespace std{
 		{
 			char buffer[32];
 			int length;
-
-			double temp = abs(f);
-			temp = temp * 100.0 - floor(temp) * 100.0;
-			length = snprintf(buffer, 32, "%d.%d", (int)f, (int) temp);
+			length = arduinoPrintFloat(f, 2, &buffer[0], 32);
 
 /*
 			if(stream.flags() & ios_base::scientific){
