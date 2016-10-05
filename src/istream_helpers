@@ -324,9 +324,9 @@ namespace std{
 			}
 			unsigned int dec = temp.find('.', 0);
 			if (dec == string::npos) {
-			  var = atoi(temp.c_str());
+			  var = atol(temp.c_str());
 			}else{
-			  var = atoi(temp.substr(0,dec).c_str());
+			  var = atol(temp.substr(0,dec).c_str());
 			  var += ((double) atoi(temp.substr(dec+1).c_str())) / pow(10.0,temp.size()-dec-1);
 			}
 			if (isneg)
@@ -351,9 +351,9 @@ namespace std{
 			}
 			unsigned int dec = temp.find('.', 0);
 			if (dec == string::npos) {
-			  var = atoi(temp.c_str());
+			  var = atol(temp.c_str());
 			}else{
-			  var = atoi(temp.substr(0,dec).c_str());
+			  var = atol(temp.substr(0,dec).c_str());
 			  var += ((double) atoi(temp.substr(dec+1).c_str())) / pow(10.0,temp.size()-dec-1);
 			}
 			if (isneg)
