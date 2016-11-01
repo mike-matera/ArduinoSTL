@@ -24,7 +24,7 @@
 #include <func_exception>
 #include <algorithm>
 #include <type_traits>
-
+#include <initializer_list>
 
 #ifndef __STD_HEADER_VECTOR
 #define __STD_HEADER_VECTOR
@@ -92,6 +92,16 @@ namespace std{
 			for(size_type i = 0; i < elements; i++){
 				a.construct(data+i, x.data[i]);
 			}
+		}
+
+		_UCXXEXPORT vector(initializer_list<T> in, const Allocator & al=Allocator()) :
+		  a(al)
+		{
+		  data_size = in.size() + __UCLIBCXX_STL_BUFFER_SIZE__;
+		  elements = in.size();
+		  data = a.allocate(data_size);
+		  for(size_type i = 0; i < elements; i++) 
+		    a.construct(data+i, *(in.begin()+i));
 		}
 
 		_UCXXEXPORT ~vector();	//Below
