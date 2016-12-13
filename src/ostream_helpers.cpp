@@ -6,13 +6,8 @@
  * 
  */
 
-#include <stdint.h>
-#include <basic_definitions>
-#include <cstddef>
-#include <ios>
-#include <cctype>
+#include <ostream_helpers>
 #include <stdio.h>
-#include <math.h>
 
 namespace std {
 
