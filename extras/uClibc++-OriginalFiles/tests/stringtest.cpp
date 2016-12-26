@@ -391,6 +391,53 @@ bool checkInsertAtInteractor() {
 	return true;
 }
 
+bool checkAssignFillType() {
+	return true;
+#if 0
+	std::string a;
+	a.assign<int>(10, 0x2B);
+	return a == "++++++++++";
+#endif
+}
+
+bool checkAssignFillChar() {
+	std::string a;
+	a.assign(10, '+');
+	return a == "++++++++++";
+}
+
+bool checkAssignString() {
+	std::string a = "This is a string";
+	std::string b;
+	b.assign(a);
+	return b == a;
+}
+bool checkAssignSubstring() {
+	std::string a = "This is a string";
+	std::string b;
+	b.assign(a, 2, 5);
+	return b == "is is";
+}
+
+bool checkAssignCstring() {
+	std::string a;
+	a.assign("This is a c string");
+	return a == "This is a c string";
+}
+
+bool checkAssignBuffer() {
+	std::string a;
+	a.assign("This is a c string", 8);
+	return a == "This is ";
+}
+
+bool checkAssignIterator() {
+	std::string a = "This is a string";
+	std::string b;
+	b.assign(a.begin() + 2, a.end() - 6);
+	return b == "is is a ";
+}
+
 int main(){
 	TestFramework::init();
 
@@ -490,6 +537,14 @@ int main(){
 	TestFramework::AssertReturns<bool>(checkFindLastNotOfThis, true);
 
 	TestFramework::AssertReturns<bool>(checkInsertAtInteractor, true);
+
+	TestFramework::AssertReturns<bool>(checkAssignFillType, true);
+	TestFramework::AssertReturns<bool>(checkAssignFillChar, true);
+	TestFramework::AssertReturns<bool>(checkAssignString, true);
+	TestFramework::AssertReturns<bool>(checkAssignSubstring, true);
+	TestFramework::AssertReturns<bool>(checkAssignCstring, true);
+	TestFramework::AssertReturns<bool>(checkAssignBuffer, true);
+	TestFramework::AssertReturns<bool>(checkAssignIterator, true);
 
 	TestFramework::results();
 

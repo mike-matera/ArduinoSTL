@@ -389,6 +389,36 @@ bool testPartialSort(){
 	return true;
 }
 
+bool testSort() {
+	struct _my_comp {
+		inline bool operator()(const int &a, const int &b) const {
+			return a > b;
+		}
+	};
+	std::vector<int> a;
+	std::vector<int>::iterator i;
+
+	a.push_back(5);
+	a.push_back(2);
+	a.push_back(4);
+	a.push_back(3);
+	a.push_back(1);
+	a.push_back(0);
+
+	i = a.begin();
+
+	std::sort<std::vector<int>::iterator>(a.begin(), a.end(), _my_comp());
+
+	for (int j = 0; j < 6; ++j) {
+		if (a[j] != 5 - j) {
+			printf("Key %i should be %i but is %i\n", j, 5-j, a[j]);
+			return false;
+		}
+	}
+
+	return true;
+}
+
 bool testInplaceMerge(){
 	std::vector<int> a;
 	std::vector<int>::iterator i;
@@ -572,6 +602,7 @@ int main(){
         TestFramework::AssertReturns<bool>(testPushHeap, true);
         TestFramework::AssertReturns<bool>(testSortHeap, true);
         TestFramework::AssertReturns<bool>(testPartialSort, true);
+        TestFramework::AssertReturns<bool>(testSort, true);
         TestFramework::AssertReturns<bool>(testInplaceMerge, true);
         TestFramework::AssertReturns<bool>(testNextPermutation, true);
         TestFramework::AssertReturns<bool>(testPrevPermutation, true);
