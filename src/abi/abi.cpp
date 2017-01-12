@@ -28,6 +28,11 @@
 
 extern "C" {
 
+#if defined(ARDUINO)
+        /* Arduino defines some of these.
+	 * There can be link issues if they're redefined
+         */
+#else
 	/* This function is called in the event that a non-overidden
 	 * pure virtual function is called.  The compiler should never
 	 * let that happen.  We get to choose what to do - we will abort
@@ -36,4 +41,5 @@ extern "C" {
 		abort();
 	}
 
+#endif
 }
