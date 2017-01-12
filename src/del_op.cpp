@@ -17,6 +17,9 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+// Arduino 1.0 contains an implementation for this.
+#if ARDUINO < 100
+
 #include <new>
 #include <cstdlib>
 #include <func_exception>
@@ -24,3 +27,5 @@
 _UCXXEXPORT void operator delete(void* ptr) throw(){
 	free(ptr);
 }
+
+#endif
