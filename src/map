@@ -22,6 +22,7 @@
 #include <utility>
 #include <iterator>
 #include <associative_base>
+#include <initializer_list>
 
 
 #ifndef __STD_HEADER_MAP
@@ -108,6 +109,10 @@ public:
 	template <class InputIterator> map(InputIterator first, InputIterator last,
 		const Compare& comp = Compare(), const Allocator& al = Allocator())
 		: base(first, last, comp, al, v_t_k) {  }
+
+	map(initializer_list<pair<Key, T>> in, const Compare& comp = Compare(),
+		const Allocator& al = Allocator())
+		: base(in.begin(), in.end(), comp, al, v_t_k) {  }
 
 	map(const map<Key,T,Compare,Allocator>& x) : base(x) {  }
 	~map() {  }

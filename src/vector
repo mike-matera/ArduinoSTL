@@ -149,6 +149,11 @@ namespace std{
 			resize(n, u);
 		}
 
+		_UCXXEXPORT void assign(initializer_list<value_type> in){
+			clear();
+			insert(begin(), in.begin(), in.end());
+		}
+
 		inline allocator_type get_allocator() const{
 			return a;
 		}
