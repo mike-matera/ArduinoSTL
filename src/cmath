@@ -17,7 +17,9 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define _GLIBCXX_INCLUDE_NEXT_C_HEADERS
 #include <math.h>
+#undef _GLIBCXX_INCLUDE_NEXT_C_HEADERS
 
 #ifndef __STD_HEADER_CMATH
 #define __STD_HEADER_CMATH 1
