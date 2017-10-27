@@ -34,8 +34,7 @@ private:
   size_t len; 
 
   // Initialize from a { ... } construct
-  initializer_list(const T *a, size_t l) {
-  }
+  initializer_list(const T *a, size_t l): array(a), len(l) { }
 
 public:
   
