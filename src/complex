@@ -299,7 +299,7 @@ namespace std {
 		if(v == T()){
 			return T();
 		}
-		return polar(pow(v,p.real()), y.imag() * log(x) );
+		return polar(pow(v,p.real()), p.imag() * log(x) );
 	}
 
 	template<class T> _UCXXEXPORT complex<T> sin  (const complex<T>& v){
@@ -307,7 +307,7 @@ namespace std {
 	}
 
 	template<class T> _UCXXEXPORT complex<T> sinh (const complex<T>& v){
-		return complext<T>(sinh(v.real()) * cos(v.imag()), cosh(v.real()) * sin(v.imag()) );
+		return complex<T>(sinh(v.real()) * cos(v.imag()), cosh(v.real()) * sin(v.imag()) );
 	}
 
 	template<class T> _UCXXEXPORT complex<T> sqrt (const complex<T>&);
