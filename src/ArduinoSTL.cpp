@@ -42,7 +42,7 @@ namespace std
  */
 #if defined(ARDUINO_ARCH_AVR)
 
-ArduinoSTL_STDIO ArduinoSTL_Serial(&ARDUINOSTL_DEFAULT_SERIAL);
+ArduinoSTL_STDIO ArduinoSTL_Serial(ARDUINOSTL_DEFAULT_SERIAL);
 
 // arduino_putchar(char, FILE*) 
 //   Output a single character to the serial port. 
