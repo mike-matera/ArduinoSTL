@@ -24,8 +24,8 @@ void setup() {
 }
 ```
 
-## Using cin an cout
-When you include this header file you automatically get cin and cout based on Serial. There isn't yet a way to select you own device at runtime. Using cin and cout is 
+## Using ```cin``` an ```cout```
+When you include this header file you automatically get cin and cout based on ```Serial```. See below for how to specify your own device. Here's an example sketch using ```cin``` and ```cout``` .
 
 ```c++
 #include <ArduinoSTL.h>
@@ -47,10 +47,40 @@ void loop() {
   }
 }
 ```
+## Changing the Serial Port 
+You can change what serial port that ```cin```, ```cout``` and ```printf()``` use. You can use built-in serial ports (e.g. ```Serial1``` on Leonardo) or you can use software serial ports that implement ```Stream```. 
+
+### Using a Built-in Port 
+In ```src/ArduinoSTL.cpp``` change the value of ```ARDUINOSTL_DEFAULT_SERIAL```. Leave the other defaults uncommented. 
+
+### Using a SoftwareSerial port. 
+Set ```ARDUINO_DEFAULT_SERAL``` to ```NULL```. Comment out the other defaults. 
+
+Here's an example sketch that uses SofwareSerial:
+
+```c++
+#include <ArduinoSTL.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(0, 1);
+
+namespace std { 
+  ohserialstream cout(mySerial);
+  ihserialstream cin(mySerial);
+}
+
+void setup() {
+  mySerial.begin(9600);
+  ArduinoSTL_Serial.connect(mySerial);
+}
+```
+
+## Avoiding Instantiation of ```cin``` and ```cout```
+Comment out ```ARDUINOSTL_DEFAULT_CIN_COUT``` and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using ```printf()``` so you cannot currently avoid initializaing it.
 
 ## Known Issues
 
-Printing of floats and doubles using cout ignores format specifiers. 
+Printing of floats and doubles using ```cout``` ignores format specifiers. 
 
 uClibc seems to be fairly complete. Strings and vectors both work, even with the limited amount of heap available to Arduino. The uClibc++ status page can be found here: 
 
