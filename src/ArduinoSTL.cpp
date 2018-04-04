@@ -1,15 +1,35 @@
 #include <ArduinoSTL.h>
 #include <Arduino.h>
 
+//
+// Configuration Help 
+//
+// If you're using a serial port that's statically declared somewhere in
+// Arduino (e.g. Serial1 on Leonardo)
+//   1. Set ARDUINOSTL_SERIAL_DEVICE to your device
+//   2. Uncomment the ARDUINOSTL_DEFAULT_CIN_COUT flag.
+//
+// If you're using a sofware serial port:
+//   1. Set ARDUINOSTL_DEFAULT_SERIAL to NULL
+//   2. Comment out ARDUINOSTL_DEFAULT_CIN_COUT
+// Your sketch must contain delarations of cin and cout, and a call to
+// ArduinoSTL_serial.connect().
+//
+
+#define ARDUINOSTL_DEFAULT_SERIAL Serial
+#define ARDUINOSTL_DEFAULT_CIN_COUT
+
 using namespace std; 
 
+#ifdef ARDUINOSTL_DEFAULT_CIN_COUT
 // Create cout and cin.. there doesn't seem to be a way
 // to control what serial device at runtime. Grr.
 namespace std
 {
-  ohserialstream cout(Serial);
-  ihserialstream cin(Serial);
+  ohserialstream cout(ARDUINOSTL_DEFAULT_SERIAL);
+  ihserialstream cin(ARDUINOSTL_DEFAULT_SERIAL);
 }
+#endif // ARDUINOSTL_DEFAULT_CIN_COUT
 
 /*
  * Implementation of printf() is highly libc dependent.
@@ -21,22 +41,8 @@ namespace std
  *   ARDUINO_ARCH_* - ARMs are probably the same as above.
  */
 #if defined(ARDUINO_ARCH_AVR)
-//
-// This is a hack to make C stdio work on "Serial" without
-// having to be manually initialized. It works becuase I can
-// call a constructor before setup(). 
-//
-class __Arduino_STDIO_hack {
-public:
-  __Arduino_STDIO_hack(Stream *u);
-  Stream *getUart() {
-    return uart;
-  }
-private:
-  Stream *uart;
-};
 
-static __Arduino_STDIO_hack __stdio_wrapper(&Serial);
+ArduinoSTL_STDIO ArduinoSTL_Serial(&ARDUINOSTL_DEFAULT_SERIAL);
 
 // arduino_putchar(char, FILE*) 
 //   Output a single character to the serial port. 
@@ -46,7 +52,7 @@ static __Arduino_STDIO_hack __stdio_wrapper(&Serial);
 //     automatically addes a \r when it sees a \n
 // 
 static int arduino_putchar(char c, FILE* f) {
-  Stream *uart = __stdio_wrapper.getUart();
+  Stream *uart = ArduinoSTL_Serial.getUart();
   if (c == '\n') uart->write('\r');
   return uart->write(c) == 1? 0 : 1;
 }
@@ -57,18 +63,18 @@ static int arduino_putchar(char c, FILE* f) {
 //   returns: The character or -1 on a read error
 //
 static int arduino_getchar(FILE *f) {
-  Stream *uart = __stdio_wrapper.getUart();
+  Stream *uart = ArduinoSTL_Serial.getUart();
   while (! uart->available()) { /* wait */ }
   return uart->read();
 }
 
-// Initialize STDIO using a pointer to whatever Serial is. 
-// Serial.begin() must be called at some point. 
-//
-__Arduino_STDIO_hack::__Arduino_STDIO_hack(Stream *u) {
+void ArduinoSTL_STDIO::connect(Stream *u) {
+  if (file != NULL)
+    free (file);
   uart = u;
-  fdevopen(arduino_putchar, arduino_getchar); 
+  file = fdevopen(arduino_putchar, arduino_getchar); 
 }
+
 #else
 #warning "printf() will not be functional on this platform."
 #endif
