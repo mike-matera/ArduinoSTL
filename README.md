@@ -89,3 +89,9 @@ https://cxx.uclibc.org/status.html
 Always use the latest Arduino IDE. This library uses the Arduino IDE Library Specification rev.2.1 with features only available on Arduino 1.6.10 and higher. The specification can be found here:
 
 https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification
+
+## License
+
+The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception: 
+
+  - src/serstream is licensed under the BSD license according to Andy Brown's wishes here: http://andybrown.me.uk/terms-and-conditions/
