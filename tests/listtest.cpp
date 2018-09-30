@@ -337,7 +337,31 @@ int main(){
 		++list_iter_1;
 	}
 	std::cout << std::endl;
-	
+
+
+	/* bug 11361: splice to empty list from other.begin() segfaulted */
+	temp.clear();
+	a.clear();
+	temp.push_back(1.0);
+	temp.push_back(2.0);
+	a.splice(a.end(), temp, temp.begin());
+	std::cout << "temp.size(): " << temp.size() << std::endl;
+	std::cout << "a.size(): " << a.size() << std::endl;
+	std::cout << "temp:";
+	i = temp.begin();
+	while(i != temp.end()){
+		std::cout << " " << *i;
+		++i;
+	}
+	std::cout << std::endl;
+	std::cout << "a:";
+	i = a.begin();
+	while(i != a.end()){
+		std::cout << " " << *i;
+		++i;
+	}
+	std::cout << std::endl;
+
 
 	std::cout << "Testing operator=()\n";
 	temp.clear();
