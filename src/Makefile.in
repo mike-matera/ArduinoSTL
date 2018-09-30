@@ -1,6 +1,6 @@
 WR_CXX := WRAPPER_INCLUDEDIR=-I$(top_srcdir)include $(WRAPPER)
 
-LDFLAGS-$(DODEBUG)-$(LIBNAME).so += -Wl,-s
+LDFLAGS-$(if $(DODEBUG),,$(DODEBUG))-$(LIBNAME).so += -Wl,-s
 LDFLAGS-$(LIBNAME).so += -nodefaultlibs -shared
 LIBS-$(LIBNAME).so += $(BUILD_EXTRA_LIBRARIES) $(LIBS)
 
