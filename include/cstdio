@@ -48,6 +48,7 @@ namespace std{
 	using ::getc;
 	using ::getchar;
 #if __cplusplus <= 201103L
+	// LWG 2249
 	using ::gets;
 #endif
 	using ::perror;
@@ -64,7 +65,9 @@ namespace std{
 	using ::sprintf;
 	using ::sscanf;
 	using ::tmpfile;
+#if _GLIBCXX_USE_TMPNAM
 	using ::tmpnam;
+#endif
 	using ::ungetc;
 	using ::vfprintf;
 	using ::vprintf;
