@@ -389,12 +389,28 @@ bool testPartialSort(){
 	return true;
 }
 
-bool testSort() {
+/* C++-03 and earlier: 14.3.1 Template type arguments [temp.arg.type]:
+   A local type, a type with no linkage, an unnamed type or a type
+   compounded from any of these types shall not be used as a
+   template-argument for a template type-parameter.
+*/
+#if __cplusplus < 201103L
 	struct _my_comp {
 		inline bool operator()(const int &a, const int &b) const {
 			return a > b;
 		}
 	};
+#endif
+
+bool testSort() {
+	/* in C++-11 this restriction was lifted */
+#if __cplusplus >= 201103L
+	struct _my_comp {
+		inline bool operator()(const int &a, const int &b) const {
+			return a > b;
+		}
+	};
+#endif
 	std::vector<int> a;
 	std::vector<int>::iterator i;
 
