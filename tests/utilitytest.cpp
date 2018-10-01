@@ -191,15 +191,17 @@ bool checkpair_opsCopyConstructor(){
 	b = std::pair<char, int>('b', 61473);
 
 	std::pair<char, int> c(b);
-	
+
 	return c.first == 'b' && c.second == 61473;
 }
 bool checkpair_opsReplacementAssignment(){
 	std::pair<Foo, Foo> d = std::pair<Foo, Foo>(5, 18);
 	std::pair<Foo, Foo> e(d);
 
+#if __cplusplus < 201103L
+	/* no move, so not deleted */
 	e = d;
-	
+#endif
 	return e.first == 5 && e.second == 18;
 }
 
