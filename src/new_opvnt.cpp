@@ -22,7 +22,7 @@
 #include <func_exception>
 
 #ifndef NO_NOTHROW
-_UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) throw(){
+_UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT{
 	return malloc(numBytes);
 }
 #endif

@@ -57,9 +57,9 @@ public:
 	pointer address(reference r) const { return &r; }
 	const_pointer address(const_reference r) const { return &r; }
 	
-	allocator() throw(){}
-	template <class U> allocator(const allocator<U>& ) throw();
-	~allocator() throw(){}
+	allocator() _UCXX_USE_NOEXCEPT{}
+	template <class U> allocator(const allocator<U>& ) _UCXX_USE_NOEXCEPT;
+	~allocator() _UCXX_USE_NOEXCEPT{}
 
 	//Space for n Ts
 	pointer allocate(size_type n, typename allocator<void>::const_pointer = 0){
@@ -73,7 +73,7 @@ public:
 	void construct(pointer p, const T& val) { new((void*)p) T(val); }
 	void destroy(pointer p){ ((T*)p)->~T(); }	//Call destructor
 
-	size_type max_size() const throw();
+	size_type max_size() const _UCXX_USE_NOEXCEPT;
 	template<class U> struct rebind { typedef allocator<U> other; };
 
 };
@@ -128,13 +128,13 @@ public:
 
 	typedef T element_type;
 
-	explicit auto_ptr(T* p =0) throw() : object(p){  }
-	auto_ptr(auto_ptr& p) throw() : object(p.release()){ }
-	auto_ptr(auto_ptr_ref<T> r) throw() : object(r.p){
+	explicit auto_ptr(T* p =0) _UCXX_USE_NOEXCEPT : object(p){  }
+	auto_ptr(auto_ptr& p) _UCXX_USE_NOEXCEPT : object(p.release()){ }
+	auto_ptr(auto_ptr_ref<T> r) _UCXX_USE_NOEXCEPT : object(r.p){
 		r.p = 0;
 	}
-	template<class Y> auto_ptr(auto_ptr<Y>& p) throw() : object(p.release()){ }
-	auto_ptr& operator=(auto_ptr& p) throw(){
+	template<class Y> auto_ptr(auto_ptr<Y>& p) _UCXX_USE_NOEXCEPT : object(p.release()){ }
+	auto_ptr& operator=(auto_ptr& p) _UCXX_USE_NOEXCEPT{
 		if(&p == this){
 			return *this;
 		}
@@ -142,7 +142,7 @@ public:
 		object = p.release();
 		return *this;
 	}
-	template<class Y> auto_ptr& operator=(auto_ptr<Y>& p) throw(){
+	template<class Y> auto_ptr& operator=(auto_ptr<Y>& p) _UCXX_USE_NOEXCEPT{
 		if(&p == this){
 			return *this;
 		}
@@ -154,33 +154,33 @@ public:
 		delete object;
 	}
 
-	T& operator*() const throw(){
+	T& operator*() const _UCXX_USE_NOEXCEPT{
 		return *object;
 	}
-	T* operator->() const throw(){
+	T* operator->() const _UCXX_USE_NOEXCEPT{
 		return object;
 	}
-	T* get() const throw(){
+	T* get() const _UCXX_USE_NOEXCEPT{
 		return object;
 	}
-	T* release() throw(){
+	T* release() _UCXX_USE_NOEXCEPT{
 		T * temp(object);
 		object = 0;
 		return temp;
 	}
-	void reset(T * p=0) throw(){
+	void reset(T * p=0) _UCXX_USE_NOEXCEPT{
 		if(p != object){
 			delete object;
 			object = p;
 		}
 	}
-	template<class Y> operator auto_ptr_ref<Y>() throw(){
+	template<class Y> operator auto_ptr_ref<Y>() _UCXX_USE_NOEXCEPT{
 		auto_ptr_ref<Y> retval;
 		retval.p = object;
 		object = 0;
 		return retval;
 	}
-	template<class Y> operator auto_ptr<Y>() throw(){
+	template<class Y> operator auto_ptr<Y>() _UCXX_USE_NOEXCEPT{
 		auto_ptr<Y> retval(object);
 		object = 0;
 		return retval;
