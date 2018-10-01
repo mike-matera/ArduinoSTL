@@ -157,7 +157,7 @@ namespace std{
 			sbuf->sbumpc();
 			return *this;
 		}
-		proxy operator++(int){
+		istreambuf_iterator<charT,traits> operator++(int){
 			istreambuf_iterator<charT,traits> tmp = *this;
 			sbuf->sbumpc();
 			return(tmp);

@@ -345,7 +345,8 @@ namespace std{
 	{
 		bool ok;
 	public:
-		explicit _UCXXEXPORT sentry(basic_istream<charT,traits>& os, bool noskipws = false){
+		explicit _UCXXEXPORT sentry(basic_istream<charT,traits>& os, bool noskipws = false)
+			: ok(false){
 			if(os.good() !=0){		//Prepare for output
 			}
 

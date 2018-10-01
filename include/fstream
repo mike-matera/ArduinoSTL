@@ -66,9 +66,10 @@ namespace std{
 
 		//Constructors/destructor:
 
-		_UCXXEXPORT basic_filebuf()	: basic_streambuf<charT, traits>(), fp(0), pbuffer(0), gbuffer(0)
+		_UCXXEXPORT basic_filebuf()
+			: basic_streambuf<charT, traits>(), fp(0), pbuffer(0),
+				gbuffer(0), append(false)
 		{
-			append=false;
 			pbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 			gbuffer = new char_type[__UCLIBCXX_IOSTREAM_BUFSIZE__];
 
@@ -375,12 +376,12 @@ namespace std{
 			if(s == 0 && n == 0){	//Unbuffered
 				if(pbuffer !=0){
 					delete [] pbuffer;
+					pbuffer = 0;
 				}
 				if(gbuffer !=0){
 					delete [] gbuffer;
+					gbuffer = 0;
 				}
-				pbuffer = 0;
-				gbuffer = 0;
 			}else if(basic_streambuf<charT,traits>::gptr() !=0 && 
 				basic_streambuf<charT,traits>::gptr()==basic_streambuf<charT,traits>::egptr())
 			{

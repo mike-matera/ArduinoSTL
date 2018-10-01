@@ -139,12 +139,14 @@ namespace std{
 //		long&  iword(int index);
 //		void*& pword(int index);
 
-		_UCXXEXPORT ~ios_base() { }
-
 		enum event { erase_event, imbue_event, copyfmt_event };
 
 		typedef void (*event_callback)(event, ios_base&, int index);
 //		void register_callback(event_call_back fn, int index);
+
+		virtual _UCXXEXPORT ~ios_base() {
+			/* would run erase_event callbacks here */
+		}
 
 		//We are going to wrap stdio so we don't need implementation of the following:
 		inline static bool sync_with_stdio(bool = true) { return true; }
@@ -340,7 +342,8 @@ namespace std{
 			throw_mask = except;
 		}
 
-		explicit _UCXXEXPORT basic_ios(basic_streambuf<charT,traits>* sb) : fill_char(' '), mtied(0), mstreambuf(0){
+		explicit _UCXXEXPORT basic_ios(basic_streambuf<charT,traits>* sb)
+			: fill_char(' '), mtied(0), mstreambuf(0), throw_mask(0) {
 			init(sb);
 		}
 
