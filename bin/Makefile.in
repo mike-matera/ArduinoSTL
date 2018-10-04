@@ -3,7 +3,7 @@ CLEAN_bin:
 	$(do_rm) $(WRAPPER) $(BIN_DIR)env_check
 
 install-bin: $(WRAPPER) | $(DESTDIR)$(UCLIBCXX_RUNTIME_BINDIR)
-	@$(disp_install) $(call dirify,$(WRAPPER))
+	@$(call disp_install,$(call dirify,$(WRAPPER)))
 	$(Q)$(INSTALL) -m 0755 $(WRAPPER) $(DESTDIR)$(UCLIBCXX_RUNTIME_BINDIR)
 
 # Rebuild wrapper whenever any of these vars change

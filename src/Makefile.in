@@ -23,9 +23,9 @@ include $(top_srcdir)src/abi/libgcc_eh/Makefile.in
 include $(top_srcdir)src/abi/libsupc/Makefile.in
 
 install-lib: lib | $(DESTDIR)$(UCLIBCXX_RUNTIME_LIBDIR)
-	@$(if $(BUILD_STATIC_LIB),$(disp_install) $(LIBNAME).a)
-	@$(if $(BUILD_ONLY_STATIC_LIB),,$(disp_install) \
-			$(SHARED_FULLNAME) $(SHARED_MAJORNAME) $(LIBNAME).so)
+	@$(if $(BUILD_STATIC_LIB),$(call disp_install, $(LIBNAME).a))
+	@$(if $(BUILD_ONLY_STATIC_LIB),,$(call disp_install, \
+			$(SHARED_FULLNAME) $(SHARED_MAJORNAME) $(LIBNAME).so))
 	$(Q)(cd $(SRC_OUT); \
 	 $(TAR) -cf - \
 	 $(if $(BUILD_STATIC_LIB),$(LIBNAME).a,) \
