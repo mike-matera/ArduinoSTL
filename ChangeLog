@@ -1,4 +1,13 @@
 0.2.5
+-   list: fix splice to empty list from other.begin()
+-   add refcounted exceptions
+-   tests: Allow to run tests via a simulator
+-   algorithm: Fix decl of stable_sort
+-   string: assign(): fix two bugs
+-   C++14 sized allocation
+-   buildsys: Revamp. Fix spurious rebuilds, check CXXFLAGS with CXX
+-   iostream: fix string getline to set noskipws
+-   istream: add missing operator >> implementation
 -   buildsys: rename .config WARNINGS to UCLIBCXX_WARNINGS
 -   unwind: Fix for __ARM_EABI_UNWINDER__
 
