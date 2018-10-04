@@ -130,6 +130,22 @@ bool test_positioned_insert(){
 	return true;
 }
 
+static bool erase_both_iters() {
+	typedef std::multimap<int, int> testmap;
+        testmap tst;
+        tst.insert(std::pair<int, int>(1, 1));
+        tst.insert(std::pair<int, int>(2, 1));
+        tst.insert(std::pair<int, int>(3, 1));
+        tst.erase(tst.begin(), tst.end());
+	if (tst.empty() == true
+	    && tst.size() == 0
+	    && tst.rbegin() == tst.rend()
+	    && tst.begin() == tst.end()
+	    && tst.find(42) == tst.end())
+		return true;
+	return false;
+}
+
 
 int main(){
 
@@ -137,6 +153,7 @@ int main(){
 
         TestFramework::AssertReturns<bool>(test_added_elements, true);
         TestFramework::AssertReturns<bool>(test_positioned_insert, true);
+        TestFramework::AssertReturns<bool>(erase_both_iters, true);
 
         TestFramework::results();
 

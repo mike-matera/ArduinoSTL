@@ -1,4 +1,5 @@
 0.2.5
+-   __base_associative: fix erase(iter,iter), e.g. multimap
 -   list: fix splice to empty list from other.begin()
 -   add refcounted exceptions
 -   tests: Allow to run tests via a simulator
