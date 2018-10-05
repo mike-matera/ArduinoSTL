@@ -125,4 +125,5 @@ help:
 	@echo
 	@echo '  DESTDIR=		- Prepended prefix to installation paths'
 	@echo '  CPU_CFLAGS		- extra C- and CXX- FLAGS for compiling uClibc++'
+	@echo '  LDFLAGS		- extra LDFLAGS for linking uClibc++ itself'
 	@echo '  BUILD_EXTRA_LIBRARIES	- extra LDFLAGS for linking uClibc++ itself'

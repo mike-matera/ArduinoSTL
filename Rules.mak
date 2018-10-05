@@ -249,14 +249,13 @@ endif
 list-archive-members = $(if $(1),$(shell $(AR) t $(1)))
 variablify = $(strip $(subst /,_,$(subst :,_,$(subst ;,_,$(subst |,_,$(subst >,_,$(subst <,_,$(1))))))))
 
-GEN_LIBS:=
+GEN_LIBS:= -lc
 ifneq ($(LIBGCC_DIR),$(UCLIBCXX_RUNTIME_LIBDIR))
 GEN_LIBS += -L$(LIBGCC_DIR)
 endif
 ifneq ($(IMPORT_LIBSUP),y)
   GEN_LIBS += -lsupc++
 endif
-GEN_LIBS += -lc -lgcc
 
 LIBS := $(GEN_LIBS)
 STATIC_LIBS := $(GEN_LIBS)
@@ -264,14 +263,12 @@ STATIC_LIBS := $(GEN_LIBS)
 $(eval $(call cache-output-var,LDASNEEDED,$(LD) --help 2>/dev/null | grep -q -- --as-needed && echo y))
 link.asneeded = $(if $1,$(if $(LDASNEEDED),-Wl$(comma)--as-needed $(1) -Wl$(comma)--no-as-needed,$(1)))
 
-ifneq ($(GCC_MAJOR_VER),3)
-LIBS-ASNEEDED-$(LIBNAME).so = -lgcc_s
-endif
+#ifneq ($(GCC_MAJOR_VER),3)
+#LIBS-ASNEEDED-$(LIBNAME).so = -lgcc_s
+#endif
 ifneq ($(IMPORT_LIBGCC_EH),y)
   STATIC_LIBS += -lgcc_eh
-#ifeq ($(GCC_MAJOR_VER),3)
-#  LIBS += -lgcc_eh
-#endif
+  LIBS-ASNEEDED-$(LIBNAME).so+= -lgcc_eh
 endif
 
 # We do not need built-in implicit rules
@@ -464,44 +461,44 @@ maybe_exec = \
 
 CFLAGS_gen.dep = -MT $@ -MD -MP -MF $(dir $@).$(notdir $@).dep
 
-cmd_compile.c = $(CC) $(CFLAGS_gen.dep) \
+cmd_compile.c = $(CC) \
 	$(CFLAGS-$(suffix $@)) \
 	$(filter-out $(CFLAGS-OMIT-$(notdir $<)),$(CFLAGS-$(notdir $(<D)))) \
 	$(CFLAGS-$(subst $(top_srcdir),,$(dir $<))) \
 	$(CFLAGS-$(notdir $<)) \
 	$(CFLAGS-$(notdir $@)) \
+	$(CFLAGS_gen.dep) \
 	$(CFLAGS) \
 	-c $< -o $@
 cmd_compile.i = $(cmd_compile.c:-c=-E -dD) $(UCLIBC_EXTRA_CPPFLAGS)
 cmd_compile.s = $(cmd_compile.c:-c=-S)
-cmd_compile.cxx = $(WR_CXX) $(CFLAGS_gen.dep) \
-	$(CXXFLAGS-$(suffix $@)) \
+cmd_compile.cxx.flags = \
 	$(filter-out $(CXXFLAGS-OMIT-$(notdir $<)),$(CXXFLAGS-$(notdir $(<D)))) \
 	$(CXXFLAGS-$(subst $(top_srcdir),,$(dir $<))) \
 	$(CXXFLAGS-$(notdir $<)) \
 	$(CXXFLAGS-$(notdir $@)) \
-	$(CXXFLAGS) \
+	$(CXXFLAGS)
+cmd_compile.cxx = $(WR_CXX) \
+	$(CXXFLAGS-$(suffix $@)) \
+	$(cmd_compile.cxx.flags) \
+	$(CFLAGS_gen.dep) \
 	-c $< -o $@
 cmd_compile.ixx = $(cmd_compile.cxx:-c=-E -dD) $(CXXCPPFLAGS)
 cmd_compile.sxx = $(cmd_compile.cxx:-c=-S)
-cmd_compile.oxx = $(WR_CXX) $(CFLAGS_gen.dep) \
+cmd_compile.oxx = $(WR_CXX) \
 	$(CXXFLAGS-$(suffix $@)) \
-	$(filter-out $(CXXFLAGS-OMIT-$(notdir $<)),$(CXXFLAGS-$(notdir $(<D)))) \
-	$(CXXFLAGS-$(subst $(top_srcdir),,$(dir $<))) \
-	$(CXXFLAGS-$(notdir $<)) \
-	$(CXXFLAGS-$(notdir $@)) \
-	$(CXXFLAGS) \
+	$(cmd_compile.cxx.flags) \
+	$(CFLAGS_gen.dep) \
 	-c $< -o $@
-cmd_compile.uxx = $(WR_CXX) $(CFLAGS_gen.dep) \
-	$(filter-out $(CXXFLAGS-OMIT-$(notdir $<)),$(CXXFLAGS-$(notdir $(<D)))) \
-	$(CXXFLAGS-$(subst $(top_srcdir),,$(dir $<))) \
-	$(CXXFLAGS-$(notdir $<)) \
-	$(CXXFLAGS-$(notdir $@)) \
-	$(CXXFLAGS) \
-	$^ $(LDFLAGS) $(DEPS-$(notdir $@)) -o $@
-cmd_compile.u = $(CC) $(CFLAGS_gen.dep) $(CFLAGS) $(CFLAGS-$(notdir $(^D))) $(CFLAGS-$(notdir $@)) $^ $(DEPS-$(notdir $@)) -o $@
+cmd_compile.uxx = $(WR_CXX) \
+	$(cmd_compile.cxx.flags) \
+	$(CFLAGS_gen.dep) \
+	$^ $(LDFLAGS) $(LDFLAGS-$(@F)) $(LDFLAGS-y-$(@F)) \
+	$(LIBS-$(notdir $@)) $(LIBS-y) \
+	-o $@
+cmd_compile.u = $(CC) $(CFLAGS_gen.dep) $(CFLAGS) $(CFLAGS-$(notdir $(^D))) $(CFLAGS-$(notdir $@)) $^ $(LIBS-$(notdir $@)) -o $@
 cmd_compile.S = $(filter-out -std=gnu99, $(cmd_compile.c)) -D__ASSEMBLER__ $(ASFLAGS) $(ARCH_ASFLAGS) $(ASFLAGS-$(suffix $@)) $(ASFLAGS-$(notdir $<)) $(ASFLAGS-$(notdir $@))
-cmd_hcompile.uxx = $(HOSTCXX) $(CFLAGS_gen.dep) $(HOSTCXXFLAGS) $(CXXFLAGS-$(notdir $(^D))) $(CXXFLAGS-$(notdir $@)) $^ $(HOSTLDFLAGS) $(DEPS-$(notdir $@)) -o $@
+cmd_hcompile.uxx = $(HOSTCXX) $(CFLAGS_gen.dep) $(HOSTCXXFLAGS) $(CXXFLAGS-$(notdir $(^D))) $(CXXFLAGS-$(notdir $@)) $^ $(HOSTLDFLAGS) $(LIBS-$(notdir $@)) -o $@
 cmd_hcompile.oxx = $(HOSTCXX) $(CFLAGS_gen.dep) $(HOSTCXXFLAGS) $(HOSTCXXFLAGS-$(notdir $(^D))) $(HOSTCXXFLAGS-$(notdir $@)) -c $< -o $@
 cmd_strip     = $(STRIPTOOL) $(STRIP_FLAGS) $^
 cmd_t_strip   = $(STRIPTOOL) $(STRIP_FLAGS) $@
@@ -558,13 +555,16 @@ define compile.u
 	@$(disp_compile.u) ; $(cmd_compile.u)
 	@$(disp_t_strip)
 endef
-cmd_hcompile.u = $(HOSTCC) $(filter-out $(PHONY),$^) $(DEPS-$(notdir $@)) -o $@ $(HOSTLDFLAGS) $(HOSTLDFLAGS-$(notdir $(^D))) $(HOSTLDFLAGS-$(notdir $@)) $(HOSTCFLAGS) $(HOSTCFLAGS-$(notdir $(^D))) $(HOSTCFLAGS-$(notdir $@))
-cmd_hcompile.o = $(HOSTCC) $(filter-out $(PHONY),$<) $(DEPS-$(notdir $@)) -c -o $@ $(HOSTCFLAGS) $(HOSTCFLAGS-$(notdir $(^D))) $(HOSTCFLAGS-$(notdir $@))
+cmd_hcompile.u = $(HOSTCC) $(filter-out $(PHONY),$^) $(LIBS-$(notdir $@)) -o $@ $(HOSTLDFLAGS) $(HOSTLDFLAGS-$(notdir $(^D))) $(HOSTLDFLAGS-$(notdir $@)) $(HOSTCFLAGS) $(HOSTCFLAGS-$(notdir $(^D))) $(HOSTCFLAGS-$(notdir $@))
+cmd_hcompile.o = $(HOSTCC) $(filter-out $(PHONY),$<) $(LIBS-$(notdir $@)) -c -o $@ $(HOSTCFLAGS) $(HOSTCFLAGS-$(notdir $(^D))) $(HOSTCFLAGS-$(notdir $@))
 
 define link.so
 	$(Q)$(RM) $@ $@.$(2) $(1)
 	@$(disp_ld)
-	$(Q)$(CXX) $(LDFLAGS-$(@F)) $(LDFLAGS-y-$(@F)) \
+	$(Q)$(CXX) $(cmd_compile.cxx.flags) \
+		$(LDFLAGS) \
+		$(LDFLAGS-$(@F)) \
+		$(LDFLAGS-y-$(@F)) \
 		-Wl,-soname=$(@F).$(2) \
 		-o $(1) $^ \
 		$(START_FILE-$(@F)) \
