@@ -35,3 +35,8 @@ core
 *.rej
 /*.patch
 /*.diff
+
+#
+# Visual Studio
+#
+.vs
