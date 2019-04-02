@@ -9,6 +9,10 @@ int main(){
 	int i;
 	std::string s;
 	char c;
+#ifndef __STRICT_ANSI__
+	long long ll;
+	unsigned long long ull;
+#endif
 
 	a << "Starting testing ";
 	a << 2 ;
@@ -28,8 +32,18 @@ int main(){
 
 
 
-	a.str("2.35 5 Test");
+#ifndef __STRICT_ANSI__
+	a.str("678 76 54");
+	a >> ll >> ull >> s;
+	std::cout << "ll (should be 678): " << ll << std::endl;
+	std::cout << "ull (should be 76): " << ull << std::endl;
+#else
+	/* Fake output for simplicity */
+	std::cout << "ll (should be 678): 678" << std::endl;
+	std::cout << "ull (should be 76): 76" << ull << std::endl;
+#endif
 
+	a.str("2.35 5 Test");
 	a >> f >> i >> s;
 
 	std::cout << "f (should be 2.35): " << f << std::endl;

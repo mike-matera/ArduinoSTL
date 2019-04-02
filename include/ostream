@@ -85,6 +85,10 @@ namespace std {
 		basic_ostream<charT,traits>& operator<<(long double f);
 		basic_ostream<charT,traits>& operator<<(void* p);
 		basic_ostream<charT,traits>& operator<<(basic_streambuf<char_type,traits>* sb);
+#ifndef __STRICT_ANSI__
+		basic_ostream<charT,traits>& operator<<(long long n);
+		basic_ostream<charT,traits>& operator<<(unsigned long long n);
+#endif
 
 		_UCXXEXPORT basic_ostream<charT,traits>& put(char_type c){
 			if(basic_ostream<charT,traits>::traits_type::eq_int_type(
@@ -216,6 +220,22 @@ namespace std {
 		__ostream_printout<traits, charT, unsigned long >::printout(*this, n);
 		return *this;
 	}
+
+#ifndef __STRICT_ANSI__
+	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(long long n)
+	{
+		sentry s(*this);
+		__ostream_printout<traits, charT, long long >::printout(*this, n);
+		return *this;
+	}
+
+	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(unsigned long long n)
+	{
+		sentry s(*this);
+		__ostream_printout<traits, charT, unsigned long long >::printout(*this, n);
+		return *this;
+	}
+#endif
 
 	template <class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& basic_ostream<charT, traits>::operator<<(float f){
 		sentry s(*this);

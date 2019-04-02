@@ -4,6 +4,8 @@ Character getted: a
 Character getted: b
 input buffer: abcdefg
 Character 0: a, character 1: b
+ll (should be 678): 678
+ull (should be 76): 76
 f (should be 2.35): 2.35
 i (should be 5): 5
 s (should be Test): Test
