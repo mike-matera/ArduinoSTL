@@ -1,4 +1,6 @@
 0.2.5
+-   stream: Add support for 64-bit integers
+-   buildsys: allow to pass in LDFLAGS
 -   __base_associative: fix erase(iter,iter), e.g. multimap
 -   list: fix splice to empty list from other.begin()
 -   add refcounted exceptions
