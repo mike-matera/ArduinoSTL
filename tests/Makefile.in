@@ -25,6 +25,7 @@ all: $(ALLBIN) $(if $(DODEBUG),$(HOST_BIN))
 include $(TESTS_DIR)testoutput/Makefile.in
 
 LIBS-valarraytest := -lm
+CXXFLAGS-vectortest.o += $(CXXFLAG_-Wno-tautological-compare)
 
 $(EXOBJS) $(UTILITY_OBJS): $(WRAPPER)
 %.o: %.cpp ; $(compile.oxx)

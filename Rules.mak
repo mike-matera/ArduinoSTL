@@ -199,6 +199,7 @@ endif
 $(eval $(call check-gxx-var,-fvisibility-inlines-hidden))
 $(eval $(call check-gxx-var,-std=gnu++14))
 $(eval $(call check-gxx-var,-Wno-sized-deallocation))
+$(eval $(call check-gxx-var,-Wno-tautological-compare))
 
 # Add a bunch of extra pedantic annoyingly strict checks
 XWARNINGS=$(call qstrip,$(UCLIBCXX_WARNINGS)) -Wno-trigraphs -pedantic
