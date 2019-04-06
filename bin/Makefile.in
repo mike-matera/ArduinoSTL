@@ -32,26 +32,20 @@ define do_wrapper
 	$(Q)echo 'WRAPPER_LIBS="$(strip $(LIBS))"' >> $@.tmp
 	$(Q)echo '' >> $@.tmp
 	$(Q)echo 'WRAPPER_INCLIB="Y"' >> $@.tmp
-	$(Q)echo 'while [ -n "$$1" ]' >> $@.tmp
+	$(Q)echo 'for arg' >> $@.tmp
 	$(Q)echo 'do' >> $@.tmp
-	$(Q)echo '	WRAPPER_OPTIONS="$$WRAPPER_OPTIONS $$1"' >> $@.tmp
-	$(Q)echo '	if [ "$$1" = "-c" -o "$$1" = "-E" -o "$$1" = "-S" ]' >> $@.tmp
-	$(Q)echo '	then' >> $@.tmp
-	$(Q)echo '		WRAPPER_INCLIB="N"' >> $@.tmp
-	$(Q)echo '	fi' >> $@.tmp
-	$(Q)echo '	if [ "$$1" = "-static" -a "$$WRAPPER_LIBS" != "$(strip $(STATIC_LIBS))" ]' >> $@.tmp
-	$(Q)echo '	then' >> $@.tmp
-	$(Q)echo '		WRAPPER_LIBS="$(strip $(STATIC_LIBS))"' >> $@.tmp
-	$(Q)echo '	fi' >> $@.tmp
-	$(Q)echo '	shift' >> $@.tmp
+	$(Q)echo '	case "$$arg" in' >> $@.tmp
+	$(Q)echo '	-c|-E|-S) WRAPPER_INCLIB="N" ;;' >> $@.tmp
+	$(Q)echo '	-static) [ "$$WRAPPER_LIBS" != "$(strip $(STATIC_LIBS))" ] && WRAPPER_LIBS="$(strip $(STATIC_LIBS))" ;;' >> $@.tmp
+	$(Q)echo '	esac' >> $@.tmp
 	$(Q)echo 'done' >> $@.tmp
 	$(Q)echo 'if [ "$$WRAPPER_INCLIB" = "Y" ]' >> $@.tmp
 	$(Q)echo 'then' >> $@.tmp
 	$(Q)echo '	WRAPPER_OPTIONS="$$WRAPPER_OPTIONS -nodefaultlibs $$WRAPPER_LIBDIR -l$(LNAME) $$WRAPPER_LIBS"' >> $@.tmp
 	$(Q)echo 'fi' >> $@.tmp
 	$(Q)echo '' >> $@.tmp
-	$(Q)echo '[ -n "$$V" ] && [ $$V -gt 1 ] && echo $(CXX) $(GEN_CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS) $$WRAPPER_INCLUDEDIR $$WRAPPER_OPTIONS' >> $@.tmp
-	$(Q)echo 'exec $(CXX) $(GEN_CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS) $$WRAPPER_INCLUDEDIR $$WRAPPER_OPTIONS' >> $@.tmp
+	$(Q)echo '[ -n "$$V" ] && [ $$V -gt 1 ] && echo $(CXX) $(GEN_CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS) $$WRAPPER_INCLUDEDIR "$$@" $$WRAPPER_OPTIONS' >> $@.tmp
+	$(Q)echo 'exec $(CXX) $(GEN_CFLAGS) $(GEN_CXXFLAGS) $(EH_CXXFLAGS) $$WRAPPER_INCLUDEDIR "$$@" $$WRAPPER_OPTIONS' >> $@.tmp
 	$(Q)echo '' >> $@.tmp
 	$(Q)chmod 0755 $@.tmp
 	$(Q)mv $@.tmp $@
