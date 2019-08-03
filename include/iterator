@@ -164,7 +164,7 @@ namespace std{
 		}
 
 		bool equal(const istreambuf_iterator& b) const{
-			return sbuf == b.sbuf || is_eof() && b.is_eof();
+			return sbuf == b.sbuf || (is_eof() && b.is_eof());
 		}
 	private:
 		streambuf_type* sbuf;
