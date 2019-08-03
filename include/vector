@@ -180,7 +180,7 @@ namespace std{
 		}
 
 		_UCXXEXPORT size_type max_size() const{
-			return ((size_type)(-1)) / sizeof(T);
+			return static_cast<size_type>(-1) / sizeof(T);
 		}
 
 		void downsize(size_type sz);

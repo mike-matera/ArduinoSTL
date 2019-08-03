@@ -63,15 +63,15 @@ public:
 
 	//Space for n Ts
 	pointer allocate(size_type n, typename allocator<void>::const_pointer = 0){
-		return (T*)(::operator new( n * sizeof(T) ));
+		return static_cast<T*>(::operator new( n * sizeof(T) ));
 	}
 	void deallocate(pointer p, size_type){
 		::operator delete(p);
 	}
 
 	//Use placement new to engage the constructor
-	void construct(pointer p, const T& val) { new((void*)p) T(val); }
-	void destroy(pointer p){ ((T*)p)->~T(); }	//Call destructor
+	void construct(pointer p, const T& val) { new(static_cast<void*>(p)) T(val); }
+	void destroy(pointer p){ (static_cast<T*>(p))->~T(); }	//Call destructor
 
 	size_type max_size() const _UCXX_USE_NOEXCEPT;
 	template<class U> struct rebind { typedef allocator<U> other; };
