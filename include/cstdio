@@ -21,6 +21,15 @@
 #ifndef __HEADER_CSTDIO
 #define __HEADER_CSTDIO 1
 
+#undef clearerr
+#undef feof
+#undef ferror
+#undef fgetc
+#undef fputc
+#undef getc
+#undef getchar
+#undef putc
+#undef putchar
 
 namespace std{
 	using ::FILE;
