@@ -35,3 +35,10 @@ core
 *.rej
 /*.patch
 /*.diff
+
+#
+# Editors
+#
+
+.vs
+.vscode
