@@ -220,6 +220,12 @@ namespace std{
 		bool f;
 	};
 
+	template< class C >
+	auto begin( C& c ) -> decltype(c.begin()) { return c.begin(); }
+
+	template< class C >
+	auto end( C& c ) -> decltype(c.end()) { return c.end(); }
+
 }
 
 #pragma GCC visibility pop
