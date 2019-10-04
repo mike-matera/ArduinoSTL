@@ -301,7 +301,7 @@ namespace std{
 	};
 
 
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, long long>{
 	public:
 		inline static void readin(basic_istream<char, traits >& stream, long long & var)

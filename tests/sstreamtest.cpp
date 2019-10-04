@@ -9,7 +9,7 @@ int main(){
 	int i;
 	std::string s;
 	char c;
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 	long long ll;
 	unsigned long long ull;
 #endif
@@ -32,7 +32,7 @@ int main(){
 
 
 
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 	a.str("678 76 54");
 	a >> ll >> ull >> s;
 	std::cout << "ll (should be 678): " << ll << std::endl;

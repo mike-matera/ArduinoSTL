@@ -72,7 +72,7 @@ namespace std{
 		basic_istream<charT,traits>& operator>>(void*& p);
 		basic_istream<charT,traits>& operator>>(basic_streambuf<char_type,traits>* sb);
 
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 		basic_istream<charT,traits>& operator>>(long long& n);
 		basic_istream<charT,traits>& operator>>(unsigned long long& n);
 #endif
@@ -455,7 +455,7 @@ namespace std{
 		return *this;
 	}
 
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
 		basic_istream<charT,traits>::operator>>(long long& n)
 	{
