@@ -364,6 +364,17 @@ namespace std{
 		return result;
 	}
 
+	template< class InputIterator, class Size, class OutputIterator >
+	OutputIterator copy_n( InputIterator first, Size count, OutputIterator result ) {
+		if (count > 0) {
+			*result++ = *first;
+			for (Size i = 1; i < count; ++i) {
+				*result++ = *++first;
+			}
+		}
+		return result;
+	}
+
 	template<class BidirectionalIterator1, class BidirectionalIterator2> _UCXXEXPORT
 		BidirectionalIterator2
 		copy_backward(BidirectionalIterator1 first, BidirectionalIterator1 last,
