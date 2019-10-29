@@ -84,7 +84,7 @@ public:
 		}
 		if (*s > 0){
 			resize(n);
-			Tr::copy(vector<Ch, A>::data, s, vector<Ch, A>::elements);
+			Tr::copy(vector<Ch, A>::data_, s, vector<Ch, A>::elements);
 		}
 	}
 
@@ -112,7 +112,7 @@ public:
 		if(s!=0){
 			size_type len = Tr::length(s);
 			resize(len);
-			Tr::copy( vector<Ch, A>::data, s, len);
+			Tr::copy( vector<Ch, A>::data_, s, len);
 		}
 		return *this;
 	}
@@ -145,7 +145,7 @@ public:
 	_UCXXEXPORT basic_string& append(const basic_string& str){
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + str.elements);
-		Tr::copy( vector<Ch, A>::data + temp, str.vector<Ch, A>::data, str.elements);
+		Tr::copy( vector<Ch, A>::data_ + temp, str.vector<Ch, A>::data_, str.elements);
 
 		return *this;
 	}
@@ -164,14 +164,14 @@ public:
 		}
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + rlen);
-		Tr::copy( vector<Ch, A>::data + temp, str.vector<Ch, A>::data + pos, rlen);
+		Tr::copy( vector<Ch, A>::data_ + temp, str.vector<Ch, A>::data_ + pos, rlen);
 		return *this;
 	}
 
 	_UCXXEXPORT basic_string& append(const Ch* s, size_type n){
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
-		Tr::copy( vector<Ch, A>::data + temp, s, n);
+		Tr::copy( vector<Ch, A>::data_ + temp, s, n);
 		return *this;
 	}
 
@@ -179,7 +179,7 @@ public:
 		size_type strLen = Tr::length(s);
 		size_t temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + strLen);
-		Tr::copy( vector<Ch, A>::data + temp, s, strLen);
+		Tr::copy( vector<Ch, A>::data_ + temp, s, strLen);
 		return *this;
 	}
 
@@ -260,8 +260,8 @@ public:
 		}
 		size_type temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
-		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, temp - pos);
-		Tr::copy(vector<Ch, A>::data + pos, s, n);
+		Tr::move(vector<Ch, A>::data_ + pos + n, vector<Ch, A>::data_ + pos, temp - pos);
+		Tr::copy(vector<Ch, A>::data_ + pos, s, n);
 		return *this;
 	}
 
@@ -406,12 +406,12 @@ public:
 
 	_UCXXEXPORT const Ch* c_str() const{
 		const_cast<basic_string<Ch,Tr,A> *>(this)->reserve(vector<Ch, A>::elements+1);
-		vector<Ch, A>::data[vector<Ch, A>::elements] = 0;	//Add 0 at the end
-		return vector<Ch, A>::data;
+		vector<Ch, A>::data_[vector<Ch, A>::elements] = 0;	//Add 0 at the end
+		return vector<Ch, A>::data_;
 	}
 
 	_UCXXEXPORT const Ch* data() const{
-		return vector<Ch, A>::data;
+		return vector<Ch, A>::data_;
 	}
 	_UCXXEXPORT allocator_type get_allocator() const{
 		return vector<Ch, A>::a;
@@ -579,7 +579,7 @@ public:
 		if(rlen >  str.elements){
 			rlen = str.elements;
 		}
-		int retval = Tr::compare(vector<Ch, A>::data, str.vector<Ch, A>::data, rlen);
+		int retval = Tr::compare(vector<Ch, A>::data_, str.vector<Ch, A>::data_, rlen);
 		if(retval == 0){
 			if(vector<Ch, A>::elements < str.elements){
 				retval = -1;
@@ -623,7 +623,7 @@ public:
 		if(rlen > vector<Ch, A>::elements){
 			rlen=vector<Ch, A>::elements;
 		}
-		int retval = Tr::compare(vector<Ch, A>::data, s, rlen);
+		int retval = Tr::compare(vector<Ch, A>::data_, s, rlen);
 		if(retval==0){
 			if(vector<Ch, A>::elements < slen){
 				retval = -1;
@@ -687,7 +687,7 @@ template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>::
 		rlen = n;
 	}
 	resize(rlen);
-	Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, vector<Ch, A>::elements);
+	Tr::copy(vector<Ch, A>::data_, str.vector<Ch, A>::data_ + pos, vector<Ch, A>::elements);
 }
 
 template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>&
@@ -698,7 +698,7 @@ template<class Ch,class Tr,class A> _UCXXEXPORT basic_string<Ch,Tr,A>&
 	}
 	vector<Ch, A>::clear();
 	resize(str.elements);
-	Tr::copy( vector<Ch, A>::data, str.vector<Ch, A>::data, str.elements);
+	Tr::copy( vector<Ch, A>::data_, str.vector<Ch, A>::data_, str.elements);
 	return *this;
 }
 
@@ -729,7 +729,7 @@ template<class Ch,class Tr,class A>
 	if(rlen > n){
 		rlen = n;
 	}
-	return basic_string<Ch,Tr,A>(vector<Ch, A>::data + pos,rlen);
+	return basic_string<Ch,Tr,A>(vector<Ch, A>::data_ + pos,rlen);
 }
 
 
