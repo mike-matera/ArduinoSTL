@@ -1,14 +1,7 @@
-# ArduinoSTL
-This is an implementation of a C++ standard library packaged as an Arduino library. The library supports teaching my CS-11M class by adding key C++ features into the Arduino environment. 
+# avr_stl
+This is an implementation of a C++ standard library packaged as an Arduino library. The library is based on the library from Mike Matera:
 
-The library is ported from uClibc++:
-
-http://git.uclibc.org/uClibc++
-
-With a streams implementation from Andy Brown's Arduino Library: 
-
-http://andybrown.me.uk/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/
-
+https://github.com/mike-matera/ArduinoSTL
 
 ## Using printf() and scanf()
 The ArduinoSTL header file contains code to bind a serial port of your choice to
