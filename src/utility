@@ -83,6 +83,16 @@ namespace std{
 
 }
 
+namespace std {
+	template <class T> constexpr T&& forward(typename std::remove_reference<T>::type& t) noexcept{
+		return static_cast<T&&>(t);
+	}
+	template <class T> constexpr T&& forward(typename std::remove_reference<T>::type&& t) noexcept{
+		//static_assert(!std::is_lvalue_reference<T>::value, "Can not forward an rvalue as an lvalue.");
+		return static_cast<T&&>(t);
+	}	
+}
+
 #pragma GCC visibility pop
 
 #endif	//__STD_HEADER_UTILITY
