@@ -82,8 +82,9 @@ namespace std{
 		typedef __true_type value;
 	};
 
-
-
+	template<typename T> struct remove_reference                  { typedef T type; };
+	template<typename T> struct remove_reference<T&>              { typedef T type; };
+	template<typename T> struct remove_reference<T&&>             { typedef T type; };
 }
 
 #pragma GCC visibility pop
