@@ -50,6 +50,7 @@ RM      = rm -f
 TAR     = tar
 SED     = sed
 AWK     = awk
+MD5SUM  = md5sum
 
 ARFLAGS:= cr
 
@@ -249,6 +250,7 @@ endif
 
 list-archive-members = $(if $(1),$(shell $(AR) t $(1)))
 variablify = $(strip $(subst /,_,$(subst :,_,$(subst ;,_,$(subst |,_,$(subst >,_,$(subst <,_,$(1))))))))
+print-hash = $(strip $(if $(1),$(shell printf "%s" "$(1)" | $(MD5SUM) | $(SED) 's/[^0-9a-zA-Z]//g')))
 
 GEN_LIBS:= -lc
 ifneq ($(LIBGCC_DIR),$(UCLIBCXX_RUNTIME_LIBDIR))
