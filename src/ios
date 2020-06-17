@@ -40,7 +40,7 @@ namespace std{
 		public:
 			explicit failure(const std::string&) { }
 			explicit failure() { }
-			virtual const char* what() const throw() {
+			virtual const char* what() const {
 				return "std::ios_base failure exception";
 			}
 		};

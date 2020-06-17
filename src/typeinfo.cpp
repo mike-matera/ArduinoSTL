@@ -21,11 +21,11 @@
 
 namespace std{
 
-	_UCXXEXPORT bad_cast::~bad_cast() throw(){
+	_UCXXEXPORT bad_cast::~bad_cast() {
 
 	}
 
-	_UCXXEXPORT bad_typeid::~bad_typeid() throw(){
+	_UCXXEXPORT bad_typeid::~bad_typeid() {
 
 	}
 
