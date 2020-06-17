@@ -27,7 +27,7 @@
 namespace __cxxabiv1
 {
 
-extern "C" void * __cxa_allocate_exception(std::size_t thrown_size) throw(){
+extern "C" void * __cxa_allocate_exception(std::size_t thrown_size) {
 	void *e;
 	// The sizeof crap is required by Itanium ABI because we need to
 	// provide space for accounting information which is implementation
@@ -40,12 +40,12 @@ extern "C" void * __cxa_allocate_exception(std::size_t thrown_size) throw(){
 	return (void *)((unsigned char *)e + sizeof(__cxa_refcounted_exception));
 }
 
-extern "C" void __cxa_free_exception(void *vptr) throw(){
+extern "C" void __cxa_free_exception(void *vptr) {
 	free( (char *)(vptr) - sizeof(__cxa_refcounted_exception) );
 }
 
 
-extern "C" __cxa_dependent_exception * __cxa_allocate_dependent_exception() throw(){
+extern "C" __cxa_dependent_exception * __cxa_allocate_dependent_exception() {
 	__cxa_dependent_exception *retval;
 	// The sizeof crap is required by Itanium ABI because we need to
 	// provide space for accounting information which is implementation
@@ -58,7 +58,7 @@ extern "C" __cxa_dependent_exception * __cxa_allocate_dependent_exception() thro
 	return retval;
 }
 
-extern "C" void __cxa_free_dependent_exception(__cxa_dependent_exception *vptr) throw(){
+extern "C" void __cxa_free_dependent_exception(__cxa_dependent_exception *vptr) {
 	free( (char *)(vptr) );
 }
 

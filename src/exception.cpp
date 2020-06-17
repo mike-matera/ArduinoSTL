@@ -33,15 +33,15 @@ namespace std{
 	//We are providing our own versions to be sneaky
 
 
-	_UCXXEXPORT exception::~exception() throw(){
+	_UCXXEXPORT exception::~exception() {
 		//Empty function
 	}
 
-	_UCXXEXPORT const char* exception::what() const throw(){
+	_UCXXEXPORT const char* exception::what() const {
 		return __std_exception_what_value;
 	}
 
-	_UCXXEXPORT bad_exception::~bad_exception() throw(){
+	_UCXXEXPORT bad_exception::~bad_exception() {
 
 	}
 
