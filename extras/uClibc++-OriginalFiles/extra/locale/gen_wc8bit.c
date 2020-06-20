@@ -1,11 +1,11 @@
 #define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <locale.h>
-#include <stddef.h>
-#include <wctype.h>
-#include <limits.h>
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "locale.h"
+#include "stddef.h"
+#include "wctype.h"
+#include "limits.h"
 
 #ifndef _CTYPE_H
 #define _CTYPE_H

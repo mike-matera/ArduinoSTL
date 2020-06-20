@@ -3,9 +3,9 @@
  * Released under the terms of the GNU GPL v2.0.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
 
 #define LKC_DIRECT_LINK
 #include "lkc.h"

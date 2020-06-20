@@ -16,8 +16,8 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <cstddef>
-#include <string.h>
+#include "cstddef"
+#include "string.h"
 
 #ifndef __HEADER_CSTRING
 #define __HEADER_CSTRING 1

@@ -1,7 +1,7 @@
-#include <exception>
-#include <stdexcept>
-#include <cstdio>
-#include <cstring>
+#include "exception"
+#include "stdexcept"
+#include "cstdio"
+#include "cstring"
 
 int main(){
 	printf("Starting exception testing\n");

@@ -16,7 +16,7 @@ the stdio primitives. This happens automatically but the user must still call
 Serial.begin()
 
 ```c++
-#include <ArduinoSTL.h>
+#include "ArduinoSTL.h"
 
 void setup() {
   Serial.begin(9600); 
@@ -28,7 +28,7 @@ void setup() {
 When you include this header file you automatically get cin and cout based on ```Serial```. See below for how to specify your own device. Here's an example sketch using ```cin``` and ```cout``` .
 
 ```c++
-#include <ArduinoSTL.h>
+#include "ArduinoSTL.h"
 
 using namespace std;
 
@@ -59,8 +59,8 @@ Set ```ARDUINO_DEFAULT_SERAL``` to ```NULL```. Comment out the other defaults.
 Here's an example sketch that uses SofwareSerial:
 
 ```c++
-#include <ArduinoSTL.h>
-#include <SoftwareSerial.h>
+#include "ArduinoSTL.h"
+#include "SoftwareSerial.h"
 
 SoftwareSerial mySerial(0, 1);
 

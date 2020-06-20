@@ -16,10 +16,10 @@
 /* First, we deal with  platform-specific or compiler-specific issues. */
 
 /* begin standard C headers. */
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdlib.h>
+#include "stdio.h"
+#include "string.h"
+#include "errno.h"
+#include "stdlib.h"
 
 /* end standard C headers. */
 
@@ -31,7 +31,7 @@
 /* C99 systems have <inttypes.h>. Non-C99 systems may or may not. */
 
 #if defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L
-#include <inttypes.h>
+#include "inttypes.h"
 typedef int8_t flex_int8_t;
 typedef uint8_t flex_uint8_t;
 typedef int16_t flex_int16_t;
@@ -2003,11 +2003,11 @@ char *zconftext;
  * Released under the terms of the GNU GPL v2.0.
  */
 
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "limits.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "unistd.h"
 
 #define LKC_DIRECT_LINK
 #include "lkc.h"
@@ -2070,7 +2070,7 @@ void alloc_string(const char *str, int size)
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
-#include <unistd.h>
+#include "unistd.h"
 
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *

@@ -1,6 +1,6 @@
-#include <exception>
-#include <cstdio>
-#include <typeinfo>
+#include "exception"
+#include "cstdio"
+#include "typeinfo"
 
 namespace TestFramework{
 	extern unsigned long int goodcount;

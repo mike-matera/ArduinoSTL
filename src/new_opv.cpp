@@ -20,9 +20,9 @@
 // Arduino 1.0 contains an implementation for this.
 #if ARDUINO < 100
 
-#include <new>
-#include <cstdlib>
-#include <func_exception>
+#include "new"
+#include "cstdlib"
+#include "func_exception"
 
 _UCXXEXPORT void* operator new[](std::size_t numBytes) throw(std::bad_alloc){
 	//C++ stardard 5.3.4.8 requires that a valid pointer be returned for

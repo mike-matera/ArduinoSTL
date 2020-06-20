@@ -19,7 +19,7 @@
 #ifndef __STD_HEADER_CLOCALE
 #define __STD_HEADER_CLOCALE 1
 
-#include <locale.h>
+#include "locale.h"
 
 namespace std {
 	using ::lconv;

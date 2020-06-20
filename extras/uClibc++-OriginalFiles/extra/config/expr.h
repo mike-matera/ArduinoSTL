@@ -10,9 +10,9 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
+#include "stdio.h"
 #ifndef __cplusplus
-#include <stdbool.h>
+#include "stdbool.h"
 #endif
 
 struct file {

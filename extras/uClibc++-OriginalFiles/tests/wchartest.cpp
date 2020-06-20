@@ -1,6 +1,6 @@
-#include <string>
-#include <iostream>
-#include <locale.h>
+#include "string"
+#include "iostream"
+#include "locale.h"
 
 int main(){
 	setlocale(LC_ALL, "en_US.utf8");

@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <stdint.h>
-#include <stddef.h>
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "assert.h"
+#include "stdint.h"
+#include "stddef.h"
 
 #ifndef __WCHAR_ENABLED
 #warning WHOA!!! __WCHAR_ENABLED is not defined! defining it now...
@@ -164,8 +164,8 @@ int main(void)
 	}
 
 	fprintf(lso,
-			"#include <stddef.h>\n"
-			"#include <stdint.h>\n"
+			"#include "stddef.h"\n"
+			"#include "stdint.h"\n"
 /* 			"#define __CTYPE_HAS_8_BIT_LOCALES\n" */
 			"#ifndef __WCHAR_ENABLED\n"
 			"#error __WCHAR_ENABLED not defined\n"

@@ -1,9 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include "stdio.h"
+#include "stdlib.h"
+#include "fcntl.h"
+#include "unistd.h"
+#include "sys/types.h"
+#include "sys/stat.h"
 
 int main(void)
 {
@@ -31,8 +31,8 @@ int main(void)
 	}
 
 	fprintf(lso,
-			"#include <stddef.h>\n"
-			"#include <stdint.h>\n"
+			"#include "stddef.h"\n"
+			"#include "stdint.h"\n"
 			"#include \"lt_defines.h\"\n"
 			"#include \"locale_mmap.h\"\n\n"
 			"typedef union {\n"
