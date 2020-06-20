@@ -60,7 +60,7 @@ Here's an example sketch that uses SofwareSerial:
 
 ```c++
 #include <ArduinoSTL.h>
-#include "SoftwareSerial.h"
+#include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(0, 1);
 
