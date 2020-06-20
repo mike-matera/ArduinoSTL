@@ -1,14 +1,14 @@
 #define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <limits.h>
-#include <assert.h>
-#include <locale.h>
-#include <langinfo.h>
-#include <nl_types.h>
-#include <stdint.h>
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "ctype.h"
+#include "limits.h"
+#include "assert.h"
+#include "locale.h"
+#include "langinfo.h"
+#include "nl_types.h"
+#include "stdint.h"
 
 #include "c8tables.h"
 

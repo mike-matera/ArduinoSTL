@@ -154,12 +154,12 @@
  * Released under the terms of the GNU GPL v2.0.
  */
 
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+#include "ctype.h"
+#include "stdarg.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "stdbool.h"
 
 #define printd(mask, fmt...) if (cdebug & (mask)) printf(fmt)
 

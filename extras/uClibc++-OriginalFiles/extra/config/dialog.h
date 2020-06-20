@@ -19,12 +19,12 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
+#include "sys/types.h"
+#include "fcntl.h"
+#include "unistd.h"
+#include "ctype.h"
+#include "stdlib.h"
+#include "string.h"
 
 #ifdef CURSES_LOC
 #include CURSES_LOC

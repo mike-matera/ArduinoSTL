@@ -18,7 +18,7 @@
 #ifndef __BASIC_DEFINITIONS
 #define __BASIC_DEFINITIONS 1
 
-#include <system_configuration.h>
+#include "system_configuration.h"
 
 #pragma GCC visibility push(default)
 

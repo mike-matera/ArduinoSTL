@@ -20,16 +20,16 @@
 #define _GNU_SOURCE
 #endif
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdarg.h>
-#include <limits.h>
-#include <ctype.h>
-#include <assert.h>
-#include <search.h>
+#include "stddef.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "stdint.h"
+#include "stdarg.h"
+#include "limits.h"
+#include "ctype.h"
+#include "assert.h"
+#include "search.h"
 
 typedef struct {
 	char *name;					/*  */

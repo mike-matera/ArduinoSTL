@@ -15,8 +15,8 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <stdio.h>
-#include <basic_definitions>
+#include "stdio.h"
+#include "basic_definitions"
 
 #ifndef __HEADER_CSTDIO
 #define __HEADER_CSTDIO 1

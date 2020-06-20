@@ -17,11 +17,11 @@
 	USA.
 */
 
-#include <ios>
-#include <cctype>
-#include <streambuf>
-#include <istream_helpers>
-#include <ostream>
+#include "ios"
+#include "cctype"
+#include "streambuf"
+#include "istream_helpers"
+#include "ostream"
 
 #ifndef __STD_HEADER_ISTREAM
 #define __STD_HEADER_ISTREAM 1

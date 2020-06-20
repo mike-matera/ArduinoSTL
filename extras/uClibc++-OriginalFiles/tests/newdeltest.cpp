@@ -1,6 +1,6 @@
-#include <new>
-#include <memory>
-#include <cstdio>
+#include "new"
+#include "memory"
+#include "cstdio"
 
 struct test{
 	int a;

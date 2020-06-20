@@ -1,10 +1,10 @@
 #define _GNU_SOURCE
 
-#include <locale.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <langinfo.h>
-#include <nl_types.h>
+#include "locale.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "langinfo.h"
+#include "nl_types.h"
 
 #if !defined(__UCLIBC__) && 0
 #define DO_EXTRA

@@ -17,13 +17,13 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <stdint.h>
-#include <basic_definitions>
-#include <cstddef>
-#include <ios>
-#include <cctype>
-#include <string>
-#include <math.h> // for floor()
+#include "stdint.h"
+#include "basic_definitions"
+#include "cstddef"
+#include "ios"
+#include "cctype"
+#include "string"
+#include "math.h" // for floor()
 
 #ifndef __STD_HEADER_OSTREAM_HELPERS
 #define __STD_HEADER_OSTREAM_HELPERS 1
