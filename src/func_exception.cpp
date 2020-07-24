@@ -60,21 +60,27 @@ _UCXXEXPORT void __throw_invalid_argument(const char * message){
 
 #else
 
+#ifndef ESP8266
 _UCXXEXPORT void __throw_bad_alloc(){
 	abort();
 }
+#endif
 
+#ifndef ESP8266
 _UCXXEXPORT void __throw_out_of_range( const char * ){
 	abort();
 }
+#endif
 
 _UCXXEXPORT void __throw_overflow_error( const char * ){
 	abort();
 }
 
+#ifndef ESP8266
 _UCXXEXPORT void __throw_length_error(const char * ){
 	abort();
 }
+#endif
 
 _UCXXEXPORT void __throw_invalid_argument(const char *){
 	abort();
