@@ -9,7 +9,7 @@
 #ifndef ARDUINOSTL_M_H
 #define ARDUINOSTL_M_H
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "serstream"
 
 // Create cout and cin.. there doesn't seem to be a way
