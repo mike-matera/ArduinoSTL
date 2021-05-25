@@ -17,10 +17,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <ios>
-#include <cctype>
+#include "ios"
+#include "cctype"
 
-#include <string>
+#include "string"
 
 #ifndef __STD_HEADER_ISTREAM_HELPERS
 #define __STD_HEADER_ISTREAM_HELPERS 1

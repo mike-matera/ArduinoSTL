@@ -16,11 +16,11 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <basic_definitions>
+#include "basic_definitions"
 #include <string.h>
-#include <exception>
-#include <memory>
-#include <char_traits>
+#include "exception"
+#include "memory"
+#include "char_traits"
 
 #ifndef __HEADER_TYPE_TRAITS
 #define __HEADER_TYPE_TRAITS 1
