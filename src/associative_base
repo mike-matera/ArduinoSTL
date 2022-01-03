@@ -200,8 +200,7 @@ public:
 	}
 	void erase(iterator first, iterator last){
 		while(first != last){
-			backing.erase(first.base_iterator());
-			++first;
+			first = backing.erase(first.base_iterator());
 		}
 	}
 

@@ -33,43 +33,36 @@ namespace std{
 	extern const nothrow_t nothrow;
 
 	typedef void (*new_handler)();
-	_UCXXEXPORT new_handler set_new_handler(new_handler new_p) throw();
+	_UCXXEXPORT new_handler set_new_handler(new_handler new_p) _UCXX_USE_NOEXCEPT;
 }
 
-#if (__cplusplus < 201703L)
-    _UCXXEXPORT void* operator new(std::size_t numBytes) throw(std::bad_alloc);
-#else
-    _UCXXEXPORT void* operator new(std::size_t numBytes) noexcept(false);
-#endif
-_UCXXEXPORT void operator delete(void* ptr) throw();
-#if __cpp_sized_deallocation
-_UCXXEXPORT void operator delete(void* ptr, std::size_t) throw();
+
+_UCXXEXPORT void* operator new(std::size_t numBytes) _UCXX_THROW(std::bad_alloc);
+_UCXXEXPORT void operator delete(void* ptr) _UCXX_USE_NOEXCEPT;
+#ifdef __cpp_sized_deallocation
+_UCXXEXPORT void operator delete(void* ptr, std::size_t) _UCXX_USE_NOEXCEPT;
 #endif
 
-#if (__cplusplus < 201703L)
-    _UCXXEXPORT void* operator new[](std::size_t numBytes) throw(std::bad_alloc);
-#else
-    _UCXXEXPORT void* operator new[](std::size_t numBytes) noexcept(false);
-#endif
-_UCXXEXPORT void operator delete[](void * ptr) throw();
-#if __cpp_sized_deallocation
-_UCXXEXPORT void operator delete[](void * ptr, std::size_t) throw();
+_UCXXEXPORT void* operator new[](std::size_t numBytes) _UCXX_THROW(std::bad_alloc);
+_UCXXEXPORT void operator delete[](void * ptr) _UCXX_USE_NOEXCEPT;
+#ifdef __cpp_sized_deallocation
+_UCXXEXPORT void operator delete[](void * ptr, std::size_t) _UCXX_USE_NOEXCEPT;
 #endif
 
 #ifndef NO_NOTHROW
-_UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) throw();
-_UCXXEXPORT void operator delete(void* ptr, const std::nothrow_t& ) throw();
+_UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
+_UCXXEXPORT void operator delete(void* ptr, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
 
-_UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) throw();
-_UCXXEXPORT void operator delete[](void* ptr, const std::nothrow_t& ) throw();
+_UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
+_UCXXEXPORT void operator delete[](void* ptr, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
 #endif
 
 	/* Placement operators */
-inline void* operator new(std::size_t, void* ptr) throw() {return ptr; }
-inline void operator delete(void* , void *) throw() { }
-	
-inline void* operator new[](std::size_t, void *p) throw() { return p; }
-inline void operator delete[](void* , void *) throw() {}
+inline void* operator new(std::size_t, void* ptr) _UCXX_USE_NOEXCEPT {return ptr; }
+inline void operator delete(void* , void *) _UCXX_USE_NOEXCEPT { }
+
+inline void* operator new[](std::size_t, void *p) _UCXX_USE_NOEXCEPT { return p; }
+inline void operator delete[](void* , void *) _UCXX_USE_NOEXCEPT {}
 
 #pragma GCC visibility pop
 

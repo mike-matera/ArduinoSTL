@@ -52,7 +52,7 @@ namespace std{
 		static char_type to_char_type(const int_type & i);
 
 		inline static int_type to_int_type(const char_type & c){
-			return (short int)(unsigned char)c;
+			return static_cast<short int>(static_cast<unsigned char>(c));
 		}
 
 		inline static bool eq_int_type(const int_type & a, const int_type & b){
@@ -71,7 +71,7 @@ namespace std{
 		}
 
 		inline static char_type* move(char_type* s1, const char_type* s2, size_t n){
-			return (char*) memmove(s1, s2, n);
+			return static_cast<char*>(memmove(s1, s2, n));
 		}
 
 		inline static char_type* copy(char_type* s1, const char_type* s2, size_t n){
@@ -82,7 +82,7 @@ namespace std{
 		}
 
 		inline static char_type* assign(char_type* s, size_t n, char_type a){
-			return (char *)memset(s, a, n);
+			return static_cast<char *>(memset(s, a, n));
 		}
 
 		inline static int compare(const char_type* s1, const char_type* s2, size_t n){

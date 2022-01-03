@@ -70,7 +70,7 @@ public:
 	typedef typename vector<Ch, A>::reverse_iterator reverse_iterator;
 	typedef typename vector<Ch, A>::const_reverse_iterator const_reverse_iterator;
 
-	static const size_type npos = (size_type)-1;
+	static const size_type npos = static_cast<size_type>(-1);
 
 	explicit _UCXXEXPORT basic_string(const A& al = A()) : vector<Ch, A>(al){ return; }
 

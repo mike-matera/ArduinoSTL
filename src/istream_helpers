@@ -301,6 +301,61 @@ namespace std{
 	};
 
 
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, long long>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, long long & var)
+		{
+			basic_string<char, traits > temp;
+
+			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
+				sscanf(temp.c_str(), "%lld", &var );
+			}else{
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%llo", (unsigned long long *)&var );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						scanf(temp.c_str(), "%llX", (unsigned long long *)&var );
+					}else{
+						sscanf(temp.c_str(), "%llx", (unsigned long long *)&var);
+					}
+				}else{
+					sscanf(temp.c_str(), "%lli", (&var) );
+				}
+			}
+		}
+	};
+
+
+	template <class traits> class _UCXXEXPORT __istream_readin<traits, char, unsigned long long>{
+	public:
+		inline static void readin(basic_istream<char, traits >& stream, unsigned long long & var)
+		{
+			basic_string<char, traits > temp;
+
+			if(stream.flags() & ios_base::dec){
+				temp = _readTokenDecimal( stream);
+				sscanf(temp.c_str(), "%llu", &var );
+			}else{
+				temp = _readToken( stream);
+				if( stream.flags() & ios_base::oct){
+					sscanf(temp.c_str(), "%llo", &var );
+				}else if(stream.flags() & ios_base::hex){
+					if(stream.flags() & ios_base::uppercase){
+						scanf(temp.c_str(), "%llX", &var );
+					}else{
+						sscanf(temp.c_str(), "%llx", &var);
+					}
+				}else{
+					sscanf(temp.c_str(), "%lli", (long long *)(&var) );
+				}
+			}
+		}
+	};
+#endif
+
 #ifdef __UCLIBCXX_HAS_FLOATS__
 
 // NB: The Arduino AVR compiler contains an implementation of printf() and scanf()

@@ -42,21 +42,21 @@ namespace std{
 		all = collate | ctype | monetary | numeric | time  | messages;
 
 		// construct/copy/destroy:
-		locale() throw(){
+		locale() _UCXX_USE_NOEXCEPT{
 			return;
 		}
-		locale(const locale& other) throw(){
+		locale(const locale& other) _UCXX_USE_NOEXCEPT{
 			(void)other;
 			return;
 		}
-		locale(const char *) throw(){
+		locale(const char *) _UCXX_USE_NOEXCEPT{
 			return;
 		}
-		~locale() throw(){
+		~locale() _UCXX_USE_NOEXCEPT{
 			return;
 		}
 
-		const locale& operator=(const locale&) throw(){
+		const locale& operator=(const locale&) _UCXX_USE_NOEXCEPT{
 			return *this;
 		}
 		std::string name() const { return "C"; }

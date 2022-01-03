@@ -139,7 +139,7 @@ namespace std{
 	public:
 		typedef Iterator iterator_type;
 
-		reverse_iterator() : current(){};
+		reverse_iterator() : current(){}
 		explicit reverse_iterator(Iterator x) : current(x) { }
 		template<class U> reverse_iterator(const reverse_iterator<U> &x) : current(x.base()){}
 
@@ -225,7 +225,7 @@ namespace std{
 		Container& container;
 	public:
 		typedef Container container_type;
-		explicit back_insert_iterator(Container& x):container(x) {};
+		explicit back_insert_iterator(Container& x):container(x) {}
 		back_insert_iterator<Container>& operator=(const typename Container::value_type& value){
 			container.push_back(value);
 			return *this;
