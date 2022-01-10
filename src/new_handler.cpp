@@ -19,6 +19,7 @@
 
 #include <new>
 
+#if defined(USING_NEW_FROM_UCLIBC)
 const std::nothrow_t std::nothrow = { };
 
 //Name selected to be compatable with g++ code
@@ -29,3 +30,4 @@ _UCXXEXPORT std::new_handler std::set_new_handler(std::new_handler new_p) _UCXX_
 	__new_handler = new_p;
 	return retval;
 }
+#endif // defined(USING_NEW_FROM_UCLIBC)

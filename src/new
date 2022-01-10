@@ -24,6 +24,8 @@
 #ifndef __STD_NEW_OPERATOR
 #define __STD_NEW_OPERATOR 1
 
+#define USING_NEW_FROM_UCLIBC
+
 #pragma GCC visibility push(default)
 
 namespace std{

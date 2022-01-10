@@ -21,8 +21,8 @@
 #include <cstdlib>
 #include <func_exception>
 
-#ifndef NO_NOTHROW
+#if defined(USING_NEW_FROM_UCLIBC) && !defined(NO_NOTHROW)
 _UCXXEXPORT void operator delete[](void* ptr, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT{
 	free(ptr);
 }
-#endif
+#endif // defined(USING_NEW_FROM_UCLIBC) && !defined(NO_NOTHROW)

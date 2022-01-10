@@ -22,6 +22,8 @@
 #include <cstdlib>
 #include <func_exception>
 
+#if defined(USING_NEW_FROM_UCLIBC)
 _UCXXEXPORT void operator delete(void* ptr, std::size_t) _UCXX_USE_NOEXCEPT{
 	::operator delete (ptr);
 }
+#endif // defined(USING_NEW_FROM_UCLIBC)
