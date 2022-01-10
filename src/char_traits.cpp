@@ -21,8 +21,8 @@
 #define __UCLIBCXX_COMPILE_CHAR_TRAITS__ 1
 
 
-#include "basic_definitions"
-#include "char_traits"
+#include <basic_definitions>
+#include <char_traits>
 
 namespace std{
 

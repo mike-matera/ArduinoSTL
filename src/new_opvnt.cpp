@@ -17,9 +17,9 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "new"
-#include "cstdlib"
-#include "func_exception"
+#include <new>
+#include <cstdlib>
+#include <func_exception>
 
 #ifndef NO_NOTHROW
 _UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT{

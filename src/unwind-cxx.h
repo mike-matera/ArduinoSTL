@@ -1,4 +1,3 @@
-// -*- C++ -*- Exception handling and frame unwind runtime interface routines.
 // Copyright (C) 2001 Free Software Foundation, Inc.
 //
 // This file is part of GCC.
@@ -35,9 +34,9 @@
 
 // Level 2: C++ ABI
 
-#include "typeinfo"
-#include "exception"
-#include "cstddef"
+#include <typeinfo>
+#include <exception>
+#include <cstddef>
 #include "unwind.h"
 
 #ifdef __aarch64__

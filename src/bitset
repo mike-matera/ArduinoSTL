@@ -17,12 +17,12 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "basic_definitions"
-#include "cstddef"
-#include "climits"
-#include "func_exception"
-#include "string"
-#include "iosfwd"
+#include <basic_definitions>
+#include <cstddef>
+#include <climits>
+#include <func_exception>
+#include <string>
+#include <iosfwd>
 
 #ifndef __STD_BITSET_HEADER
 #define __STD_BITSET_HEADER 1

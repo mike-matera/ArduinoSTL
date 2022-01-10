@@ -19,7 +19,7 @@
 
 #define __UCLIBCXX_COMPILE_OSTREAM__ 1
 
-#include "ostream"
+#include <ostream>
 
 namespace std{
 	

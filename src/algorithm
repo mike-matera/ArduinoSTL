@@ -15,10 +15,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "cstdlib"
-#include "iterator"
-#include "utility"
-#include "functional"
+#include <cstdlib>
+#include <iterator>
+#include <utility>
+#include <functional>
 
 #ifndef __STD_HEADER_ALGORITHM
 #define __STD_HEADER_ALGORITHM 1

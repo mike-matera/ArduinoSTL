@@ -17,10 +17,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "memory"
-#include "iterator"
-#include "algorithm"
-#include "initializer_list"
+#include <memory>
+#include <iterator>
+#include <algorithm>
+#include <initializer_list>
 
 #ifndef __STD_HEADER_LIST
 #define __STD_HEADER_LIST 1
