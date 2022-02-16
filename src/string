@@ -202,13 +202,13 @@ public:
 			r = n;
 		}
 		resize(r);
-		Tr::copy(vector<Ch, A>::data, str.vector<Ch, A>::data + pos, r);
+		Tr::copy(vector<Ch, A>::data_, str.vector<Ch, A>::data_ + pos, r);
 		return *this;
 	}
 
 	_UCXXEXPORT basic_string& assign(const Ch* s, size_type n){
 		resize(n);
-		Tr::copy(vector<Ch, A>::data, s, n);
+		Tr::copy(vector<Ch, A>::data_, s, n);
 		return *this;
 	}
 
@@ -246,8 +246,8 @@ public:
 		}
 		size_type temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + r);
-		Tr::move(vector<Ch, A>::data + pos1 + r, vector<Ch, A>::data + pos1, temp - pos1);
-		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, r);
+		Tr::move(vector<Ch, A>::data_ + pos1 + r, vector<Ch, A>::data_ + pos1, temp - pos1);
+		Tr::copy(vector<Ch, A>::data_ + pos1, str.vector<Ch, A>::data_ + pos2, r);
 		return *this;
 	}
 
@@ -279,8 +279,8 @@ public:
 		}
 		size_type temp = vector<Ch, A>::elements;
 		resize(vector<Ch, A>::elements + n);
-		Tr::move(vector<Ch, A>::data + pos + n, vector<Ch, A>::data + pos, temp - pos);
-		Tr::assign(vector<Ch, A>::data + pos, n, c);
+		Tr::move(vector<Ch, A>::data_ + pos + n, vector<Ch, A>::data_ + pos, temp - pos);
+		Tr::assign(vector<Ch, A>::data_ + pos, n, c);
 		return *this;
 	}
 
@@ -296,7 +296,7 @@ public:
 		}
 		size_type temp = vector<Ch, A>::elements;
 
-		Tr::move(vector<Ch, A>::data + pos, vector<Ch, A>::data + pos + xlen, temp - pos - xlen);
+		Tr::move(vector<Ch, A>::data_ + pos, vector<Ch, A>::data_ + pos + xlen, temp - pos - xlen);
 		resize(temp - xlen);
 		return *this;
 	}
@@ -361,8 +361,8 @@ public:
 		//Initial block is of size pos1
 		//Block 2 is of size len
 
-		Tr::move(vector<Ch, A>::data + pos1 + rlen, vector<Ch, A>::data + pos1 + xlen, temp - pos1 - xlen);
-		Tr::copy(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, rlen);
+		Tr::move(vector<Ch, A>::data_ + pos1 + rlen, vector<Ch, A>::data_ + pos1 + xlen, temp - pos1 - xlen);
+		Tr::copy(vector<Ch, A>::data_ + pos1, str.vector<Ch, A>::data_ + pos2, rlen);
 		resize(temp - xlen + rlen);
 		return *this;
 	}
@@ -394,7 +394,7 @@ public:
 		if(r > n){
 			r = n;
 		}
-		Tr::copy(s, vector<Ch, A>::data + pos, r);
+		Tr::copy(s, vector<Ch, A>::data_ + pos, r);
 		return r;
 	}
 
@@ -605,7 +605,7 @@ public:
 		if(rlen > len2){
 			rlen = len2;
 		}
-		int retval = Tr::compare(vector<Ch, A>::data + pos1, str.vector<Ch, A>::data + pos2, rlen);
+		int retval = Tr::compare(vector<Ch, A>::data_ + pos1, str.vector<Ch, A>::data_ + pos2, rlen);
 		if(retval == 0){
 			if(len1 < len2){
 				retval = -1;
@@ -649,7 +649,7 @@ public:
 		if(rlen > len2){
 			rlen = len2;
 		}
-		int retval  = Tr::compare(vector<Ch, A>::data + pos1, s, rlen);
+		int retval  = Tr::compare(vector<Ch, A>::data_ + pos1, s, rlen);
 		if(retval == 0){
 			if(len1 < len2){
 				retval = -1;
