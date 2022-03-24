@@ -27,6 +27,11 @@
 #include "cstdio"
 #include "ostream_helpers"
 
+#ifdef ARDUINO_ARCH_AVR
+	#include <avr/pgmspace.h> // typedef PGM_P, pgm_read_byte()
+	#include "WString.h"	  // class __FlashStringHelper
+#endif
+
 #pragma GCC visibility push(default)
 
 namespace std {
@@ -407,6 +412,24 @@ namespace std {
 		return out;
 	}
 
+#ifdef ARDUINO_ARCH_AVR			
+	//support strings from flash memory [PI]
+	//stolen from Arduino Print.cpp
+	//sample use: cout << F("Hello") << endl;
+	template<class charT, class traits> _UCXXEXPORT basic_ostream<charT,traits>& 
+		operator<<(basic_ostream<charT,traits>& out, const __FlashStringHelper* c)
+	{
+		typename basic_ostream<charT,traits>::sentry s(out);
+		PGM_P p = reinterpret_cast<PGM_P>(c);
+		while (true) {
+			charT x = pgm_read_byte(p++);
+			if (x == 0) break;
+			out.put(x);
+		}
+		return out;
+	}
+#endif
+
     // partial specializations
 	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
 		operator<<(basic_ostream<char,traits>& out, const char* c)
@@ -415,6 +438,24 @@ namespace std {
 		out.printout(c, traits::length(c));
 		return out;
 	}
+
+#ifdef ARDUINO_ARCH_AVR
+	//support strings from flash memory [PI]
+	//stolen from Arduino Print.cpp
+	//sample use: cout << F("Hello") << endl;
+	template<class traits> _UCXXEXPORT basic_ostream<char,traits>&
+		operator<<(basic_ostream<char,traits>& out, const __FlashStringHelper* c) //[PI: New] stolen from Arduino Print.cpp
+	{
+		typename basic_ostream<char,traits>::sentry s(out);
+		PGM_P p = reinterpret_cast<PGM_P>(c);
+		while (true) {
+			char x = pgm_read_byte(p++);
+			if (x == 0) break;
+			out.put(x);
+		}
+		return out;
+	}
+#endif
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
 	template<class traits> _UCXXEXPORT basic_ostream<wchar_t,traits>&
