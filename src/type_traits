@@ -28,61 +28,66 @@
 #pragma GCC visibility push(default)
 
 namespace std{
+  template<typename _Tp, _Tp __v>
+    struct integral_constant
+    {
+      static constexpr _Tp                  value = __v;
+      typedef _Tp                           value_type;
+      typedef integral_constant<_Tp, __v>   type;
+      constexpr operator value_type() const { return value; }
+    };
 
-	struct _UCXXEXPORT __true_type{};
-	struct _UCXXEXPORT __false_type{};
+  template<typename _Tp, _Tp __v>
+    constexpr _Tp integral_constant<_Tp, __v>::value;
 
-	template <class I> class _UCXXEXPORT __is_integer{
-	public:
-		typedef __false_type value;
-	};
+  typedef integral_constant<bool, true>     true_type;
 
-	template <> class _UCXXEXPORT __is_integer <unsigned int>{
-	public:
-		typedef __true_type value;
-	};
+  typedef integral_constant<bool, false>    false_type;
 
-	template <> class _UCXXEXPORT __is_integer <signed int>{
-	public:
-		typedef __true_type value;
-	};
+	template <class I>
+    class _UCXXEXPORT __is_integral_helper
+    : public false_type { };
 
-	template <> class _UCXXEXPORT __is_integer <short unsigned int>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <unsigned int>
+    : public true_type { };
 
-	template <> class _UCXXEXPORT __is_integer <short signed int>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <signed int>
+    : public true_type { };
 
-	template <> class _UCXXEXPORT __is_integer <char>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <short unsigned int>
+    : public true_type { };
 
-	template <> class _UCXXEXPORT __is_integer <signed char>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <short signed int>
+    : public true_type { };
 
-	template <> class _UCXXEXPORT __is_integer <unsigned char>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <char>
+    : public true_type { };
 
-	template <> class _UCXXEXPORT __is_integer <long unsigned int>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <signed char>
+    : public true_type { };
 
-	template <> class _UCXXEXPORT __is_integer <long signed int>{
-	public:
-		typedef __true_type value;
-	};
+	template <>
+    class _UCXXEXPORT __is_integral_helper <unsigned char>
+    : public true_type { };
 
+	template <>
+    class _UCXXEXPORT __is_integral_helper <long unsigned int>
+    : public true_type { };
 
+	template <>
+    class _UCXXEXPORT __is_integral_helper <long signed int>
+    : public true_type { };
+
+  template<typename _Tp>
+    struct is_integral
+    : public __is_integral_helper<_Tp>::type
+    { };
 
 }
 
