@@ -18,22 +18,9 @@ public:
 	typedef const_pointer const_iterator;
 	typedef size_t size_type;
 
-private:
 	value_type _data[N ? N : 1];
 
 public:
-	array() = default;
-	array(std::initializer_list<T> init) {
-		if (init.size() != N) {
-			// error
-		}
-		size_t i = 0;
-		for(const auto& item : init) {
-			_data[i++] = item;
-		}
-	}
-	array& operator=(const array& other) = default;
-
 	reference operator[](size_type i) { return _data[i]; }
 	const_reference operator[](size_type i) const { return _data[i]; }
 	reference front() { return _data[0]; }
