@@ -18,7 +18,7 @@
 
 */
 
-#include "exception"
+#include <exception>
 
 //We can't do this yet because gcc is too stupid to be able to handle
 //different implementations of exception class.

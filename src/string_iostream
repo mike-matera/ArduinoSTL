@@ -17,13 +17,13 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "istream"
-#include "ostream"
-#include "string"
+#include <istream>
+#include <ostream>
+#include <string>
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-#include "cwchar"
-#include "cwctype"
+#include <cwchar>
+#include <cwctype>
 #endif
 
 #ifndef __HEADER_STD_STRING_IOSTREAM

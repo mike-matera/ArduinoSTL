@@ -19,7 +19,7 @@
 
 #define __UCLIBCXX_COMPILE_SSTREAM__ 1
 
-#include "sstream"
+#include <sstream>
 
 namespace std{
 

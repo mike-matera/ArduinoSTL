@@ -43,13 +43,13 @@
 #ifndef __810370EC_AD69_4ef7_91F5_B1AA16F14712
 #define __810370EC_AD69_4ef7_91F5_B1AA16F14712
 
-#include "basic_definitions"
+#include <basic_definitions>
 
-#include "iosfwd"
-#include "ios"
-#include "istream"
-#include "ostream"
-#include "iostream"
+#include <iosfwd>
+#include <ios>
+#include <istream>
+#include <ostream>
+#include <iostream>
 #include <Stream.h>
 
 namespace std

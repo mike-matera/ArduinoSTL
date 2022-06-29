@@ -15,10 +15,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "basic_definitions"
-#include "deque"
-#include "vector"
-#include "functional"
+#include <basic_definitions>
+#include <deque>
+#include <vector>
+#include <functional>
 
 #ifndef __HEADER_STD_QUEUE
 #define __HEADER_STD_QUEUE 1

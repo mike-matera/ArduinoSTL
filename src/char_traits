@@ -16,14 +16,14 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "basic_definitions"
+#include <basic_definitions>
 #include <string.h>
-#include "exception"
-#include "memory"
+#include <exception>
+#include <memory>
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
-#include "cwchar"
-#include "cwctype"
+#include <cwchar>
+#include <cwctype>
 #endif
 
 #ifndef __HEADER_CHAR_TRAITS

@@ -19,12 +19,12 @@
 
 #define __UCLIBCXX_COMPILE_STRING__ 1
 
-#include "basic_definitions"
-#include "char_traits"
-#include "string"
-#include "string_iostream"
+#include <basic_definitions>
+#include <char_traits>
+#include <string>
+#include <string_iostream>
 #include <string.h>
-#include "ostream"
+#include <ostream>
 
 namespace std{
 

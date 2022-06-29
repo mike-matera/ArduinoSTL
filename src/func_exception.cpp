@@ -17,10 +17,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "exception"
-#include "func_exception"
-#include "stdexcept"
-#include "cstdlib"
+#include <exception>
+#include <func_exception>
+#include <stdexcept>
+#include <cstdlib>
 
 namespace std{
 

@@ -19,7 +19,7 @@
 
 #define __UCLIBCXX_COMPILE_STREAMBUF__ 1
 
-#include "streambuf"
+#include <streambuf>
 
 namespace std{
 

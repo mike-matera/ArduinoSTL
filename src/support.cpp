@@ -17,7 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "support"
+#include <support>
 
 /*extern "C" void *__cxa_allocate_exception(size_t thrown_size){
 	void * retval;

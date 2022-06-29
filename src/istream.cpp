@@ -20,7 +20,7 @@
 
 #define __UCLIBCXX_COMPILE_ISTREAM__ 1
 
-#include "istream"
+#include <istream>
 
 
 namespace std{

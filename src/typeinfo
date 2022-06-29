@@ -35,7 +35,7 @@
 #ifndef __TYPEINFO__
 #define __TYPEINFO__
 
-#include "exception"
+#include <exception>
 
 extern "C++" {
 
