@@ -17,14 +17,13 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-// Arduino 1.0 contains an implementation for this.
-#if ARDUINO < 100
-
 #include <new>
 #include <cstdlib>
 #include <func_exception>
 
-_UCXXEXPORT void* operator new(std::size_t numBytes) throw(std::bad_alloc){
+#if defined(USING_NEW_FROM_UCLIBC) && ARDUINO < 100
+_UCXXEXPORT void* operator new(std::size_t numBytes) _UCXX_THROW(std::bad_alloc)
+{
 	//C++ stardard 5.3.4.8 requires that a valid pointer be returned for
 	//a call to new(0). Thus:
 	if(numBytes == 0){
@@ -36,5 +35,4 @@ _UCXXEXPORT void* operator new(std::size_t numBytes) throw(std::bad_alloc){
 	}
 	return p;
 }
-
-#endif
+#endif // defined(USING_NEW_FROM_UCLIBC) && ARDUINO < 100

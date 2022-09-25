@@ -145,10 +145,10 @@ namespace std{
 			charT operator*() { return val; }
 		};
 
-		istreambuf_iterator() throw() : sbuf(0) { }
-		istreambuf_iterator(istream_type& s) throw() : sbuf(s.rdbuf()) { }
-		istreambuf_iterator(streambuf_type* s) throw() : sbuf(s) { }
-		istreambuf_iterator(const proxy& p) throw() : sbuf(&p.buf) { }
+		istreambuf_iterator() _UCXX_USE_NOEXCEPT : sbuf(0) { }
+		istreambuf_iterator(istream_type& s) _UCXX_USE_NOEXCEPT : sbuf(s.rdbuf()) { }
+		istreambuf_iterator(streambuf_type* s) _UCXX_USE_NOEXCEPT : sbuf(s) { }
+		istreambuf_iterator(const proxy& p) _UCXX_USE_NOEXCEPT : sbuf(&p.buf) { }
 
 		charT operator*() const{
 			return sbuf->sgetc();
@@ -157,14 +157,14 @@ namespace std{
 			sbuf->sbumpc();
 			return *this;
 		}
-		proxy operator++(int){
+		istreambuf_iterator<charT,traits> operator++(int){
 			istreambuf_iterator<charT,traits> tmp = *this;
 			sbuf->sbumpc();
 			return(tmp);
 		}
 
 		bool equal(const istreambuf_iterator& b) const{
-			return sbuf == b.sbuf || is_eof() && b.is_eof();
+			return sbuf == b.sbuf || (is_eof() && b.is_eof());
 		}
 	private:
 		streambuf_type* sbuf;
@@ -196,8 +196,8 @@ namespace std{
 		typedef basic_streambuf<charT,traits> streambuf_type;
 		typedef basic_ostream<charT,traits>   ostream_type;
 	public:
-		ostreambuf_iterator(ostream_type& s) throw() : sbuf(s.rdbuf()), f(false) { }
-		ostreambuf_iterator(streambuf_type* s) throw() : sbuf(s), f(false) { }
+		ostreambuf_iterator(ostream_type& s) _UCXX_USE_NOEXCEPT : sbuf(s.rdbuf()), f(false) { }
+		ostreambuf_iterator(streambuf_type* s) _UCXX_USE_NOEXCEPT : sbuf(s), f(false) { }
 		ostreambuf_iterator& operator=(charT c){
 			if(failed() == false){
 				if(sbuf->sputc(c) == traits::eof()){
@@ -211,7 +211,7 @@ namespace std{
 		}
 		ostreambuf_iterator& operator++() { return *this; }
 		ostreambuf_iterator operator++(int) { return *this; }
-		bool failed() const throw(){
+		bool failed() const _UCXX_USE_NOEXCEPT{
 			return f;
 		}
 
@@ -219,6 +219,12 @@ namespace std{
 		streambuf_type* sbuf;
 		bool f;
 	};
+
+	template< class C >
+	auto begin( C& c ) -> decltype(c.begin()) { return c.begin(); }
+
+	template< class C >
+	auto end( C& c ) -> decltype(c.end()) { return c.end(); }
 
 }
 

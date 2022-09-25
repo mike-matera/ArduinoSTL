@@ -59,26 +59,26 @@ namespace std{
 		typedef std::reverse_iterator<iterator> reverse_iterator;
 		typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-		explicit _UCXXEXPORT vector(const Allocator& al= Allocator()): data(0), //defaultValue(T()),
+		explicit _UCXXEXPORT vector(const Allocator& al= Allocator()): data_(0), //defaultValue(T()),
 			data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
-			data = a.allocate(data_size);
+			data_ = a.allocate(data_size);
 		}
 
 		explicit _UCXXEXPORT vector(size_type n, const T& value = T(), const Allocator& al= Allocator()) :
-			data(0), data_size(0), elements(0), a(al)
+			data_(0), data_size(0), elements(0), a(al)
 		{
 			data_size = n + __UCLIBCXX_STL_BUFFER_SIZE__;
-			data = a.allocate(data_size);
+			data_ = a.allocate(data_size);
 
 			resize(n, value);
 		}
 
 		template <class InputIterator> _UCXXEXPORT
 			vector(InputIterator first, InputIterator last, const Allocator& al = Allocator()):
-			data(0), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
+			data_(0), data_size(__UCLIBCXX_STL_BUFFER_SIZE__), elements(0), a(al)
 		{
-			data = a.allocate(data_size);
+			data_ = a.allocate(data_size);
 			assign(first, last);
 		}
 
@@ -87,10 +87,10 @@ namespace std{
 
 			elements  = x.elements;
 			data_size = elements + __UCLIBCXX_STL_BUFFER_SIZE__;
-			data = a.allocate(data_size);
+			data_ = a.allocate(data_size);
 
 			for(size_type i = 0; i < elements; i++){
-				a.construct(data+i, x.data[i]);
+				a.construct(data_+i, x.data_[i]);
 			}
 		}
 
@@ -99,9 +99,9 @@ namespace std{
 		{
 		  data_size = in.size() + __UCLIBCXX_STL_BUFFER_SIZE__;
 		  elements = in.size();
-		  data = a.allocate(data_size);
-		  for(size_type i = 0; i < elements; i++) 
-		    a.construct(data+i, *(in.begin()+i));
+		  data_ = a.allocate(data_size);
+		  for(size_type i = 0; i < elements; i++)
+		    a.construct(data_+i, *(in.begin()+i));
 		}
 
 		_UCXXEXPORT ~vector();	//Below
@@ -121,13 +121,13 @@ namespace std{
 				minElements = x.elements;
 			}
 			for(size_t i = 0; i < minElements; ++i){
-				data[i] = x.data[i];
+				data_[i] = x.data_[i];
 			}
 
 			//If we need to add new elements
 			if(elements < x.elements){
 				for(size_t i = elements; i< x.elements; ++i){
-					a.construct(data+i, x.data[i]);
+					a.construct(data_+i, x.data_[i]);
 					++elements;
 				}
 			}
@@ -159,19 +159,19 @@ namespace std{
 		}
 
 		inline iterator begin(){
-			return data;
+			return data_;
 		}
 
 		inline const_iterator begin() const{
-			return data;
+			return data_;
 		}
 
 		inline iterator end(){
-			return (data + elements);
+			return (data_ + elements);
 		}
 
 		inline const_iterator end() const{
-			return (data + elements);
+			return (data_ + elements);
 		}
 
 		inline reverse_iterator rbegin(){
@@ -195,7 +195,7 @@ namespace std{
 		}
 
 		_UCXXEXPORT size_type max_size() const{
-			return ((size_type)(-1)) / sizeof(T);
+			return static_cast<size_type>(-1) / sizeof(T);
 		}
 
 		void downsize(size_type sz);
@@ -209,44 +209,48 @@ namespace std{
 			return (size() == 0);
 		}
 
+    inline T* data() noexcept { return data_; }
+
+    inline const T* data() const noexcept { return data_; }
+
 		void reserve(size_type n);
 
 		inline reference operator[](size_type n){
-			return data[n];
+			return data_[n];
 		}
 
 		inline const_reference operator[](size_type n) const{
-			return data[n];
+			return data_[n];
 		}
 
 		_UCXXEXPORT const_reference at(size_type n) const{
 			if(n >= elements){
 				__throw_out_of_range("Invalid subscript");
 			}
-			return data[n];
+			return data_[n];
 		}
 
 		_UCXXEXPORT reference at(size_type n){
 			if(n >= elements){
 				__throw_out_of_range("Invalid subscript");
 			}
-			return data[n];
+			return data_[n];
 		}
 
 		inline reference front(){
-			return data[0];
+			return data_[0];
 		}
 
 		inline const_reference front() const{
-			return data[0];
+			return data_[0];
 		}
 
 		inline reference back(){
-			return data[ size() - 1];
+			return data_[ size() - 1];
 		}
 
 		inline const_reference back() const{
-			return data[ size() - 1 ];
+			return data_[ size() - 1 ];
 		}
 
 		inline void push_back(const T& x){
@@ -258,24 +262,24 @@ namespace std{
 		}
 
 		_UCXXEXPORT iterator insert(iterator position, const T& x = T()){
-			size_type index = position - data;
+			size_type index = position - data_;
 			resize(size() + 1, x);
 			for(size_type i = elements - 1; i > index; --i){
-				data[i] = data[i-1];
+				data_[i] = data_[i-1];
 			}
-			data[index] = x;
-			return (data + index);
+			data_[index] = x;
+			return (data_ + index);
 		}
 
 		_UCXXEXPORT void _insert_fill(iterator position, size_type n, const T & x){
-			size_type index = position - data;
+			size_type index = position - data_;
 			resize(size() + n, x);
 
 			for(size_type i = elements -1; (i > (index+n-1)); --i){
-				data[i] = data[i-n];
+				data_[i] = data_[i-n];
 			}
 			for(size_type i = 0; i < n; i++){
-				data[i + index]  = x;
+				data_[i + index]  = x;
 			}
 		}
 
@@ -313,22 +317,22 @@ namespace std{
 		}
 
 		_UCXXEXPORT iterator erase(iterator position){
-			size_type index = position - data;
+			size_type index = position - data_;
 			for(size_type i = index; i < (elements - 1); ++i){
-				data[i] = data[i+1];
+				data_[i] = data_[i+1];
 			}
 			downsize(size() - 1);
-			return (data + index);
+			return (data_ + index);
 		}
 
 		_UCXXEXPORT iterator erase(iterator first, iterator last){
-			size_type index = first - data;
+			size_type index = first - data_;
 			size_type width = last - first;
 			for(size_type i = index; i < (elements - width) ;++i){
-				data[i] = data[i+width];
+				data_[i] = data_[i+width];
 			}
 			downsize(size() - width);
-			return (data + index);
+			return (data_ + index);
 		}
 
 		_UCXXEXPORT void swap(vector<T,Allocator>& v){
@@ -339,9 +343,9 @@ namespace std{
 			size_type temp;
 
 			//Swap pointers first
-			ptr = data;
-			data = v.data;
-			v.data  = ptr;
+			ptr = data_;
+			data_ = v.data_;
+			v.data_  = ptr;
 
 			//Swap element counts
 			temp = elements;
@@ -359,7 +363,7 @@ namespace std{
 		}
 
 	protected:
-		T* data;
+		T* data_;
 		size_type data_size;
 		size_type elements;
 		Allocator a;
@@ -371,22 +375,22 @@ namespace std{
 
 	template<class T, class Allocator> _UCXXEXPORT vector<T, Allocator>::~vector(){
 		for(size_t i = 0; i < elements; ++i){
-			a.destroy(data + i);
+			a.destroy(data_ + i);
 		}
-		a.deallocate(data, data_size);
+		a.deallocate(data_, data_size);
 	}
 
 
 	template<class T, class Allocator> _UCXXEXPORT void vector<T, Allocator>::reserve(size_type n){
 		if(n > data_size){	//We never shrink...
-			T * temp_ptr = data;
+			T * temp_ptr = data_;
 			size_type temp_size = data_size;
 
 			data_size = n;
-			data = a.allocate(data_size);
+			data_ = a.allocate(data_size);
 
 			for(size_type i = 0; i<elements; ++i){
-				a.construct(data+i, temp_ptr[i]);
+				a.construct(data_+i, temp_ptr[i]);
 				a.destroy(temp_ptr+i);
 			}
 			a.deallocate(temp_ptr, temp_size);
@@ -400,7 +404,7 @@ namespace std{
 			}
 
 			for(size_type i = elements; i<sz ; ++i){
-				a.construct(data+i, c);
+				a.construct(data_+i, c);
 			}
 			elements = sz;
 		}else{
@@ -411,7 +415,7 @@ namespace std{
 	template<class T, class Allocator> _UCXXEXPORT void vector<T, Allocator>::downsize(size_type sz){
 		if(sz < elements){      //Actually are downsizing
 			for(size_t i = sz; i< elements; ++i){
-				a.destroy(data+i);
+				a.destroy(data_+i);
 			}
 			elements = sz;
 		}

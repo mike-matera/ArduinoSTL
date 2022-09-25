@@ -137,25 +137,25 @@ namespace std{
 	};
 
 	template <class T> struct _UCXXEXPORT greater : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const{
+		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
 			return (x > y);
 		}
 	};
 
 	template <class T> struct _UCXXEXPORT less : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const{
+		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
 			return (x < y);
 		}
 	};
 
 	template <class T> struct _UCXXEXPORT greater_equal : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const{
+		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
 			return (x >= y);
 		}
 	};
 
 	template <class T> struct _UCXXEXPORT less_equal : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const{
+		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
 			return (x <= y);
 		}
 	};

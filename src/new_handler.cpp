@@ -19,13 +19,15 @@
 
 #include <new>
 
+#if defined(USING_NEW_FROM_UCLIBC)
 const std::nothrow_t std::nothrow = { };
 
 //Name selected to be compatable with g++ code
 std::new_handler __new_handler;
 
-_UCXXEXPORT std::new_handler std::set_new_handler(std::new_handler new_p) throw(){
+_UCXXEXPORT std::new_handler std::set_new_handler(std::new_handler new_p) _UCXX_USE_NOEXCEPT{
 	std::new_handler retval = __new_handler;
 	__new_handler = new_p;
 	return retval;
 }
+#endif // defined(USING_NEW_FROM_UCLIBC)

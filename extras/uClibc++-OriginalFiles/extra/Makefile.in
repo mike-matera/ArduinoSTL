@@ -1,3 +1,0 @@
-EXTRA_DIR := $(top_srcdir)extra/
-DISTCLEAN_extra: $(PHONY)
-	$(Q)$(MAKE) -C $(EXTRA_DIR)config CLEAN_extra/config
