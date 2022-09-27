@@ -72,6 +72,11 @@ namespace std{
 		basic_istream<charT,traits>& operator>>(void*& p);
 		basic_istream<charT,traits>& operator>>(basic_streambuf<char_type,traits>* sb);
 
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
+		basic_istream<charT,traits>& operator>>(long long& n);
+		basic_istream<charT,traits>& operator>>(unsigned long long& n);
+#endif
+
 #ifdef __UCLIBCXX_HAS_FLOATS__
 		basic_istream<charT,traits>& operator>>(float& f);
 		basic_istream<charT,traits>& operator>>(double& f);
@@ -345,7 +350,8 @@ namespace std{
 	{
 		bool ok;
 	public:
-		explicit _UCXXEXPORT sentry(basic_istream<charT,traits>& os, bool noskipws = false){
+		explicit _UCXXEXPORT sentry(basic_istream<charT,traits>& os, bool noskipws = false)
+			: ok(false){
 			if(os.good() !=0){		//Prepare for output
 			}
 
@@ -449,26 +455,42 @@ namespace std{
 		return *this;
 	}
 
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
+		basic_istream<charT,traits>::operator>>(long long& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, long long>::readin(*this, n);
+		return *this;
+	}
+	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
+		basic_istream<charT,traits>::operator>>(unsigned long long& n)
+	{
+		sentry(*this);
+		__istream_readin<traits, charT, unsigned long long>::readin(*this, n);
+		return *this;
+	}
+#endif
 #ifdef __UCLIBCXX_HAS_FLOATS__
 	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
-		basic_istream<charT,traits>::operator>>(float& n)
+		basic_istream<charT,traits>::operator>>(float& f)
 	{
 		sentry(*this);
-		__istream_readin<traits, charT, float>::readin(*this, n);
+		__istream_readin<traits, charT, float>::readin(*this, f);
 		return *this;
 	}
 	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
-		basic_istream<charT,traits>::operator>>(double& n)
+		basic_istream<charT,traits>::operator>>(double& f)
 	{
 		sentry(*this);
-		__istream_readin<traits, charT, double>::readin(*this, n);
+		__istream_readin<traits, charT, double>::readin(*this, f);
 		return *this;
 	}
 	template <class charT, class traits> _UCXXEXPORT basic_istream<charT,traits>&
-		basic_istream<charT,traits>::operator>>(long double& n)
+		basic_istream<charT,traits>::operator>>(long double& f)
 	{
 		sentry(*this);
-		__istream_readin<traits, charT, long double>::readin(*this, n);
+		__istream_readin<traits, charT, long double>::readin(*this, f);
 		return *this;
 	}
 #endif

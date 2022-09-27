@@ -39,6 +39,28 @@
 #define __UCLIBCXX_NORETURN
 #endif
 
+#ifdef __GCC__
+# ifndef _UCXX_NOTHROW
+#  ifndef __cplusplus
+#   define _UCXX_NOTHROW __attribute__((__nothrow__))
+#  endif
+# endif
+#endif
+#ifdef __cplusplus
+# if __cplusplus >= 201103L
+#  define _UCXX_NOEXCEPT noexcept
+#  define _UCXX_USE_NOEXCEPT noexcept
+#  define _UCXX_THROW(_EXCEPTION)
+# else
+#  define _UCXX_NOEXCEPT
+#  define _UCXX_USE_NOEXCEPT throw()
+#  define _UCXX_THROW(_EXCEPTION) throw(_EXCEPTION)
+# endif
+# ifndef _UCXX_NOTHROW
+#  define _UCXX_NOTHROW _UCXX_USE_NOEXCEPT
+# endif
+#endif
+
 #ifdef __UCLIBCXX_HAS_TLS__
 	#define __UCLIBCXX_TLS __thread
 #else

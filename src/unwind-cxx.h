@@ -1,4 +1,3 @@
-// -*- C++ -*- Exception handling and frame unwind runtime interface routines.
 // Copyright (C) 2001 Free Software Foundation, Inc.
 //
 // This file is part of GCC.
@@ -140,18 +139,18 @@ struct __cxa_eh_globals
 // either of the following functions.  The "fast" version assumes at least
 // one prior call of __cxa_get_globals has been made from the current
 // thread, so no initialization is necessary.
-extern "C" __cxa_eh_globals *__cxa_get_globals () throw();
-extern "C" __cxa_eh_globals *__cxa_get_globals_fast () throw();
+extern "C" __cxa_eh_globals *__cxa_get_globals () _UCXX_USE_NOEXCEPT;
+extern "C" __cxa_eh_globals *__cxa_get_globals_fast () _UCXX_USE_NOEXCEPT;
 
 // Allocate memory for the primary exception plus the thrown object.
-extern "C" void *__cxa_allocate_exception(std::size_t thrown_size) throw();
+extern "C" void *__cxa_allocate_exception(std::size_t thrown_size) _UCXX_USE_NOEXCEPT;
 // Allocate memory for dependent exception.
-extern "C" __cxa_dependent_exception *__cxa_allocate_dependent_exception() throw();
+extern "C" __cxa_dependent_exception *__cxa_allocate_dependent_exception() _UCXX_USE_NOEXCEPT;
 
 // Free the space allocated for the primary exception.
-extern "C" void __cxa_free_exception(void *thrown_exception) throw();
+extern "C" void __cxa_free_exception(void *thrown_exception) _UCXX_USE_NOEXCEPT;
 // Free the space allocated for the dependent exception.
-extern "C" void __cxa_free_dependent_exception(__cxa_dependent_exception *dependent_exception) throw();
+extern "C" void __cxa_free_dependent_exception(__cxa_dependent_exception *dependent_exception) _UCXX_USE_NOEXCEPT;
 
 // Throw the exception.
 extern "C" void __cxa_throw (void *thrown_exception,
@@ -160,7 +159,7 @@ extern "C" void __cxa_throw (void *thrown_exception,
      __attribute__((noreturn));
 
 // Used to implement exception handlers.
-extern "C" void *__cxa_begin_catch (void *) throw();
+extern "C" void *__cxa_begin_catch (void *) _UCXX_USE_NOEXCEPT;
 extern "C" void __cxa_end_catch ();
 extern "C" void __cxa_rethrow () __attribute__((noreturn));
 
@@ -177,7 +176,7 @@ extern "C" void __cxa_call_unexpected (void *) __attribute__((noreturn));
 
 // Invokes given handler, dying appropriately if the user handler was
 // so inconsiderate as to return.
-extern void __terminate(std::terminate_handler) throw () __attribute__((noreturn));
+extern void __terminate(std::terminate_handler) _UCXX_USE_NOEXCEPT __attribute__((noreturn));
 extern void __unexpected(std::unexpected_handler) __attribute__((noreturn));
 
 // The current installed user handlers.

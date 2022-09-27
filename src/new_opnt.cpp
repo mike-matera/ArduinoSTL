@@ -21,8 +21,8 @@
 #include <cstdlib>
 #include <func_exception>
 
-#ifndef NO_NOTHROW
-_UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) throw(){
+#if defined(USING_NEW_FROM_UCLIBC) && !defined(NO_NOTHROW)
+_UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT{
 	return malloc(numBytes);
 }
-#endif
+#endif // defined(USING_NEW_FROM_UCLIBC) && !defined(NO_NOTHROW)

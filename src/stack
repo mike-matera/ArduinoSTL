@@ -34,7 +34,7 @@ namespace std{
 		typedef typename Container::size_type	size_type;
 		typedef Container			container_type;
 
-		explicit stack(const Container& a = Container()) : c(a) {  };
+		explicit stack(const Container& a = Container()) : c(a) {  }
 		bool empty() const { return c.empty(); }
 		size_type size() const { return c.size(); }
 		value_type&       top() { return c.back(); }

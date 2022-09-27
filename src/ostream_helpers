@@ -146,7 +146,7 @@ int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer
 		}
 	};
 
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 
 	template <class traits> class _UCXXEXPORT __ostream_printout<traits, char, signed long long int>{
 	public:
@@ -241,7 +241,7 @@ int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer
 	};
 
 
-#endif	//__STRICT_ANSI__
+#endif // !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 
 // FIXME: Improve printing of doubles and floats.
 
@@ -370,7 +370,7 @@ int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer
 		}
 	};
 
-#ifndef __STRICT_ANSI__
+#if !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 
 	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, signed long long int>{
 	public:
@@ -441,7 +441,7 @@ int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer
 	};
 
 
-#endif	//__STRICT_ANSI__
+#endif // !defined(__STRICT_ANSI__) || (__cplusplus >= 201103L)
 
 	template <class traits> class _UCXXEXPORT __ostream_printout<traits, wchar_t, double>{
 	public:

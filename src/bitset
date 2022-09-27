@@ -299,7 +299,7 @@ namespace std{
 			if(&rhs == this){
 				return *this;
 			}
-			for(size_t i = 0; i <= byte_num(N); ++i){
+			for(size_t i = 0; i < num_bytes; ++i){
 				data[i] = rhs.data[i];
 			}
 			return *this;

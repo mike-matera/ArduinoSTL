@@ -80,7 +80,11 @@ namespace std{
 		return pair<T1,T2>(x, y);
 	}
 
-
+	// Stubb out move for compatibility
+	template<class T>
+	T& move(T& t) noexcept {
+		return t;
+	}
 }
 
 #pragma GCC visibility pop
