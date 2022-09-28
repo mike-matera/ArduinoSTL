@@ -1,0 +1,19 @@
+#pragma once
+#include <vcruntime.h>
+namespace std
+{
+	//23
+	template <class>
+// false value attached to a dependent name (for static_assert)
+_INLINE_VAR constexpr bool _Always_false = false;
+//27
+	//250
+	template <class _Ty>
+_NODISCARD constexpr _Ty* addressof(_Ty& _Val) noexcept {
+    return __builtin_addressof(_Val);
+}
+
+template <class _Ty>
+const _Ty* addressof(const _Ty&&) = delete;
+//258
+}
