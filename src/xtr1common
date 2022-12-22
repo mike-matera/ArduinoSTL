@@ -116,8 +116,47 @@ namespace std
 
 	template <class _Ty>
 	using remove_cv_t = typename remove_cv<_Ty>::type;
-	// 142
-	//  201
+
+	template <bool _First_value, class _First, class... _Rest>
+	struct _Disjunction
+	{ // handle true trait or last trait
+		using type = _First;
+	};
+
+	template <class _False, class _Next, class... _Rest>
+	struct _Disjunction<false, _False, _Next, _Rest...>
+	{ // first trait is false, try the next trait
+		using type = typename _Disjunction<_Next::value, _Next, _Rest...>::type;
+	};
+
+	template <class... _Traits>
+	struct disjunction : false_type
+	{
+	}; // If _Traits is empty, false_type
+
+	template <class _First, class... _Rest>
+	struct disjunction<_First, _Rest...> : _Disjunction<_First::value, _First, _Rest...>::type
+	{
+		// the first true trait in _Traits, or the last trait if none are true
+	};
+
+	template <class... _Traits>
+	_INLINE_VAR constexpr bool disjunction_v = disjunction<_Traits...>::value;
+
+	template <class _Ty, class... _Types>
+	_INLINE_VAR constexpr bool _Is_any_of_v = // true if and only if _Ty is in _Types
+		disjunction_v<is_same<_Ty, _Types>...>;
+	// 167
+	//  177
+	template <class _Ty>
+	_INLINE_VAR constexpr bool is_integral_v = _Is_any_of_v<remove_cv_t<_Ty>, bool, char, signed char, unsigned char,
+															wchar_t,
+#ifdef __cpp_char8_t
+															char8_t,
+#endif // __cpp_char8_t
+															char16_t, char32_t, short, unsigned short, int, unsigned int, long, unsigned long, long long, unsigned long long>;
+	// 185
+	//   201
 	template <class _Ty>
 	struct remove_reference
 	{
@@ -144,5 +183,8 @@ namespace std
 
 	template <class _Ty>
 	using _Const_thru_ref = typename remove_reference<_Ty>::_Const_thru_ref_type;
-	// 225
+
+	template <class _Ty>
+	using _Remove_cvref_t _MSVC_KNOWN_SEMANTICS = remove_cv_t<remove_reference_t<_Ty>>;
+	// 228
 }
