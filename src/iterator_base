@@ -18,6 +18,7 @@
 */
 
 #include <basic_definitions>
+#include <stddef.h>
 
 #ifndef __STD_HEADER_ITERATOR_BASE
 #define __STD_HEADER_ITERATOR_BASE 1

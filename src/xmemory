@@ -1,0 +1,73 @@
+#pragma once
+#include <type_traits>
+namespace std
+{
+	// 1356
+	struct _Zero_then_variadic_args_t
+	{
+		explicit _Zero_then_variadic_args_t() = default;
+	}; // tag type for value-initializing first, constructing second from remaining args
+
+	struct _One_then_variadic_args_t
+	{
+		explicit _One_then_variadic_args_t() = default;
+	}; // tag type for constructing first from one arg, constructing second from remaining args
+
+	template <class _Ty1, class _Ty2, bool = is_empty_v<_Ty1> && !is_final_v<_Ty1>>
+	class _Compressed_pair final : private _Ty1
+	{ // store a pair of values, deriving from empty first
+	public:
+		_Ty2 _Myval2;
+
+		using _Mybase = _Ty1; // for visualization
+
+		template <class... _Other2>
+		constexpr explicit _Compressed_pair(_Zero_then_variadic_args_t, _Other2 &&..._Val2) noexcept(
+			conjunction_v<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			: _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		template <class _Other1, class... _Other2>
+		constexpr _Compressed_pair(_One_then_variadic_args_t, _Other1 &&_Val1, _Other2 &&..._Val2) noexcept(
+			conjunction_v<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			: _Ty1(_STD forward<_Other1>(_Val1)), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		constexpr _Ty1 &_Get_first() noexcept
+		{
+			return *this;
+		}
+
+		constexpr const _Ty1 &_Get_first() const noexcept
+		{
+			return *this;
+		}
+	};
+
+	template <class _Ty1, class _Ty2>
+	class _Compressed_pair<_Ty1, _Ty2, false> final
+	{ // store a pair of values, not deriving from first
+	public:
+		_Ty1 _Myval1;
+		_Ty2 _Myval2;
+
+		template <class... _Other2>
+		constexpr explicit _Compressed_pair(_Zero_then_variadic_args_t, _Other2 &&..._Val2) noexcept(
+			conjunction_v<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			: _Myval1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		template <class _Other1, class... _Other2>
+		constexpr _Compressed_pair(_One_then_variadic_args_t, _Other1 &&_Val1, _Other2 &&..._Val2) noexcept(
+			conjunction_v<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			: _Myval1(_STD forward<_Other1>(_Val1)), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		constexpr _Ty1 &_Get_first() noexcept
+		{
+			return _Myval1;
+		}
+
+		constexpr const _Ty1 &_Get_first() const noexcept
+		{
+			return _Myval1;
+		}
+	};
+	// 1415
+}

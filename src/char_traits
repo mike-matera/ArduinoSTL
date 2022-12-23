@@ -19,7 +19,6 @@
 #include <basic_definitions>
 #include <string.h>
 #include <exception>
-#include <memory>
 
 #ifdef __UCLIBCXX_HAS_WCHAR__
 #include <cwchar>
