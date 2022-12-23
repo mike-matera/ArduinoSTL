@@ -320,10 +320,6 @@ namespace std
 		_RNG_REQUIRE_UINTTYPE(mersenne_twister_engine, _Ty);
 		static_assert(0 < _Mx && _Mx <= _Nx && 2U < _Wx && _Rx <= _Wx && _Ux <= _Wx && _Sx <= _Wx && _Tx <= _Wx && _Lx <= _Wx && 16<=numeric_limits<_Ty>::digits && _Px <= _Max && _Bx <= _Max && _Cx <= _Max && _Dx <= _Max && _Fx <= _Max,
 					  "invalid template argument for mersenne_twister_engine");
-		/*
-static_assert(0 < _Mx && _Mx <= _Nx && 2U < _Wx && _Rx <= _Wx && _Ux <= _Wx && _Sx <= _Wx && _Tx <= _Wx ,
-			  "invalid template argument for mersenne_twister_engine");
-			  */
 
 		using _Mybase = mersenne_twister<_Ty, _Wx, _Nx, _Mx, _Rx, _Px, _Ux, _Sx, _Bx, _Tx, _Cx, _Lx>;
 		using result_type = _Ty;
