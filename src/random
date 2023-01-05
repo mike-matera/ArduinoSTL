@@ -318,7 +318,7 @@ namespace std
 		static constexpr unsigned long long _Max = (((1ULL << (_Wx - 1)) - 1) << 1) + 1;
 
 		_RNG_REQUIRE_UINTTYPE(mersenne_twister_engine, _Ty);
-		static_assert(0 < _Mx && _Mx <= _Nx && 2U < _Wx && _Rx <= _Wx && _Ux <= _Wx && _Sx <= _Wx && _Tx <= _Wx && _Lx <= _Wx && 16<=numeric_limits<_Ty>::digits && _Px <= _Max && _Bx <= _Max && _Cx <= _Max && _Dx <= _Max && _Fx <= _Max,
+		static_assert(0 < _Mx && _Mx <= _Nx && 2U < _Wx && _Rx <= _Wx && _Ux <= _Wx && _Sx <= _Wx && _Tx <= _Wx && _Lx <= _Wx && 16 <= numeric_limits<_Ty>::digits && _Px <= _Max && _Bx <= _Max && _Cx <= _Max && _Dx <= _Max && _Fx <= _Max,
 					  "invalid template argument for mersenne_twister_engine");
 
 		using _Mybase = mersenne_twister<_Ty, _Wx, _Nx, _Mx, _Rx, _Px, _Ux, _Sx, _Bx, _Tx, _Cx, _Lx>;
@@ -404,9 +404,29 @@ namespace std
 	};
 	// 1340
 	// 5039
-	//MSVC这里原文是unsigned int，但Arduino上该数值类型实际上是uint16_t而不是uint32_t，因此需要修改
-	//此对象将占用5K内存，请谨慎使用
+	// MSVC这里原文是unsigned int，但Arduino上该数值类型实际上是uint16_t而不是uint32_t，因此需要修改
+	// 此对象将占用5K内存，请谨慎使用
 	_EXPORT_STD using mt19937 = mersenne_twister_engine<uint32_t, 32, 624, 397, 31, 0x9908b0df, 11, 0xffffffff, 7,
 														0x9d2c5680, 15, 0xefc60000, 18, 1812433253>;
 	// 5042
+	struct ArduinoUrng
+	{
+		using result_type = decltype(random());
+		static constexpr result_type max()
+		{
+			return numeric_limits<result_type>::max();
+		};
+		static constexpr result_type min()
+		{
+			return numeric_limits<result_type>::max();
+		};
+		result_type operator()() const
+		{
+			return random();
+		}
+		static void seed(unsigned long S)
+		{
+			randomSeed(S);
+		}
+	};
 }
