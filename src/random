@@ -405,6 +405,7 @@ namespace std
 	// 1340
 	// 5039
 	//MSVC这里原文是unsigned int，但Arduino上该数值类型实际上是uint16_t而不是uint32_t，因此需要修改
+	//此对象将占用5K内存，请谨慎使用
 	_EXPORT_STD using mt19937 = mersenne_twister_engine<uint32_t, 32, 624, 397, 31, 0x9908b0df, 11, 0xffffffff, 7,
 														0x9d2c5680, 15, 0xefc60000, 18, 1812433253>;
 	// 5042
