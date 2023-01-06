@@ -411,20 +411,21 @@ namespace std
 	// 5042
 	struct ArduinoUrng
 	{
-		using result_type = decltype(random());
+		//UniformRandomBitGenerator要求无符号整数
+		using result_type = make_unsigned_t<decltype(random())>;
 		static constexpr result_type max()
 		{
 			return numeric_limits<result_type>::max();
 		};
 		static constexpr result_type min()
 		{
-			return numeric_limits<result_type>::max();
+			return 0;
 		};
 		result_type operator()() const
 		{
 			return random();
 		}
-		static void seed(unsigned long S)
+		static void seed(uint32_t S)
 		{
 			randomSeed(S);
 		}

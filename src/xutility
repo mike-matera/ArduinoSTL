@@ -614,7 +614,7 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 				_Udiff _Mask = 0; // 2^N - 1, _Ret is within [0, _Mask]
 
 				while (_Mask < _Udiff(_Index - 1))
-				{						// need more random bits
+				{			
 					_Ret <<= _Bits - 1; // avoid full shift
 					_Ret <<= 1;
 					_Ret |= _Get_bits();
@@ -622,7 +622,6 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 					_Mask <<= 1;
 					_Mask |= _Bmask;
 				}
-
 				// _Ret is [0, _Mask], _Index - 1 <= _Mask, return if unbiased
 				if (_Ret / _Index < _Mask / _Index || _Mask % _Index == _Udiff(_Index - 1))
 				{
