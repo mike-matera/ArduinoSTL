@@ -5,6 +5,11 @@
 Since the original ArduinoSTL author has not updated (202203~202212) for a long time, I released this branch to the Arduino public library and renamed it STL for Arduino to distinguish it.
 
 This library attempts to implement most of the functionality of the C++ Standard Library (STL) on Arduino. In addition to ArduinoSTL, some of the functional implementations of this library also refer to MSVC and LLVM. Because interfaces are made according to STL, there is no need to write additional documentation, you can refer to any authoritative STL document. Unless otherwise noted, the use and behavior of this library should be the same; if different, it should be a bug and welcome to submit an issue.
+# 招牌功能
+- `<algorithm> shuffle`
+- `<memory> unique_ptr`
+- `<random> mt19937, ArduinoUrng` mt19937占内存较多（约5K），谨慎使用
+- `<type_traits>`中的大量类型操作
 # 原版README
 
 This is an implementation of a C++ standard library packaged as an Arduino library. The library supports teaching my CS-11M class by adding key C++ features into the Arduino environment. 
