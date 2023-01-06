@@ -8,7 +8,7 @@ This library attempts to implement most of the functionality of the C++ Standard
 # 招牌功能
 - `<algorithm> shuffle`
 - `<memory> unique_ptr`
-- `<random> mt19937, ArduinoUrng` mt19937占内存较多（约5K），谨慎使用
+- `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`。
 - `<type_traits>`中的大量类型操作
 # 原版README
 
