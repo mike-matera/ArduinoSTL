@@ -1,8 +1,8 @@
-因原版ArduinoSTL作者长期不更新（202203~202212），本人将此分支发布到Arduino公开库，改名为STL for Arduino以示区分。
+因原版ArduinoSTL作者长期不更新（202203~202212），本人将此分支发布到Arduino公开库，改名为Cpp_Standard_Library以示区分。
 
 本库试图在Arduino上实现C++标准库（STL）的大部分功能。除了ArduinoSTL以外，本库部分功能实现还参考了MSVC和LLVM。因为是按照STL做的接口，所以不需要另外撰写文档，你可以参考任何一个权威的STL文档。除非另有说明，否则本库的使用方法应该是一样的，如果不一样那应该就是个bug，欢迎提交Issue。
 
-Since the original ArduinoSTL author has not updated (202203~202212) for a long time, I released this branch to the Arduino public library and renamed it STL for Arduino to distinguish it.
+Since the original ArduinoSTL author has not updated (202203~202212) for a long time, I released this branch to the Arduino public library and renamed it Cpp_Standard_Library to distinguish it.
 
 This library attempts to implement most of the functionality of the C++ Standard Library (STL) on Arduino. In addition to ArduinoSTL, some of the functional implementations of this library also refer to MSVC and LLVM. Because interfaces are made according to STL, there is no need to write additional documentation, you can refer to any authoritative STL document. Unless otherwise noted, the use and behavior of this library should be the same; if different, it should be a bug and welcome to submit an issue.
 # 招牌功能
