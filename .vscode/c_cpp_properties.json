@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${USERPROFILE}/Documents/Arduino/libraries/**",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/**"
+            ],
+            "defines": [
+				"USBCON",
+				"__AVR_ATmega2560__",
+				"F_CPU=16000000",
+				"ARDUINO_ARCH_AVR"
+            ],
+            "windowsSdkVersion": "10.0.22621.0",
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
