@@ -6,7 +6,7 @@
 
 如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
 
-Since the original ArduinoSTL author has not updated (202203~202212) for a long time, I released this branch to the Arduino public library and renamed it Cpp_Standard_Library to distinguish it.
+Since the original ArduinoSTL has no updates or a long time (202203~202212), I released this branch to the Arduino public library and renamed it Cpp_Standard_Library to distinguish it.
 
 This library attempts to implement most of the functionality of the C++ Standard Library (STL) on Arduino. In addition to ArduinoSTL, some of the functional implementations of this library also refer to MSVC, LLVM and boost. Because interfaces are made according to STL, there is no need to write additional documentation, you can refer to any authoritative STL document. Unless otherwise noted, the use and behavior of this library should be the same; if different, it should be a bug and welcome to submit an issue.
 
