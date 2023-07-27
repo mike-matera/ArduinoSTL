@@ -1,19 +1,51 @@
 #ifndef __OBJBASE_H
 #define __OBJBASE_H
 
+#include "type_traits"
+
 #ifdef __cplusplus
-#define DEFINE_ENUM_FLAG_OPERATORS(ENUMTYPE) \
-extern "C++" { \
-inline ENUMTYPE operator | (ENUMTYPE a, ENUMTYPE b) { return ENUMTYPE(((int)a) | ((int)b)); } \
-inline ENUMTYPE &operator |= (ENUMTYPE &a, ENUMTYPE b) { return (ENUMTYPE &)(((int &)a) |= ((int)b)); } \
-inline ENUMTYPE operator & (ENUMTYPE a, ENUMTYPE b) { return ENUMTYPE(((int)a) & ((int)b)); } \
-inline ENUMTYPE &operator &= (ENUMTYPE &a, ENUMTYPE b) { return (ENUMTYPE &)(((int &)a) &= ((int)b)); } \
-inline ENUMTYPE operator ~ (ENUMTYPE a) { return ENUMTYPE(~((int)a)); } \
-inline ENUMTYPE operator ^ (ENUMTYPE a, ENUMTYPE b) { return ENUMTYPE(((int)a) ^ ((int)b)); } \
-inline ENUMTYPE &operator ^= (ENUMTYPE &a, ENUMTYPE b) { return (ENUMTYPE &)(((int &)a) ^= ((int)b)); } \
+template<typename Enum>
+inline constexpr Enum operator|(Enum a, Enum b) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum>(static_cast<T>(a) | static_cast<T>(b));
 }
-#else
-#define DEFINE_ENUM_FLAG_OPERATORS(ENUMTYPE) // NOP, C allows these operators.
-#endif 
+
+template<typename Enum>
+inline constexpr Enum operator&(Enum a, Enum b) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum>(static_cast<T>(a) & static_cast<T>(b));
+}
+
+template<typename Enum>
+inline constexpr Enum operator^(Enum a, Enum b) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum>(static_cast<T>(a) ^ static_cast<T>(b));
+}
+
+template<typename Enum>
+inline constexpr Enum& operator|=(Enum& a, Enum b) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum&>(static_cast<T&>(a) | static_cast<T>(b));
+}
+
+template<typename Enum>
+inline constexpr Enum& operator&=(Enum& a, Enum b) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum&>(static_cast<T&>(a) & static_cast<T>(b));
+}
+
+template<typename Enum>
+inline constexpr Enum& operator^=(Enum& a, Enum b) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum&>(static_cast<T&>(a) ^ static_cast<T>(b));
+}
+
+template<typename Enum>
+inline constexpr Enum operator~(Enum a) {
+	using T = std::underlying_type_t<Enum>;
+	return static_cast<Enum>(~static_cast<T>(a));
+
+}
+#endif
 
 #endif
