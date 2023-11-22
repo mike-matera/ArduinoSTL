@@ -51,8 +51,6 @@ private:
 
 extern ArduinoSTL_STDIO ArduinoSTL_Serial;
 
-void* operator new(unsigned long long size, void* ptr) { return ptr; }
-
 #endif // ARDUINO_ARCH_AVR
 
 #endif // ARDUINOSTL_M_H
