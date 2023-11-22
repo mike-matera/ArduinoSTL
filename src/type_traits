@@ -1,0 +1,155 @@
+/*	Copyright (C) 2005 Garrett A. Kajmowicz
+
+    This file is part of the uClibc++ Library.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+#include "basic_definitions"
+#include <string.h>
+#include "exception"
+#include "memory"
+#include "char_traits"
+
+#ifndef __HEADER_TYPE_TRAITS
+#define __HEADER_TYPE_TRAITS 1
+
+#pragma GCC visibility push(default)
+
+namespace std
+{
+
+    struct _UCXXEXPORT __true_type {};
+    struct _UCXXEXPORT __false_type {};
+
+    template <class I>
+    class _UCXXEXPORT __is_integer
+    {
+    public:
+        typedef __false_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<unsigned int>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<signed int>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<short unsigned int>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<short signed int>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<char>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<signed char>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<unsigned char>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<long unsigned int>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <>
+    class _UCXXEXPORT __is_integer<long signed int>
+    {
+    public:
+        typedef __true_type value;
+    };
+
+    template <typename _Tp, bool = __is_enum(_Tp)>
+    struct _UCXXEXPORT __underlying_type_impl
+    {
+        using type = __underlying_type(_Tp);
+    };
+
+    template <typename _Tp>
+    struct _UCXXEXPORT __underlying_type_impl<_Tp, false> {};
+
+    /// The underlying type of an enum.
+    template <typename _Tp>
+    struct _UCXXEXPORT underlying_type
+        : public __underlying_type_impl<_Tp> {};
+
+    template<class T>
+    using underlying_type_t = typename underlying_type<T>::type;
+
+    template<bool, typename _Tp = void>
+    struct _UCXXEXPORT enable_if {};
+
+    template<typename _Tp>
+    struct _UCXXEXPORT enable_if<true, _Tp>
+    { using type = _Tp; };
+
+    template<bool _Cond, typename _Tp = void>
+    using enable_if_t = typename enable_if<_Cond, _Tp>::type;
+
+    template<typename _Tp, _Tp __v>
+    struct _UCXXEXPORT integral_constant
+    {
+      static constexpr _Tp value = __v;
+      using value_type = _Tp;
+      using type = integral_constant<_Tp, __v>;
+      constexpr operator value_type() const noexcept { return value; }
+    };
+
+    using true_type =  integral_constant<bool, true>;
+    using false_type = integral_constant<bool, false>;
+
+    template<bool __v>
+    using __bool_constant = integral_constant<bool, __v>;
+
+    template<typename _Tp>
+    struct _UCXXEXPORT is_enum
+        : public __bool_constant<__is_enum(_Tp)> {};
+}
+
+#pragma GCC visibility pop
+
+#endif

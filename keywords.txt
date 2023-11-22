@@ -1,0 +1,4 @@
+cin	KEYWORD1
+cout	KEYWORD1
+printf	KEYWORD1
+scanf	KEYWORD1
