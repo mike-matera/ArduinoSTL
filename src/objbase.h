@@ -42,53 +42,22 @@ inline constexpr Enum operator^(Enum lhs, Enum rhs) {
 		static_cast<T>(rhs));
 }
 
-// template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
-// inline constexpr Enum& operator|=(Enum& lhs, Enum rhs) {
-// 	using T = typename std::underlying_type_t<Enum>;
-// 	return static_cast<Enum&>(
-// 		static_cast<T&>(lhs) |
-// 		static_cast<T>(rhs));
-// }
-
-// template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
-// inline constexpr Enum& operator&=(Enum& lhs, Enum rhs) {
-// 	using T = typename std::underlying_type_t<Enum>;
-// 	return static_cast<Enum&>(
-// 		static_cast<T&>(lhs) &
-// 		static_cast<T>(rhs));
-// }
-
-// template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
-// inline constexpr Enum& operator^=(Enum& lhs, Enum rhs) {
-// 	using T = typename std::underlying_type_t<Enum>;
-// 	return static_cast<Enum&>(
-// 		static_cast<T&>(lhs) ^
-// 		static_cast<T>(rhs));
-//}
-
-
 template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
-inline constexpr Enum operator|=(Enum lhs, Enum rhs) {
-	using T = typename std::underlying_type_t<Enum>;
-	return static_cast<Enum>(
-		static_cast<T>(lhs) |
-		static_cast<T>(rhs));
+inline Enum& operator|=(Enum& lhs, Enum rhs) {
+	lhs = lhs | rhs;
+    return lhs;
 }
 
 template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
-inline constexpr Enum operator&=(Enum lhs, Enum rhs) {
-	using T = typename std::underlying_type_t<Enum>;
-	return static_cast<Enum>(
-		static_cast<T>(lhs) &
-		static_cast<T>(rhs));
+inline Enum& operator&=(Enum& lhs, Enum rhs) {
+	lhs = lhs & rhs;
+    return lhs;
 }
 
 template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
-inline constexpr Enum operator^=(Enum lhs, Enum rhs) {
-	using T = typename std::underlying_type_t<Enum>;
-	return static_cast<Enum&>(
-		static_cast<T>(lhs) ^
-		static_cast<T>(rhs));
+inline Enum& operator^=(Enum& lhs, Enum rhs) {
+	lhs = lhs ^ rhs;
+    return lhs;
 }
 
 template<typename Enum, typename = typename std::enable_if<std::is_enum<Enum>::value, Enum>::type>
