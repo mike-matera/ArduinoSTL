@@ -1,4 +1,5 @@
 #pragma once
+#include <yvals_core.h>
 // 51
 #ifdef _ITERATOR_DEBUG_LEVEL // A. _ITERATOR_DEBUG_LEVEL is already defined.
 
