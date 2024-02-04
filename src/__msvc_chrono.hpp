@@ -190,7 +190,49 @@ namespace chrono
 	private:
 		_Rep _MyRep; // the stored rep
 	};
-// 188
+	// 188
+	// 311
+	template <class _CR, class _Period1, class _Rep2, bool = is_convertible_v<const _Rep2 &, _CR>>
+	struct _Duration_div_mod1
+	{ // return type for duration / rep and duration % rep
+		using type = duration<_CR, _Period1>;
+	};
+
+	template <class _CR, class _Period1, class _Rep2>
+	struct _Duration_div_mod1<_CR, _Period1, _Rep2, false>
+	{
+	}; // no return type
+
+	template <class _CR, class _Period1, class _Rep2, bool = _Is_duration_v<_Rep2>>
+	struct _Duration_div_mod
+	{
+	}; // no return type
+
+	template <class _CR, class _Period1, class _Rep2>
+	struct _Duration_div_mod<_CR, _Period1, _Rep2, false> : _Duration_div_mod1<_CR, _Period1, _Rep2>
+	{
+		// return type for duration / rep and duration % rep
+	};
+
+	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2>
+	_NODISCARD constexpr typename _Duration_div_mod<common_type_t<_Rep1, _Rep2>, _Period1, _Rep2>::type operator/(
+		const duration<_Rep1, _Period1> &_Left,
+		const _Rep2 &_Right) noexcept(is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+	{
+		using _CR = common_type_t<_Rep1, _Rep2>;
+		using _CD = duration<_CR, _Period1>;
+		return _CD(_CD(_Left).count() / _Right);
+	}
+
+	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
+	_NODISCARD constexpr common_type_t<_Rep1, _Rep2>
+	operator/(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
+		is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+	{
+		using _CD = common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>;
+		return _CD(_Left).count() / _CD(_Right).count();
+	}
+	// 344
 // 407
 #ifdef __cpp_lib_concepts
 	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
