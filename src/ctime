@@ -49,7 +49,6 @@
 #include <cstddef>
 
 #include <time.h>
-#include <corecrt.h>
 
 // Get rid of those macros defined in <time.h> in lieu of real functions.
 #undef clock
@@ -68,19 +67,15 @@ namespace std
   using ::time_t;
   using ::tm;
 
-  using ::asctime;
   using ::clock;
-  using ::ctime;
   using ::difftime;
+  using ::mktime;
+  using ::time;
+  using ::asctime;
+  using ::ctime;
   using ::gmtime;
   using ::localtime;
-  using ::mktime;
   using ::strftime;
-  using ::time;
 }
-struct _timespec64
-{
-    __time64_t tv_sec;
-    long       tv_nsec;
-};
+
 #endif

@@ -30,12 +30,6 @@
 		"serstream": "cpp",
 		"sstream": "cpp",
 		"string_iostream": "cpp",
-		"ostream": "cpp",
-		"chip.h": "c",
-		"__config": "cpp",
-		"chrono": "cpp",
-		"thread": "cpp",
-		"ctime": "cpp",
-		"ratio": "cpp"
+		"ostream": "cpp"
 	}
 }
