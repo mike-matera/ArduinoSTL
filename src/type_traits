@@ -547,20 +547,210 @@ struct _Common_type3<void_t<common_type_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Rest...>
 
 template <class _Ty1, class _Ty2, class... _Rest>
 struct common_type<_Ty1, _Ty2, _Rest...> : _Common_type3<void, _Ty1, _Ty2, _Rest...> {};
-//1220
-//1408
+//1366
+//1369
+#if _HAS_CXX20
+_EXPORT_STD template <class, class, template <class> class, template <class> class>
+struct basic_common_reference {};
+
+template <class _From>
+struct _Copy_cv_impl {
+    template <class _To>
+    using _Apply = _To;
+};
+template <class _From>
+struct _Copy_cv_impl<const _From> {
+    template <class _To>
+    using _Apply = const _To;
+};
+template <class _From>
+struct _Copy_cv_impl<volatile _From> {
+    template <class _To>
+    using _Apply = volatile _To;
+};
+template <class _From>
+struct _Copy_cv_impl<const volatile _From> {
+    template <class _To>
+    using _Apply = const volatile _To;
+};
+template <class _From, class _To>
+using _Copy_cv = // N4950 [meta.trans.other]/2.3
+    _Copy_cv_impl<_From>::template _Apply<_To>;
+
+template <class _Ty1>
+struct _Add_qualifiers { // _Add_qualifiers<A>::template _Apply is XREF(A) from N4950 [meta.trans.other]/2.2
+    template <class _Ty2>
+    using _Apply = _Copy_cv<_Ty1, _Ty2>;
+};
+template <class _Ty1>
+struct _Add_qualifiers<_Ty1&> {
+    template <class _Ty2>
+    using _Apply = add_lvalue_reference_t<_Copy_cv<_Ty1, _Ty2>>;
+};
+template <class _Ty1>
+struct _Add_qualifiers<_Ty1&&> {
+    template <class _Ty2>
+    using _Apply = add_rvalue_reference_t<_Copy_cv<_Ty1, _Ty2>>;
+};
+
+#if !defined(__EDG__) && !defined(__clang__) // TRANSITION, DevCom-10095944
+template <class _Ty1, class _Ty2>
+using _Cond_res_if_right = // N4950 [meta.trans.other]/2.4
+    decltype(false ? _Returns_exactly<_Ty1>() : _Returns_exactly<_Ty2>());
+
 template <class _Ty>
-_NODISCARD constexpr _Ty&& forward(
-    remove_reference_t<_Ty>& _Arg) noexcept { // forward an lvalue as either an lvalue or an rvalue
+using _Is_scalar_or_array = disjunction<is_scalar<_Ty>, is_array<_Ty>>;
+
+template <class _Ty1, class _Ty2, class = void>
+struct _Cond_res_workaround {};
+
+template <class _Ty1, class _Ty2>
+struct _Cond_res_workaround<_Ty1, _Ty2, void_t<_Cond_res_if_right<_Ty1, _Ty2>>> {
+    using _Uty = remove_cvref_t<_Ty1>;
+    using type = conditional_t<conjunction_v<is_same<_Uty, remove_cvref_t<_Ty2>>, _Is_scalar_or_array<_Uty>,
+                                   disjunction<conjunction<is_lvalue_reference<_Ty1>, is_rvalue_reference<_Ty2>>,
+                                       conjunction<is_rvalue_reference<_Ty1>, is_lvalue_reference<_Ty2>>>>,
+        decay_t<_Copy_cv<remove_reference_t<_Ty1>, remove_reference_t<_Ty2>>>, _Cond_res_if_right<_Ty1, _Ty2>>;
+};
+
+template <class _Ty1, class _Ty2>
+using _Cond_res = _Cond_res_workaround<_Ty1, _Ty2>::type;
+#else // ^^^ workaround / no workaround vvv
+template <class _Ty1, class _Ty2>
+using _Cond_res = // N4950 [meta.trans.other]/2.4
+    decltype(false ? _Returns_exactly<_Ty1>() : _Returns_exactly<_Ty2>());
+#endif // ^^^ no workaround ^^^
+
+_EXPORT_STD template <class...>
+struct common_reference;
+
+_EXPORT_STD template <class... _Types>
+using common_reference_t = common_reference<_Types...>::type;
+
+// N4950 [meta.trans.other]/5.1: "If sizeof...(T) is zero ..."
+template <>
+struct common_reference<> {};
+
+// N4950 [meta.trans.other]/5.2: "...if sizeof...(T) is one ..."
+template <class _Ty>
+struct common_reference<_Ty> {
+    using type = _Ty;
+};
+
+// N4950 [meta.trans.other]/5.3: "...if sizeof...(T) is two..."
+
+// N4950 [meta.trans.other]/5.3.4: "if common_type_t<T1, T2> is well-formed..."
+// N4950 [meta.trans.other]/5.3.5: "Otherwise, there shall be no member type."
+template <class _Ty1, class _Ty2, class = void>
+struct _Common_reference2C : common_type<_Ty1, _Ty2> {};
+
+// N4950 [meta.trans.other]/5.3.3: "if COND_RES(T1, T2) is well-formed..."
+template <class _Ty1, class _Ty2>
+struct _Common_reference2C<_Ty1, _Ty2, void_t<_Cond_res<_Ty1, _Ty2>>> {
+    using type = _Cond_res<_Ty1, _Ty2>;
+};
+
+// N4950 [meta.trans.other]/5.3.2: "if basic_common_reference<[...]>::type is well-formed..."
+template <class _Ty1, class _Ty2>
+using _Basic_specialization = basic_common_reference<remove_cvref_t<_Ty1>, remove_cvref_t<_Ty2>,
+    _Add_qualifiers<_Ty1>::template _Apply, _Add_qualifiers<_Ty2>::template _Apply>::type;
+
+template <class _Ty1, class _Ty2, class = void>
+struct _Common_reference2B : _Common_reference2C<_Ty1, _Ty2> {};
+
+template <class _Ty1, class _Ty2>
+struct _Common_reference2B<_Ty1, _Ty2, void_t<_Basic_specialization<_Ty1, _Ty2>>> {
+    using type = _Basic_specialization<_Ty1, _Ty2>;
+};
+
+// N4950 [meta.trans.other]/5.3.1: "Let R be COMMON-REF(T1, T2). If T1 and T2 are reference types, R is well-formed, and
+// is_convertible_v<add_pointer_t<T1>, add_pointer_t<R>> && is_convertible_v<add_pointer_t<T2>, add_pointer_t<R>> is
+// true, then the member typedef type denotes R."
+template <class _Ty1, class _Ty2, class = void>
+struct _Common_reference2A : _Common_reference2B<_Ty1, _Ty2> {};
+
+template <class _Ty1, class _Ty2, class _Result = _Cond_res<_Copy_cv<_Ty1, _Ty2>&, _Copy_cv<_Ty2, _Ty1>&>,
+    enable_if_t<is_lvalue_reference_v<_Result>, int> = 0>
+using _LL_common_ref = _Result;
+
+template <class _Ty1, class _Ty2, class = void>
+struct _Common_reference2AX {};
+
+template <class _Ty1, class _Ty2>
+struct _Common_reference2AX<_Ty1&, _Ty2&, void_t<_LL_common_ref<_Ty1, _Ty2>>> {
+    using type = _LL_common_ref<_Ty1, _Ty2>; // "both lvalues" case from N4950 [meta.trans.other]/2.5
+};
+
+template <class _Ty1, class _Ty2>
+struct _Common_reference2AX<_Ty1&&, _Ty2&, enable_if_t<is_convertible_v<_Ty1&&, _LL_common_ref<const _Ty1, _Ty2>>>> {
+    using type = _LL_common_ref<const _Ty1, _Ty2>; // "rvalue and lvalue" case from N4950 [meta.trans.other]/2.7
+};
+
+template <class _Ty1, class _Ty2>
+struct _Common_reference2AX<_Ty1&, _Ty2&&, enable_if_t<is_convertible_v<_Ty2&&, _LL_common_ref<const _Ty2, _Ty1>>>> {
+    using type = _LL_common_ref<const _Ty2, _Ty1>; // "lvalue and rvalue" case from N4950 [meta.trans.other]/2.8
+};
+
+template <class _Ty1, class _Ty2>
+using _RR_common_ref = remove_reference_t<_LL_common_ref<_Ty1, _Ty2>>&&;
+
+template <class _Ty1, class _Ty2>
+struct _Common_reference2AX<_Ty1&&, _Ty2&&,
+    enable_if_t<is_convertible_v<_Ty1&&, _RR_common_ref<_Ty1, _Ty2>>
+                && is_convertible_v<_Ty2&&, _RR_common_ref<_Ty1, _Ty2>>>> {
+    using type = _RR_common_ref<_Ty1, _Ty2>; // "both rvalues" case from N4950 [meta.trans.other]/2.6
+};
+
+template <class _Ty1, class _Ty2>
+using _Common_ref_2AX_t = _Common_reference2AX<_Ty1, _Ty2>::type;
+
+template <class _Ty1, class _Ty2>
+struct _Common_reference2A<_Ty1, _Ty2,
+    enable_if_t<is_convertible_v<add_pointer_t<_Ty1>, add_pointer_t<_Common_ref_2AX_t<_Ty1, _Ty2>>>
+                && is_convertible_v<add_pointer_t<_Ty2>, add_pointer_t<_Common_ref_2AX_t<_Ty1, _Ty2>>>>> {
+    using type = _Common_ref_2AX_t<_Ty1, _Ty2>;
+};
+
+template <class _Ty1, class _Ty2>
+struct common_reference<_Ty1, _Ty2> : _Common_reference2A<_Ty1, _Ty2> {};
+
+// N4950 [meta.trans.other]/5.4: "if sizeof...(T) is greater than two..."
+template <class _Void, class _Ty1, class _Ty2, class... _Types>
+struct _Fold_common_reference {};
+template <class _Ty1, class _Ty2, class... _Types>
+struct _Fold_common_reference<void_t<common_reference_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Types...>
+    : common_reference<common_reference_t<_Ty1, _Ty2>, _Types...> {};
+
+template <class _Ty1, class _Ty2, class _Ty3, class... _Rest>
+struct common_reference<_Ty1, _Ty2, _Ty3, _Rest...> : _Fold_common_reference<void, _Ty1, _Ty2, _Ty3, _Rest...> {};
+
+_EXPORT_STD template <class _Ty>
+struct type_identity {
+    using type = _Ty;
+};
+_EXPORT_STD template <class _Ty>
+using type_identity_t = type_identity<_Ty>::type;
+#endif // _HAS_CXX20
+
+template <class _Type, template <class...> class _Template>
+_INLINE_VAR constexpr bool _Is_specialization_v = false; // true if and only if _Type is a specialization of _Template
+template <template <class...> class _Template, class... _Types>
+_INLINE_VAR constexpr bool _Is_specialization_v<_Template<_Types...>, _Template> = true;
+
+template <class _Type, template <class...> class _Template>
+struct _Is_specialization : bool_constant<_Is_specialization_v<_Type, _Template>> {};
+
+_EXPORT_STD template <class _Ty>
+_NODISCARD _MSVC_INTRINSIC constexpr _Ty&& forward(remove_reference_t<_Ty>& _Arg) noexcept {
     return static_cast<_Ty&&>(_Arg);
 }
 
-template <class _Ty>
-_NODISCARD constexpr _Ty&& forward(remove_reference_t<_Ty>&& _Arg) noexcept { // forward an rvalue as an rvalue
+_EXPORT_STD template <class _Ty>
+_NODISCARD _MSVC_INTRINSIC constexpr _Ty&& forward(remove_reference_t<_Ty>&& _Arg) noexcept {
     static_assert(!is_lvalue_reference_v<_Ty>, "bad forward call");
     return static_cast<_Ty&&>(_Arg);
 }
-//1420
+//1571
 //1947
 template <class _Ty>
 struct _Is_swappable;

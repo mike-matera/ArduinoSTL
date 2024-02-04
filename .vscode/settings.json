@@ -30,6 +30,9 @@
 		"serstream": "cpp",
 		"sstream": "cpp",
 		"string_iostream": "cpp",
-		"ostream": "cpp"
+		"ostream": "cpp",
+		"chrono": "cpp",
+		"ratio": "cpp",
+		"cstdint": "cpp"
 	}
 }

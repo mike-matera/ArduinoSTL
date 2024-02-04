@@ -1,24 +1,45 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "mega2560",
             "includePath": [
                 "${workspaceFolder}/src",
-                "${USERPROFILE}/Documents/Arduino/libraries/**",
                 "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
-                "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
-                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/**"
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/mega",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
             ],
             "defines": [
-				"USBCON",
-				"__AVR_ATmega2560__",
-				"F_CPU=16000000",
-				"ARDUINO_ARCH_AVR"
+                "F_CPU=16000000L",
+                "ARDUINO_AVR_MEGA2560",
+                "__AVR_ATmega2560__",
+                "ARDUINO_ARCH_AVR"
             ],
-            "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-gcc.exe",
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        },
+        {
+            "name": "arduino_due_x",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/cores/arduino",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/system/libsam",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/system/CMSIS/CMSIS/Include",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/system/CMSIS/Device/ATMEL",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/system/CMSIS/Device/ATMEL/sam",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/variants/arduino_due_x",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include"
+            ],
+            "defines": [
+                "F_CPU=84000000L",
+                "ARDUINO_SAM_DUE",
+                "ARDUINO_ARCH_SAM",
+                "__SAM3X8E__=1"
+            ],
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
             "intelliSenseMode": "windows-gcc-x64"
         }
     ],
