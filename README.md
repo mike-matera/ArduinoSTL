@@ -21,7 +21,7 @@ AVR and SAM architectures are currently supported. There are currently no plans 
 - `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`。
 - `<ratio>`
 - `<set>`
-- `<type_traits> integral_constant extent_v`
+- `<type_traits>`
 - `<vector>`
 # 原版README
 
