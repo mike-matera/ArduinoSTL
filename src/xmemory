@@ -13,7 +13,7 @@ namespace std
 		explicit _One_then_variadic_args_t() = default;
 	}; // tag type for constructing first from one arg, constructing second from remaining args
 
-	template <class _Ty1, class _Ty2, bool = is_empty_v<_Ty1> && !is_final_v<_Ty1>>
+	template <class _Ty1, class _Ty2, bool = is_empty<_Ty1>::value && !is_final<_Ty1>::value>
 	class _Compressed_pair final : private _Ty1
 	{ // store a pair of values, deriving from empty first
 	public:
@@ -23,15 +23,15 @@ namespace std
 
 		template <class... _Other2>
 		constexpr explicit _Compressed_pair(_Zero_then_variadic_args_t, _Other2 &&..._Val2) noexcept(
-			conjunction_v<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			conjunction<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
 			: _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
 
 		template <class _Other1, class... _Other2>
 		constexpr _Compressed_pair(_One_then_variadic_args_t, _Other1 &&_Val1, _Other2 &&..._Val2) noexcept(
-			conjunction_v<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			conjunction<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
 			: _Ty1(_STD forward<_Other1>(_Val1)), _Myval2(_STD forward<_Other2>(_Val2)...) {}
 
-		constexpr _Ty1 &_Get_first() noexcept
+		_CONSTEXPR14() _Ty1 &_Get_first() noexcept
 		{
 			return *this;
 		}
@@ -51,15 +51,15 @@ namespace std
 
 		template <class... _Other2>
 		constexpr explicit _Compressed_pair(_Zero_then_variadic_args_t, _Other2 &&..._Val2) noexcept(
-			conjunction_v<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			conjunction<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
 			: _Myval1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
 
 		template <class _Other1, class... _Other2>
 		constexpr _Compressed_pair(_One_then_variadic_args_t, _Other1 &&_Val1, _Other2 &&..._Val2) noexcept(
-			conjunction_v<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>)
+			conjunction<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
 			: _Myval1(_STD forward<_Other1>(_Val1)), _Myval2(_STD forward<_Other2>(_Val2)...) {}
 
-		constexpr _Ty1 &_Get_first() noexcept
+		_CONSTEXPR14() _Ty1 &_Get_first() noexcept
 		{
 			return _Myval1;
 		}

@@ -41,29 +41,29 @@ namespace chrono
 
 	template <class _Clock>
 	inline constexpr bool
-		_Is_clock_v<_Clock, void_t<typename _Clock::rep, typename _Clock::period, typename _Clock::duration,
-								   typename _Clock::time_point, decltype(_Clock::is_steady), decltype(_Clock::now())>> =
+		_Is_clock<_Clock, void_t<typename _Clock::rep, typename _Clock::period, typename _Clock::duration,
+								 typename _Clock::time_point, decltype(_Clock::is_steady), decltype(_Clock::now())>>::value =
 			true; // TRANSITION, GH-602
 
 	_EXPORT_STD template <class _Clock>
-	struct is_clock : bool_constant<_Is_clock_v<_Clock>>
+	struct is_clock : bool_constant<_Is_clock<_Clock>::value>
 	{
 	};
 	_EXPORT_STD template <class _Clock>
-	inline constexpr bool is_clock_v = _Is_clock_v<_Clock>;
+	inline constexpr bool is_clock_v = _Is_clock<_Clock>::value;
 #endif // _HAS_CXX20
 
 	_EXPORT_STD template <class _Rep, class _Period = ratio<1>>
 	class duration;
 #if _HAS_CXX14
 	template <class _Ty>
-	_INLINE_VAR constexpr bool _Is_duration_v = _Is_specialization_v<_Ty, duration>;
+	_INLINE_VAR constexpr bool _Is_duration_v = _Is_specialization<_Ty, duration>::value;
 #endif
 	template <class _Ty>
 	using _Is_duration = _Is_specialization<_Ty, duration>;
 	_EXPORT_STD template <class _To, class _Rep, class _Period, enable_if_t<_Is_duration<_To>::value, int> = 0>
 	constexpr _To duration_cast(const duration<_Rep, _Period> &) noexcept(
-		is_arithmetic_v<_Rep> && is_arithmetic_v<typename _To::rep>); // strengthened
+		is_arithmetic<_Rep>::value && is_arithmetic<typename _To::rep>::value); // strengthened
 
 	_EXPORT_STD template <class _Rep, class _Period>
 	class duration
@@ -72,100 +72,107 @@ namespace chrono
 		using rep = _Rep;
 		using period = typename _Period::type;
 
-		static_assert(!_Is_duration_v<_Rep>, "duration can't have duration as first template argument");
-		static_assert(_Is_ratio_v<_Period>, "period not an instance of std::ratio");
+		static_assert(!_Is_duration<_Rep>::value, "duration can't have duration as first template argument");
+		static_assert(_Is_ratio<_Period>::value, "period not an instance of std::ratio");
 		static_assert(0 < _Period::num, "period negative or zero");
 
 		constexpr duration() = default;
 
 		template <class _Rep2,
-				  enable_if_t<is_convertible_v<const _Rep2 &, _Rep> && (treat_as_floating_point_v<_Rep> || !treat_as_floating_point_v<_Rep2>),
+				  enable_if_t<is_convertible<const _Rep2 &, _Rep>::value && (treat_as_floating_point<_Rep>::value || !treat_as_floating_point<_Rep2>::value),
 							  int> = 0>
 		constexpr explicit duration(const _Rep2 &_Val) noexcept(
-			is_arithmetic_v<_Rep> && is_arithmetic_v<_Rep2>) // strengthened
+			is_arithmetic<_Rep>::value && is_arithmetic<_Rep2>::value) // strengthened
 			: _MyRep(static_cast<_Rep>(_Val))
 		{
 		}
 
 		template <class _Rep2, class _Period2,
-				  enable_if_t<treat_as_floating_point_v<_Rep> || (_Ratio_divide_sfinae<_Period2, _Period>::den == 1 && !treat_as_floating_point_v<_Rep2>),
+				  enable_if_t<treat_as_floating_point<_Rep>::value || (_Ratio_divide_sfinae<_Period2, _Period>::den == 1 && !treat_as_floating_point<_Rep2>::value),
 							  int> = 0>
 		constexpr duration(const duration<_Rep2, _Period2> &_Dur) noexcept(
-			is_arithmetic_v<_Rep> && is_arithmetic_v<_Rep2>) // strengthened
+			is_arithmetic<_Rep>::value && is_arithmetic<_Rep2>::value) // strengthened
 			: _MyRep(_CHRONO duration_cast<duration>(_Dur).count())
 		{
 		}
 
-		_NODISCARD constexpr _Rep count() const noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_NODISCARD constexpr _Rep count() const noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			return _MyRep;
 		}
-
-		_NODISCARD constexpr common_type_t<duration> operator+() const
-			noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		template <typename T>
+		using _Common_type_14 =
+#if _HAS_CXX14
+			common_type_t<T>
+#else
+			T
+#endif
+			;
+		_NODISCARD constexpr _Common_type_14<duration> operator+() const
+			noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
-			return common_type_t<duration>(*this);
+			return _Common_type_14<duration>(*this);
 		}
 
-		_NODISCARD constexpr common_type_t<duration> operator-() const
-			noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_NODISCARD constexpr _Common_type_14<duration> operator-() const
+			noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
-			return common_type_t<duration>(-_MyRep);
+			return _Common_type_14<duration>(-_MyRep);
 		}
 
-		_CONSTEXPR17 duration &operator++() noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator++() noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			++_MyRep;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration operator++(int) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration operator++(int) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			return duration(_MyRep++);
 		}
 
-		_CONSTEXPR17 duration &operator--() noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator--() noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			--_MyRep;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration operator--(int) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration operator--(int) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			return duration(_MyRep--);
 		}
 
-		_CONSTEXPR17 duration &operator+=(const duration &_Right) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator+=(const duration &_Right) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			_MyRep += _Right._MyRep;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration &operator-=(const duration &_Right) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator-=(const duration &_Right) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			_MyRep -= _Right._MyRep;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration &operator*=(const _Rep &_Right) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator*=(const _Rep &_Right) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			_MyRep *= _Right;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration &operator/=(const _Rep &_Right) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator/=(const _Rep &_Right) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			_MyRep /= _Right;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration &operator%=(const _Rep &_Right) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator%=(const _Rep &_Right) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			_MyRep %= _Right;
 			return *this;
 		}
 
-		_CONSTEXPR17 duration &operator%=(const duration &_Right) noexcept(is_arithmetic_v<_Rep>) /* strengthened */
+		_CONSTEXPR17 duration &operator%=(const duration &_Right) noexcept(is_arithmetic<_Rep>::value) /* strengthened */
 		{
 			_MyRep %= _Right.count();
 			return *this;
@@ -219,7 +226,7 @@ namespace chrono
 	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2>
 	_NODISCARD constexpr typename _Duration_div_mod<common_type_t<_Rep1, _Rep2>, _Period1, _Rep2>::type operator/(
 		const duration<_Rep1, _Period1> &_Left,
-		const _Rep2 &_Right) noexcept(is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+		const _Rep2 &_Right) noexcept(is_arithmetic<_Rep1>::value && is_arithmetic<_Rep2>::value) /* strengthened */
 	{
 		using _CR = common_type_t<_Rep1, _Rep2>;
 		using _CD = duration<_CR, _Period1>;
@@ -229,7 +236,7 @@ namespace chrono
 	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
 	_NODISCARD constexpr common_type_t<_Rep1, _Rep2>
 	operator/(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
-		is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+		is_arithmetic<_Rep1>::value && is_arithmetic<_Rep2>::value) /* strengthened */
 	{
 		using _CD = common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>;
 		return _CD(_Left).count() / _CD(_Right).count();
@@ -239,7 +246,7 @@ namespace chrono
 	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
 	_NODISCARD constexpr bool
 	operator<(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
-		is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+		is_arithmetic<_Rep1>::value && is_arithmetic<_Rep2>::value) /* strengthened */
 	{
 		using _CT = common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>;
 		return _CT(_Left).count() < _CT(_Right).count();
@@ -251,7 +258,7 @@ namespace chrono
 		requires three_way_comparable<typename common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>::rep>
 	_NODISCARD constexpr auto
 	operator<=>(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
-		is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+		is_arithmetic<_Rep1>::value && is_arithmetic<_Rep2>::value) /* strengthened */
 	{
 		using _CT = common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>;
 		return _CT(_Left).count() <=> _CT(_Right).count();
@@ -260,7 +267,7 @@ namespace chrono
 
 	_EXPORT_STD template <class _To, class _Rep, class _Period, enable_if_t<_Is_duration<_To>::value, int> /* = 0 */>
 	_NODISCARD constexpr _To duration_cast(const duration<_Rep, _Period> &_Dur) noexcept(
-		is_arithmetic_v<_Rep> && is_arithmetic_v<typename _To::rep>) /* strengthened */
+		is_arithmetic<_Rep>::value && is_arithmetic<typename _To::rep>::value) /* strengthened */
 	{
 		// convert duration to another duration; truncate
 		using _CF = ratio_divide<_Period, typename _To::period>;
@@ -271,25 +278,28 @@ namespace chrono
 		constexpr bool _Num_is_one = _CF::num == 1;
 		constexpr bool _Den_is_one = _CF::den == 1;
 
-		if constexpr (_Den_is_one)
-		{
-			if constexpr (_Num_is_one)
+		if _CONSTEXPR14 ()
+			(_Den_is_one)
 			{
-				return static_cast<_To>(static_cast<_ToRep>(_Dur.count()));
+				if _CONSTEXPR14 ()
+					(_Num_is_one)
+					{
+						return static_cast<_To>(static_cast<_ToRep>(_Dur.count()));
+					}
+				else
+				{
+					return static_cast<_To>(
+						static_cast<_ToRep>(static_cast<_CR>(_Dur.count()) * static_cast<_CR>(_CF::num)));
+				}
 			}
-			else
-			{
-				return static_cast<_To>(
-					static_cast<_ToRep>(static_cast<_CR>(_Dur.count()) * static_cast<_CR>(_CF::num)));
-			}
-		}
 		else
 		{
-			if constexpr (_Num_is_one)
-			{
-				return static_cast<_To>(
-					static_cast<_ToRep>(static_cast<_CR>(_Dur.count()) / static_cast<_CR>(_CF::den)));
-			}
+			if _CONSTEXPR14 ()
+				(_Num_is_one)
+				{
+					return static_cast<_To>(
+						static_cast<_ToRep>(static_cast<_CR>(_Dur.count()) / static_cast<_CR>(_CF::den)));
+				}
 			else
 			{
 				return static_cast<_To>(static_cast<_ToRep>(
@@ -312,4 +322,5 @@ namespace chrono
 	_EXPORT_STD using months = duration<int, ratio_divide<years::period, ratio<12>>>;
 #endif // _HAS_CXX20
 	   // 521
-	_STD_END
+}
+_STD_END

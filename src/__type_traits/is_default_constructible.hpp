@@ -53,6 +53,7 @@ struct is_default_constructible<T &> : public integral_constant<bool, false>
 {
 };
 #if defined(__clang__) || (defined(__GNUC__) && (__GNUC__ <= 5)) || (defined(BOOST_MSVC) && (BOOST_MSVC == 1800))
+template <class T1, class T2> struct _UCXXEXPORT pair;
 template <class T, class U>
 struct is_default_constructible<std::pair<T, U>> : public integral_constant<bool, is_default_constructible<T>::value && is_default_constructible<U>::value>
 {

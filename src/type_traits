@@ -144,7 +144,7 @@ namespace std
     _INLINE_VAR constexpr bool is_void_v = is_same_v<remove_cv_t<_Ty>, void>;
 #endif
     template <class _Ty>
-    struct is_void : bool_constant<is_void_v<_Ty>>
+    struct is_void : is_same<remove_cv_t<_Ty>, void>
     {
     };
 
@@ -187,7 +187,7 @@ namespace std
     template <class _Ty>
     add_rvalue_reference_t<_Ty> declval() noexcept
     {
-        static_assert(_Always_false<_Ty>, "Calling declval is ill-formed, see N4892 [declval]/2.");
+        static_assert(_Always_false_t<_Ty>::value, "Calling declval is ill-formed, see N4892 [declval]/2.");
     }
 
     template <class _Ty>
@@ -275,9 +275,20 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_array_v<_Ty[]> = true;
 #endif
-    template <class _Ty>
-    struct is_array : bool_constant<is_array_v<_Ty>>
+    template <class>
+    struct is_array
     {
+        static constexpr bool value = false; // determine whether type argument is an array
+    };
+    template <class _Ty, size_t _Nx>
+    struct is_array<_Ty[_Nx]>
+    {
+        static constexpr bool value = true;
+    };
+    template <class _Ty>
+    struct is_array<_Ty[]>
+    {
+        static constexpr bool value = true;
     };
 // 232
 // 252
@@ -288,9 +299,15 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_lvalue_reference_v<_Ty &> = true;
 #endif
-    template <class _Ty>
-    struct is_lvalue_reference : bool_constant<is_lvalue_reference_v<_Ty>>
+    template <class>
+    struct is_lvalue_reference
     {
+        static constexpr bool value = false; // determine whether type argument is an lvalue reference
+    };
+    template <class _Ty>
+    struct is_lvalue_reference<_Ty &>
+    {
+        static constexpr bool value = true;
     };
 // 261
 // 270
@@ -304,13 +321,25 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_reference_v<_Ty &&> = true;
 #endif
-    template <class _Ty>
-    struct is_reference : bool_constant<is_reference_v<_Ty>>
+    template <class>
+    struct is_reference
     {
+        static constexpr bool value = false; // determine whether type argument is a reference
+    };
+    template <class _Ty>
+    struct is_reference<_Ty &>
+    {
+        static constexpr bool value = true;
+    };
+
+    template <class _Ty>
+    struct is_reference<_Ty &&>
+    {
+        static constexpr bool value = true;
     };
 #if _HAS_CXX14
     template <class>
-    _INLINE_VAR constexpr bool is_pointer_v = false; // determine whether _Ty is a pointer
+    _INLINE_VAR constexpr bool is_pointer_v = false; // determin_INLINE_VARise whether _Ty is a pointer
 
     template <class _Ty>
     _INLINE_VAR constexpr bool is_pointer_v<_Ty *> = true;
@@ -324,9 +353,33 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_pointer_v<_Ty *const volatile> = true;
 #endif
-    template <class _Ty>
-    struct is_pointer : bool_constant<is_pointer_v<_Ty>>
+    template <class>
+    struct is_pointer
     {
+        static constexpr bool value = false; // determine whether _Ty is a pointer
+    };
+    template <class _Ty>
+    struct is_pointer<_Ty *>
+    {
+        static constexpr bool value = true;
+    };
+
+    template <class _Ty>
+    struct is_pointer<_Ty *const>
+    {
+        static constexpr bool value = true;
+    };
+
+    template <class _Ty>
+    struct is_pointer<_Ty *volatile>
+    {
+        static constexpr bool value = true;
+    };
+
+    template <class _Ty>
+    struct is_pointer<_Ty *const volatile>
+    {
+        static constexpr bool value = true;
     };
     // 300
     // 359
@@ -345,9 +398,15 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_const_v<const _Ty> = true;
 #endif
-    template <class _Ty>
-    struct is_const : bool_constant<is_const_v<_Ty>>
+    template <class>
+    struct is_const
     {
+        static constexpr bool value = false; // determine whether type argument is const qualified
+    };
+    template <class _Ty>
+    struct is_const<const _Ty>
+    {
+        static constexpr bool value = true;
     };
 // 444
 // 453
@@ -357,7 +416,7 @@ namespace std
         !is_const_v<const _Ty> && !is_reference_v<_Ty>;
 #endif
     template <class _Ty>
-    struct is_function : bool_constant<is_function_v<_Ty>>
+    struct is_function : bool_constant<!is_const<const _Ty>::value && !is_reference<_Ty>::value>
     {
     };
 // 460
@@ -472,11 +531,15 @@ namespace std
     _INLINE_VAR constexpr bool is_nothrow_move_assignable_v = is_nothrow_move_assignable<_Ty>::value;
 #endif
 // 847
+// 883
 #if _HAS_CXX14
-    // 883
     template <class _Ty>
     _INLINE_VAR constexpr bool _Is_nonbool_integral = is_integral_v<_Ty> && !is_same_v<remove_cv_t<_Ty>, bool>;
 #endif
+    template <class _Ty>
+    struct _Is_nonbool_integral_t : bool_constant<is_integral<_Ty>::value && !is_same<remove_cv_t<_Ty>, bool>::value>
+    {
+    };
     template <bool>
     struct _Select
     { // Select between aliases that extract either their first or second parameter
@@ -514,8 +577,8 @@ namespace std
     {
         template <class _Ty>
         using _Apply = // assumes LLP64
-            typename _Select<is_same_v<_Ty, long> || is_same_v<_Ty, unsigned long>>::template _Apply<unsigned long,
-                                                                                                     unsigned int>;
+            typename _Select<is_same<_Ty, long>::value || is_same<_Ty, unsigned long>::value>::template _Apply<unsigned long,
+                                                                                                               unsigned int>;
     };
 
     template <>
@@ -532,7 +595,7 @@ namespace std
     template <class _Ty>
     struct make_unsigned
     { // unsigned partner to _Ty
-        static_assert(_Is_nonbool_integral<_Ty> || is_enum_v<_Ty>,
+        static_assert(_Is_nonbool_integral_t<_Ty>::value || is_enum<_Ty>::value,
                       "make_unsigned<T> requires that T shall be a (possibly cv-qualified) "
                       "integral type or enumeration but not a bool type.");
 
@@ -563,7 +626,22 @@ namespace std
     _INLINE_VAR constexpr size_t extent_v<_Ty[], _Ix> = extent_v<_Ty, _Ix - 1>;
 #endif
     template <class _Ty, unsigned int _Ix = 0>
-    struct extent : integral_constant<size_t, extent_v<_Ty, _Ix>>
+    struct extent
+    {
+        static constexpr size_t value = 0; // determine extent of dimension _Ix of array _Ty
+    };
+    template <class _Ty, size_t _Nx>
+    struct extent<_Ty[_Nx], 0>
+    {
+        static constexpr size_t value = _Nx;
+    };
+    template <class _Ty, unsigned int _Ix, size_t _Nx>
+    struct extent<_Ty[_Nx], _Ix> : extent<_Ty, _Ix - 1>
+    {
+    };
+
+    template <class _Ty, unsigned int _Ix>
+    struct extent<_Ty[], _Ix> : extent<_Ty, _Ix - 1>
     {
     };
 
@@ -580,8 +658,8 @@ namespace std
     struct decay
     { // determines decayed version of _Ty
         using _Ty1 = remove_reference_t<_Ty>;
-        using _Ty2 = typename _Select<is_function_v<_Ty1>>::template _Apply<add_pointer<_Ty1>, remove_cv<_Ty1>>;
-        using type = typename _Select<is_array_v<_Ty1>>::template _Apply<add_pointer<remove_extent_t<_Ty1>>, _Ty2>::type;
+        using _Ty2 = typename _Select<is_function<_Ty1>::value>::template _Apply<add_pointer<_Ty1>, remove_cv<_Ty1>>;
+        using type = typename _Select<is_array<_Ty1>::value>::template _Apply<add_pointer<remove_extent_t<_Ty1>>, _Ty2>::type;
     };
 
     template <class _Ty>
@@ -893,7 +971,7 @@ namespace std
     _INLINE_VAR constexpr bool _Is_specialization_v = false; // true if and only if _Type is a specialization of _Template
     template <template <class...> class _Template, class... _Types>
     _INLINE_VAR constexpr bool _Is_specialization_v<_Template<_Types...>, _Template> = true;
-#else
+#endif
     template <class _Type, template <class...> class _Template>
     struct _Is_specialization
     {
@@ -903,11 +981,6 @@ namespace std
     struct _Is_specialization<_Template<_Types...>, _Template>
     {
         static constexpr bool value = true;
-    };
-#endif
-    template <class _Type, template <class...> class _Template>
-    struct _Is_specialization : bool_constant<_Is_specialization_v<_Type, _Template>>
-    {
     };
 
     _EXPORT_STD template <class _Ty>
@@ -919,7 +992,7 @@ namespace std
     _EXPORT_STD template <class _Ty>
     _NODISCARD _MSVC_INTRINSIC constexpr _Ty &&forward(remove_reference_t<_Ty> &&_Arg) noexcept
     {
-        static_assert(!is_lvalue_reference_v<_Ty>, "bad forward call");
+        static_assert(!is_lvalue_reference<_Ty>::value, "bad forward call");
         return static_cast<_Ty &&>(_Arg);
     }
     // 1571
@@ -935,7 +1008,7 @@ namespace std
 #else  // ^^^ _HAS_CXX17 / !_HAS_CXX17 vvv
     template <class _Ty, int _Enabled = 0>
 #endif // _HAS_CXX17
-    _CONSTEXPR20 void swap(_Ty &, _Ty &) noexcept(is_nothrow_move_constructible_v<_Ty> && is_nothrow_move_assignable_v<_Ty>);
+    _CONSTEXPR20 void swap(_Ty &, _Ty &) noexcept(is_nothrow_move_constructible<_Ty>::value && is_nothrow_move_assignable<_Ty>::value);
 
     template <class _Ty, size_t _Size, enable_if_t<_Is_swappable<_Ty>::value, int> = 0>
     _CONSTEXPR20 void swap(_Ty (&)[_Size], _Ty (&)[_Size]) noexcept(_Is_nothrow_swappable<_Ty>::value);
@@ -953,7 +1026,7 @@ namespace std
 
     template <class _Ty1, class _Ty2>
     struct _Is_swappable_with
-        : bool_constant<conjunction_v<_Swappable_with_helper<_Ty1, _Ty2>, _Swappable_with_helper<_Ty2, _Ty1>>>
+        : conjunction<_Swappable_with_helper<_Ty1, _Ty2>, _Swappable_with_helper<_Ty2, _Ty1>>
     {
         // Determine if expressions with type and value category _Ty1 and _Ty2 can be swapped (and vice versa)
     };

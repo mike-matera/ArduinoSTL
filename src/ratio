@@ -25,6 +25,7 @@ _NODISCARD constexpr intmax_t _Sign_of(const intmax_t _Val) noexcept
 }
 // 37
 // 47
+#if _HAS_CXX14
 _NODISCARD constexpr intmax_t _Gcd(intmax_t _Ax, intmax_t _Bx) noexcept
 {
 	// computes GCD of abs(_Ax) and abs(_Bx)
@@ -45,7 +46,23 @@ _NODISCARD constexpr intmax_t _Gcd(intmax_t _Ax, intmax_t _Bx) noexcept
 
 	return _Ax;
 }
-
+#else
+template <intmax_t _Ax, intmax_t _Bx>
+struct _Gcd_t : _Gcd_t<_Bx, _Ax % _Bx>
+{
+};
+template <intmax_t _Ax>
+struct _Gcd_t<_Ax, 0>
+{
+	static constexpr intmax_t value = _Ax;
+};
+template <>
+struct _Gcd_t<0, 0>
+{
+	static constexpr intmax_t value = 1;
+};
+#define _Gcd(_Ax, _Bx) _Gcd_t<_Ax, _Bx>::value
+#endif
 _EXPORT_STD template <intmax_t _Nx, intmax_t _Dx = 1>
 struct ratio
 { // holds the ratio of _Nx to _Dx
@@ -58,18 +75,29 @@ struct ratio
 
 	using type = ratio<num, den>;
 };
-
+#if _HAS_CXX14
 template <class _Ty>
 _INLINE_VAR constexpr bool _Is_ratio_v = false; // test for ratio type
 
 template <intmax_t _Rx1, intmax_t _Rx2>
 _INLINE_VAR constexpr bool _Is_ratio_v<ratio<_Rx1, _Rx2>> = true;
+#endif
+template <class _Ty>
+struct _Is_ratio
+{
+	static constexpr bool value = false; // test for ratio type
+};
+template <intmax_t _Rx1, intmax_t _Rx2>
+struct _Is_ratio<ratio<_Rx1, _Rx2>>
+{
+	static constexpr bool value = true;
+};
 // 83
 // 115
 template <class _Rx1, class _Rx2>
 struct _Ratio_multiply
 { // multiply two ratios
-	static_assert(_Is_ratio_v<_Rx1> && _Is_ratio_v<_Rx2>, "ratio_multiply<R1, R2> requires R1 and R2 to be ratio<>s.");
+	static_assert(_Is_ratio<_Rx1>::value && _Is_ratio<_Rx2>::value, "ratio_multiply<R1, R2> requires R1 and R2 to be ratio<>s.");
 
 	static constexpr intmax_t _Nx1 = _Rx1::num;
 	static constexpr intmax_t _Dx1 = _Rx1::den;
@@ -101,7 +129,7 @@ struct _Ratio_multiply_sfinae<_Rx1, _Rx2, _Sfinae,
 template <class _Rx1, class _Rx2>
 struct _Ratio_divide
 { // divide two ratios
-	static_assert(_Is_ratio_v<_Rx1> && _Is_ratio_v<_Rx2>, "ratio_divide<R1, R2> requires R1 and R2 to be ratio<>s.");
+	static_assert(_Is_ratio<_Rx1>::value && _Is_ratio<_Rx2>::value, "ratio_divide<R1, R2> requires R1 and R2 to be ratio<>s.");
 
 	static constexpr intmax_t _Nx2 = _Rx2::num;
 	static constexpr intmax_t _Dx2 = _Rx2::den;

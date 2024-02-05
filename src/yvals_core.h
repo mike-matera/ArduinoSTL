@@ -70,6 +70,13 @@
 #else // ^^^ constexpr in C++17 and later / inline (not constexpr) in C++14 vvv
 #define _CONSTEXPR17 inline
 #endif // ^^^ inline (not constexpr) in C++14 ^^^
+
+// Functions that became constexpr in C++14
+#if _HAS_CXX14
+#define _CONSTEXPR14(Alternatve) constexpr
+#else // ^^^ constexpr in C++14 and later / inline (not constexpr) in C++11 vvv
+#define _CONSTEXPR14(Alternative) Alternative
+#endif // ^^^ inline (not constexpr) in C++11 ^^^
 // 915
 //  1358
 #if _HAS_CXX20

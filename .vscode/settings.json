@@ -33,6 +33,7 @@
 		"ostream": "cpp",
 		"chrono": "cpp",
 		"ratio": "cpp",
-		"cstdint": "cpp"
+		"cstdint": "cpp",
+		"__config": "cpp"
 	}
 }

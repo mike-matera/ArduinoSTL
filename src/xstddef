@@ -8,6 +8,13 @@ namespace std
 	// false value attached to a dependent name (for static_assert)
 	_INLINE_VAR constexpr bool _Always_false = false;
 #endif
+	// 23
+	template <class>
+	// false value attached to a dependent name (for static_assert)
+	struct _Always_false_t
+	{
+		static constexpr bool value = false;
+	};
 	// 27
 	// 250
 	template <class _Ty>
