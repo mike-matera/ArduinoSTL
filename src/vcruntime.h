@@ -10,6 +10,14 @@
     #define _STL_LANG 0L
 #endif // ^^^ no C++ support ^^^
 
+#ifndef _HAS_CXX14
+    #if _STL_LANG > 201103L
+        #define _HAS_CXX14 1
+    #else
+        #define _HAS_CXX14 0
+    #endif
+#endif // _HAS_CXX14
+
 #ifndef _HAS_CXX17
     #if _STL_LANG > 201402L
         #define _HAS_CXX17 1

@@ -1,19 +1,19 @@
 /*	Copyright (C) 2005 Garrett A. Kajmowicz
 
-	This file is part of the uClibc++ Library.
-	This library is free software; you can redistribute it and/or
-	modify it under the terms of the GNU Lesser General Public
-	License as published by the Free Software Foundation; either
-	version 2.1 of the License, or (at your option) any later version.
+    This file is part of the uClibc++ Library.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
-	You should have received a copy of the GNU Lesser General Public
-	License along with this library; if not, write to the Free Software
-	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 #include <char_traits>
@@ -26,769 +26,946 @@
 
 #pragma GCC visibility push(default)
 
-namespace std{
+namespace std
+{
 
-	struct _UCXXEXPORT __true_type{};
-	struct _UCXXEXPORT __false_type{};
+    struct _UCXXEXPORT __true_type
+    {
+    };
+    struct _UCXXEXPORT __false_type
+    {
+    };
 
-	template <class I> class _UCXXEXPORT __is_integer{
-	public:
-		typedef __false_type value;
-	};
+    template <class I>
+    class _UCXXEXPORT __is_integer
+    {
+    public:
+        typedef __false_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <unsigned int>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<unsigned int>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <signed int>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<signed int>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <short unsigned int>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<short unsigned int>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <short signed int>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<short signed int>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <char>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<char>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <signed char>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<signed char>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <unsigned char>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<unsigned char>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <long unsigned int>{
-	public:
-		typedef __true_type value;
-	};
+    template <>
+    class _UCXXEXPORT __is_integer<long unsigned int>
+    {
+    public:
+        typedef __true_type value;
+    };
 
-	template <> class _UCXXEXPORT __is_integer <long signed int>{
-	public:
-		typedef __true_type value;
-	};
-	//44
-	template <bool _First_value, class _First, class... _Rest>
-struct _Conjunction { // handle false trait or last trait
-    using type = _First;
-};
+    template <>
+    class _UCXXEXPORT __is_integer<long signed int>
+    {
+    public:
+        typedef __true_type value;
+    };
+    // 44
+    template <bool _First_value, class _First, class... _Rest>
+    struct _Conjunction
+    { // handle false trait or last trait
+        using type = _First;
+    };
 
-template <class _True, class _Next, class... _Rest>
-struct _Conjunction<true, _True, _Next, _Rest...> { // the first trait is true, try the next one
-    using type = typename _Conjunction<_Next::value, _Next, _Rest...>::type;
-};
+    template <class _True, class _Next, class... _Rest>
+    struct _Conjunction<true, _True, _Next, _Rest...>
+    { // the first trait is true, try the next one
+        using type = typename _Conjunction<_Next::value, _Next, _Rest...>::type;
+    };
 
-template <class... _Traits>
-struct conjunction : true_type {}; // If _Traits is empty, true_type
+    template <class... _Traits>
+    struct conjunction : true_type
+    {
+    }; // If _Traits is empty, true_type
 
-template <class _First, class... _Rest>
-struct conjunction<_First, _Rest...> : _Conjunction<_First::value, _First, _Rest...>::type {
-    // the first false trait in _Traits, or the last trait if none are false
-};
+    template <class _First, class... _Rest>
+    struct conjunction<_First, _Rest...> : _Conjunction<_First::value, _First, _Rest...>::type
+    {
+        // the first false trait in _Traits, or the last trait if none are false
+    };
+#if _HAS_CXX14
+    template <class... _Traits>
+    _INLINE_VAR constexpr bool conjunction_v = conjunction<_Traits...>::value;
+#endif
+    template <class _Trait>
+    struct negation : bool_constant<!static_cast<bool>(_Trait::value)>
+    {
+    }; // The negated result of _Trait
+#if _HAS_CXX14
+    template <class _Trait>
+    _INLINE_VAR constexpr bool negation_v = negation<_Trait>::value;
 
-template <class... _Traits>
-_INLINE_VAR constexpr bool conjunction_v = conjunction<_Traits...>::value;
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_void_v = is_same_v<remove_cv_t<_Ty>, void>;
+#endif
+    template <class _Ty>
+    struct is_void : bool_constant<is_void_v<_Ty>>
+    {
+    };
 
-template <class _Trait>
-struct negation : bool_constant<!static_cast<bool>(_Trait::value)> {}; // The negated result of _Trait
+    template <class... _Types>
+    using void_t = void;
+    // 80
+    // 105
+    template <class _Ty, class = void>
+    struct _Add_reference
+    { // add reference (non-referenceable type)
+        using _Lvalue = _Ty;
+        using _Rvalue = _Ty;
+    };
 
-template <class _Trait>
-_INLINE_VAR constexpr bool negation_v = negation<_Trait>::value;
+    template <class _Ty>
+    struct _Add_reference<_Ty, void_t<_Ty &>>
+    { // (referenceable type)
+        using _Lvalue = _Ty &;
+        using _Rvalue = _Ty &&;
+    };
 
-template <class _Ty>
-_INLINE_VAR constexpr bool is_void_v = is_same_v<remove_cv_t<_Ty>, void>;
+    template <class _Ty>
+    struct add_lvalue_reference
+    {
+        using type = typename _Add_reference<_Ty>::_Lvalue;
+    };
 
-template <class _Ty>
-struct is_void : bool_constant<is_void_v<_Ty>> {};
+    template <class _Ty>
+    using add_lvalue_reference_t = typename _Add_reference<_Ty>::_Lvalue;
 
-	template <class... _Types>
-using void_t = void;
-//80
-//105
-template <class _Ty, class = void>
-struct _Add_reference { // add reference (non-referenceable type)
-    using _Lvalue = _Ty;
-    using _Rvalue = _Ty;
-};
+    template <class _Ty>
+    struct add_rvalue_reference
+    {
+        using type = typename _Add_reference<_Ty>::_Rvalue;
+    };
 
-template <class _Ty>
-struct _Add_reference<_Ty, void_t<_Ty&>> { // (referenceable type)
-    using _Lvalue = _Ty&;
-    using _Rvalue = _Ty&&;
-};
+    template <class _Ty>
+    using add_rvalue_reference_t = typename _Add_reference<_Ty>::_Rvalue;
 
-template <class _Ty>
-struct add_lvalue_reference {
-    using type = typename _Add_reference<_Ty>::_Lvalue;
-};
+    template <class _Ty>
+    add_rvalue_reference_t<_Ty> declval() noexcept
+    {
+        static_assert(_Always_false<_Ty>, "Calling declval is ill-formed, see N4892 [declval]/2.");
+    }
 
-template <class _Ty>
-using add_lvalue_reference_t = typename _Add_reference<_Ty>::_Lvalue;
+    template <class _Ty>
+    struct remove_extent
+    { // remove array extent
+        using type = _Ty;
+    };
 
-template <class _Ty>
-struct add_rvalue_reference {
-    using type = typename _Add_reference<_Ty>::_Rvalue;
-};
+    template <class _Ty, size_t _Ix>
+    struct remove_extent<_Ty[_Ix]>
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty>
-using add_rvalue_reference_t = typename _Add_reference<_Ty>::_Rvalue;
+    template <class _Ty>
+    struct remove_extent<_Ty[]>
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty>
-add_rvalue_reference_t<_Ty> declval() noexcept {
-    static_assert(_Always_false<_Ty>, "Calling declval is ill-formed, see N4892 [declval]/2.");
-}
+    template <class _Ty>
+    using remove_extent_t = typename remove_extent<_Ty>::type;
+    // 156
+    // 174
+    template <class _Ty>
+    struct remove_pointer
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty>
-struct remove_extent { // remove array extent
-    using type = _Ty;
-};
+    template <class _Ty>
+    struct remove_pointer<_Ty *>
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty, size_t _Ix>
-struct remove_extent<_Ty[_Ix]> {
-    using type = _Ty;
-};
+    template <class _Ty>
+    struct remove_pointer<_Ty *const>
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty>
-struct remove_extent<_Ty[]> {
-    using type = _Ty;
-};
+    template <class _Ty>
+    struct remove_pointer<_Ty *volatile>
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty>
-using remove_extent_t = typename remove_extent<_Ty>::type;
-//156
-//174
-template <class _Ty>
-struct remove_pointer {
-    using type = _Ty;
-};
+    template <class _Ty>
+    struct remove_pointer<_Ty *const volatile>
+    {
+        using type = _Ty;
+    };
 
-template <class _Ty>
-struct remove_pointer<_Ty*> {
-    using type = _Ty;
-};
+    template <class _Ty>
+    using remove_pointer_t = typename remove_pointer<_Ty>::type;
 
-template <class _Ty>
-struct remove_pointer<_Ty* const> {
-    using type = _Ty;
-};
+    template <class _Ty, class = void>
+    struct _Add_pointer
+    { // add pointer (pointer type cannot be formed)
+        using type = _Ty;
+    };
 
-template <class _Ty>
-struct remove_pointer<_Ty* volatile> {
-    using type = _Ty;
-};
+    template <class _Ty>
+    struct _Add_pointer<_Ty, void_t<remove_reference_t<_Ty> *>>
+    { // (pointer type can be formed)
+        using type = remove_reference_t<_Ty> *;
+    };
 
-template <class _Ty>
-struct remove_pointer<_Ty* const volatile> {
-    using type = _Ty;
-};
+    template <class _Ty>
+    struct add_pointer
+    {
+        using type = typename _Add_pointer<_Ty>::type;
+    };
 
-template <class _Ty>
-using remove_pointer_t = typename remove_pointer<_Ty>::type;
+    template <class _Ty>
+    using add_pointer_t = typename _Add_pointer<_Ty>::type;
+#if _HAS_CXX14
+    template <class>
+    _INLINE_VAR constexpr bool is_array_v = false; // determine whether type argument is an array
 
-template <class _Ty, class = void>
-struct _Add_pointer { // add pointer (pointer type cannot be formed)
-    using type = _Ty;
-};
+    template <class _Ty, size_t _Nx>
+    _INLINE_VAR constexpr bool is_array_v<_Ty[_Nx]> = true;
 
-template <class _Ty>
-struct _Add_pointer<_Ty, void_t<remove_reference_t<_Ty>*>> { // (pointer type can be formed)
-    using type = remove_reference_t<_Ty>*;
-};
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_array_v<_Ty[]> = true;
+#endif
+    template <class _Ty>
+    struct is_array : bool_constant<is_array_v<_Ty>>
+    {
+    };
+// 232
+// 252
+#if _HAS_CXX14
+    template <class>
+    _INLINE_VAR constexpr bool is_lvalue_reference_v = false; // determine whether type argument is an lvalue reference
 
-template <class _Ty>
-struct add_pointer {
-    using type = typename _Add_pointer<_Ty>::type;
-};
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_lvalue_reference_v<_Ty &> = true;
+#endif
+    template <class _Ty>
+    struct is_lvalue_reference : bool_constant<is_lvalue_reference_v<_Ty>>
+    {
+    };
+// 261
+// 270
+#if _HAS_CXX14
+    template <class>
+    _INLINE_VAR constexpr bool is_reference_v = false; // determine whether type argument is a reference
 
-template <class _Ty>
-using add_pointer_t = typename _Add_pointer<_Ty>::type;
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_reference_v<_Ty &> = true;
 
-template <class>
-_INLINE_VAR constexpr bool is_array_v = false; // determine whether type argument is an array
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_reference_v<_Ty &&> = true;
+#endif
+    template <class _Ty>
+    struct is_reference : bool_constant<is_reference_v<_Ty>>
+    {
+    };
+#if _HAS_CXX14
+    template <class>
+    _INLINE_VAR constexpr bool is_pointer_v = false; // determine whether _Ty is a pointer
 
-template <class _Ty, size_t _Nx>
-_INLINE_VAR constexpr bool is_array_v<_Ty[_Nx]> = true;
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_pointer_v<_Ty *> = true;
 
-template <class _Ty>
-_INLINE_VAR constexpr bool is_array_v<_Ty[]> = true;
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_pointer_v<_Ty *const> = true;
 
-template <class _Ty>
-struct is_array : bool_constant<is_array_v<_Ty>> {};
-//232
-//252
-template <class>
-_INLINE_VAR constexpr bool is_lvalue_reference_v = false; // determine whether type argument is an lvalue reference
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_pointer_v<_Ty *volatile> = true;
 
-template <class _Ty>
-_INLINE_VAR constexpr bool is_lvalue_reference_v<_Ty&> = true;
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_pointer_v<_Ty *const volatile> = true;
+#endif
+    template <class _Ty>
+    struct is_pointer : bool_constant<is_pointer_v<_Ty>>
+    {
+    };
+    // 300
+    // 359
+    template <class _Ty>
+    struct is_enum : bool_constant<__is_enum(_Ty)>
+    {
+    }; // determine whether _Ty is an enumerated type
+#if _HAS_CXX14
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_enum_v = __is_enum(_Ty);
+    // 365
+    // 435
+    template <class>
+    _INLINE_VAR constexpr bool is_const_v = false; // determine whether type argument is const qualified
 
-template <class _Ty>
-struct is_lvalue_reference : bool_constant<is_lvalue_reference_v<_Ty>> {};
-//261
-//270
-template <class>
-_INLINE_VAR constexpr bool is_reference_v = false; // determine whether type argument is a reference
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_reference_v<_Ty&> = true;
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_reference_v<_Ty&&> = true;
-
-template <class _Ty>
-struct is_reference : bool_constant<is_reference_v<_Ty>> {};
-
-template <class>
-_INLINE_VAR constexpr bool is_pointer_v = false; // determine whether _Ty is a pointer
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_pointer_v<_Ty*> = true;
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_pointer_v<_Ty* const> = true;
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_pointer_v<_Ty* volatile> = true;
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_pointer_v<_Ty* const volatile> = true;
-
-template <class _Ty>
-struct is_pointer : bool_constant<is_pointer_v<_Ty>> {};
-//300
-//359
-template <class _Ty>
-struct is_enum : bool_constant<__is_enum(_Ty)> {}; // determine whether _Ty is an enumerated type
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_enum_v = __is_enum(_Ty);
-//365
-//435
-template <class>
-_INLINE_VAR constexpr bool is_const_v = false; // determine whether type argument is const qualified
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_const_v<const _Ty> = true;
-
-template <class _Ty>
-struct is_const : bool_constant<is_const_v<_Ty>> {};
-//444
-//453
-template <class _Ty>
-_INLINE_VAR constexpr bool is_function_v = // only function types and reference types can't be const qualified
-    !is_const_v<const _Ty> && !is_reference_v<_Ty>;
-
-template <class _Ty>
-struct is_function : bool_constant<is_function_v<_Ty>> {};
-//460
-//VC not well implemented, switch to LLVM, which relies on is_function
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_const_v<const _Ty> = true;
+#endif
+    template <class _Ty>
+    struct is_const : bool_constant<is_const_v<_Ty>>
+    {
+    };
+// 444
+// 453
+#if _HAS_CXX14
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_function_v = // only function types and reference types can't be const qualified
+        !is_const_v<const _Ty> && !is_reference_v<_Ty>;
+#endif
+    template <class _Ty>
+    struct is_function : bool_constant<is_function_v<_Ty>>
+    {
+    };
+// 460
+// VC not well implemented, switch to LLVM, which relies on is_function
 #include <__type_traits/is_convertible.h>
-//513
-template <class _Ty>
-struct is_empty : bool_constant<__is_empty(_Ty)> {}; // determine whether _Ty is an empty class
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_empty_v = __is_empty(_Ty);
-//519
-//531
-template <class _Ty>
-struct is_final : bool_constant<__is_final(_Ty)> {}; // determine whether _Ty is a final class
-
-template <class _Ty>
-_INLINE_VAR constexpr bool is_final_v = __is_final(_Ty);
-//537
-//617
-//VC not well implemented, switch to boost implementation
+    // 513
+    template <class _Ty>
+    struct is_empty : bool_constant<__is_empty(_Ty)>
+    {
+    }; // determine whether _Ty is an empty class
+#if _HAS_CXX14
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_empty_v = __is_empty(_Ty);
+#endif
+    // 519
+    // 531
+    template <class _Ty>
+    struct is_final : bool_constant<__is_final(_Ty)>
+    {
+    }; // determine whether _Ty is a final class
+#if _HAS_CXX14
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_final_v = __is_final(_Ty);
+#endif
+// 537
+// 617
+// VC not well implemented, switch to boost implementation
 #include <__type_traits/is_default_constructible.hpp>
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on boost is_default_constructible
-template <class _Ty>
-_INLINE_VAR constexpr bool is_default_constructible_v = is_default_constructible<_Ty>::value;
-
-//VC not well implemented, switch to boost implementation based on boost is_default_constructible
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_default_constructible
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_default_constructible_v = is_default_constructible<_Ty>::value;
+#endif
+// VC not well implemented, switch to boost implementation based on boost is_default_constructible
 #include <__type_traits/is_constructible.hpp>
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
-template <class _Ty, class... _Args>
-_INLINE_VAR constexpr bool is_constructible_v = is_constructible<_Ty,_Args...>::value;
-//625
-//637
-//VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
-template <class _Ty>
-struct is_move_constructible : is_constructible<_Ty,_Ty> {
-    // determine whether _Ty can be direct-initialized from an rvalue _Ty
-};
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on EbolaChan's is_constructible_v
-template <class _Ty>
-_INLINE_VAR constexpr bool is_move_constructible_v = is_constructible_v<_Ty,_Ty>;
-
-//VC not well implemented, switch to boost implementation
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
+    template <class _Ty, class... _Args>
+    _INLINE_VAR constexpr bool is_constructible_v = is_constructible<_Ty, _Args...>::value;
+#endif
+    // 625
+    // 637
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
+    template <class _Ty>
+    struct is_move_constructible : is_constructible<_Ty, _Ty>
+    {
+        // determine whether _Ty can be direct-initialized from an rvalue _Ty
+    };
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on EbolaChan's is_constructible_v
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_move_constructible_v = is_constructible_v<_Ty, _Ty>;
+#endif
+// VC not well implemented, switch to boost implementation
 #include <__type_traits/is_assignable.hpp>
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on boost is_assignable
-template <class _To, class _From>
-_INLINE_VAR constexpr bool is_assignable_v = is_assignable<_To,_From>::value;
-//651
-//686
-//VC not well implemented, switch to EbolaChan's personal implementation based on boost is_assignable
-template <class _Ty>
-struct is_move_assignable : is_assignable<add_lvalue_reference_t<_Ty>, _Ty> {
-    // determine whether an rvalue _Ty can be assigned to an lvalue _Ty
-};
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on EbolaChan's is_assignable_v
-template <class _Ty>
-_INLINE_VAR constexpr bool is_move_assignable_v = is_assignable_v<add_lvalue_reference_t<_Ty>, _Ty>;
-//694
-//786
-//VC not well implemented, switch to LLVM implementation
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_assignable
+    template <class _To, class _From>
+    _INLINE_VAR constexpr bool is_assignable_v = is_assignable<_To, _From>::value;
+#endif
+    // 651
+    // 686
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_assignable
+    template <class _Ty>
+    struct is_move_assignable : is_assignable<add_lvalue_reference_t<_Ty>, _Ty>
+    {
+        // determine whether an rvalue _Ty can be assigned to an lvalue _Ty
+    };
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on EbolaChan's is_assignable_v
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_move_assignable_v = is_assignable_v<add_lvalue_reference_t<_Ty>, _Ty>;
+#endif
+// 694
+// 786
+// VC not well implemented, switch to LLVM implementation
 #include <__type_traits/is_nothrow_constructible.h>
-//794
-//805
-//VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible
-template <class _Ty>
-struct is_nothrow_default_constructible : is_nothrow_constructible<_Ty> {
-    // determine whether value-initialization of _Ty is both valid and not potentially-throwing
-};
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible_v
-template <class _Ty>
-_INLINE_VAR constexpr bool is_nothrow_default_constructible_v = is_nothrow_constructible_v<_Ty>;
-
-//VC not well implemented, switch to LLVM implementation
+    // 794
+    // 805
+    // VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible
+    template <class _Ty>
+    struct is_nothrow_default_constructible : is_nothrow_constructible<_Ty>
+    {
+        // determine whether value-initialization of _Ty is both valid and not potentially-throwing
+    };
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible_v
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_nothrow_default_constructible_v = is_nothrow_constructible_v<_Ty>;
+#endif
+// VC not well implemented, switch to LLVM implementation
 #include <__type_traits/is_nothrow_move_constructible.h>
 
-//Can't be implemented without compiler builtins. Fallback to is_assginable as an approximate.
-template <class _To, class _From>
-struct is_nothrow_assignable : is_assignable<_To,_From> {
-    // determine whether assignment of _From to _To is both valid and not potentially-throwing
-};
-
-//Can't be implemented without compiler builtins. Fallback to is_assginable_v as an approximate.
-template <class _To, class _From>
-_INLINE_VAR constexpr bool is_nothrow_assignable_v = is_assignable_v<_To, _From>;
-//829
-//839
-//VC not well implemented, switch to boost implementation
+    // Can't be implemented without compiler builtins. Fallback to is_assginable as an approximate.
+    template <class _To, class _From>
+    struct is_nothrow_assignable : is_assignable<_To, _From>
+    {
+        // determine whether assignment of _From to _To is both valid and not potentially-throwing
+    };
+#if _HAS_CXX14
+    // Can't be implemented without compiler builtins. Fallback to is_assginable_v as an approximate.
+    template <class _To, class _From>
+    _INLINE_VAR constexpr bool is_nothrow_assignable_v = is_assignable_v<_To, _From>;
+#endif
+// 829
+// 839
+// VC not well implemented, switch to boost implementation
 #include <__type_traits/is_nothrow_move_assignable.hpp>
-
-//VC not well implemented, switch to EbolaChan's personal implementation based on boost is_nothrow_move_assignable
-template <class _Ty>
-_INLINE_VAR constexpr bool is_nothrow_move_assignable_v = is_nothrow_move_assignable<_Ty>::value;
-//847
-//883
-template <class _Ty>
-_INLINE_VAR constexpr bool _Is_nonbool_integral = is_integral_v<_Ty> && !is_same_v<remove_cv_t<_Ty>, bool>;
-
-template <bool>
-struct _Select { // Select between aliases that extract either their first or second parameter
-    template <class _Ty1, class>
-    using _Apply = _Ty1;
-};
-
-template <>
-struct _Select<false> {
-    template <class, class _Ty2>
-    using _Apply = _Ty2;
-};
-//898
-//942
-template <size_t>
-struct _Make_unsigned2; // Choose make_unsigned strategy by type size
-
-template <>
-struct _Make_unsigned2<1> {
-    template <class>
-    using _Apply = unsigned char;
-};
-
-template <>
-struct _Make_unsigned2<2> {
-    template <class>
-    using _Apply = unsigned short;
-};
-
-template <>
-struct _Make_unsigned2<4> {
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_nothrow_move_assignable
     template <class _Ty>
-    using _Apply = // assumes LLP64
-        typename _Select<is_same_v<_Ty, long> || is_same_v<_Ty, unsigned long>>::template _Apply<unsigned long,
-            unsigned int>;
-};
+    _INLINE_VAR constexpr bool is_nothrow_move_assignable_v = is_nothrow_move_assignable<_Ty>::value;
+#endif
+// 847
+#if _HAS_CXX14
+    // 883
+    template <class _Ty>
+    _INLINE_VAR constexpr bool _Is_nonbool_integral = is_integral_v<_Ty> && !is_same_v<remove_cv_t<_Ty>, bool>;
+#endif
+    template <bool>
+    struct _Select
+    { // Select between aliases that extract either their first or second parameter
+        template <class _Ty1, class>
+        using _Apply = _Ty1;
+    };
 
-template <>
-struct _Make_unsigned2<8> {
-    template <class>
-    using _Apply = unsigned long long;
-};
+    template <>
+    struct _Select<false>
+    {
+        template <class, class _Ty2>
+        using _Apply = _Ty2;
+    };
+    // 898
+    // 942
+    template <size_t>
+    struct _Make_unsigned2; // Choose make_unsigned strategy by type size
 
-template <class _Ty>
-using _Make_unsigned1 = // unsigned partner to cv-unqualified _Ty
-    typename _Make_unsigned2<sizeof(_Ty)>::template _Apply<_Ty>;
+    template <>
+    struct _Make_unsigned2<1>
+    {
+        template <class>
+        using _Apply = unsigned char;
+    };
 
-template <class _Ty>
-struct make_unsigned { // unsigned partner to _Ty
-    static_assert(_Is_nonbool_integral<_Ty> || is_enum_v<_Ty>,
-        "make_unsigned<T> requires that T shall be a (possibly cv-qualified) "
-        "integral type or enumeration but not a bool type.");
+    template <>
+    struct _Make_unsigned2<2>
+    {
+        template <class>
+        using _Apply = unsigned short;
+    };
 
-    using type = typename remove_cv<_Ty>::template _Apply<_Make_unsigned1>;
-};
+    template <>
+    struct _Make_unsigned2<4>
+    {
+        template <class _Ty>
+        using _Apply = // assumes LLP64
+            typename _Select<is_same_v<_Ty, long> || is_same_v<_Ty, unsigned long>>::template _Apply<unsigned long,
+                                                                                                     unsigned int>;
+    };
 
-template <class _Ty>
-using make_unsigned_t = typename make_unsigned<_Ty>::type;
+    template <>
+    struct _Make_unsigned2<8>
+    {
+        template <class>
+        using _Apply = unsigned long long;
+    };
 
-template <class _Rep>
-constexpr make_unsigned_t<_Rep> _Unsigned_value(_Rep _Val) { // makes _Val unsigned
-    return static_cast<make_unsigned_t<_Rep>>(_Val);
-}
-//992
-//1130
-template <class _Ty, unsigned int _Ix = 0>
-_INLINE_VAR constexpr size_t extent_v = 0; // determine extent of dimension _Ix of array _Ty
+    template <class _Ty>
+    using _Make_unsigned1 = // unsigned partner to cv-unqualified _Ty
+        typename _Make_unsigned2<sizeof(_Ty)>::template _Apply<_Ty>;
 
-template <class _Ty, size_t _Nx>
-_INLINE_VAR constexpr size_t extent_v<_Ty[_Nx], 0> = _Nx;
+    template <class _Ty>
+    struct make_unsigned
+    { // unsigned partner to _Ty
+        static_assert(_Is_nonbool_integral<_Ty> || is_enum_v<_Ty>,
+                      "make_unsigned<T> requires that T shall be a (possibly cv-qualified) "
+                      "integral type or enumeration but not a bool type.");
 
-template <class _Ty, unsigned int _Ix, size_t _Nx>
-_INLINE_VAR constexpr size_t extent_v<_Ty[_Nx], _Ix> = extent_v<_Ty, _Ix - 1>;
+        using type = typename remove_cv<_Ty>::template _Apply<_Make_unsigned1>;
+    };
 
-template <class _Ty, unsigned int _Ix>
-_INLINE_VAR constexpr size_t extent_v<_Ty[], _Ix> = extent_v<_Ty, _Ix - 1>;
+    template <class _Ty>
+    using make_unsigned_t = typename make_unsigned<_Ty>::type;
 
-template <class _Ty, unsigned int _Ix = 0>
-struct extent : integral_constant<size_t, extent_v<_Ty, _Ix>> {};
+    template <class _Rep>
+    constexpr make_unsigned_t<_Rep> _Unsigned_value(_Rep _Val)
+    { // makes _Val unsigned
+        return static_cast<make_unsigned_t<_Rep>>(_Val);
+    }
+// 992
+// 1130
+#if _HAS_CXX14
+    template <class _Ty, unsigned int _Ix = 0>
+    _INLINE_VAR constexpr size_t extent_v = 0; // determine extent of dimension _Ix of array _Ty
 
-template <class _Base, class _Derived>
-struct is_base_of : bool_constant<__is_base_of(_Base, _Derived)> {
-    // determine whether _Base is a base of or the same as _Derived
-};
+    template <class _Ty, size_t _Nx>
+    _INLINE_VAR constexpr size_t extent_v<_Ty[_Nx], 0> = _Nx;
 
-template <class _Base, class _Derived>
-_INLINE_VAR constexpr bool is_base_of_v = __is_base_of(_Base, _Derived);
+    template <class _Ty, unsigned int _Ix, size_t _Nx>
+    _INLINE_VAR constexpr size_t extent_v<_Ty[_Nx], _Ix> = extent_v<_Ty, _Ix - 1>;
 
-template <class _Ty>
-struct decay { // determines decayed version of _Ty
-    using _Ty1 = remove_reference_t<_Ty>;
-    using _Ty2 = typename _Select<is_function_v<_Ty1>>::template _Apply<add_pointer<_Ty1>, remove_cv<_Ty1>>;
-    using type = typename _Select<is_array_v<_Ty1>>::template _Apply<add_pointer<remove_extent_t<_Ty1>>, _Ty2>::type;
-};
+    template <class _Ty, unsigned int _Ix>
+    _INLINE_VAR constexpr size_t extent_v<_Ty[], _Ix> = extent_v<_Ty, _Ix - 1>;
+#endif
+    template <class _Ty, unsigned int _Ix = 0>
+    struct extent : integral_constant<size_t, extent_v<_Ty, _Ix>>
+    {
+    };
 
-template <class _Ty>
-using decay_t = typename decay<_Ty>::type;
+    template <class _Base, class _Derived>
+    struct is_base_of : bool_constant<__is_base_of(_Base, _Derived)>
+    {
+        // determine whether _Base is a base of or the same as _Derived
+    };
+#if _HAS_CXX14
+    template <class _Base, class _Derived>
+    _INLINE_VAR constexpr bool is_base_of_v = __is_base_of(_Base, _Derived);
+#endif
+    template <class _Ty>
+    struct decay
+    { // determines decayed version of _Ty
+        using _Ty1 = remove_reference_t<_Ty>;
+        using _Ty2 = typename _Select<is_function_v<_Ty1>>::template _Apply<add_pointer<_Ty1>, remove_cv<_Ty1>>;
+        using type = typename _Select<is_array_v<_Ty1>>::template _Apply<add_pointer<remove_extent_t<_Ty1>>, _Ty2>::type;
+    };
 
-template <class _Ty1, class _Ty2>
-using _Conditional_type = decltype(false ? _STD declval<_Ty1>() : _STD declval<_Ty2>());
+    template <class _Ty>
+    using decay_t = typename decay<_Ty>::type;
+
+    template <class _Ty1, class _Ty2>
+    using _Conditional_type = decltype(false ? _STD declval<_Ty1>() : _STD declval<_Ty2>());
 
 #if _HAS_CXX20
-template <class _Ty1, class _Ty2, class = void>
-struct _Const_lvalue_cond_oper {};
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Const_lvalue_cond_oper
+    {
+    };
 
-// N4810 [meta.trans.other]/3.3.4 (per the proposed resolution of LWG-3205): "Otherwise, if remove_cvref_t</**/> denotes
-// a type..."
-template <class _Ty1, class _Ty2>
-struct _Const_lvalue_cond_oper<_Ty1, _Ty2, void_t<_Conditional_type<const _Ty1&, const _Ty2&>>> {
-    using type = remove_cvref_t<_Conditional_type<const _Ty1&, const _Ty2&>>;
-};
+    // N4810 [meta.trans.other]/3.3.4 (per the proposed resolution of LWG-3205): "Otherwise, if remove_cvref_t</**/> denotes
+    // a type..."
+    template <class _Ty1, class _Ty2>
+    struct _Const_lvalue_cond_oper<_Ty1, _Ty2, void_t<_Conditional_type<const _Ty1 &, const _Ty2 &>>>
+    {
+        using type = remove_cvref_t<_Conditional_type<const _Ty1 &, const _Ty2 &>>;
+    };
 
-template <class _Ty1, class _Ty2, class = void>
-struct _Decayed_cond_oper : _Const_lvalue_cond_oper<_Ty1, _Ty2> {};
-#else // ^^^ >= C++20 / <= C++17 vvv
-template <class _Ty1, class _Ty2, class = void>
-struct _Decayed_cond_oper {};
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Decayed_cond_oper : _Const_lvalue_cond_oper<_Ty1, _Ty2>
+    {
+    };
+#else  // ^^^ >= C++20 / <= C++17 vvv
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Decayed_cond_oper
+    {
+    };
 #endif // _HAS_CXX20
 
-template <class _Ty1, class _Ty2>
-struct _Decayed_cond_oper<_Ty1, _Ty2, void_t<_Conditional_type<_Ty1, _Ty2>>> {
-    using type = decay_t<_Conditional_type<_Ty1, _Ty2>>;
-};
+    template <class _Ty1, class _Ty2>
+    struct _Decayed_cond_oper<_Ty1, _Ty2, void_t<_Conditional_type<_Ty1, _Ty2>>>
+    {
+        using type = decay_t<_Conditional_type<_Ty1, _Ty2>>;
+    };
 
-template <class... _Ty>
-struct common_type;
+    template <class... _Ty>
+    struct common_type;
 
-template <class... _Ty>
-using common_type_t = typename common_type<_Ty...>::type;
+    template <class... _Ty>
+    using common_type_t = typename common_type<_Ty...>::type;
 
-template <>
-struct common_type<> {};
+    template <>
+    struct common_type<>
+    {
+    };
 
-template <class _Ty1>
-struct common_type<_Ty1> : common_type<_Ty1, _Ty1> {};
+    template <class _Ty1>
+    struct common_type<_Ty1> : common_type<_Ty1, _Ty1>
+    {
+    };
 
-template <class _Ty1, class _Ty2, class _Decayed1 = decay_t<_Ty1>, class _Decayed2 = decay_t<_Ty2>>
-struct _Common_type2 : common_type<_Decayed1, _Decayed2> {};
+    template <class _Ty1, class _Ty2, class _Decayed1 = decay_t<_Ty1>, class _Decayed2 = decay_t<_Ty2>>
+    struct _Common_type2 : common_type<_Decayed1, _Decayed2>
+    {
+    };
 
-template <class _Ty1, class _Ty2>
-struct _Common_type2<_Ty1, _Ty2, _Ty1, _Ty2> : _Decayed_cond_oper<_Ty1, _Ty2> {};
+    template <class _Ty1, class _Ty2>
+    struct _Common_type2<_Ty1, _Ty2, _Ty1, _Ty2> : _Decayed_cond_oper<_Ty1, _Ty2>
+    {
+    };
 
-template <class _Ty1, class _Ty2>
-struct common_type<_Ty1, _Ty2> : _Common_type2<_Ty1, _Ty2> {};
+    template <class _Ty1, class _Ty2>
+    struct common_type<_Ty1, _Ty2> : _Common_type2<_Ty1, _Ty2>
+    {
+    };
 
-template <class _Void, class _Ty1, class _Ty2, class... _Rest>
-struct _Common_type3 {};
+    template <class _Void, class _Ty1, class _Ty2, class... _Rest>
+    struct _Common_type3
+    {
+    };
 
-template <class _Ty1, class _Ty2, class... _Rest>
-struct _Common_type3<void_t<common_type_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Rest...>
-    : common_type<common_type_t<_Ty1, _Ty2>, _Rest...> {};
+    template <class _Ty1, class _Ty2, class... _Rest>
+    struct _Common_type3<void_t<common_type_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Rest...>
+        : common_type<common_type_t<_Ty1, _Ty2>, _Rest...>
+    {
+    };
 
-template <class _Ty1, class _Ty2, class... _Rest>
-struct common_type<_Ty1, _Ty2, _Rest...> : _Common_type3<void, _Ty1, _Ty2, _Rest...> {};
-//1366
-//1369
+    template <class _Ty1, class _Ty2, class... _Rest>
+    struct common_type<_Ty1, _Ty2, _Rest...> : _Common_type3<void, _Ty1, _Ty2, _Rest...>
+    {
+    };
+// 1366
+// 1369
 #if _HAS_CXX20
-_EXPORT_STD template <class, class, template <class> class, template <class> class>
-struct basic_common_reference {};
+    _EXPORT_STD template <class, class, template <class> class, template <class> class>
+    struct basic_common_reference
+    {
+    };
 
-template <class _From>
-struct _Copy_cv_impl {
-    template <class _To>
-    using _Apply = _To;
-};
-template <class _From>
-struct _Copy_cv_impl<const _From> {
-    template <class _To>
-    using _Apply = const _To;
-};
-template <class _From>
-struct _Copy_cv_impl<volatile _From> {
-    template <class _To>
-    using _Apply = volatile _To;
-};
-template <class _From>
-struct _Copy_cv_impl<const volatile _From> {
-    template <class _To>
-    using _Apply = const volatile _To;
-};
-template <class _From, class _To>
-using _Copy_cv = // N4950 [meta.trans.other]/2.3
-    _Copy_cv_impl<_From>::template _Apply<_To>;
+    template <class _From>
+    struct _Copy_cv_impl
+    {
+        template <class _To>
+        using _Apply = _To;
+    };
+    template <class _From>
+    struct _Copy_cv_impl<const _From>
+    {
+        template <class _To>
+        using _Apply = const _To;
+    };
+    template <class _From>
+    struct _Copy_cv_impl<volatile _From>
+    {
+        template <class _To>
+        using _Apply = volatile _To;
+    };
+    template <class _From>
+    struct _Copy_cv_impl<const volatile _From>
+    {
+        template <class _To>
+        using _Apply = const volatile _To;
+    };
+    template <class _From, class _To>
+    using _Copy_cv = // N4950 [meta.trans.other]/2.3
+        _Copy_cv_impl<_From>::template _Apply<_To>;
 
-template <class _Ty1>
-struct _Add_qualifiers { // _Add_qualifiers<A>::template _Apply is XREF(A) from N4950 [meta.trans.other]/2.2
-    template <class _Ty2>
-    using _Apply = _Copy_cv<_Ty1, _Ty2>;
-};
-template <class _Ty1>
-struct _Add_qualifiers<_Ty1&> {
-    template <class _Ty2>
-    using _Apply = add_lvalue_reference_t<_Copy_cv<_Ty1, _Ty2>>;
-};
-template <class _Ty1>
-struct _Add_qualifiers<_Ty1&&> {
-    template <class _Ty2>
-    using _Apply = add_rvalue_reference_t<_Copy_cv<_Ty1, _Ty2>>;
-};
+    template <class _Ty1>
+    struct _Add_qualifiers
+    { // _Add_qualifiers<A>::template _Apply is XREF(A) from N4950 [meta.trans.other]/2.2
+        template <class _Ty2>
+        using _Apply = _Copy_cv<_Ty1, _Ty2>;
+    };
+    template <class _Ty1>
+    struct _Add_qualifiers<_Ty1 &>
+    {
+        template <class _Ty2>
+        using _Apply = add_lvalue_reference_t<_Copy_cv<_Ty1, _Ty2>>;
+    };
+    template <class _Ty1>
+    struct _Add_qualifiers<_Ty1 &&>
+    {
+        template <class _Ty2>
+        using _Apply = add_rvalue_reference_t<_Copy_cv<_Ty1, _Ty2>>;
+    };
 
 #if !defined(__EDG__) && !defined(__clang__) // TRANSITION, DevCom-10095944
-template <class _Ty1, class _Ty2>
-using _Cond_res_if_right = // N4950 [meta.trans.other]/2.4
-    decltype(false ? _Returns_exactly<_Ty1>() : _Returns_exactly<_Ty2>());
+    template <class _Ty1, class _Ty2>
+    using _Cond_res_if_right = // N4950 [meta.trans.other]/2.4
+        decltype(false ? _Returns_exactly<_Ty1>() : _Returns_exactly<_Ty2>());
 
-template <class _Ty>
-using _Is_scalar_or_array = disjunction<is_scalar<_Ty>, is_array<_Ty>>;
+    template <class _Ty>
+    using _Is_scalar_or_array = disjunction<is_scalar<_Ty>, is_array<_Ty>>;
 
-template <class _Ty1, class _Ty2, class = void>
-struct _Cond_res_workaround {};
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Cond_res_workaround
+    {
+    };
 
-template <class _Ty1, class _Ty2>
-struct _Cond_res_workaround<_Ty1, _Ty2, void_t<_Cond_res_if_right<_Ty1, _Ty2>>> {
-    using _Uty = remove_cvref_t<_Ty1>;
-    using type = conditional_t<conjunction_v<is_same<_Uty, remove_cvref_t<_Ty2>>, _Is_scalar_or_array<_Uty>,
-                                   disjunction<conjunction<is_lvalue_reference<_Ty1>, is_rvalue_reference<_Ty2>>,
-                                       conjunction<is_rvalue_reference<_Ty1>, is_lvalue_reference<_Ty2>>>>,
-        decay_t<_Copy_cv<remove_reference_t<_Ty1>, remove_reference_t<_Ty2>>>, _Cond_res_if_right<_Ty1, _Ty2>>;
-};
+    template <class _Ty1, class _Ty2>
+    struct _Cond_res_workaround<_Ty1, _Ty2, void_t<_Cond_res_if_right<_Ty1, _Ty2>>>
+    {
+        using _Uty = remove_cvref_t<_Ty1>;
+        using type = conditional_t<conjunction_v<is_same<_Uty, remove_cvref_t<_Ty2>>, _Is_scalar_or_array<_Uty>,
+                                                 disjunction<conjunction<is_lvalue_reference<_Ty1>, is_rvalue_reference<_Ty2>>,
+                                                             conjunction<is_rvalue_reference<_Ty1>, is_lvalue_reference<_Ty2>>>>,
+                                   decay_t<_Copy_cv<remove_reference_t<_Ty1>, remove_reference_t<_Ty2>>>, _Cond_res_if_right<_Ty1, _Ty2>>;
+    };
 
-template <class _Ty1, class _Ty2>
-using _Cond_res = _Cond_res_workaround<_Ty1, _Ty2>::type;
-#else // ^^^ workaround / no workaround vvv
-template <class _Ty1, class _Ty2>
-using _Cond_res = // N4950 [meta.trans.other]/2.4
-    decltype(false ? _Returns_exactly<_Ty1>() : _Returns_exactly<_Ty2>());
+    template <class _Ty1, class _Ty2>
+    using _Cond_res = _Cond_res_workaround<_Ty1, _Ty2>::type;
+#else  // ^^^ workaround / no workaround vvv
+    template <class _Ty1, class _Ty2>
+    using _Cond_res = // N4950 [meta.trans.other]/2.4
+        decltype(false ? _Returns_exactly<_Ty1>() : _Returns_exactly<_Ty2>());
 #endif // ^^^ no workaround ^^^
 
-_EXPORT_STD template <class...>
-struct common_reference;
+    _EXPORT_STD template <class...>
+    struct common_reference;
 
-_EXPORT_STD template <class... _Types>
-using common_reference_t = common_reference<_Types...>::type;
+    _EXPORT_STD template <class... _Types>
+    using common_reference_t = common_reference<_Types...>::type;
 
-// N4950 [meta.trans.other]/5.1: "If sizeof...(T) is zero ..."
-template <>
-struct common_reference<> {};
+    // N4950 [meta.trans.other]/5.1: "If sizeof...(T) is zero ..."
+    template <>
+    struct common_reference<>
+    {
+    };
 
-// N4950 [meta.trans.other]/5.2: "...if sizeof...(T) is one ..."
-template <class _Ty>
-struct common_reference<_Ty> {
-    using type = _Ty;
-};
+    // N4950 [meta.trans.other]/5.2: "...if sizeof...(T) is one ..."
+    template <class _Ty>
+    struct common_reference<_Ty>
+    {
+        using type = _Ty;
+    };
 
-// N4950 [meta.trans.other]/5.3: "...if sizeof...(T) is two..."
+    // N4950 [meta.trans.other]/5.3: "...if sizeof...(T) is two..."
 
-// N4950 [meta.trans.other]/5.3.4: "if common_type_t<T1, T2> is well-formed..."
-// N4950 [meta.trans.other]/5.3.5: "Otherwise, there shall be no member type."
-template <class _Ty1, class _Ty2, class = void>
-struct _Common_reference2C : common_type<_Ty1, _Ty2> {};
+    // N4950 [meta.trans.other]/5.3.4: "if common_type_t<T1, T2> is well-formed..."
+    // N4950 [meta.trans.other]/5.3.5: "Otherwise, there shall be no member type."
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Common_reference2C : common_type<_Ty1, _Ty2>
+    {
+    };
 
-// N4950 [meta.trans.other]/5.3.3: "if COND_RES(T1, T2) is well-formed..."
-template <class _Ty1, class _Ty2>
-struct _Common_reference2C<_Ty1, _Ty2, void_t<_Cond_res<_Ty1, _Ty2>>> {
-    using type = _Cond_res<_Ty1, _Ty2>;
-};
+    // N4950 [meta.trans.other]/5.3.3: "if COND_RES(T1, T2) is well-formed..."
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2C<_Ty1, _Ty2, void_t<_Cond_res<_Ty1, _Ty2>>>
+    {
+        using type = _Cond_res<_Ty1, _Ty2>;
+    };
 
-// N4950 [meta.trans.other]/5.3.2: "if basic_common_reference<[...]>::type is well-formed..."
-template <class _Ty1, class _Ty2>
-using _Basic_specialization = basic_common_reference<remove_cvref_t<_Ty1>, remove_cvref_t<_Ty2>,
-    _Add_qualifiers<_Ty1>::template _Apply, _Add_qualifiers<_Ty2>::template _Apply>::type;
+    // N4950 [meta.trans.other]/5.3.2: "if basic_common_reference<[...]>::type is well-formed..."
+    template <class _Ty1, class _Ty2>
+    using _Basic_specialization = basic_common_reference<remove_cvref_t<_Ty1>, remove_cvref_t<_Ty2>,
+                                                         _Add_qualifiers<_Ty1>::template _Apply, _Add_qualifiers<_Ty2>::template _Apply>::type;
 
-template <class _Ty1, class _Ty2, class = void>
-struct _Common_reference2B : _Common_reference2C<_Ty1, _Ty2> {};
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Common_reference2B : _Common_reference2C<_Ty1, _Ty2>
+    {
+    };
 
-template <class _Ty1, class _Ty2>
-struct _Common_reference2B<_Ty1, _Ty2, void_t<_Basic_specialization<_Ty1, _Ty2>>> {
-    using type = _Basic_specialization<_Ty1, _Ty2>;
-};
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2B<_Ty1, _Ty2, void_t<_Basic_specialization<_Ty1, _Ty2>>>
+    {
+        using type = _Basic_specialization<_Ty1, _Ty2>;
+    };
 
-// N4950 [meta.trans.other]/5.3.1: "Let R be COMMON-REF(T1, T2). If T1 and T2 are reference types, R is well-formed, and
-// is_convertible_v<add_pointer_t<T1>, add_pointer_t<R>> && is_convertible_v<add_pointer_t<T2>, add_pointer_t<R>> is
-// true, then the member typedef type denotes R."
-template <class _Ty1, class _Ty2, class = void>
-struct _Common_reference2A : _Common_reference2B<_Ty1, _Ty2> {};
+    // N4950 [meta.trans.other]/5.3.1: "Let R be COMMON-REF(T1, T2). If T1 and T2 are reference types, R is well-formed, and
+    // is_convertible_v<add_pointer_t<T1>, add_pointer_t<R>> && is_convertible_v<add_pointer_t<T2>, add_pointer_t<R>> is
+    // true, then the member typedef type denotes R."
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Common_reference2A : _Common_reference2B<_Ty1, _Ty2>
+    {
+    };
 
-template <class _Ty1, class _Ty2, class _Result = _Cond_res<_Copy_cv<_Ty1, _Ty2>&, _Copy_cv<_Ty2, _Ty1>&>,
-    enable_if_t<is_lvalue_reference_v<_Result>, int> = 0>
-using _LL_common_ref = _Result;
+    template <class _Ty1, class _Ty2, class _Result = _Cond_res<_Copy_cv<_Ty1, _Ty2> &, _Copy_cv<_Ty2, _Ty1> &>,
+              enable_if_t<is_lvalue_reference_v<_Result>, int> = 0>
+    using _LL_common_ref = _Result;
 
-template <class _Ty1, class _Ty2, class = void>
-struct _Common_reference2AX {};
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Common_reference2AX
+    {
+    };
 
-template <class _Ty1, class _Ty2>
-struct _Common_reference2AX<_Ty1&, _Ty2&, void_t<_LL_common_ref<_Ty1, _Ty2>>> {
-    using type = _LL_common_ref<_Ty1, _Ty2>; // "both lvalues" case from N4950 [meta.trans.other]/2.5
-};
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2AX<_Ty1 &, _Ty2 &, void_t<_LL_common_ref<_Ty1, _Ty2>>>
+    {
+        using type = _LL_common_ref<_Ty1, _Ty2>; // "both lvalues" case from N4950 [meta.trans.other]/2.5
+    };
 
-template <class _Ty1, class _Ty2>
-struct _Common_reference2AX<_Ty1&&, _Ty2&, enable_if_t<is_convertible_v<_Ty1&&, _LL_common_ref<const _Ty1, _Ty2>>>> {
-    using type = _LL_common_ref<const _Ty1, _Ty2>; // "rvalue and lvalue" case from N4950 [meta.trans.other]/2.7
-};
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2AX<_Ty1 &&, _Ty2 &, enable_if_t<is_convertible_v<_Ty1 &&, _LL_common_ref<const _Ty1, _Ty2>>>>
+    {
+        using type = _LL_common_ref<const _Ty1, _Ty2>; // "rvalue and lvalue" case from N4950 [meta.trans.other]/2.7
+    };
 
-template <class _Ty1, class _Ty2>
-struct _Common_reference2AX<_Ty1&, _Ty2&&, enable_if_t<is_convertible_v<_Ty2&&, _LL_common_ref<const _Ty2, _Ty1>>>> {
-    using type = _LL_common_ref<const _Ty2, _Ty1>; // "lvalue and rvalue" case from N4950 [meta.trans.other]/2.8
-};
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2AX<_Ty1 &, _Ty2 &&, enable_if_t<is_convertible_v<_Ty2 &&, _LL_common_ref<const _Ty2, _Ty1>>>>
+    {
+        using type = _LL_common_ref<const _Ty2, _Ty1>; // "lvalue and rvalue" case from N4950 [meta.trans.other]/2.8
+    };
 
-template <class _Ty1, class _Ty2>
-using _RR_common_ref = remove_reference_t<_LL_common_ref<_Ty1, _Ty2>>&&;
+    template <class _Ty1, class _Ty2>
+    using _RR_common_ref = remove_reference_t<_LL_common_ref<_Ty1, _Ty2>> &&;
 
-template <class _Ty1, class _Ty2>
-struct _Common_reference2AX<_Ty1&&, _Ty2&&,
-    enable_if_t<is_convertible_v<_Ty1&&, _RR_common_ref<_Ty1, _Ty2>>
-                && is_convertible_v<_Ty2&&, _RR_common_ref<_Ty1, _Ty2>>>> {
-    using type = _RR_common_ref<_Ty1, _Ty2>; // "both rvalues" case from N4950 [meta.trans.other]/2.6
-};
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2AX<_Ty1 &&, _Ty2 &&,
+                                enable_if_t<is_convertible_v<_Ty1 &&, _RR_common_ref<_Ty1, _Ty2>> && is_convertible_v<_Ty2 &&, _RR_common_ref<_Ty1, _Ty2>>>>
+    {
+        using type = _RR_common_ref<_Ty1, _Ty2>; // "both rvalues" case from N4950 [meta.trans.other]/2.6
+    };
 
-template <class _Ty1, class _Ty2>
-using _Common_ref_2AX_t = _Common_reference2AX<_Ty1, _Ty2>::type;
+    template <class _Ty1, class _Ty2>
+    using _Common_ref_2AX_t = _Common_reference2AX<_Ty1, _Ty2>::type;
 
-template <class _Ty1, class _Ty2>
-struct _Common_reference2A<_Ty1, _Ty2,
-    enable_if_t<is_convertible_v<add_pointer_t<_Ty1>, add_pointer_t<_Common_ref_2AX_t<_Ty1, _Ty2>>>
-                && is_convertible_v<add_pointer_t<_Ty2>, add_pointer_t<_Common_ref_2AX_t<_Ty1, _Ty2>>>>> {
-    using type = _Common_ref_2AX_t<_Ty1, _Ty2>;
-};
+    template <class _Ty1, class _Ty2>
+    struct _Common_reference2A<_Ty1, _Ty2,
+                               enable_if_t<is_convertible_v<add_pointer_t<_Ty1>, add_pointer_t<_Common_ref_2AX_t<_Ty1, _Ty2>>> && is_convertible_v<add_pointer_t<_Ty2>, add_pointer_t<_Common_ref_2AX_t<_Ty1, _Ty2>>>>>
+    {
+        using type = _Common_ref_2AX_t<_Ty1, _Ty2>;
+    };
 
-template <class _Ty1, class _Ty2>
-struct common_reference<_Ty1, _Ty2> : _Common_reference2A<_Ty1, _Ty2> {};
+    template <class _Ty1, class _Ty2>
+    struct common_reference<_Ty1, _Ty2> : _Common_reference2A<_Ty1, _Ty2>
+    {
+    };
 
-// N4950 [meta.trans.other]/5.4: "if sizeof...(T) is greater than two..."
-template <class _Void, class _Ty1, class _Ty2, class... _Types>
-struct _Fold_common_reference {};
-template <class _Ty1, class _Ty2, class... _Types>
-struct _Fold_common_reference<void_t<common_reference_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Types...>
-    : common_reference<common_reference_t<_Ty1, _Ty2>, _Types...> {};
+    // N4950 [meta.trans.other]/5.4: "if sizeof...(T) is greater than two..."
+    template <class _Void, class _Ty1, class _Ty2, class... _Types>
+    struct _Fold_common_reference
+    {
+    };
+    template <class _Ty1, class _Ty2, class... _Types>
+    struct _Fold_common_reference<void_t<common_reference_t<_Ty1, _Ty2>>, _Ty1, _Ty2, _Types...>
+        : common_reference<common_reference_t<_Ty1, _Ty2>, _Types...>
+    {
+    };
 
-template <class _Ty1, class _Ty2, class _Ty3, class... _Rest>
-struct common_reference<_Ty1, _Ty2, _Ty3, _Rest...> : _Fold_common_reference<void, _Ty1, _Ty2, _Ty3, _Rest...> {};
+    template <class _Ty1, class _Ty2, class _Ty3, class... _Rest>
+    struct common_reference<_Ty1, _Ty2, _Ty3, _Rest...> : _Fold_common_reference<void, _Ty1, _Ty2, _Ty3, _Rest...>
+    {
+    };
 
-_EXPORT_STD template <class _Ty>
-struct type_identity {
-    using type = _Ty;
-};
-_EXPORT_STD template <class _Ty>
-using type_identity_t = type_identity<_Ty>::type;
+    _EXPORT_STD template <class _Ty>
+    struct type_identity
+    {
+        using type = _Ty;
+    };
+    _EXPORT_STD template <class _Ty>
+    using type_identity_t = type_identity<_Ty>::type;
 #endif // _HAS_CXX20
+#if _HAS_CXX14
+    template <class _Type, template <class...> class _Template>
+    _INLINE_VAR constexpr bool _Is_specialization_v = false; // true if and only if _Type is a specialization of _Template
+    template <template <class...> class _Template, class... _Types>
+    _INLINE_VAR constexpr bool _Is_specialization_v<_Template<_Types...>, _Template> = true;
+#else
+    template <class _Type, template <class...> class _Template>
+    struct _Is_specialization
+    {
+        static constexpr bool value = false; // true if and only if _Type is a specialization of _Template
+    };
+    template <template <class...> class _Template, class... _Types>
+    struct _Is_specialization<_Template<_Types...>, _Template>
+    {
+        static constexpr bool value = true;
+    };
+#endif
+    template <class _Type, template <class...> class _Template>
+    struct _Is_specialization : bool_constant<_Is_specialization_v<_Type, _Template>>
+    {
+    };
 
-template <class _Type, template <class...> class _Template>
-_INLINE_VAR constexpr bool _Is_specialization_v = false; // true if and only if _Type is a specialization of _Template
-template <template <class...> class _Template, class... _Types>
-_INLINE_VAR constexpr bool _Is_specialization_v<_Template<_Types...>, _Template> = true;
+    _EXPORT_STD template <class _Ty>
+    _NODISCARD _MSVC_INTRINSIC constexpr _Ty &&forward(remove_reference_t<_Ty> &_Arg) noexcept
+    {
+        return static_cast<_Ty &&>(_Arg);
+    }
 
-template <class _Type, template <class...> class _Template>
-struct _Is_specialization : bool_constant<_Is_specialization_v<_Type, _Template>> {};
+    _EXPORT_STD template <class _Ty>
+    _NODISCARD _MSVC_INTRINSIC constexpr _Ty &&forward(remove_reference_t<_Ty> &&_Arg) noexcept
+    {
+        static_assert(!is_lvalue_reference_v<_Ty>, "bad forward call");
+        return static_cast<_Ty &&>(_Arg);
+    }
+    // 1571
+    // 1947
+    template <class _Ty>
+    struct _Is_swappable;
 
-_EXPORT_STD template <class _Ty>
-_NODISCARD _MSVC_INTRINSIC constexpr _Ty&& forward(remove_reference_t<_Ty>& _Arg) noexcept {
-    return static_cast<_Ty&&>(_Arg);
-}
-
-_EXPORT_STD template <class _Ty>
-_NODISCARD _MSVC_INTRINSIC constexpr _Ty&& forward(remove_reference_t<_Ty>&& _Arg) noexcept {
-    static_assert(!is_lvalue_reference_v<_Ty>, "bad forward call");
-    return static_cast<_Ty&&>(_Arg);
-}
-//1571
-//1947
-template <class _Ty>
-struct _Is_swappable;
-
-template <class _Ty>
-struct _Is_nothrow_swappable;
+    template <class _Ty>
+    struct _Is_nothrow_swappable;
 
 #if _HAS_CXX17
-template <class _Ty, enable_if_t<is_move_constructible_v<_Ty> && is_move_assignable_v<_Ty>, int> = 0>
-#else // ^^^ _HAS_CXX17 / !_HAS_CXX17 vvv
-template <class _Ty, int _Enabled = 0>
+    template <class _Ty, enable_if_t<is_move_constructible_v<_Ty> && is_move_assignable_v<_Ty>, int> = 0>
+#else  // ^^^ _HAS_CXX17 / !_HAS_CXX17 vvv
+    template <class _Ty, int _Enabled = 0>
 #endif // _HAS_CXX17
-_CONSTEXPR20 void swap(_Ty&, _Ty&) noexcept(is_nothrow_move_constructible_v<_Ty>&& is_nothrow_move_assignable_v<_Ty>);
+    _CONSTEXPR20 void swap(_Ty &, _Ty &) noexcept(is_nothrow_move_constructible_v<_Ty> && is_nothrow_move_assignable_v<_Ty>);
 
-template <class _Ty, size_t _Size, enable_if_t<_Is_swappable<_Ty>::value, int> = 0>
-_CONSTEXPR20 void swap(_Ty (&)[_Size], _Ty (&)[_Size]) noexcept(_Is_nothrow_swappable<_Ty>::value);
+    template <class _Ty, size_t _Size, enable_if_t<_Is_swappable<_Ty>::value, int> = 0>
+    _CONSTEXPR20 void swap(_Ty (&)[_Size], _Ty (&)[_Size]) noexcept(_Is_nothrow_swappable<_Ty>::value);
 
-template <class _Ty1, class _Ty2, class = void>
-struct _Swappable_with_helper : false_type {}; // swap(declval<_Ty1>(), declval<_Ty2>()) is not valid
+    template <class _Ty1, class _Ty2, class = void>
+    struct _Swappable_with_helper : false_type
+    {
+    }; // swap(declval<_Ty1>(), declval<_Ty2>()) is not valid
 
-template <class _Ty1, class _Ty2>
-struct _Swappable_with_helper<_Ty1, _Ty2, void_t<decltype(swap(_STD declval<_Ty1>(), _STD declval<_Ty2>()))>>
-    : true_type {}; // swap(declval<_Ty1>(), declval<_Ty2>()) is valid
+    template <class _Ty1, class _Ty2>
+    struct _Swappable_with_helper<_Ty1, _Ty2, void_t<decltype(swap(_STD declval<_Ty1>(), _STD declval<_Ty2>()))>>
+        : true_type
+    {
+    }; // swap(declval<_Ty1>(), declval<_Ty2>()) is valid
 
-template <class _Ty1, class _Ty2>
-struct _Is_swappable_with
-    : bool_constant<conjunction_v<_Swappable_with_helper<_Ty1, _Ty2>, _Swappable_with_helper<_Ty2, _Ty1>>> {
-    // Determine if expressions with type and value category _Ty1 and _Ty2 can be swapped (and vice versa)
-};
+    template <class _Ty1, class _Ty2>
+    struct _Is_swappable_with
+        : bool_constant<conjunction_v<_Swappable_with_helper<_Ty1, _Ty2>, _Swappable_with_helper<_Ty2, _Ty1>>>
+    {
+        // Determine if expressions with type and value category _Ty1 and _Ty2 can be swapped (and vice versa)
+    };
 
-template <class _Ty>
-struct _Is_swappable : _Is_swappable_with<add_lvalue_reference_t<_Ty>, add_lvalue_reference_t<_Ty>>::type {
-    // Determine if _Ty lvalues satisfy is_swappable_with
-};
-//1981
+    template <class _Ty>
+    struct _Is_swappable : _Is_swappable_with<add_lvalue_reference_t<_Ty>, add_lvalue_reference_t<_Ty>>::type
+    {
+        // Determine if _Ty lvalues satisfy is_swappable_with
+    };
+    // 1981
 }
 
 #pragma GCC visibility pop
 
 #endif
-

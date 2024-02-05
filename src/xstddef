@@ -2,18 +2,21 @@
 #include <vcruntime.h>
 namespace std
 {
-	//23
+#if _HAS_CXX14
+	// 23
 	template <class>
-// false value attached to a dependent name (for static_assert)
-_INLINE_VAR constexpr bool _Always_false = false;
-//27
-	//250
+	// false value attached to a dependent name (for static_assert)
+	_INLINE_VAR constexpr bool _Always_false = false;
+#endif
+	// 27
+	// 250
 	template <class _Ty>
-_NODISCARD constexpr _Ty* addressof(_Ty& _Val) noexcept {
-    return __builtin_addressof(_Val);
-}
+	_NODISCARD constexpr _Ty *addressof(_Ty &_Val) noexcept
+	{
+		return __builtin_addressof(_Val);
+	}
 
-template <class _Ty>
-const _Ty* addressof(const _Ty&&) = delete;
-//258
+	template <class _Ty>
+	const _Ty *addressof(const _Ty &&) = delete;
+	// 258
 }

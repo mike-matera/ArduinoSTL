@@ -9,10 +9,10 @@ namespace chrono
 	struct treat_as_floating_point : is_floating_point<_Rep>
 	{
 	}; // tests for floating-point type
-
+#if _HAS_CXX14
 	_EXPORT_STD template <class _Rep>
 	_INLINE_VAR constexpr bool treat_as_floating_point_v = treat_as_floating_point<_Rep>::value;
-
+#endif
 	_EXPORT_STD template <class _Rep>
 	struct duration_values
 	{ // gets arithmetic properties of a type
@@ -55,11 +55,13 @@ namespace chrono
 
 	_EXPORT_STD template <class _Rep, class _Period = ratio<1>>
 	class duration;
-
+#if _HAS_CXX14
 	template <class _Ty>
 	_INLINE_VAR constexpr bool _Is_duration_v = _Is_specialization_v<_Ty, duration>;
-
-	_EXPORT_STD template <class _To, class _Rep, class _Period, enable_if_t<_Is_duration_v<_To>, int> = 0>
+#endif
+	template <class _Ty>
+	using _Is_duration = _Is_specialization<_Ty, duration>;
+	_EXPORT_STD template <class _To, class _Rep, class _Period, enable_if_t<_Is_duration<_To>::value, int> = 0>
 	constexpr _To duration_cast(const duration<_Rep, _Period> &) noexcept(
 		is_arithmetic_v<_Rep> && is_arithmetic_v<typename _To::rep>); // strengthened
 
@@ -192,7 +194,7 @@ namespace chrono
 	};
 	// 188
 	// 311
-	template <class _CR, class _Period1, class _Rep2, bool = is_convertible_v<const _Rep2 &, _CR>>
+	template <class _CR, class _Period1, class _Rep2, bool = is_convertible<const _Rep2 &, _CR>::value>
 	struct _Duration_div_mod1
 	{ // return type for duration / rep and duration % rep
 		using type = duration<_CR, _Period1>;
@@ -203,7 +205,7 @@ namespace chrono
 	{
 	}; // no return type
 
-	template <class _CR, class _Period1, class _Rep2, bool = _Is_duration_v<_Rep2>>
+	template <class _CR, class _Period1, class _Rep2, bool = _Is_duration<_Rep2>::value>
 	struct _Duration_div_mod
 	{
 	}; // no return type
@@ -233,6 +235,16 @@ namespace chrono
 		return _CD(_Left).count() / _CD(_Right).count();
 	}
 	// 344
+	// 378
+	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
+	_NODISCARD constexpr bool
+	operator<(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
+		is_arithmetic_v<_Rep1> && is_arithmetic_v<_Rep2>) /* strengthened */
+	{
+		using _CT = common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>;
+		return _CT(_Left).count() < _CT(_Right).count();
+	}
+	// 386
 // 407
 #ifdef __cpp_lib_concepts
 	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
@@ -246,7 +258,7 @@ namespace chrono
 	}
 #endif // defined(__cpp_lib_concepts)
 
-	_EXPORT_STD template <class _To, class _Rep, class _Period, enable_if_t<_Is_duration_v<_To>, int> /* = 0 */>
+	_EXPORT_STD template <class _To, class _Rep, class _Period, enable_if_t<_Is_duration<_To>::value, int> /* = 0 */>
 	_NODISCARD constexpr _To duration_cast(const duration<_Rep, _Period> &_Dur) noexcept(
 		is_arithmetic_v<_Rep> && is_arithmetic_v<typename _To::rep>) /* strengthened */
 	{
