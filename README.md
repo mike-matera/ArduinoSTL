@@ -4,11 +4,15 @@
 
 如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
 
+目前支持AVR和SAM架构。暂时没有支持ESP32的计划，因为ESP32官方已经提供了标准库，同时使用两套标准库将产生很多难以处理的问题。
+
 Since the original ArduinoSTL has no updates or a long time (202203~202212), I released this branch to the Arduino public library and renamed it Cpp_Standard_Library to distinguish it.
 
 This library attempts to implement most of the functionality of the C++11~17 Standard Library (STL) on Arduino. In addition to ArduinoSTL, some of the functional implementations of this library also refer to MSVC, LLVM and boost. Because interfaces are made according to STL, there is no need to write additional documentation, you can refer to any authoritative STL document. Unless otherwise noted, the use and behavior of this library should be the same; if different, it should be a bug and welcome to submit an issue.
 
 If you need some features that are available in the standard library but are not yet available in this library, you are also welcome to submit an issue, and the author will give priority to implementing it for you.
+
+AVR and SAM architectures are currently supported. There are currently no plans to support ESP32, as ESP32 has officially provided a standard library. Using two standard libraries in parallel produces a lot of tricky problems.
 # 招牌功能（相比原版） Signature features (compared to original)
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`
