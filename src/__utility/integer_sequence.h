@@ -1,6 +1,5 @@
 #pragma once
 #include "__config"
-// LLVM实现
 template <size_t...>
 struct __tuple_indices;
 
@@ -180,6 +179,6 @@ template <class _Tp, _Tp _Ep>
 using __make_integer_sequence _LIBCPP_NODEBUG = typename __make_integer_sequence_checked<_Tp, _Ep>::type;
 
 #endif
-
+//LLVM实现
 template <class _Tp, _Tp _Np>
 using make_integer_sequence = __make_integer_sequence<_Tp, _Np>;

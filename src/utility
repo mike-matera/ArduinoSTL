@@ -126,6 +126,7 @@ namespace std
 		}
 	};
 
+// LLVM实现
 #include "__utility/integer_sequence.h"
 
 	_EXPORT_STD template <size_t... _Vals>
