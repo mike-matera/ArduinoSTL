@@ -17,85 +17,136 @@
 
 */
 
-
 #include <basic_definitions>
 #include <type_traits>
-
 
 #ifndef __STD_HEADER_UTILITY
 #define __STD_HEADER_UTILITY 1
 
 #pragma GCC visibility push(default)
 
-namespace std{
+namespace std
+{
 
-	namespace rel_ops {
-		template<class T> inline bool operator!=(const T& x, const T& y){
+	namespace rel_ops
+	{
+		template <class T>
+		inline bool operator!=(const T &x, const T &y)
+		{
 			return !(x == y);
 		}
 
-		template<class T> inline bool operator> (const T& x, const T& y){
-			return ( y < x);
+		template <class T>
+		inline bool operator>(const T &x, const T &y)
+		{
+			return (y < x);
 		}
 
-		template<class T> inline bool operator<=(const T& x, const T& y){
-			return !( y < x );
+		template <class T>
+		inline bool operator<=(const T &x, const T &y)
+		{
+			return !(y < x);
 		}
 
-		template<class T> inline bool operator>=(const T& x, const T& y){
+		template <class T>
+		inline bool operator>=(const T &x, const T &y)
+		{
 			return !(x < y);
 		}
 	}
 
-	template <class T1, class T2> struct _UCXXEXPORT pair {
+	template <class T1, class T2>
+	struct _UCXXEXPORT pair
+	{
 		typedef T1 first_type;
 		typedef T2 second_type;
 
 		T1 first;
 		T2 second;
-		pair() : first(), second() {  }
-		pair(const T1& x, const T2& y) : first(x), second(y) {  }
-		template<class U, class V> pair(const pair<U, V> &p) : first(p.first), second(p.second) { }
+		pair() : first(), second() {}
+		pair(const T1 &x, const T2 &y) : first(x), second(y) {}
+		template <class U, class V>
+		pair(const pair<U, V> &p) : first(p.first), second(p.second) {}
 	};
-	
-	template <class T1, class T2> bool operator==(const pair<T1,T2>& x, const pair<T1,T2>& y){
+
+	template <class T1, class T2>
+	bool operator==(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		using namespace rel_ops;
-		return (x.first == y.first && x.second==y.second);
+		return (x.first == y.first && x.second == y.second);
 	}
-	template <class T1, class T2> bool operator< (const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator<(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return x.first < y.first || (!(y.first < x.first) && x.second < y.second);
 	}
-	template <class T1, class T2> bool operator!=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator!=(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return !(x == y);
 	}
-	template <class T1, class T2> bool operator> (const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator>(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return y < x;
 	}
-	template <class T1, class T2> bool operator>=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator>=(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return !(x < y);
 	}
-	template <class T1, class T2> bool operator<=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator<=(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return !(y < x);
 	}
-	template <class T1, class T2> pair<T1,T2> make_pair(const T1& x, const T2& y){
-		return pair<T1,T2>(x, y);
+	template <class T1, class T2>
+	pair<T1, T2> make_pair(const T1 &x, const T2 &y)
+	{
+		return pair<T1, T2>(x, y);
 	}
 
 	// Stubb out move for compatibility
-	template<class T>
-	T& move(T& t) noexcept {
+	template <class T>
+	T &move(T &t) noexcept
+	{
 		return t;
 	}
+	// 40
+	_EXPORT_STD template <class _Ty, _Ty... _Vals>
+	struct integer_sequence
+	{ // sequence of integer parameters
+		static_assert(is_integral<_Ty>::value, "integer_sequence<T, I...> requires T to be an integral type.");
+
+		using value_type = _Ty;
+
+		_NODISCARD static constexpr size_t size() noexcept
+		{
+			return sizeof...(_Vals);
+		}
+	};
+
+#include "__utility/integer_sequence.h"
+
+	_EXPORT_STD template <size_t... _Vals>
+	using index_sequence = integer_sequence<size_t, _Vals...>;
+
+	_EXPORT_STD template <size_t _Size>
+	using make_index_sequence = make_integer_sequence<size_t, _Size>;
+	// 60
+	//  757
 	template <class _Ty, class _Other = _Ty>
-_CONSTEXPR20 _Ty exchange(_Ty& _Val, _Other&& _New_val) noexcept(
-    conjunction<is_nothrow_move_constructible<_Ty>, is_nothrow_assignable<_Ty&, _Other>>::value) {
-    // assign _New_val to _Val, return previous _Val
-    _Ty _Old_val = static_cast<_Ty&&>(_Val);
-    _Val         = static_cast<_Other&&>(_New_val);
-    return _Old_val;
-}
+	_CONSTEXPR20 _Ty exchange(_Ty &_Val, _Other &&_New_val) noexcept(
+		conjunction<is_nothrow_move_constructible<_Ty>, is_nothrow_assignable<_Ty &, _Other>>::value)
+	{
+		// assign _New_val to _Val, return previous _Val
+		_Ty _Old_val = static_cast<_Ty &&>(_Val);
+		_Val = static_cast<_Other &&>(_New_val);
+		return _Old_val;
+	}
+	// 766
 }
 
 #pragma GCC visibility pop
 
-#endif	//__STD_HEADER_UTILITY
+#endif //__STD_HEADER_UTILITY

@@ -146,3 +146,14 @@
 #  define _LIBCPP_END_NAMESPACE_STD }}
 #  define _VSTD std
 //638
+//1275
+#ifdef __has_attribute
+#  if __has_attribute(__nodebug__)
+#    define _LIBCPP_NODEBUG __attribute__((__nodebug__))
+#  else
+#    define _LIBCPP_NODEBUG
+#  endif
+#else
+#    define _LIBCPP_NODEBUG
+#  endif
+//1281

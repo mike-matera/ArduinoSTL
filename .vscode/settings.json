@@ -35,6 +35,14 @@
 		"ratio": "cpp",
 		"cstdint": "cpp",
 		"__config": "cpp",
-		"cstdlib": "cpp"
+		"cstdlib": "cpp",
+		"*.tcc": "cpp",
+		"unordered_map": "cpp",
+		"cmath": "cpp",
+		"array": "cpp",
+		"tuple": "cpp",
+		"deque": "cpp",
+		"list": "cpp",
+		"vector": "cpp"
 	}
 }
