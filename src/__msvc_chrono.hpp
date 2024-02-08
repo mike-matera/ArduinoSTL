@@ -200,7 +200,19 @@ namespace chrono
 		_Rep _MyRep; // the stored rep
 	};
 	// 188
-	// 311
+	// 293
+	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2,
+						  enable_if_t<is_convertible<const _Rep2 &, common_type_t<_Rep1, _Rep2>>::value, int> = 0>
+	_NODISCARD constexpr duration<common_type_t<_Rep1, _Rep2>, _Period1> operator*(
+		const duration<_Rep1, _Period1> &_Left,
+		const _Rep2 &_Right) noexcept(is_arithmetic<_Rep1>::value && is_arithmetic<_Rep2>::value) /* strengthened */
+	{
+		using _CR = common_type_t<_Rep1, _Rep2>;
+		using _CD = duration<_CR, _Period1>;
+		return _CD(_CD(_Left).count() * _Right);
+	}
+	// 303
+	//  311
 	template <class _CR, class _Period1, class _Rep2, bool = is_convertible<const _Rep2 &, _CR>::value>
 	struct _Duration_div_mod1
 	{ // return type for duration / rep and duration % rep
