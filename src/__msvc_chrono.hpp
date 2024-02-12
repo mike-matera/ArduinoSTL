@@ -254,7 +254,17 @@ namespace chrono
 		return _CD(_Left).count() / _CD(_Right).count();
 	}
 	// 344
-	// 378
+	// 353
+	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
+	_NODISCARD constexpr common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>
+	operator%(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
+		is_arithmetic<_Rep1>::value && is_arithmetic<_Rep2>::value) /* strengthened */
+	{
+		using _CD = common_type_t<duration<_Rep1, _Period1>, duration<_Rep2, _Period2>>;
+		return _CD(_CD(_Left).count() % _CD(_Right).count());
+	}
+	// 361
+	//  378
 	_EXPORT_STD template <class _Rep1, class _Period1, class _Rep2, class _Period2>
 	_NODISCARD constexpr bool
 	operator<(const duration<_Rep1, _Period1> &_Left, const duration<_Rep2, _Period2> &_Right) noexcept(
