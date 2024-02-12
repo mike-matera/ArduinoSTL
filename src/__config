@@ -117,12 +117,12 @@
 #define _LIBCPP_METHOD_TEMPLATE_IMPLICIT_INSTANTIATION_VIS
 #endif
 #ifdef __has_attribute
-#define CTL_HATV __has_attribute(__type_visibility__)
+#define CSL_HATV __has_attribute(__type_visibility__)
 #else
-#define CTL_HATV 0
+#define CSL_HATV 0
 #endif
 #if !defined(_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS)
-#if CTL_HATV
+#if CSL_HATV
 #define _LIBCPP_TEMPLATE_VIS __attribute__((__type_visibility__("default")))
 #else
 #define _LIBCPP_TEMPLATE_VIS __attribute__((__visibility__("default")))

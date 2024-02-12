@@ -1,5 +1,18 @@
 #pragma once
-// 51
+// 29
+#if defined(MRTDLL) && defined(_CRTBLD)
+// process-global is the default for code built with /clr or /clr:oldSyntax.
+// appdomain-global is the default for code built with /clr:pure.
+// Code in MSVCM is built with /clr, but is used by user code built with /clr:pure
+// so it must conform to the expectations of /clr:pure clients.
+// Use __PURE_APPDOMAIN_GLOBAL when a global needs to be appdomain-global for pure
+// clients and process-global for mixed clients.
+#define __PURE_APPDOMAIN_GLOBAL __declspec(appdomain)
+#else
+#define __PURE_APPDOMAIN_GLOBAL
+#endif
+// 41
+//  51
 #ifdef _ITERATOR_DEBUG_LEVEL // A. _ITERATOR_DEBUG_LEVEL is already defined.
 
 // A1. Validate _ITERATOR_DEBUG_LEVEL.
@@ -88,3 +101,23 @@
 #endif // _DEBUG
 
 // 209
+// 285
+#ifndef _CRTIMP2_IMPORT
+#if defined(CRTDLL2) && defined(_CRTBLD)
+#define _CRTIMP2_IMPORT __declspec(dllexport)
+#elif defined(_DLL) && !defined(_STATIC_CPPLIB)
+#define _CRTIMP2_IMPORT __declspec(dllimport)
+#else
+#define _CRTIMP2_IMPORT
+#endif
+#endif // _CRTIMP2_IMPORT
+// 295
+// 311
+#ifndef _CRTDATA2_IMPORT
+#if defined(MRTDLL) && defined(_CRTBLD)
+#define _CRTDATA2_IMPORT
+#else
+#define _CRTDATA2_IMPORT _CRTIMP2_IMPORT
+#endif
+#endif // _CRTDATA2_IMPORT
+	   // 319

@@ -1,11 +1,11 @@
 #include <Cpp_Standard_Library.h>
-#include <ArduinoSTL.h>
+#include <iostream>
 
 using namespace std;
 
 void setup() {
   Serial.begin(9600);
-  cout << "Feed me an integers." << endl;
+  cout << "Feed me an integer." << endl;
 }
 
 void loop() {

@@ -10,14 +10,14 @@ namespace std
 	// 38
 // 50
 #define _RNG_REQUIRE_UINTTYPE(_RandType, _CheckedType)                                                               \
-	static_assert(_Is_any_of_v<_CheckedType, unsigned short, unsigned int, unsigned long, unsigned long long>,       \
+	static_assert(_Is_any_of<_CheckedType, unsigned short, unsigned int, unsigned long, unsigned long long>::value,  \
 				  "invalid template argument for " #_RandType ": N4659 29.6.1.1 [rand.req.genl]/1f requires one of " \
 				  "unsigned short, unsigned int, unsigned long, or unsigned long long");                             \
 	_RNG_PROHIBIT_CHAR(_CheckedType)
 
 	template <class _Seed_seq, class _Self, class _Engine = _Self>
 	using _Enable_if_seed_seq_t =
-		enable_if_t<!is_convertible_v<remove_cv_t<_Seed_seq>, typename _Self::result_type> && !is_same_v<remove_cv_t<_Seed_seq>, _Self> && !is_same_v<remove_cv_t<_Seed_seq>, _Engine>,
+		enable_if_t<!is_convertible<remove_cv_t<_Seed_seq>, typename _Self::result_type>::value && !is_same<remove_cv_t<_Seed_seq>, _Self>::value && !is_same<remove_cv_t<_Seed_seq>, _Engine>::value,
 					int>;
 	// 62
 	// 128
@@ -249,22 +249,24 @@ namespace std
 			constexpr size_t _Wrap_bound_one = _Nx - _One_mod_n;
 			constexpr size_t _Wrap_bound_m = _Nx - _M_mod_n;
 
-			if constexpr (_M_mod_n == 0)
-			{
-				for (size_t _Ix = 0; _Ix < _Wrap_bound_one; ++_Ix)
-				{ // fill in values
-					const _Ty _Tmp = (this->_Ax[_Ix + _Nx] & _HMSK) | (this->_Ax[_Ix + _Nx + _One_mod_n] & _LMSK);
-					this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix + _Nx + _M_mod_n];
-				}
+			if _CONSTEXPR14 ()
+				(_M_mod_n == 0)
+				{
+					for (size_t _Ix = 0; _Ix < _Wrap_bound_one; ++_Ix)
+					{ // fill in values
+						const _Ty _Tmp = (this->_Ax[_Ix + _Nx] & _HMSK) | (this->_Ax[_Ix + _Nx + _One_mod_n] & _LMSK);
+						this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix + _Nx + _M_mod_n];
+					}
 
-				if constexpr (_One_mod_n == 1)
-				{ // fill in _Ax[_Nx - 1]
-					constexpr size_t _Ix = _Wrap_bound_one;
+					if _CONSTEXPR14 ()
+						(_One_mod_n == 1)
+						{ // fill in _Ax[_Nx - 1]
+							constexpr size_t _Ix = _Wrap_bound_one;
 
-					const _Ty _Tmp = (this->_Ax[_Ix + _Nx] & _HMSK) | (this->_Ax[_Ix - _Nx + _One_mod_n] & _LMSK);
-					this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix + _Nx + _M_mod_n];
+							const _Ty _Tmp = (this->_Ax[_Ix + _Nx] & _HMSK) | (this->_Ax[_Ix - _Nx + _One_mod_n] & _LMSK);
+							this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix + _Nx + _M_mod_n];
+						}
 				}
-			}
 			else
 			{
 				for (size_t _Ix = 0; _Ix < _Wrap_bound_m; ++_Ix)
@@ -280,13 +282,14 @@ namespace std
 					this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix - _Nx + _M_mod_n];
 				}
 
-				if constexpr (_One_mod_n == 1)
-				{ // fill in _Ax[_Nx - 1]
-					constexpr size_t _Ix = _Wrap_bound_one;
+				if _CONSTEXPR14 ()
+					(_One_mod_n == 1)
+					{ // fill in _Ax[_Nx - 1]
+						constexpr size_t _Ix = _Wrap_bound_one;
 
-					const _Ty _Tmp = (this->_Ax[_Ix + _Nx] & _HMSK) | (this->_Ax[_Ix - _Nx + _One_mod_n] & _LMSK);
-					this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix - _Nx + _M_mod_n];
-				}
+						const _Ty _Tmp = (this->_Ax[_Ix + _Nx] & _HMSK) | (this->_Ax[_Ix - _Nx + _One_mod_n] & _LMSK);
+						this->_Ax[_Ix] = (_Tmp >> 1) ^ (_Tmp & 1 ? _Px : 0) ^ this->_Ax[_Ix - _Nx + _M_mod_n];
+					}
 			}
 
 			this->_Idx = 0;
@@ -411,8 +414,14 @@ namespace std
 	// 5042
 	struct ArduinoUrng
 	{
-		//UniformRandomBitGenerator要求无符号整数
-		using result_type = make_unsigned_t<decltype(random())>;
+#ifdef ARDUINO_ARCH_AVR
+#define CSL_RANDOM random
+#endif
+#ifdef ARDUINO_ARCH_SAM
+#define CSL_RANDOM rand
+#endif
+		// UniformRandomBitGenerator要求无符号整数
+		using result_type = make_unsigned_t<decltype(CSL_RANDOM())>;
 		static constexpr result_type max()
 		{
 			return numeric_limits<result_type>::max();
@@ -423,7 +432,7 @@ namespace std
 		};
 		result_type operator()() const
 		{
-			return random();
+			return CSL_RANDOM();
 		}
 		static void seed(uint32_t S)
 		{

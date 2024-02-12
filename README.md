@@ -13,9 +13,10 @@ This library attempts to implement most of the functionality of the C++11~17 Sta
 If you need some features that are available in the standard library but are not yet available in this library, you are also welcome to submit an issue, and the author will give priority to implementing it for you.
 
 AVR and SAM architectures are currently supported. There are currently no plans to support ESP32, as ESP32 has officially provided a standard library. Using two standard libraries in parallel produces a lot of tricky problems.
-# 招牌功能（相比原版） Signature features (compared to original)
+# 招牌功能（不限于此） Signature features (not limited to this)
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`
+- `<iostream> cin cout` 使用串口作为标准输入输出流
 - `<map>`
 - `<memory> unique_ptr`
 - `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`。
@@ -23,6 +24,7 @@ AVR and SAM architectures are currently supported. There are currently no plans 
 - `<set>`
 - `<type_traits>`
 - `<vector>`
+- `<xutility> std::begin std::end`
 # 原版README
 
 This is an implementation of a C++ standard library packaged as an Arduino library. The library supports teaching my CS-11M class by adding key C++ features into the Arduino environment. 

@@ -1,6 +1,7 @@
 #pragma once
 #include <limits>
 #include <type_traits>
+#include <iterator_base>
 namespace std
 {
 	// 365
@@ -506,7 +507,8 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 	using _Iter_diff_t = typename iterator_traits<_Iter>::difference_type;
 #endif // __cpp_lib_concepts
 // 829
-// 859
+// 1127
+#if _HAS_CXX14
 #if _ITERATOR_DEBUG_LEVEL != 0
 	template <class _Ty>
 	constexpr void _Verify_range(const _Ty *const _First, const _Ty *const _Last) noexcept
@@ -515,7 +517,7 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 		_STL_VERIFY(_First <= _Last, "transposed pointer range");
 	}
 #endif // _ITERATOR_DEBUG_LEVEL != 0
-#if _HAS_CXX14
+
 	template <class _Iter, class = void>
 	_INLINE_VAR constexpr bool _Allow_inheriting_unwrap_v = true;
 
@@ -530,38 +532,17 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 	_INLINE_VAR constexpr bool _Range_verifiable_v<_Iter, _Sentinel,
 												   void_t<decltype(_Verify_range(_STD declval<const _Iter &>(), _STD declval<const _Sentinel &>()))>> =
 		_Allow_inheriting_unwrap_v<_Iter>;
-#endif
-	template <class _Iter, class = void>
-	struct _Allow_inheriting_unwrap : true_type
-	{
-	};
-
-	template <class _Iter>
-	struct _Allow_inheriting_unwrap<_Iter, void_t<typename _Iter::_Prevent_inheriting_unwrap>> : is_same<_Iter, typename _Iter::_Prevent_inheriting_unwrap>
-	{
-	};
-
-	template <class _Iter, class _Sentinel = _Iter, class = void>
-	struct _Range_verifiable : false_type
-	{
-	};
-
-	template <class _Iter, class _Sentinel>
-	struct _Range_verifiable<_Iter, _Sentinel,
-							 void_t<decltype(_Verify_range(_STD declval<const _Iter &>(), _STD declval<const _Sentinel &>()))>> : _Allow_inheriting_unwrap<_Iter>
-	{
-	};
 
 	template <class _Iter, class _Sentinel>
 	constexpr void _Adl_verify_range(const _Iter &_First, const _Sentinel &_Last)
 	{
 		// check that [_First, _Last) forms an iterator range
-		if _CONSTEXPR14() (_Range_verifiable<_Iter, _Sentinel>::value)
+		if constexpr (_Range_verifiable_v<_Iter, _Sentinel>)
 		{
 			_Verify_range(_First, _Last);
 		}
 	}
-#if _HAS_CXX14
+
 	template <class _Iter, class = void>
 	_INLINE_VAR constexpr bool _Unwrappable_v = false;
 
@@ -569,26 +550,23 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 	_INLINE_VAR constexpr bool _Unwrappable_v<_Iter,
 											  void_t<decltype(_STD declval<_Remove_cvref_t<_Iter> &>()._Seek_to(_STD declval<_Iter>()._Unwrapped()))>> =
 		_Allow_inheriting_unwrap_v<_Remove_cvref_t<_Iter>>;
-#endif
+
 	template <class _Iter, class = void>
-	struct _Unwrappable : false_type
-	{
-	};
+	_INLINE_VAR constexpr bool _Has_nothrow_unwrapped = false;
+	template <class _Iter>
+	_INLINE_VAR constexpr bool _Has_nothrow_unwrapped<_Iter, void_t<decltype(_STD declval<_Iter>()._Unwrapped())>> =
+		noexcept(_STD declval<_Iter>()._Unwrapped());
 
 	template <class _Iter>
-	struct _Unwrappable<_Iter,
-						void_t<decltype(_STD declval<_Remove_cvref_t<_Iter> &>()._Seek_to(_STD declval<_Iter>()._Unwrapped()))>> : _Allow_inheriting_unwrap<_Remove_cvref_t<_Iter>>
-	{
-	};
-	template <class _Iter>
-	_NODISCARD constexpr _Iter && _Get_unwrapped(_Iter &&_It)
+	_NODISCARD constexpr decltype(auto) _Get_unwrapped(_Iter &&_It) noexcept(
+		!_Unwrappable_v<_Iter> || _Has_nothrow_unwrapped<_Iter>)
 	{
 		// unwrap an iterator previously subjected to _Adl_verify_range or otherwise validated
-		if _CONSTEXPR14() (is_pointer<decay_t<_Iter>>::value)
+		if constexpr (is_pointer_v<decay_t<_Iter>>)
 		{ // special-case pointers and arrays
 			return _It + 0;
 		}
-		else if _CONSTEXPR14() (_Unwrappable<_Iter>::value)
+		else if constexpr (_Unwrappable_v<_Iter>)
 		{
 			return static_cast<_Iter &&>(_It)._Unwrapped();
 		}
@@ -597,8 +575,105 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 			return static_cast<_Iter &&>(_It);
 		}
 	}
-	// 910
-	// 4663
+#else
+#if _ITERATOR_DEBUG_LEVEL != 0
+	template <class _Ty>
+	constexpr void _Verify_range(const _Ty *const _First, const _Ty *const _Last) noexcept
+	{
+		// special case range verification for pointers
+		_STL_VERIFY(_First <= _Last, "transposed pointer range");
+	}
+#endif // _ITERATOR_DEBUG_LEVEL != 0
+	template <class _Iter, class = void>
+	struct _Allow_inheriting_unwrap
+	{
+		static constexpr bool value = true;
+	};
+	template <class _Iter>
+	struct _Allow_inheriting_unwrap<_Iter, void_t<typename _Iter::_Prevent_inheriting_unwrap>>
+	{
+		static constexpr bool value = is_same<_Iter, typename _Iter::_Prevent_inheriting_unwrap>::value;
+	};
+
+	template <class _Iter, class _Sentinel = _Iter, class = void>
+	struct _Range_verifiable
+	{
+		static constexpr bool value = false;
+	};
+
+	template <class _Iter, class _Sentinel>
+	struct _Range_verifiable<_Iter, _Sentinel, void_t<decltype(_Verify_range(_STD declval<const _Iter &>(), _STD declval<const _Sentinel &>()))>>
+	{
+		static constexpr bool value = _Allow_inheriting_unwrap<_Iter>::value;
+	};
+
+	template <class _Iter, class _Sentinel>
+	constexpr void _Adl_verify_range(const _Iter &_First, const _Sentinel &_Last)
+	{
+		// check that [_First, _Last) forms an iterator range
+		if (_Range_verifiable<_Iter, _Sentinel>::value)
+		{
+			_Verify_range(_First, _Last);
+		}
+	}
+
+	template <class _Iter, class = void>
+	struct _Unwrappable
+	{
+		static constexpr bool value = false;
+	};
+
+	template <class _Iter>
+	struct _Unwrappable<_Iter, void_t<decltype(_STD declval<_Remove_cvref_t<_Iter> &>()._Seek_to(_STD declval<_Iter>()._Unwrapped()))>>
+	{
+		static constexpr bool value = _Allow_inheriting_unwrap<_Remove_cvref_t<_Iter>>::value;
+	};
+
+	template <class _Iter, class = void>
+	struct _Has_nothrow_unwrapped
+	{
+		static constexpr bool value = false;
+	};
+	template <class _Iter>
+	struct _Has_nothrow_unwrapped<_Iter, void_t<decltype(_STD declval<_Iter>()._Unwrapped())>>
+	{
+		static constexpr bool value = noexcept(_STD declval<_Iter>()._Unwrapped());
+	};
+
+	template <class _Iter>
+	_NODISCARD inline auto _Get_unwrapped(_Iter &&_It) noexcept(
+		!_Unwrappable<_Iter>::value || _Has_nothrow_unwrapped<_Iter>::value)
+	{
+		// unwrap an iterator previously subjected to _Adl_verify_range or otherwise validated
+		if (is_pointer<decay_t<_Iter>>::value)
+		{ // special-case pointers and arrays
+			return _It + 0;
+		}
+		else if (_Unwrappable<_Iter>::value)
+		{
+			return static_cast<_Iter &&>(_It)._Unwrapped();
+		}
+		else
+		{
+			return static_cast<_Iter &&>(_It);
+		}
+	}
+#endif
+	// 1185
+	//  1822
+	_EXPORT_STD template <class _Ty, size_t _Size>
+	_NODISCARD constexpr _Ty *begin(_Ty (&_Array)[_Size]) noexcept
+	{
+		return _Array;
+	}
+
+	_EXPORT_STD template <class _Ty, size_t _Size>
+	_NODISCARD constexpr _Ty *end(_Ty (&_Array)[_Size]) noexcept
+	{
+		return _Array + _Size;
+	}
+	// 1832
+	//  4663
 	template <class _Ty>
 	struct _Is_character : false_type
 	{

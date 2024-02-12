@@ -1,5 +1,5 @@
 /*
- * Configuration for Arduino's compiler. 
+ * Configuration for Arduino's compiler.
  *   >>> This is a guess <<<
  */
 /*
@@ -21,16 +21,21 @@
 /*
  * String and I/O Stream Support
  */
-#undef __UCLIBCXX_HAS_WCHAR__
+#define __UCLIBCXX_HAS_WCHAR__ 1
 #define __UCLIBCXX_IOSTREAM_BUFSIZE__ 32
 #undef __UCLIBCXX_HAS_LFS__
+#define __UCLIBCXX_SUPPORT_CIN__
 #undef __UCLIBCXX_SUPPORT_CDIR__
-#undef __UCLIBCXX_SUPPORT_COUT__
+#define __UCLIBCXX_SUPPORT_COUT__
 #undef __UCLIBCXX_SUPPORT_CERR__
+#define __UCLIBCXX_SUPPORT_WCIN__
+#undef __UCLIBCXX_SUPPORT_WCDIR__
+#define __UCLIBCXX_SUPPORT_WCOUT__
+#undef __UCLIBCXX_SUPPORT_WCERR__
 /*
  * STL and Code Expansion
  */
-//#define __UCLIBCXX_STL_BUFFER_SIZE__ 32
+// #define __UCLIBCXX_STL_BUFFER_SIZE__ 32
 #define __UCLIBCXX_STL_BUFFER_SIZE__ 8
 #undef __UCLIBCXX_CODE_EXPANSION__
 

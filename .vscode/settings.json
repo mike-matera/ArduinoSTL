@@ -43,6 +43,10 @@
 		"tuple": "cpp",
 		"deque": "cpp",
 		"list": "cpp",
-		"vector": "cpp"
+		"vector": "cpp",
+		"cwctype": "cpp",
+		"cwchar": "cpp",
+		"streambuf": "cpp",
+		"ios": "cpp"
 	}
 }

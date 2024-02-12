@@ -50,7 +50,6 @@
 #include <istream>
 #include <ostream>
 #include <iostream>
-#include <Stream.h>
 
 namespace std
 {
@@ -336,14 +335,6 @@ namespace std
 
 
 using ::Stream;
-
-template <class charT, class traits = char_traits<charT>, class Tserial=Stream> class basic_serialbuf;
-template <class charT, class traits = char_traits<charT>, class Tserial=Stream> class basic_iserialstream;
-template <class charT, class traits = char_traits<charT>, class Tserial=Stream> class basic_oserialstream;
-
-typedef basic_iserialstream<char> ihserialstream;
-typedef basic_oserialstream<char> ohserialstream;
-
 }
 
 #endif

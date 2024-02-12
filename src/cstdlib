@@ -22,14 +22,14 @@
 #ifndef __HEADER_CSTDLIB
 #define __HEADER_CSTDLIB 1
 
-
-namespace std{
+namespace std
+{
 	using ::abort;
 	using ::abs;
 	using ::atexit;
-	using ::atol;
 	using ::atof;
 	using ::atoi;
+	using ::atol;
 	using ::bsearch;
 	using ::calloc;
 	using ::div;
@@ -47,26 +47,24 @@ namespace std{
 	using ::strtol;
 	using ::strtoul;
 	using ::system;
-#ifdef __UCLIBCXX_HAS_WCHAR__
+#if defined(__UCLIBCXX_HAS_WCHAR__) && defined(ARDUINO_ARCH_SAM)
 	using ::mblen;
 	using ::mbstowcs;
 	using ::mbtowc;
-	using ::wctomb;
 	using ::wcstombs;
+	using ::wctomb;
 #endif
 
-/* Defined in Arduino
-	inline long abs(long i){
-		return labs(i);
-	}
-*/
-	inline ldiv_t div(long i, long j){
+	/* Defined in Arduino
+		inline long abs(long i){
+			return labs(i);
+		}
+	*/
+	inline ldiv_t div(long i, long j)
+	{
 		return ldiv(i, j);
 	}
 
 }
 
-
-
 #endif
-

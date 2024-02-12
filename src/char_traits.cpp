@@ -20,49 +20,57 @@
 
 #define __UCLIBCXX_COMPILE_CHAR_TRAITS__ 1
 
-
 #include <basic_definitions>
 #include <char_traits>
 
-namespace std{
+namespace std
+{
 
-_UCXXEXPORT const char_traits<char>::char_type* char_traits<char>::find(const char_type* s, int n, const char_type& a){
-	for(int i=0; i < n; i++){
-		if(eq(s[i], a)){
-			return (s+i);
+	_UCXXEXPORT const char_traits<char>::char_type *char_traits<char>::find(const char_type *s, int n, const char_type &a)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			if (eq(s[i], a))
+			{
+				return (s + i);
+			}
 		}
-	}
-	return 0;
-}
-
-_UCXXEXPORT bool char_traits<char>::eq(const char_type& c1, const char_type& c2){
-	if(strncmp(&c1, &c2, 1) == 0){
-		return true;
-	}
-	return false;
-}
-
-_UCXXEXPORT char_traits<char>::char_type char_traits<char>::to_char_type(const int_type & i){
-	if(i > 0 && i <= 255){
-		return (char)(unsigned char)i;
+		return 0;
 	}
 
-	//Out of range
-	return 0;
-}
-
-
-
-#ifdef __UCLIBCXX_HAS_WCHAR__
-
-_UCXXEXPORT const char_traits<wchar_t>::char_type* char_traits<wchar_t>::find(const char_type* s, int n, const char_type& a){
-	for(int i=0; i < n; i++){
-		if(eq(s[i], a)){
-			return (s+i);
+	_UCXXEXPORT bool char_traits<char>::eq(const char_type &c1, const char_type &c2)
+	{
+		if (strncmp(&c1, &c2, 1) == 0)
+		{
+			return true;
 		}
+		return false;
 	}
-	return 0;
-}
+
+	_UCXXEXPORT char_traits<char>::char_type char_traits<char>::to_char_type(const int_type &i)
+	{
+		if (i > 0 && i <= 255)
+		{
+			return (char)(unsigned char)i;
+		}
+
+		// Out of range
+		return 0;
+	}
+
+#if defined(__UCLIBCXX_HAS_WCHAR__) && defined(ARDUINO_ARCH_SAM)
+
+	_UCXXEXPORT const char_traits<wchar_t>::char_type *char_traits<wchar_t>::find(const char_type *s, int n, const char_type &a)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			if (eq(s[i], a))
+			{
+				return (s + i);
+			}
+		}
+		return 0;
+	}
 
 #endif
 

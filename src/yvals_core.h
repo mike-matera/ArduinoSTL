@@ -24,6 +24,29 @@
 #define _NODISCARD_FRIEND _NODISCARD friend
 #endif // TRANSITION, VSO-568006
 // 518
+// 553
+// _HAS_NODISCARD (in vcruntime.h) controls:
+// [[nodiscard]] attributes on STL functions
+
+// TRANSITION, This should go to vcruntime.h
+#ifdef __has_cpp_attribute
+#if __has_cpp_attribute(nodiscard) >= 201907L
+#define _NODISCARD_MSG(_Msg) [[nodiscard(_Msg)]]
+#elif __has_cpp_attribute(nodiscard) >= 201603L
+#define _NODISCARD_MSG(_Msg) [[nodiscard]]
+#else
+#define _NODISCARD_MSG(_Msg)
+#endif
+#else
+#define _NODISCARD_MSG(_Msg)
+#endif
+// 567
+//  611
+#define _NODISCARD_EMPTY_NON_MEMBER                                                                            \
+	_NODISCARD_MSG(                                                                                            \
+		"This function returns a bool indicating whether the container or container-like object is empty and " \
+		"has no other effects. It is not useful to call this function and discard the return value.")
+// 616
 // 657
 //  Functions that became constexpr in C++20
 #if _HAS_CXX20

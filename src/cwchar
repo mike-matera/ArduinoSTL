@@ -14,15 +14,15 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+#ifdef ARDUINO_ARCH_SAM
 #include <wchar.h>
 #include <basic_definitions>
 
 #ifndef __HEADER_CWCHAR
 #define __HEADER_CWCHAR 1
 
-
-namespace std{
+namespace std
+{
 	using ::mbstate_t;
 	using ::wint_t;
 
@@ -79,8 +79,5 @@ namespace std{
 	using ::wprintf;
 	using ::wscanf;
 }
-
-
-
 #endif
-
+#endif
