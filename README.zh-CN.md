@@ -6,15 +6,7 @@
 
 目前支持AVR和SAM架构。暂时没有支持ESP32的计划，因为ESP32官方已经提供了标准库，同时使用两套标准库将产生很多难以处理的问题。
 
-自从[原始ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)没有更新或者时间较长（202203~202212），我将这个分支发布到Arduino公共库，并重命名为Cpp_Standard_Library以区别。
-
-该库尝试在 Arduino 上实现 C++11~17 标准库（STL）的大部分功能。除了ArduinoSTL之外，这个库的一些功能实现还参考了MSVC、LLVM和boost。因为接口是根据STL来做的，所以不需要额外写文档，可以参考任何权威的STL文档。除非另有说明，该库的使用和行为应该是相同的；如果不同，则应该是一个错误，欢迎提交问题。
-
-如果你需要一些标准库中提供但本库中尚未提供的功能，也欢迎你提交issue，作者会优先为你实现。
-
-目前支持 AVR 和 SAM 架构。目前还没有计划支持 ESP32，因为 ESP32 已经官方提供了标准库。并行使用两个标准库会产生很多棘手的问题。
-
-# 招牌功能（不限于此） Signature features (not limited to this)
+# 招牌功能（不限于此）
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
@@ -38,7 +30,7 @@
 
 使用 Andy Brown 的 Arduino 库的流实现：
 
-[HTTP://Andy Brown.么.UK/2011/01/15/他和-standard-template-library-史泰龙-佛如-AVR-with-从-streams/](http://andybrown.me.uk/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/)
+<http://andybrown.me.uk/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/>
 
 ## 使用 printf() 和 scanf()
 

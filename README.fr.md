@@ -1,27 +1,19 @@
-parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)作者长期不更新（202203~202212），本人将此分支发布到Arduino公开库，改名为Cpp_Standard_Library以示区分。
+parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)L'auteur ne l'a pas mis à jour depuis longtemps (202203~202212).J'ai publié cette branche dans la bibliothèque publique Arduino et l'ai renommée Cpp_Standard_Library pour la distinguer.
 
 Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM et boost. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
 
 Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le mettra en œuvre pour vous en premier.
 
-Prend actuellement en charge les architectures AVR et SAM. Il n'est pas prévu de prendre en charge ESP32 pour le moment, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
+Prend actuellement en charge les architectures AVR et SAM. Il n'est actuellement pas prévu de prendre en charge ESP32, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
 
-Depuis le[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)n'a pas de mises à jour ou depuis longtemps (202203~202212), j'ai publié cette branche dans la bibliothèque publique Arduino et je l'ai renommée Cpp_Standard_Library pour la distinguer.
-
-Cette bibliothèque tente d'implémenter la plupart des fonctionnalités de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines des implémentations fonctionnelles de cette bibliothèque font également référence à MSVC, LLVM et boost. Étant donné que les interfaces sont réalisées selon STL, il n'est pas nécessaire d'écrire une documentation supplémentaire, vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation et le comportement de cette bibliothèque doivent être les mêmes ; si différent, il devrait s'agir d'un bug et n'hésitez pas à soumettre un problème.
-
-Si vous avez besoin de certaines fonctionnalités disponibles dans la bibliothèque standard mais qui ne le sont pas encore dans cette bibliothèque, vous êtes également invités à soumettre un numéro, et l'auteur se donnera la priorité de l'implémenter pour vous.
-
-Les architectures AVR et SAM sont actuellement prises en charge. Il n'est actuellement pas prévu de prendre en charge ESP32, car ESP32 a officiellement fourni une bibliothèque standard. L’utilisation de deux bibliothèques standards en parallèle génère de nombreux problèmes délicats.
-
-# Fonctionnalités de signature (sans s'y limiter) Fonctionnalités de signature (sans s'y limiter)
+# Fonctions de signature (sans s'y limiter)
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<iostream> cin cout`Utiliser le port série comme flux d'entrée et de sortie standard
 -   `<map>`
 -   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
+-   `<random> mt19937, ArduinoUrng`：`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
@@ -119,7 +111,7 @@ Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`et rien ne sera instancié. Vous devez c
 
 Impression de flotteurs et de doubles en utilisant`cout`ignore les spécificateurs de format.
 
-uClibc seems to be fairly complete. Strings and vectors both work, even with the limited amount of heap available to Arduino. The uClibc++ status page can be found here: 
+uClibc semble être assez complet. Les chaînes et les vecteurs fonctionnent tous deux, même avec la quantité limitée de tas disponible pour Arduino. La page d'état d'uClibc++ peut être trouvée ici :
 
 <https://cxx.uclibc.org/status.html>
 
