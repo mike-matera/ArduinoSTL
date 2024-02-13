@@ -5,6 +5,8 @@
 如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
 
 目前支持AVR和SAM架构。暂时没有支持ESP32的计划，因为ESP32官方已经提供了标准库，同时使用两套标准库将产生很多难以处理的问题。
+
+在包含任何C++标准头文件之前，必须先包含`Cpp_Standard_Library.h`。这是对 Arduino IDE 的提示，告诉编译器必须要将本库纳入编译流程。
 # 招牌功能（不限于此）
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`

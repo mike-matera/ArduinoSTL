@@ -1,5 +1,4 @@
 #pragma once
-#include "Cpp_Standard_Library.h"
 // 24
 #define _CRT_WARN 0
 #define _CRT_ERROR 1
