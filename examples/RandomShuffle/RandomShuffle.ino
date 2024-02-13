@@ -1,3 +1,4 @@
+//此示例需要使用串口监视器呈现。先生成一个原始数组0123456789，然后根据用户输入的随机种子，不断产生随机排序。
 #include <Cpp_Standard_Library.h>
 #include <iostream>
 #include <random>
@@ -18,11 +19,12 @@ void setup() {
   std::cout << std::endl;
 }
 void loop() {
-  constexpr auto BB=std::_Allow_inheriting_unwrap<unsigned int*, void>::value;
+  //非标准行为：ArduinoUrng是Arduino平台专用的随机生成器。你也可以使用标准库提供的mt19937，但它占用了太多内存，不建议使用。
   constexpr std::ArduinoUrng AU;
   std::cout << "输入随机种子：";
   uint32_t RandomSeed;
   std::cin >> RandomSeed;
+  std::cout << RandomSeed << std::endl;
   std::ArduinoUrng::seed(RandomSeed);
   std::shuffle(std::begin(Array), std::end(Array), AU);
   std::cout << "随机乱序：";

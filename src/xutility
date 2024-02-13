@@ -589,6 +589,7 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 	{
 		static constexpr bool value = true;
 	};
+
 	template <class _Iter>
 	struct _Allow_inheriting_unwrap<_Iter, void_t<typename _Iter::_Prevent_inheriting_unwrap>>
 	{
@@ -639,24 +640,20 @@ concept indirectly_swappable = indirectly_readable<_It1> && indirectly_readable<
 	{
 		static constexpr bool value = noexcept(_STD declval<_Iter>()._Unwrapped());
 	};
-
-	template <class _Iter>
-	_NODISCARD inline auto _Get_unwrapped(_Iter &&_It) noexcept(
-		!_Unwrappable<_Iter>::value || _Has_nothrow_unwrapped<_Iter>::value)
+	template <class _Iter, enable_if_t<!(is_pointer<decay_t<_Iter>>::value || _Unwrappable<_Iter>::value), int> = 0>
+	constexpr auto _Get_unwrapped(_Iter &&_It) noexcept
 	{
-		// unwrap an iterator previously subjected to _Adl_verify_range or otherwise validated
-		if (is_pointer<decay_t<_Iter>>::value)
-		{ // special-case pointers and arrays
-			return _It + 0;
-		}
-		else if (_Unwrappable<_Iter>::value)
-		{
-			return static_cast<_Iter &&>(_It)._Unwrapped();
-		}
-		else
-		{
-			return static_cast<_Iter &&>(_It);
-		}
+		return static_cast<_Iter &&>(_It);
+	}
+	template <class _Iter, enable_if_t<is_pointer<decay_t<_Iter>>::value, int> = 0>
+	constexpr auto _Get_unwrapped(_Iter &&_It) noexcept
+	{
+		return _It + 0;
+	}
+	template <class _Iter, enable_if_t<_Unwrappable<_Iter>::value, int> = 0>
+	constexpr auto _Get_unwrapped(_Iter &&_It) noexcept
+	{
+		return static_cast<_Iter &&>(_It)._Unwrapped();
 	}
 #endif
 	// 1185

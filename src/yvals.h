@@ -1,4 +1,6 @@
 #pragma once
+#include "sal.h"
+#include "crtdbg.h"
 // 29
 #if defined(MRTDLL) && defined(_CRTBLD)
 // process-global is the default for code built with /clr or /clr:oldSyntax.
@@ -93,15 +95,63 @@
 
 #endif // _ITERATOR_DEBUG_LEVEL
 // 131
-// 203
+// 171
+#ifndef _STL_CRT_SECURE_INVALID_PARAMETER
+#ifdef _STL_CALL_ABORT_INSTEAD_OF_INVALID_PARAMETER
+#define _STL_CRT_SECURE_INVALID_PARAMETER(expr) _CSTD abort()
+#elif defined(_DEBUG)							// avoid emitting unused long strings for function names; see GH-1956
+#define _STL_CRT_SECURE_INVALID_PARAMETER(expr) // Arduino不支持 ::_invalid_parameter(_CRT_WIDE(#expr), L"", __FILEW__, __LINE__, 0)
+#else											// ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+#define _STL_CRT_SECURE_INVALID_PARAMETER(expr) _CRT_SECURE_INVALID_PARAMETER(expr)
+#endif // ^^^ !defined(_DEBUG) ^^^
+#endif // _STL_CRT_SECURE_INVALID_PARAMETER
+
+#define _STL_REPORT_ERROR(mesg)                  \
+	do                                           \
+	{                                            \
+		_RPTF0(_CRT_ASSERT, mesg);               \
+		_STL_CRT_SECURE_INVALID_PARAMETER(mesg); \
+	} while (false)
+
+#ifdef __clang__
+#define _STL_VERIFY(cond, mesg)                                                          \
+	_Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Wassume\"") do \
+	{                                                                                    \
+		if (cond)                                                                        \
+		{ /* contextually convertible to bool paranoia */                                \
+		}                                                                                \
+		else                                                                             \
+		{                                                                                \
+			_STL_REPORT_ERROR(mesg);                                                     \
+		}                                                                                \
+                                                                                         \
+		_Analysis_assume_(cond);                                                         \
+	}                                                                                    \
+	while (false)                                                                        \
+	_Pragma("clang diagnostic pop")
+#else // ^^^ Clang / MSVC vvv
+#define _STL_VERIFY(cond, mesg)                           \
+	do                                                    \
+	{                                                     \
+		if (cond)                                         \
+		{ /* contextually convertible to bool paranoia */ \
+		}                                                 \
+		else                                              \
+		{                                                 \
+			_STL_REPORT_ERROR(mesg);                      \
+		}                                                 \
+                                                          \
+		_Analysis_assume_(cond);                          \
+	} while (false)
+#endif // ^^^ MSVC ^^^
+
 #ifdef _DEBUG
 #define _STL_ASSERT(cond, mesg) _STL_VERIFY(cond, mesg)
-#else // ^^^ _DEBUG ^^^ // vvv !_DEBUG vvv
-#define _STL_ASSERT(cond, mesg)
-#endif // _DEBUG
-
-// 209
-// 285
+#else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+#define _STL_ASSERT(cond, mesg) _Analysis_assume_(cond)
+#endif // ^^^ !defined(_DEBUG) ^^^
+// 217
+//  285
 #ifndef _CRTIMP2_IMPORT
 #if defined(CRTDLL2) && defined(_CRTBLD)
 #define _CRTIMP2_IMPORT __declspec(dllexport)

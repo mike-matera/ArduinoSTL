@@ -147,9 +147,24 @@ namespace std
     struct is_void : is_same<remove_cv_t<_Ty>, void>
     {
     };
-
+#ifdef ARDUINO_ARCH_SAM
+    // Workaround SAM 平台的 void_t bug
+    template <class... _Types>
+    struct void_s
+    {
+        using type = void;
+    };
+    template <class T, class... _Types>
+    struct void_s<T, _Types...>
+    {
+        using type = T;
+    };
+    template <typename... _Types>
+    using void_t = typename void_s<_Types...>::type;
+#else
     template <class... _Types>
     using void_t = void;
+#endif
     // 80
     // 105
     template <class _Ty, class = void>
