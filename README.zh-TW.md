@@ -78,7 +78,7 @@ void loop() {
 
 ### 使用內建連接埠
 
-In `src/ArduinoSTL.cpp`改變的值`ARDUINOSTL_DEFAULT_SERIAL`。保留其他預設值不註釋。
+在`src/ArduinoSTL.cpp`改變的值`ARDUINOSTL_DEFAULT_SERIAL`。保留其他預設值不註釋。
 
 ### 使用軟體序列埠。
 
@@ -123,4 +123,4 @@ uClibc 似乎相當完整。即使 Arduino 可用的堆數量有限，字串和�
 
 uClibc++ 函式庫根據 LGPL 取得許可。該專案採用 LGPL 與其使用的大部分程式碼相容。除非另有說明，否則所有程式碼均根據 LGPL 獲得許可。有一個例外：
 
--   src/serstream is licensed under the BSD license according to Andy Brown's wishes here: <http://andybrown.me.uk/terms-and-conditions/>
+-   根據 Andy Brown 的意願，src/serstream 在 BSD 許可證下獲得許可：<http://andybrown.me.uk/terms-and-conditions/>
