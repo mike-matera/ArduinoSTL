@@ -6,6 +6,8 @@ Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque
 
 Prend actuellement en charge les architectures AVR et SAM. Il n'est actuellement pas prévu de prendre en charge ESP32, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
 
+Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
+
 # Fonctions de signature (sans s'y limiter)
 
 -   `<algorithm> fill_n shuffle`
@@ -49,7 +51,7 @@ void setup() {
 
 ## En utilisant`cin`un`cout`
 
-Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. Voir ci-dessous pour savoir comment spécifier votre propre appareil. Voici un exemple de croquis utilisant`cin`et`cout`.
+Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. See below for how to specify your own device. Here's an example sketch using `cin`et`cout`.
 
 ```c++
 #include <ArduinoSTL.h>
