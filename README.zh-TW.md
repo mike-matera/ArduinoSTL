@@ -6,15 +6,7 @@
 
 目前支援AVR和SAM架構。暫時沒有支援ESP32的計劃，因為ESP32官方已經提供了標準庫，同時使用兩套標準庫將產生許多難以處理的問題。
 
-自從[原始ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)沒有更新或時間較長（202203~202212），我將這個分支發佈到Arduino公共庫，並重命名為Cpp_Standard_Library以區別。
-
-該函式庫嘗試在 Arduino 上實作 C++11~17 標準函式庫（STL）的大部分功能。除了ArduinoSTL之外，這個函式庫的一些功能實作也參考了MSVC、LLVM和boost。因為介面是根據STL來做的，所以不需要額外寫文檔，可以參考任何權威的STL文檔。除非另有說明，該庫的使用和行為應該是相同的；如果不同，則應該是一個錯誤，歡迎提交問題。
-
-如果你需要一些標準庫中提供但本庫中尚未提供的功能，也歡迎你提交issue，作者會優先為你實現。
-
-目前支援 AVR 和 SAM 架構。目前還沒有計劃支援 ESP32，因為 ESP32 已經官方提供了標準庫。並行使用兩個標準函式庫會產生很多棘手的問題。
-
-# 招牌功能（不限於此） Signature features (not limited to this)
+# 招牌功能（不限於此）
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
@@ -86,11 +78,11 @@ void loop() {
 
 ### 使用內建連接埠
 
-在`src/ArduinoSTL.cpp`改變的值`ARDUINOSTL_DEFAULT_SERIAL`。保留其他預設值不註釋。
+In `src/ArduinoSTL.cpp`改變的值`ARDUINOSTL_DEFAULT_SERIAL`。保留其他預設值不註釋。
 
 ### 使用軟體序列埠。
 
-放`ARDUINO_DEFAULT_SERAL` to `NULL`。註解掉其他預設值。
+放`ARDUINO_DEFAULT_SERAL`到`NULL`。註解掉其他預設值。
 
 以下是使用 SofwareSerial 的範例草圖：
 
@@ -115,7 +107,7 @@ void setup() {
 
 註解掉`ARDUINOSTL_DEFAULT_CIN_COUT`並且什麼都不會被實例化。如果您打算選擇非預設串列端口，則必須註解掉該標誌。使用時沒有明顯的開銷`printf()`所以你目前無法避免初始化它。
 
-## Known Issues
+## 已知的問題
 
 使用列印浮點數和雙精度數`cout`忽略格式說明符。
 
@@ -131,4 +123,4 @@ uClibc 似乎相當完整。即使 Arduino 可用的堆數量有限，字串和�
 
 uClibc++ 函式庫根據 LGPL 取得許可。該專案採用 LGPL 與其使用的大部分程式碼相容。除非另有說明，否則所有程式碼均根據 LGPL 獲得許可。有一個例外：
 
--   根據 Andy Brown 的意願，src/serstream 在 BSD 許可證下獲得許可：<http://andybrown.me.uk/terms-and-conditions/>
+-   src/serstream is licensed under the BSD license according to Andy Brown's wishes here: <http://andybrown.me.uk/terms-and-conditions/>
