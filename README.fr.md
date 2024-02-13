@@ -51,7 +51,7 @@ void setup() {
 
 ## En utilisant`cin`un`cout`
 
-Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. See below for how to specify your own device. Here's an example sketch using `cin`et`cout`.
+Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. Voir ci-dessous pour savoir comment spécifier votre propre appareil. Voici un exemple de croquis utilisant`cin`et`cout`.
 
 ```c++
 #include <ArduinoSTL.h>
