@@ -6,6 +6,8 @@
 
 目前支援AVR和SAM架構。暫時沒有支援ESP32的計劃，因為ESP32官方已經提供了標準庫，同時使用兩套標準庫將產生許多難以處理的問題。
 
+在包含任何C++標準頭檔之前，必須先包含`Cpp_Standard_Library.h`。這是對 Arduino IDE 的提示，告訴編譯器必須將本函式庫納入編譯流程。
+
 # 招牌功能（不限於此）
 
 -   `<algorithm> fill_n shuffle`

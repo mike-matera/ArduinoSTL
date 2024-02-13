@@ -6,6 +6,8 @@ If you need some functions that are in the standard library but are not provided
 
 Currently supports AVR and SAM architectures. There are currently no plans to support ESP32, because ESP32 has officially provided a standard library, and using two sets of standard libraries at the same time will cause many problems that are difficult to deal with.
 
+Before including any C++ standard header file, you must first include`Cpp_Standard_Library.h`. This is a prompt to the Arduino IDE, telling the compiler that this library must be included in the compilation process.
+
 # Signature functions (not limited to this)
 
 -   `<algorithm> fill_n shuffle`
