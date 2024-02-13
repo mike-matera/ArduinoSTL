@@ -76,7 +76,7 @@ void loop() {
 
 ## Changing the Serial Port
 
-You can change what serial port that`cin`,`cout`and`printf()`use. You can use built-in serial ports (e.g.`Serial1`on Leonardo) or you can use software serial ports that implement`Stream`.
+You can change what serial port that`cin`, `cout` and `printf()`use. You can use built-in serial ports (e.g.`Serial1`on Leonardo) or you can use software serial ports that implement`Stream`.
 
 ### Using a Built-in Port
 
@@ -123,6 +123,6 @@ Always use the latest Arduino IDE. This library uses the Arduino IDE Library Spe
 
 ## License
 
-The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception:
+The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception: 
 
 -   src/serstream is licensed under the BSD license according to Andy Brown's wishes here:<http://andybrown.me.uk/terms-and-conditions/>
