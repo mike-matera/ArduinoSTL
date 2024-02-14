@@ -1,4 +1,6 @@
-[README.en.md](README.en.md)因[原版ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)作者長期不更新（202203~202212），本人將此分支發佈到Arduino公開庫，改名為Cpp_Standard_Library以示區分。
+[README.en.md](README.en.md)
+
+因[原版ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)作者長期不更新（202203~202212），本人將此分支發佈到Arduino公開庫，改名為Cpp_Standard_Library以示區分。
 
 本函式庫試圖在Arduino上實作C++11~17標準函式庫（STL）的大部分功能。除了ArduinoSTL以外，本函式庫部分功能實作也參考了MSVC、LLVM和boost。因為是依照STL做的接口，所以不需要另外寫文檔，你可以參考任何一個權威的STL文檔。除非另有說明，否則本函式庫的使用方法應該是一樣的，如果不一樣那應該就是個bug，歡迎提交Issue。
 
