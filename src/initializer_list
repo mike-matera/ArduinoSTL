@@ -20,6 +20,9 @@
 
 #ifndef __STD_HEADER_INITIALIZER_LIST
 #define __STD_HEADER_INITIALIZER_LIST
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(initializer_list)
+#else
 #include <stddef.h>
 #pragma GCC visibility push(default)
 
@@ -58,5 +61,7 @@ namespace std
   };
 
 }
+
+#endif
 
 #endif

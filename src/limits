@@ -16,686 +16,810 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef __STD_HEADER_LIMITS
 #define __STD_HEADER_LIMITS 1
 
 #warning limits header is nowhere complete or accurate
 
 #pragma GCC visibility push(default)
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(limits)
+#else
 #include "yvals_core.h"
 #include <limits.h>
 #undef min
 #undef max
-namespace std{
-//37
-_EXPORT_STD enum float_denorm_style { // constants for different IEEE float denormalization styles
-    denorm_indeterminate = -1,
-    denorm_absent        = 0,
-    denorm_present       = 1
-};
-//43
-enum float_round_style{
-	round_indeterminate		=-1,
-	round_toward_zero		= 0,
-	round_to_nearest		= 1,
-	round_toward_infinity		= 2,
-	round_toward_neg_infinity	= 3
-};
+namespace std
+{
+	// 37
+	_EXPORT_STD enum float_denorm_style { // constants for different IEEE float denormalization styles
+		denorm_indeterminate = -1,
+		denorm_absent = 0,
+		denorm_present = 1
+	};
+	// 43
+	enum float_round_style
+	{
+		round_indeterminate = -1,
+		round_toward_zero = 0,
+		round_to_nearest = 1,
+		round_toward_infinity = 2,
+		round_toward_neg_infinity = 3
+	};
 
-template <int bitsize> struct __bits_to_base_10{
-	static constexpr int size = -1;
-};
-template <> struct __bits_to_base_10<7>{
-	static constexpr int size = 2;
-};
-template <> struct __bits_to_base_10<8>{
-	static constexpr int size = 2;
-};
-template <> struct __bits_to_base_10<9>{
-	static constexpr int size = 2;
-};
-template <> struct __bits_to_base_10<10>{
-	static constexpr int size = 3;
-};
-template <> struct __bits_to_base_10<15>{
-	static constexpr int size = 4;
-};
-template <> struct __bits_to_base_10<16>{
-	static constexpr int size = 4;
-};
-template <> struct __bits_to_base_10<17>{
-	static constexpr int size = 5;
-};
-template <> struct __bits_to_base_10<18>{
-	static constexpr int size = 5;
-};
-template <> struct __bits_to_base_10<31>{
-	static constexpr int size = 9;
-};
-template <> struct __bits_to_base_10<32>{
-	static constexpr int size = 9;
-};
-template <> struct __bits_to_base_10<35>{
-	static constexpr int size = 10;
-};
-template <> struct __bits_to_base_10<36>{
-	static constexpr int size = 10;
-};
-template <> struct __bits_to_base_10<63>{
-	static constexpr int size = 18;
-};
-template <> struct __bits_to_base_10<64>{
-	static constexpr int size = 19;
-};
-template <> struct __bits_to_base_10<71>{
-	static constexpr int size = 21;
-};
-template <> struct __bits_to_base_10<72>{
-	static constexpr int size = 21;
-};
-template <> struct __bits_to_base_10<79>{
-	static constexpr int size = 23;
-};
-template <> struct __bits_to_base_10<80>{
-	static constexpr int size = 24;
-};
-template <> struct __bits_to_base_10<127>{
-	static constexpr int size = 38;
-};
-template <> struct __bits_to_base_10<128>{
-	static constexpr int size = 38;
-};
+	template <int bitsize>
+	struct __bits_to_base_10
+	{
+		static constexpr int size = -1;
+	};
+	template <>
+	struct __bits_to_base_10<7>
+	{
+		static constexpr int size = 2;
+	};
+	template <>
+	struct __bits_to_base_10<8>
+	{
+		static constexpr int size = 2;
+	};
+	template <>
+	struct __bits_to_base_10<9>
+	{
+		static constexpr int size = 2;
+	};
+	template <>
+	struct __bits_to_base_10<10>
+	{
+		static constexpr int size = 3;
+	};
+	template <>
+	struct __bits_to_base_10<15>
+	{
+		static constexpr int size = 4;
+	};
+	template <>
+	struct __bits_to_base_10<16>
+	{
+		static constexpr int size = 4;
+	};
+	template <>
+	struct __bits_to_base_10<17>
+	{
+		static constexpr int size = 5;
+	};
+	template <>
+	struct __bits_to_base_10<18>
+	{
+		static constexpr int size = 5;
+	};
+	template <>
+	struct __bits_to_base_10<31>
+	{
+		static constexpr int size = 9;
+	};
+	template <>
+	struct __bits_to_base_10<32>
+	{
+		static constexpr int size = 9;
+	};
+	template <>
+	struct __bits_to_base_10<35>
+	{
+		static constexpr int size = 10;
+	};
+	template <>
+	struct __bits_to_base_10<36>
+	{
+		static constexpr int size = 10;
+	};
+	template <>
+	struct __bits_to_base_10<63>
+	{
+		static constexpr int size = 18;
+	};
+	template <>
+	struct __bits_to_base_10<64>
+	{
+		static constexpr int size = 19;
+	};
+	template <>
+	struct __bits_to_base_10<71>
+	{
+		static constexpr int size = 21;
+	};
+	template <>
+	struct __bits_to_base_10<72>
+	{
+		static constexpr int size = 21;
+	};
+	template <>
+	struct __bits_to_base_10<79>
+	{
+		static constexpr int size = 23;
+	};
+	template <>
+	struct __bits_to_base_10<80>
+	{
+		static constexpr int size = 24;
+	};
+	template <>
+	struct __bits_to_base_10<127>
+	{
+		static constexpr int size = 38;
+	};
+	template <>
+	struct __bits_to_base_10<128>
+	{
+		static constexpr int size = 38;
+	};
 
+	// 51
+	struct _Num_base
+	{ // base for all types, with common defaults
+		static constexpr float_denorm_style has_denorm = denorm_absent;
+		static constexpr bool has_denorm_loss = false;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_bounded = false;
+		static constexpr bool is_exact = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool is_integer = false;
+		static constexpr bool is_modulo = false;
+		static constexpr bool is_signed = false;
+		static constexpr bool is_specialized = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr bool traps = false;
+		static constexpr float_round_style round_style = round_toward_zero;
+		static constexpr int digits = 0;
+		static constexpr int digits10 = 0;
+		static constexpr int max_digits10 = 0;
+		static constexpr int max_exponent = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
+		static constexpr int min_exponent10 = 0;
+		static constexpr int radix = 0;
+	};
 
+	_EXPORT_STD template <class _Ty>
+	class numeric_limits : public _Num_base
+	{ // numeric limits for arbitrary type _Ty (say little or nothing)
+	public:
+		_NODISCARD static constexpr _Ty(min)() noexcept
+		{
+			return _Ty();
+		}
 
+		_NODISCARD static constexpr _Ty(max)() noexcept
+		{
+			return _Ty();
+		}
 
-//51
-struct _Num_base { // base for all types, with common defaults
-    static constexpr float_denorm_style has_denorm = denorm_absent;
-    static constexpr bool has_denorm_loss          = false;
-    static constexpr bool has_infinity             = false;
-    static constexpr bool has_quiet_NaN            = false;
-    static constexpr bool has_signaling_NaN        = false;
-    static constexpr bool is_bounded               = false;
-    static constexpr bool is_exact                 = false;
-    static constexpr bool is_iec559                = false;
-    static constexpr bool is_integer               = false;
-    static constexpr bool is_modulo                = false;
-    static constexpr bool is_signed                = false;
-    static constexpr bool is_specialized           = false;
-    static constexpr bool tinyness_before          = false;
-    static constexpr bool traps                    = false;
-    static constexpr float_round_style round_style = round_toward_zero;
-    static constexpr int digits                    = 0;
-    static constexpr int digits10                  = 0;
-    static constexpr int max_digits10              = 0;
-    static constexpr int max_exponent              = 0;
-    static constexpr int max_exponent10            = 0;
-    static constexpr int min_exponent              = 0;
-    static constexpr int min_exponent10            = 0;
-    static constexpr int radix                     = 0;
-};
+		_NODISCARD static constexpr _Ty lowest() noexcept
+		{
+			return _Ty();
+		}
 
-_EXPORT_STD template <class _Ty>
-class numeric_limits : public _Num_base { // numeric limits for arbitrary type _Ty (say little or nothing)
-public:
-    _NODISCARD static constexpr _Ty(min)() noexcept {
-        return _Ty();
-    }
+		_NODISCARD static constexpr _Ty epsilon() noexcept
+		{
+			return _Ty();
+		}
 
-    _NODISCARD static constexpr _Ty(max)() noexcept {
-        return _Ty();
-    }
+		_NODISCARD static constexpr _Ty round_error() noexcept
+		{
+			return _Ty();
+		}
 
-    _NODISCARD static constexpr _Ty lowest() noexcept {
-        return _Ty();
-    }
+		_NODISCARD static constexpr _Ty denorm_min() noexcept
+		{
+			return _Ty();
+		}
 
-    _NODISCARD static constexpr _Ty epsilon() noexcept {
-        return _Ty();
-    }
+		_NODISCARD static constexpr _Ty infinity() noexcept
+		{
+			return _Ty();
+		}
 
-    _NODISCARD static constexpr _Ty round_error() noexcept {
-        return _Ty();
-    }
+		_NODISCARD static constexpr _Ty quiet_NaN() noexcept
+		{
+			return _Ty();
+		}
 
-    _NODISCARD static constexpr _Ty denorm_min() noexcept {
-        return _Ty();
-    }
+		_NODISCARD static constexpr _Ty signaling_NaN() noexcept
+		{
+			return _Ty();
+		}
+	};
 
-    _NODISCARD static constexpr _Ty infinity() noexcept {
-        return _Ty();
-    }
+	template <class _Ty>
+	class numeric_limits<const _Ty> : public numeric_limits<_Ty>
+	{
+	}; // numeric limits for const types
 
-    _NODISCARD static constexpr _Ty quiet_NaN() noexcept {
-        return _Ty();
-    }
+	template <class _Ty>
+	class numeric_limits<volatile _Ty> : public numeric_limits<_Ty>
+	{
+	}; // numeric limits for volatile types
 
-    _NODISCARD static constexpr _Ty signaling_NaN() noexcept {
-        return _Ty();
-    }
-};
+	template <class _Ty>
+	class numeric_limits<const volatile _Ty> : public numeric_limits<_Ty>
+	{
+	}; // numeric limits for const volatile types
+	// 126
+	template <>
+	class numeric_limits<bool>
+	{
+	public:
+		typedef bool T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return false;
+		}
+		static constexpr T max()
+		{
+			return true;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = 1;
+		static constexpr int digits10 = 0;
+		static constexpr bool is_signed = false;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = false;
+		static constexpr bool is_bounded = true;
 
-template <class _Ty>
-class numeric_limits<const _Ty> : public numeric_limits<_Ty> {}; // numeric limits for const types
+		// Floating point specific.
 
-template <class _Ty>
-class numeric_limits<volatile _Ty> : public numeric_limits<_Ty> {}; // numeric limits for volatile types
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <class _Ty>
-class numeric_limits<const volatile _Ty> : public numeric_limits<_Ty> {}; // numeric limits for const volatile types
-//126
-template <> class numeric_limits<bool> {
-public:
-	typedef bool T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return false;
-	}
-	static constexpr T max(){
-		return true;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = 1;
-	static constexpr int digits10 = 0;
-	static constexpr bool is_signed = false;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = false;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<unsigned char>
+	{
+	public:
+		typedef unsigned char T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return 0;
+		}
+		static constexpr T max()
+		{
+			return UCHAR_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT;
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = false;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<unsigned char> {
-public:
-	typedef unsigned char T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return 0;
-	}
-	static constexpr T max(){
-		return UCHAR_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT;
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = false;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<signed char>
+	{
+	public:
+		typedef signed char T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return SCHAR_MIN;
+		}
+		static constexpr T max()
+		{
+			return SCHAR_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT - 1;
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<signed char> {
-public:
-	typedef signed char T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return SCHAR_MIN;
-	}
-	static constexpr T max(){
-		return SCHAR_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT - 1;
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = true;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<char>
+	{
+	public:
+		typedef char T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return CHAR_MIN;
+		}
+		static constexpr T max()
+		{
+			return CHAR_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = (CHAR_MIN != 0) ? CHAR_BIT - 1 : CHAR_BIT;
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = (CHAR_MIN != 0);
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<char> {
-public:
-	typedef char T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return CHAR_MIN;
-	}
-	static constexpr T max(){
-		return CHAR_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = (CHAR_MIN != 0) ? CHAR_BIT - 1 : CHAR_BIT;
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = (CHAR_MIN != 0);
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<unsigned short>
+	{
+	public:
+		typedef unsigned short T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return 0;
+		}
+		static constexpr T max()
+		{
+			return USHRT_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT * sizeof(T);
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = false;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<unsigned short> {
-public:
-	typedef unsigned short T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return 0;
-	}
-	static constexpr T max(){
-		return USHRT_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT * sizeof(T);
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = false;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<signed short>
+	{
+	public:
+		typedef signed short T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return SHRT_MIN;
+		}
+		static constexpr T max()
+		{
+			return SHRT_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT * sizeof(T);
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<signed short> {
-public:
-	typedef signed short T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return SHRT_MIN;
-	}
-	static constexpr T max(){
-		return SHRT_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT * sizeof(T);
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = true;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<unsigned int>
+	{
+	public:
+		typedef unsigned int T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return 0;
+		}
+		static constexpr T max()
+		{
+			return UINT_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT * sizeof(T);
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = false;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<unsigned int> {
-public:
-	typedef unsigned int T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return 0;
-	}
-	static constexpr T max(){
-		return UINT_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT * sizeof(T);
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = false;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<signed int>
+	{
+	public:
+		typedef signed int T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return INT_MIN;
+		}
+		static constexpr T max()
+		{
+			return INT_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT * sizeof(T);
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<signed int> {
-public:
-	typedef signed int T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return INT_MIN;
-	}
-	static constexpr T max(){
-		return INT_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT * sizeof(T);
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = true;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<unsigned long int>
+	{
+	public:
+		typedef unsigned long int T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return 0;
+		}
+		static constexpr T max()
+		{
+			return ULONG_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT * sizeof(T);
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = false;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<unsigned long int> {
-public:
-	typedef unsigned long int T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return 0;
-	}
-	static constexpr T max(){
-		return ULONG_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT * sizeof(T);
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = false;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<signed long int>
+	{
+	public:
+		typedef signed long int T;
+		// General -- meaningful for all specializations.
+		static constexpr bool is_specialized = true;
+		static constexpr T min()
+		{
+			return LONG_MIN;
+		}
+		static constexpr T max()
+		{
+			return LONG_MAX;
+		}
+		static constexpr int radix = 2;
+		static constexpr int digits = CHAR_BIT * sizeof(T);
+		static constexpr int digits10 = __bits_to_base_10<digits>::size;
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = true;
+		static constexpr bool is_exact = true;
+		static constexpr bool traps = false;
+		static constexpr bool is_modulo = true;
+		static constexpr bool is_bounded = true;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		// Floating point specific.
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		static constexpr T epsilon()
+		{
+			return 0;
+		}
+		static constexpr T round_error()
+		{
+			return 0;
+		}
+		static constexpr int min_exponent10 = 0;
+		static constexpr int max_exponent10 = 0;
+		static constexpr int min_exponent = 0;
 
-template <> class numeric_limits<signed long int> {
-public:
-	typedef signed long int T;
-	// General -- meaningful for all specializations.
-	static constexpr bool is_specialized = true;
-	static constexpr T min(){
-		return LONG_MIN;
-	}
-	static constexpr T max(){
-		return LONG_MAX;
-	}
-	static constexpr int radix = 2;
-	static constexpr int digits = CHAR_BIT * sizeof(T);
-	static constexpr int digits10 = __bits_to_base_10<digits>::size;
-	static constexpr bool is_signed = true;
-	static constexpr bool is_integer = true;
-	static constexpr bool is_exact = true;
-	static constexpr bool traps = false;
-	static constexpr bool is_modulo = true;
-	static constexpr bool is_bounded = true;
+		static constexpr int max_exponent = 0;
+		static constexpr bool has_infinity = false;
+		static constexpr bool has_quiet_NaN = false;
+		static constexpr bool has_signaling_NaN = false;
+		static constexpr bool is_iec559 = false;
+		static constexpr bool has_denorm = false;
+		static constexpr bool tinyness_before = false;
+		static constexpr float_round_style round_style = round_indeterminate;
+		static constexpr T denorm_min();
+		static constexpr T infinity();
+		static constexpr T quiet_NaN();
+		static constexpr T signaling_NaN();
+	};
 
-	// Floating point specific.
+	template <>
+	class numeric_limits<double>
+	{
+	public:
+		typedef double numeric_type;
 
-	static constexpr T epsilon(){
-		return 0;
-	}
-	static constexpr T round_error(){
-		return 0;
-	}
-	static constexpr int min_exponent10 = 0;
-	static constexpr int max_exponent10 = 0;
-	static constexpr int min_exponent = 0;
+		static constexpr bool is_specialized = true;
+		static constexpr numeric_type min() { return __DBL_MIN__; }
+		static constexpr numeric_type max() { return __DBL_MAX__; }
+		static constexpr int radix = __FLT_RADIX__;
+		static constexpr int digits = __DBL_MANT_DIG__;
+		static constexpr int digits10 = __DBL_DIG__;
+		static constexpr bool is_signed = true;
+		static constexpr bool is_integer = false;
+		static constexpr bool is_exact = false;
+		static constexpr bool traps = false; // this is a guess
+		static constexpr bool is_modulo = false;
+		static constexpr bool is_bounded = true;
 
-	static constexpr int max_exponent = 0;
-	static constexpr bool has_infinity = false;
-	static constexpr bool has_quiet_NaN = false;
-	static constexpr bool has_signaling_NaN = false;
-	static constexpr bool is_iec559 = false;
-	static constexpr bool has_denorm = false;
-	static constexpr bool tinyness_before = false;
-	static constexpr float_round_style round_style = round_indeterminate;
-	static constexpr T denorm_min();
-	static constexpr T infinity();
-	static constexpr T quiet_NaN();
-	static constexpr T signaling_NaN();
-};
+		// Floating point specific.
 
-template <> class numeric_limits<double> {
-public:
-	typedef double numeric_type;
+		static constexpr numeric_type epsilon() { return __DBL_EPSILON__; }
+		static constexpr numeric_type round_error() { return 0.5; }
+		static constexpr int min_exponent10 = -1;		 // How do I properly get this?
+		static constexpr int max_exponent10 = -1;		 // How do I properly get this?
+		static constexpr int min_exponent = -1;			 // How do I properly get this?
+		static constexpr int max_exponent = -1;			 // How do I properly get this?
+		static constexpr bool has_infinity = false;		 // I don't know, so until I can find out, I'm saying no
+		static constexpr bool has_quiet_NaN = false;	 // I don't know, so until I can find out, I'm saying no
+		static constexpr bool has_signaling_NaN = false; // I don't know, so until I can find out, I'm saying no
+		static constexpr bool has_denorm = false;		 // I don't know, so until I can find out, I'm saying no
 
-	static constexpr bool is_specialized = true;
-	static constexpr numeric_type min () { return __DBL_MIN__; }
-	static constexpr numeric_type max () { return __DBL_MAX__; }
-	static constexpr int radix = __FLT_RADIX__;
-	static constexpr int digits = __DBL_MANT_DIG__;
-	static constexpr int digits10 = __DBL_DIG__;
-	static constexpr bool is_signed = true;
-	static constexpr bool is_integer = false;
-	static constexpr bool is_exact = false;
-	static constexpr bool traps = false; // this is a guess
-	static constexpr bool is_modulo = false;
-	static constexpr bool is_bounded = true;
-
-	// Floating point specific.
-
-	static constexpr numeric_type epsilon () { return __DBL_EPSILON__; }
-	static constexpr numeric_type round_error () { return 0.5; }
-	static constexpr int min_exponent10 = -1; //How do I properly get this?
-	static constexpr int max_exponent10 = -1; //How do I properly get this?
-	static constexpr int min_exponent   = -1; //How do I properly get this?
-	static constexpr int max_exponent   = -1; //How do I properly get this?
-	static constexpr bool has_infinity  = false; //I don't know, so until I can find out, I'm saying no
-	static constexpr bool has_quiet_NaN = false; //I don't know, so until I can find out, I'm saying no
-	static constexpr bool has_signaling_NaN = false; //I don't know, so until I can find out, I'm saying no
-	static constexpr bool has_denorm = false; //I don't know, so until I can find out, I'm saying no
-
-	static constexpr bool is_iec559 = false;  //I don't know, so until I can find out, I'm saying no
-	static constexpr bool tinyness_before = false; // more questions
-	static constexpr float_round_style round_style = round_to_nearest; // more questions
-	static constexpr numeric_type denorm_min () { return -1; } //How do I properly get this?
-	static constexpr numeric_type infinity () { return -1; } //How do I properly get this?
-	static constexpr numeric_type quiet_NaN () { return -1; } //How do I properly get this?
-	static constexpr numeric_type signaling_NaN () { return -1; } //How do I properly get this?
-};
+		static constexpr bool is_iec559 = false;						   // I don't know, so until I can find out, I'm saying no
+		static constexpr bool tinyness_before = false;					   // more questions
+		static constexpr float_round_style round_style = round_to_nearest; // more questions
+		static constexpr numeric_type denorm_min() { return -1; }		   // How do I properly get this?
+		static constexpr numeric_type infinity() { return -1; }			   // How do I properly get this?
+		static constexpr numeric_type quiet_NaN() { return -1; }		   // How do I properly get this?
+		static constexpr numeric_type signaling_NaN() { return -1; }	   // How do I properly get this?
+	};
 }
 
 #pragma GCC visibility pop
+
+#endif
 
 #endif

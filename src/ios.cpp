@@ -17,18 +17,18 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#ifdef ARDUINO_ARCH_AVR
 #define __UCLIBCXX_COMPILE_IOS__ 1
 
-#include <istream>
-#include <cstdio>
-
-namespace std{
-
+#include "istream"
+#include "cstdio"
+namespace std
+{
 
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
-	_UCXXLOCAL int ios_base::Init::init_cnt = 0;	//Needed to ensure the static value is created
+	_UCXXLOCAL int ios_base::Init::init_cnt = 0; // Needed to ensure the static value is created
 
-//Create buffers first
+// Create buffers first
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	_UCXXEXPORT filebuf _cout_filebuf;
 #endif
@@ -54,7 +54,7 @@ namespace std{
 	_UCXXEXPORT wfilebuf _wclog_filebuf;
 #endif
 
-//Then create streams
+// Then create streams
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	_UCXXEXPORT ostream cout(&_cout_filebuf);
 #endif
@@ -80,9 +80,10 @@ namespace std{
 	_UCXXEXPORT wostream wclog(&_wclog_filebuf);
 #endif
 
-
-	_UCXXEXPORT ios_base::Init::Init(){
-		if(init_cnt == 0){	//Need to construct cout et al
+	_UCXXEXPORT ios_base::Init::Init()
+	{
+		if (init_cnt == 0)
+		{ // Need to construct cout et al
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 			_cout_filebuf.fp = stdout;
 			_cout_filebuf.openedFor = ios_base::out;
@@ -131,56 +132,58 @@ namespace std{
 		init_cnt++;
 	}
 
-	_UCXXEXPORT ios_base::Init::~Init(){
+	_UCXXEXPORT ios_base::Init::~Init()
+	{
 		--init_cnt;
-		if(init_cnt==0){
-
+		if (init_cnt == 0)
+		{
 		}
 	}
 #endif
 
-
 #ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
 
-	template _UCXXEXPORT void basic_ios<char, char_traits<char> >::clear(iostate state);
-	template _UCXXEXPORT void basic_ios<char, char_traits<char> >::setstate(iostate state);
+	template _UCXXEXPORT void basic_ios<char, char_traits<char>>::clear(iostate state);
+	template _UCXXEXPORT void basic_ios<char, char_traits<char>>::setstate(iostate state);
 
 #endif
 
-
-	_UCXXEXPORT ios_base::fmtflags ios_base::flags(fmtflags fmtfl){
+	_UCXXEXPORT ios_base::fmtflags ios_base::flags(fmtflags fmtfl)
+	{
 		fmtflags temp = mformat;
 		mformat = fmtfl;
 		return temp;
 	}
 
-	_UCXXEXPORT ios_base::fmtflags ios_base::setf(fmtflags fmtfl){
+	_UCXXEXPORT ios_base::fmtflags ios_base::setf(fmtflags fmtfl)
+	{
 		return flags(flags() | fmtfl);
 	}
 
-	_UCXXEXPORT ios_base::fmtflags ios_base::setf(fmtflags fmtfl, fmtflags mask ){
-		return flags( (flags()& ~mask) | (fmtfl & mask));
+	_UCXXEXPORT ios_base::fmtflags ios_base::setf(fmtflags fmtfl, fmtflags mask)
+	{
+		return flags((flags() & ~mask) | (fmtfl & mask));
 	}
 
-	_UCXXEXPORT streamsize ios_base::precision(streamsize prec){
+	_UCXXEXPORT streamsize ios_base::precision(streamsize prec)
+	{
 		streamsize temp = mprecision;
 		mprecision = prec;
 		return temp;
 	}
 
-	_UCXXEXPORT streamsize ios_base::width(streamsize wide){
+	_UCXXEXPORT streamsize ios_base::width(streamsize wide)
+	{
 		streamsize temp = mwidth;
 		mwidth = wide;
 		return temp;
 	}
 
-	_UCXXEXPORT locale ios_base::imbue(const locale& loc){
+	_UCXXEXPORT locale ios_base::imbue(const locale &loc)
+	{
 		locale retval = mLocale;
 		mLocale = loc;
 		return retval;
-	}	
-
+	}
 }
-
-
-
+#endif

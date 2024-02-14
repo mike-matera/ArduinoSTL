@@ -4,7 +4,9 @@
 #ifdef __GCC__
 #pragma GCC system_header
 #endif
-
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(cstdint)
+#endif
 #include <stdint.h>
 
 namespace std {

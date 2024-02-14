@@ -16,19 +16,22 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+#pragma once
+#include <Stream.h>
+#ifdef ARDUINO_ARCH_AVR
 #include "char_traits"
 #include "memory"
-#include "yvals.h"
-#include <Stream.h>
-
-#ifndef __HEADER_STD_IOSFWD
-#define __HEADER_STD_IOSFWD 1
+#else
+#include "system_configuration.h"
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(iosfwd)
+#endif
 
 #pragma GCC visibility push(default)
 
 namespace std
 {
+#ifdef ARDUINO_ARCH_AVR
 	class ios_base;
 	template <>
 	class char_traits<char>;
@@ -65,7 +68,7 @@ namespace std
 	template <class charT, class traits = char_traits<charT>,
 			  class Allocator = allocator<charT>>
 	class basic_stringstream;
-
+#endif
 	template <class charT, class traits = char_traits<charT>, class Tserial = Stream>
 	class basic_serialbuf;
 	template <class charT, class traits = char_traits<charT>, class Tserial = Stream>
@@ -75,7 +78,7 @@ namespace std
 
 	template <class charT, class traits = char_traits<charT>>
 	class basic_serstream;
-
+#ifdef ARDUINO_ARCH_AVR
 	template <class charT, class traits = char_traits<charT>>
 	class basic_istreambuf_iterator;
 
@@ -96,11 +99,12 @@ namespace std
 	typedef basic_istringstream<char> istringstream;
 	typedef basic_ostringstream<char> ostringstream;
 	typedef basic_stringstream<char> stringstream;
-
+#endif
 	typedef basic_serialbuf<char> serialbuf;
 	typedef basic_iserialstream<char> ihserialstream;
 	typedef basic_oserialstream<char> ohserialstream;
 	typedef basic_serstream<char> serstream;
+#ifdef ARDUINO_ARCH_AVR
 #ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_streambuf<wchar_t> wstreambuf;
 	typedef basic_istream<wchar_t> wistream;
@@ -111,21 +115,22 @@ namespace std
 	typedef basic_istringstream<wchar_t> wistringstream;
 	typedef basic_ostringstream<wchar_t> wostringstream;
 	typedef basic_stringstream<wchar_t> wstringstream;
-
+#endif
+#endif
+#ifdef __UCLIBCXX_HAS_WCHAR__
 	typedef basic_serialbuf<wchar_t> wserialbuf;
 	typedef basic_iserialstream<wchar_t> wiserstream;
 	typedef basic_oserialstream<wchar_t> woserstream;
 	typedef basic_serstream<wchar_t> wserstream;
 #endif
-
+#ifdef ARDUINO_ARCH_AVR
 	template <class state>
 	class fpos;
 	typedef fpos<char_traits<char>::state_type> streampos;
 #if defined(__UCLIBCXX_HAS_WCHAR__) && defined(ARDUINO_ARCH_SAM)
 	typedef fpos<char_traits<wchar_t>::state_type> wstreampos;
 #endif
+#endif
 }
 
 #pragma GCC visibility pop
-
-#endif

@@ -2,6 +2,11 @@
 #include "limits"
 #include "type_traits"
 #include "iterator_base"
+#ifndef ARDUINO_ARCH_AVR
+#include "yvals.h"
+#include "yvals_core.h"
+#include "xtr1common"
+#endif
 namespace std
 {
 	// 365

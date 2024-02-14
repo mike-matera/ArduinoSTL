@@ -47,7 +47,9 @@
 #pragma GCC system_header
 
 #include <cstddef>
-
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(ctime)
+#endif
 #include <time.h>
 
 // Get rid of those macros defined in <time.h> in lieu of real functions.

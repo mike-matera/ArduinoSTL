@@ -16,42 +16,52 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-#include <basic_definitions>
-#include <exception>
-
 #ifndef __STD_NUMERIC_HEADER
 #define __STD_NUMERIC_HEADER 1
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(numeric)
+#else
+#include "basic_definitions"
+#include "exception"
 
 #pragma GCC visibility push(default)
 
-namespace std{
-	template <class InputIterator, class T> _UCXXEXPORT 
-		T accumulate(InputIterator first, InputIterator last, T init)
+namespace std
+{
+	template <class InputIterator, class T>
+	_UCXXEXPORT
+		T
+		accumulate(InputIterator first, InputIterator last, T init)
 	{
-		while(first != last){
+		while (first != last)
+		{
 			init = init + *first;
 			++first;
 		}
 		return init;
 	}
 
-	template <class InputIterator, class T, class BinaryOperation> _UCXXEXPORT 
-		T accumulate(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
+	template <class InputIterator, class T, class BinaryOperation>
+	_UCXXEXPORT
+		T
+		accumulate(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 	{
-		while(first != last){
+		while (first != last)
+		{
 			init = binary_op(init, *first);
 			++first;
 		}
 		return init;
 	}
 
-
-	template <class InputIterator1, class InputIterator2, class T> _UCXXEXPORT 
-		T inner_product(InputIterator1 first1, InputIterator1 last1,
-			InputIterator2 first2, T init)
+	template <class InputIterator1, class InputIterator2, class T>
+	_UCXXEXPORT
+		T
+		inner_product(InputIterator1 first1, InputIterator1 last1,
+					  InputIterator2 first2, T init)
 	{
-		while(first1 != last1){
+		while (first1 != last1)
+		{
 			init = init + *first1 * *first2;
 			++first1;
 			++first2;
@@ -60,13 +70,16 @@ namespace std{
 	}
 
 	template <class InputIterator1, class InputIterator2, class T,
-		class BinaryOperation1, class BinaryOperation2> _UCXXEXPORT 
-		T inner_product(InputIterator1 first1, InputIterator1 last1,
-			InputIterator2 first2, T init,
-			BinaryOperation1 binary_op1,
-			BinaryOperation2 binary_op2)
+			  class BinaryOperation1, class BinaryOperation2>
+	_UCXXEXPORT
+		T
+		inner_product(InputIterator1 first1, InputIterator1 last1,
+					  InputIterator2 first2, T init,
+					  BinaryOperation1 binary_op1,
+					  BinaryOperation2 binary_op2)
 	{
-		while(first1 != last1){
+		while (first1 != last1)
+		{
 			init = binary_op1(init, binary_op2(*first1, *first2));
 			++first1;
 			++first2;
@@ -74,16 +87,19 @@ namespace std{
 		return init;
 	}
 
-	template <class InputIterator, class OutputIterator> _UCXXEXPORT 
-		OutputIterator partial_sum(InputIterator first, InputIterator last,
-		OutputIterator result)
+	template <class InputIterator, class OutputIterator>
+	_UCXXEXPORT
+		OutputIterator
+		partial_sum(InputIterator first, InputIterator last,
+					OutputIterator result)
 	{
 		OutputIterator temp(result);
 		*result = *first;
 		++first;
 		++result;
 
-		while(first != last){
+		while (first != last)
+		{
 			*result = *first + *temp;
 			temp = result;
 			++first;
@@ -92,17 +108,19 @@ namespace std{
 		return result;
 	}
 
-
-	template <class InputIterator, class OutputIterator, class BinaryOperation> _UCXXEXPORT 
-		OutputIterator partial_sum(InputIterator first, InputIterator last,
-		OutputIterator result, BinaryOperation binary_op)
+	template <class InputIterator, class OutputIterator, class BinaryOperation>
+	_UCXXEXPORT
+		OutputIterator
+		partial_sum(InputIterator first, InputIterator last,
+					OutputIterator result, BinaryOperation binary_op)
 	{
 		OutputIterator temp(result);
 		*result = *first;
 		++first;
 		++result;
 
-		while(first != last){
+		while (first != last)
+		{
 			*result = binary_op(*first, *temp);
 			temp = result;
 			++first;
@@ -111,18 +129,19 @@ namespace std{
 		return result;
 	}
 
-
-	template <class InputIterator, class OutputIterator> _UCXXEXPORT 
+	template <class InputIterator, class OutputIterator>
+	_UCXXEXPORT
 		OutputIterator
 		adjacent_difference(InputIterator first, InputIterator last,
-			OutputIterator result)
+							OutputIterator result)
 	{
 		OutputIterator temp(first);
 		*result = *first;
 		++first;
 		++result;
 
-		while(first != last){
+		while (first != last)
+		{
 			*result = *first - *temp;
 			temp = first;
 			++first;
@@ -132,18 +151,19 @@ namespace std{
 		return result;
 	}
 
-
-	template <class InputIterator, class OutputIterator, class BinaryOperation> _UCXXEXPORT 
+	template <class InputIterator, class OutputIterator, class BinaryOperation>
+	_UCXXEXPORT
 		OutputIterator
 		adjacent_difference(InputIterator first, InputIterator last,
-			OutputIterator result, BinaryOperation binary_op)
+							OutputIterator result, BinaryOperation binary_op)
 	{
 		OutputIterator temp(first);
 		*result = *first;
 		++first;
 		++result;
 
-		while(first != last){
+		while (first != last)
+		{
 			*result = binary_op(*first, *temp);
 			temp = first;
 			++first;
@@ -159,3 +179,4 @@ namespace std{
 
 #endif
 
+#endif

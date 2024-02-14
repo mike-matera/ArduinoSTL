@@ -17,12 +17,15 @@
 
 */
 
+#ifndef __STD_HEADER_UTILITY
+#define __STD_HEADER_UTILITY 1
+#ifndef ARDUINO_ARCH_AVR
+#include CSL_Official(utility)
+#include "yvals_core.h"
+#else
 #include "initializer_list"
 #include "type_traits"
 #include "sal.h"
-
-#ifndef __STD_HEADER_UTILITY
-#define __STD_HEADER_UTILITY 1
 
 #pragma GCC visibility push(default)
 
@@ -107,6 +110,9 @@ namespace std
 		return pair<T1, T2>(x, y);
 	}
 	// 40
+}
+#endif
+namespace std{
 	_EXPORT_STD template <class _Ty, _Ty... _Vals>
 	struct integer_sequence
 	{ // sequence of integer parameters
@@ -119,8 +125,7 @@ namespace std
 			return sizeof...(_Vals);
 		}
 	};
-
-// LLVM实现
+	// LLVM实现
 #include "__utility/integer_sequence.h"
 
 	_EXPORT_STD template <size_t... _Vals>
@@ -128,8 +133,11 @@ namespace std
 
 	_EXPORT_STD template <size_t _Size>
 	using make_index_sequence = make_integer_sequence<size_t, _Size>;
-// 60
-// 63
+	// 60
+}
+#ifdef ARDUINO_ARCH_AVR
+namespace std{
+	// 63
 	_EXPORT_STD template <class _Ty, class _Pr>
 	_NODISCARD constexpr const _Ty &(max)(const _Ty &_Left, const _Ty &_Right, _Pr _Pred) noexcept(
 		noexcept(_Pred(_Left, _Right))) /* strengthened */
@@ -171,3 +179,5 @@ namespace std
 #pragma GCC visibility pop
 
 #endif //__STD_HEADER_UTILITY
+
+#endif

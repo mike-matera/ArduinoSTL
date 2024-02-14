@@ -2,6 +2,8 @@
 #include <Cpp_Standard_Library.h>
 #include <iostream>
 #include <random>
+#include <utility>
+#include <algorithm>
 template<typename T>
 struct MakeArray {};
 template<size_t... V>

@@ -17,7 +17,9 @@
 
 #ifndef __STD_HEADER_FUNCTIONAL
 #define __STD_HEADER_FUNCTIONAL 1
-
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(functional)
+#else
 #include "typeinfo"
 #include "xmemory"
 #include "yvals.h"
@@ -1145,5 +1147,7 @@ compose2(const Op1 &fn1, const Op2 &fn2, const Op3 &fn3)
 }
 
 #pragma GCC visibility pop
+
+#endif
 
 #endif

@@ -31,10 +31,8 @@
 /** @file typeinfo
  *  This header provides RTTI support.
  */
-
-#ifndef __TYPEINFO__
-#define __TYPEINFO__
-
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "exception"
 #include "yvals_core.h"
 
@@ -167,4 +165,7 @@ extern "C++"
   } // namespace std
 
 } // extern "C++"
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(typeinfo)
 #endif

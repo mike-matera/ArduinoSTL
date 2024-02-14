@@ -17,16 +17,18 @@
 */
 
 
-
-#include <memory>
-#include <utility>
-#include <iterator>
-#include <associative_base>
-#include <initializer_list>
-
-
 #ifndef __STD_HEADER_MAP
 #define __STD_HEADER_MAP
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(map)
+#endif
+#include "memory"
+#include "utility"
+#include "iterator"
+#include  "associative_base"
+#include "initializer_list"
+
+
 
 #pragma GCC visibility push(default)
 

@@ -20,10 +20,12 @@
 
 #ifndef STD_HEADER_OSTREAM
 #define STD_HEADER_OSTREAM 1
-
-#include <streambuf>
-#include <cstdio>
-#include <ostream_helpers>
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(ostream)
+#else
+#include "streambuf"
+#include "cstdio"
+#include "ostream_helpers"
 
 #pragma GCC visibility push(default)
 
@@ -518,3 +520,5 @@ template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 
 #endif
 
+
+#endif

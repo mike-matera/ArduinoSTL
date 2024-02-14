@@ -16,19 +16,16 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+#ifdef ARDUINO_ARCH_AVR
 #include <typeinfo>
-
-namespace std{
-
-	_UCXXEXPORT bad_cast::~bad_cast() _UCXX_USE_NOEXCEPT{
-
+namespace std
+{
+	_UCXXEXPORT bad_cast::~bad_cast() _UCXX_USE_NOEXCEPT
+	{
 	}
 
-	_UCXXEXPORT bad_typeid::~bad_typeid() _UCXX_USE_NOEXCEPT{
-
+	_UCXXEXPORT bad_typeid::~bad_typeid() _UCXX_USE_NOEXCEPT
+	{
 	}
-
 }
-
-
+#endif

@@ -1,14 +1,19 @@
 #pragma once
-#include <istream>
-#include <xutility>
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(random)
+#include "type_traits"
+#include <Arduino.h>
+#else
+#include "istream"
+#include "xutility"
 namespace std
 {
-// 34
+	// 34
 #define _RNG_PROHIBIT_CHAR(_CheckedType)               \
 	static_assert(!_Is_character<_CheckedType>::value, \
 				  "note: char, signed char, unsigned char, char8_t, int8_t, and uint8_t are not allowed")
 	// 38
-// 50
+	// 50
 #define _RNG_REQUIRE_UINTTYPE(_RandType, _CheckedType)                                                               \
 	static_assert(_Is_any_of<_CheckedType, unsigned short, unsigned int, unsigned long, unsigned long long>::value,  \
 				  "invalid template argument for " #_RandType ": N4659 29.6.1.1 [rand.req.genl]/1f requires one of " \
@@ -412,6 +417,10 @@ namespace std
 	_EXPORT_STD using mt19937 = mersenne_twister_engine<uint32_t, 32, 624, 397, 31, 0x9908b0df, 11, 0xffffffff, 7,
 														0x9d2c5680, 15, 0xefc60000, 18, 1812433253>;
 	// 5042
+}
+#endif
+namespace std
+{
 	struct ArduinoUrng
 	{
 #ifdef ARDUINO_ARCH_AVR
@@ -422,11 +431,11 @@ namespace std
 #endif
 		// UniformRandomBitGenerator要求无符号整数
 		using result_type = make_unsigned_t<decltype(CSL_RANDOM())>;
-		static constexpr result_type max()
+		static constexpr result_type (max)()
 		{
-			return numeric_limits<result_type>::max();
+			return (numeric_limits<result_type>::max)();
 		};
-		static constexpr result_type min()
+		static constexpr result_type (min)()
 		{
 			return 0;
 		};

@@ -29,15 +29,15 @@
 // This is derived from the C++ ABI for IA-64.  Where we diverge
 // for cross-architecture compatibility are noted with "@@@".
 
-#ifndef _UNWIND_CXX_H
-#define _UNWIND_CXX_H 1
+#pragma once
 
 // Level 2: C++ ABI
 
-#include <typeinfo>
-#include <exception>
-#include <cstddef>
-#include "unwind.h"
+#include "typeinfo"
+#include "exception"
+#include "cstddef"
+#include "basic_definitions"
+#include <unwind.h>
 
 #ifdef __aarch64__
 typedef long _Atomic_word;
@@ -242,5 +242,3 @@ __get_refcounted_exception_header_from_ue (_Unwind_Exception *exc)
 } /* namespace __cxxabiv1 */
 
 #pragma GCC visibility pop
-
-#endif // _UNWIND_CXX_H

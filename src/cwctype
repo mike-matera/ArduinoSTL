@@ -46,7 +46,9 @@
 #define _CPP_CWCTYPE 1
 
 #pragma GCC system_header
-
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(cwctype)
+#endif
 // #include <bits/c++config.h>
 #include "system_configuration.h"
 #include <wctype.h>

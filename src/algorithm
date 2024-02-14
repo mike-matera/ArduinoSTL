@@ -17,11 +17,10 @@
 #ifndef __STD_HEADER_ALGORITHM
 #define __STD_HEADER_ALGORITHM 1
 
-#ifdef ARDUINO_ARCH_SAM
+#ifndef ARDUINO_ARCH_AVR
 #include CSL_Official(algorithm)
-#endif
+#else
 #include "iterator"
-#include "utility"
 #include "functional"
 #include "xutility"
 #include <Arduino.h>
@@ -2001,5 +2000,7 @@ namespace std
 }
 
 #pragma GCC visibility pop
+
+#endif
 
 #endif

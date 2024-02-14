@@ -58,6 +58,11 @@
 		"ostream_helpers": "cpp",
 		"locale": "cpp",
 		"cctype": "cpp",
-		"new2": "cpp"
+		"new2": "cpp",
+		"cstring": "cpp",
+		"ctime": "cpp",
+		"numeric": "c",
+		"associative_base": "cpp",
+		"stack": "c"
 	}
 }

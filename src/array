@@ -1,8 +1,7 @@
-#ifndef __ARRAY__
-#define __ARRAY__
-#ifdef ARDUINO_ARCH_SAM
+#pragma once
+#ifndef ARDUINO_ARCH_AVR
 #include CSL_Official(array)
-#endif
+#else
 #include "cstddef"
 #include "initializer_list"
 

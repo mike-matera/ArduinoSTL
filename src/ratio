@@ -1,6 +1,9 @@
 #pragma once
-#include <cstdint>
-#include <type_traits>
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(ratio)
+#endif
+#include "cstdint"
+#include "type_traits"
 _STD_BEGIN
 _NODISCARD constexpr intmax_t _Abs(const intmax_t _Val) noexcept
 {

@@ -1,7 +1,6 @@
 #pragma once
 #include "utility"
 #include "new"
-#include "Cpp_Standard_Library.h"
 namespace std
 {
 // 76

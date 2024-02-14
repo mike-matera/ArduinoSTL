@@ -16,11 +16,14 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <stdlib.h>
-#include "basic_definitions"
-
 #ifndef __HEADER_CSTDLIB
 #define __HEADER_CSTDLIB 1
+#ifdef ARDUINO_ARCH_SAM
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(cstdlib)
+#else
+#include <stdlib.h>
+#include "basic_definitions"
 
 namespace std
 {
@@ -66,5 +69,7 @@ namespace std
 	}
 
 }
+
+#endif
 
 #endif
