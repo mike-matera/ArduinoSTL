@@ -14,6 +14,7 @@
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
+-   `<functional> std::function`
 -   `<iostream> cin cout`使用串口作為標準輸入輸出流
 -   `<map>`
 -   `<memory> unique_ptr`
@@ -53,7 +54,7 @@ void setup() {
 
 ## 使用`cin`一個`cout`
 
-當您包含此頭檔時，您將自動獲得 cin 和 cout 基於`Serial`。請參閱下文以了解如何指定您自己的設備。這是一個使用範例草圖`cin`和`cout`.
+當您包含此頭檔時，您將自動獲得 cin 和 cout 基於`Serial`。請參閱下文以了解如何指定您自己的設備。這是一個使用範例草圖`cin`和`cout` .
 
 ```c++
 #include <ArduinoSTL.h>
@@ -78,7 +79,7 @@ void loop() {
 
 ## 更改串口
 
-您可以變更串口`cin`,`cout`和`printf()`使用。您可以使用內建序列埠（例如`Serial1`在 Leonardo 上）或者您可以使用軟體序列埠來實現`Stream`.
+您可以變更串口`cin`,`cout` and `printf()`使用。您可以使用內建序列埠（例如`Serial1`在 Leonardo 上）或者您可以使用軟體序列埠來實現`Stream`.
 
 ### 使用內建連接埠
 
