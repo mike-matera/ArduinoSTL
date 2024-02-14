@@ -1,12 +1,12 @@
 [ردم.إن.مد](README.en.md)
 
-لأن[اردوينو STL الأصلي](https://github.com/mike-matera/ArduinoSTL)作者长期不更新（202203~202212），本人将此分支发布到Arduino公开库，改名为Cpp_Standard_Library以示区分。
+لأن[اردوينو STL الأصلي](https://github.com/mike-matera/ArduinoSTL)لم يقم المؤلف بتحديثه لفترة طويلة (202203~202212)، لقد قمت بإصدار هذا الفرع إلى مكتبة Arduino العامة وأعدت تسميته Cpp_Standard_Library لتمييزه.
 
 تحاول هذه المكتبة تنفيذ معظم وظائف المكتبة القياسية C++11~17 (STL) على Arduino. بالإضافة إلى ArduinoSTL، تشير بعض وظائف هذه المكتبة أيضًا إلى MSVC وLLVM وboost. نظرًا لأن الواجهة تعتمد على STL، فليست هناك حاجة لكتابة مستندات إضافية، ويمكنك الرجوع إلى أي مستند STL موثوق. ما لم يُنص على خلاف ذلك، يجب أن يكون استخدام هذه المكتبة هو نفسه. وإذا كان مختلفًا، فيجب أن يكون هناك خطأ. فنحن نرحب بك لتقديم مشكلة.
 
-如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
+إذا كنت بحاجة إلى بعض الوظائف الموجودة في المكتبة القياسية ولكن لم يتم توفيرها في هذه المكتبة، فنحن نرحب أيضًا بإرسال إصدار، وسيقوم المؤلف بتنفيذه لك أولاً.
 
-يدعم حاليًا بنيات AVR وSAM. لا توجد حاليًا أي خطط لدعم ESP32، لأن ESP32 قدم رسميًا مكتبة قياسية، واستخدام مجموعتين من المكتبات القياسية في نفس الوقت سيؤدي إلى العديد من المشكلات التي يصعب التعامل معها.
+يدعم حاليًا بنيات AVR وSAM. لا توجد خطط لدعم ESP32 في الوقت الحالي، لأن ESP32 قدم مكتبة قياسية رسميًا، واستخدام مجموعتين من المكتبات القياسية في نفس الوقت سيؤدي إلى العديد من المشكلات التي يصعب التعامل معها.
 
 قبل تضمين أي ملف رأس قياسي لـ C++، يجب عليك أولاً تضمينه`Cpp_Standard_Library.h`. يعد هذا موجهًا إلى Arduino IDE، لإخبار المترجم أنه يجب تضمين هذه المكتبة في عملية التجميع.
 
@@ -35,7 +35,7 @@
 
 مع تنفيذ التدفقات من مكتبة Arduino الخاصة بـ Andy Brown:
 
-<http://andybrown.me.uk/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/>
+[حطب://انديبروون.م.أك/٢٠١١/٠١/١٥/تحستندردتمبلتلبرريصتلفرفروثكصترمص/](http://andybrown.me.uk/2011/01/15/the-standard-template-library-stl-for-avr-with-c-streams/)
 
 ## باستخدام printf() و scanf()
 
@@ -54,7 +54,7 @@ void setup() {
 
 ## استخدام`cin`ان`cout`
 
-عندما تقوم بتضمين ملف الرأس هذا، فإنك تحصل تلقائيًا على cin وcout بناءً على ذلك`Serial`. انظر أدناه لمعرفة كيفية تحديد جهازك الخاص. فيما يلي مثال للرسم باستخدام`cin`و`cout` .
+عندما تقوم بتضمين ملف الرأس هذا، فإنك تحصل تلقائيًا على cin وcout بناءً على ذلك`Serial`. انظر أدناه لمعرفة كيفية تحديد جهازك الخاص. فيما يلي مثال للرسم باستخدام`cin`و`cout`.
 
 ```c++
 #include <ArduinoSTL.h>
@@ -79,11 +79,11 @@ void loop() {
 
 ## تغيير المنفذ التسلسلي
 
-You can change what serial port that `cin`,`cout`و`printf()` use. You can use built-in serial ports (e.g. `Serial1`على ليوناردو) أو يمكنك استخدام المنافذ التسلسلية للبرامج التي يتم تنفيذها`Stream`.
+يمكنك تغيير ما المنفذ التسلسلي ذلك`cin`,`cout`و`printf()` use. You can use built-in serial ports (e.g. `Serial1`على ليوناردو) أو يمكنك استخدام المنافذ التسلسلية للبرامج التي يتم تنفيذها`Stream`.
 
 ### باستخدام منفذ مدمج
 
-في`src/ArduinoSTL.cpp`تغيير قيمة`ARDUINOSTL_DEFAULT_SERIAL`. اترك الإعدادات الافتراضية الأخرى دون تعليق.
+في`src/ArduinoSTL.cpp`تغيير قيمة`ARDUINOSTL_DEFAULT_SERIAL`. Leave the other defaults uncommented. 
 
 ### باستخدام منفذ SoftwareSerial.
 
@@ -110,13 +110,13 @@ void setup() {
 
 ## تجنب إنشاء مثيل`cin`و`cout`
 
-Comment out `ARDUINOSTL_DEFAULT_CIN_COUT`ولن يتم إنشاء مثيل لأي شيء. يجب عليك التعليق على هذه العلامة إذا كنت تنوي تحديد منفذ تسلسلي غير افتراضي. ليس هناك نفقات عامة ملحوظة للاستخدام`printf()`لذلك لا يمكنك حاليًا تجنب تهيئته.
+تصريح علني`ARDUINOSTL_DEFAULT_CIN_COUT`ولن يتم إنشاء مثيل لأي شيء. يجب عليك التعليق على هذه العلامة إذا كنت تنوي تحديد منفذ تسلسلي غير افتراضي. ليس هناك نفقات عامة ملحوظة للاستخدام`printf()`لذلك لا يمكنك حاليًا تجنب تهيئته.
 
 ## مشاكل معروفة
 
 طباعة العوامات والمزدوجة باستخدام`cout`يتجاهل محددات التنسيق.
 
-uClibc seems to be fairly complete. Strings and vectors both work, even with the limited amount of heap available to Arduino. The uClibc++ status page can be found here: 
+يبدو أن uClibc مكتمل إلى حد ما. تعمل كل من السلاسل النصية والمتجهات، حتى مع الكمية المحدودة من الكومة المتاحة لاردوينو. يمكن العثور على صفحة حالة uClibc++ هنا:
 
 [هتبص://سكسكس.كلبك.عرج/ستتس.هتمل](https://cxx.uclibc.org/status.html)
 
@@ -126,6 +126,6 @@ uClibc seems to be fairly complete. Strings and vectors both work, even with the
 
 ## رخصة
 
-مكتبة uClibc++ مرخصة بموجب LGPL. يعتمد هذا المشروع على LGPL ليكون متوافقًا مع الجزء الأكبر من الكود الذي يستخدمه. ما لم يُذكر خلاف ذلك، فإن كل التعليمات البرمجية مرخصة بموجب LGPL. هناك استثناء واحد:
+The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception: 
 
 -   تم ترخيص src/serstream بموجب ترخيص BSD وفقًا لرغبات Andy Brown هنا:[حطب://انديبروون.م.أك/ترمسيندكندشنص/](http://andybrown.me.uk/terms-and-conditions/)
