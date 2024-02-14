@@ -4,9 +4,9 @@ because[Original ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)The autho
 
 This library attempts to implement most of the functions of the C++11~17 Standard Library (STL) on Arduino. In addition to ArduinoSTL, some functions of this library also refer to MSVC, LLVM and boost. Because the interface is based on STL, there is no need to write additional documents. You can refer to any authoritative STL document. Unless otherwise stated, the usage of this library should be the same. If it is different, it should be a bug. You are welcome to submit an issue.
 
-If you need some functions that are in the standard library but are not provided in this library, you are also welcome to submit an Issue, and the author will implement it for you first.
+如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
 
-Currently supports AVR and SAM architectures. There are no plans to support ESP32 at the moment, because ESP32 has officially provided a standard library, and using two sets of standard libraries at the same time will cause many problems that are difficult to deal with.
+Currently supports AVR and SAM architectures. There are currently no plans to support ESP32, because ESP32 has officially provided a standard library, and using two sets of standard libraries at the same time will cause many problems that are difficult to deal with.
 
 Before including any C++ standard header file, you must first include`Cpp_Standard_Library.h`. This is a prompt to the Arduino IDE, telling the compiler that this library must be included in the compilation process.
 
@@ -14,6 +14,7 @@ Before including any C++ standard header file, you must first include`Cpp_Standa
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
+-   `<functional> std::function`
 -   `<iostream> cin cout`Use the serial port as the standard input and output stream
 -   `<map>`
 -   `<memory> unique_ptr`
@@ -78,7 +79,7 @@ void loop() {
 
 ## Changing the Serial Port
 
-You can change what serial port that`cin`,`cout`and`printf()`use. You can use built-in serial ports (e.g.`Serial1`on Leonardo) or you can use software serial ports that implement`Stream`.
+You can change what serial port that`cin`,`cout` and `printf()`use. You can use built-in serial ports (e.g.`Serial1`on Leonardo) or you can use software serial ports that implement`Stream`.
 
 ### Using a Built-in Port
 
@@ -109,7 +110,7 @@ void setup() {
 
 ## Avoiding Instantiation of`cin`and`cout`
 
-Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()`so you cannot currently avoid initializing it.
+Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()` so you cannot currently avoid initializaing it.
 
 ## Known Issues
 
