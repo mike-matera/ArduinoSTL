@@ -1,6 +1,6 @@
 #pragma once
-#include <__config>
-#include <__type_traits/remove_reference.h>
+#include "../__config"
+#include "remove_reference.h"
 #if __has_builtin(__is_convertible_to) && !defined(_LIBCPP_USE_IS_CONVERTIBLE_FALLBACK)
 
 	template <class _T1, class _T2>

@@ -17,9 +17,6 @@
 	USA.
 */
 
-#include <ios>
-#include <cctype>
-#include <streambuf>
 #include <istream_helpers>
 #include <ostream>
 

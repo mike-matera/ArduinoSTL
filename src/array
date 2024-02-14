@@ -1,8 +1,10 @@
 #ifndef __ARRAY__
 #define __ARRAY__
-
-#include <cstddef>
-#include <initializer_list>
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(array)
+#endif
+#include "cstddef"
+#include "initializer_list"
 
 namespace std {
 

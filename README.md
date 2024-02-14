@@ -12,6 +12,7 @@
 # 招牌功能（不限于此）
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`
+- `<functional> std::function`
 - `<iostream> cin cout` 使用串口作为标准输入输出流
 - `<map>`
 - `<memory> unique_ptr`

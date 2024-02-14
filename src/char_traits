@@ -16,22 +16,22 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <basic_definitions>
-#include <string.h>
-#include <exception>
 
-#ifdef __UCLIBCXX_HAS_WCHAR__
-#include <cwchar>
-#include <cwctype>
-#endif
 
 #ifndef __HEADER_CHAR_TRAITS
 #define __HEADER_CHAR_TRAITS 1
+#include "basic_definitions"
+#include "string.h"
+#include "exception"
 
+#ifdef __UCLIBCXX_HAS_WCHAR__
+#include "cwchar"
+#include "cwctype"
+#endif
 #ifdef ARDUINO_ARCH_AVR
 #define __need_wint_t
 #include <stddef.h>
-#include <corecrt_wctype.h>
+#include "corecrt_wctype.h"
 #endif
 namespace std
 {

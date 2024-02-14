@@ -1,6 +1,6 @@
 #pragma once
-#include <__type_traits/is_destructible.hpp>
-#include <__type_traits/is_default_constructible.hpp>
+#include "is_destructible.hpp"
+#include "is_default_constructible.hpp"
 namespace detail
 {
 

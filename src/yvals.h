@@ -1,6 +1,7 @@
 #pragma once
 #include "sal.h"
 #include "crtdbg.h"
+#include "crtdefs.h"
 // 29
 #if defined(MRTDLL) && defined(_CRTBLD)
 // process-global is the default for code built with /clr or /clr:oldSyntax.
@@ -151,7 +152,16 @@
 #define _STL_ASSERT(cond, mesg) _Analysis_assume_(cond)
 #endif // ^^^ !defined(_DEBUG) ^^^
 // 217
-//  285
+// 269
+#ifndef _CRTIMP2_PURE
+#ifdef _M_CEE_PURE
+#define _CRTIMP2_PURE
+#else
+#define _CRTIMP2_PURE _CRTIMP2
+#endif
+#endif // _CRTIMP2_PURE
+// 277
+//   285
 #ifndef _CRTIMP2_IMPORT
 #if defined(CRTDLL2) && defined(_CRTBLD)
 #define _CRTIMP2_IMPORT __declspec(dllexport)

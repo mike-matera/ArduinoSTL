@@ -1,5 +1,5 @@
 #pragma once
-#include <vcruntime.h>
+#include "vcruntime.h"
 // 461
 #ifndef __has_cpp_attribute
 #define _HAS_MSVC_ATTRIBUTE(x) 0
@@ -86,8 +86,13 @@
 #define _EXPORT_STD
 #endif // _HAS_CXX23 && defined(_BUILD_STD_MODULE)
 // 856
-// 908
-// Functions that became constexpr in C++17
+// 897
+#ifndef _HAS_STATIC_RTTI
+#define _HAS_STATIC_RTTI 0 // Arduino不支持RTTI
+#endif					   // !defined(_HAS_STATIC_RTTI)
+// 901
+//  908
+//  Functions that became constexpr in C++17
 #if _HAS_CXX17
 #define _CONSTEXPR17 constexpr
 #else // ^^^ constexpr in C++17 and later / inline (not constexpr) in C++14 vvv
@@ -97,11 +102,29 @@
 // Functions that became constexpr in C++14
 #if _HAS_CXX14
 #define _CONSTEXPR14(Alternatve) constexpr
+#define _STRUCT14VALUE(StructValue, Arguments...) StructValue<Arguments>
+#define _STRUCT14VALUE_V(StructValue, Arguments...) StructValue##_v<Arguments>
 #else // ^^^ constexpr in C++14 and later / inline (not constexpr) in C++11 vvv
 #define _CONSTEXPR14(Alternative) Alternative
+#define _STRUCT14VALUE(StructValue, Arguments...) StructValue<Arguments>::value
+#define _STRUCT14VALUE_V(StructValue, Arguments...) StructValue<Arguments>::value
 #endif // ^^^ inline (not constexpr) in C++11 ^^^
 // 915
-//  1358
+// 1076
+// N4659 D.8.1 [depr.weak.result_type]
+// N4659 D.8.2 [depr.func.adaptor.typedefs]
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING) && !defined(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
+#define _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS                                                                         \
+	[[deprecated(                                                                                                 \
+		"warning STL4007: Many result_type typedefs "                                                             \
+		"and all argument_type, first_argument_type, and second_argument_type typedefs are deprecated in C++17. " \
+		"You can define _SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING "                                     \
+		"or _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to suppress this warning.")]]
+#else // ^^^ warning enabled / warning disabled vvv
+#define _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS
+#endif // ^^^ warning disabled ^^^
+// 1090
+//   1358
 #if _HAS_CXX20
 #define __cpp_lib_assume_aligned 201811L
 #define __cpp_lib_atomic_flag_test 201907L
@@ -192,7 +215,11 @@
 #define __cpp_lib_unwrap_ref 201811L
 #endif // _HAS_CXX20
 // 1448
-// 1557
+// 1917
+#define _STRINGIZEX(x) #x
+#define _STRINGIZE(x) _STRINGIZEX(x)
+#define _EMPTY_ARGUMENT // for empty macro argument
+
 #define _STD_BEGIN \
 	namespace std  \
 	{
@@ -200,4 +227,14 @@
 #define _STD ::std::
 #define _CHRONO ::std::chrono::
 #define _RANGES ::std::ranges::
-// 1563
+// 1927
+//  1932
+#define _CSTD ::
+// 1934
+//  1987
+#ifdef _ENABLE_STL_INTERNAL_CHECK
+#define _STL_INTERNAL_STATIC_ASSERT(...) static_assert(__VA_ARGS__, #__VA_ARGS__)
+#else // ^^^ _ENABLE_STL_INTERNAL_CHECK / !_ENABLE_STL_INTERNAL_CHECK vvv
+#define _STL_INTERNAL_STATIC_ASSERT(...)
+#endif // _ENABLE_STL_INTERNAL_CHECK
+	   // 1993

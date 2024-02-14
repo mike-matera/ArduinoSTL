@@ -16,10 +16,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <char_traits>
-#include <xtr1common>
-#include <xstddef>
-#include <cstddef>
+#include "char_traits"
+#include "xtr1common"
+#include "xstddef"
+#include "cstddef"
 
 #ifndef __HEADER_TYPE_TRAITS
 #define __HEADER_TYPE_TRAITS 1
@@ -202,7 +202,7 @@ namespace std
     template <class _Ty>
     add_rvalue_reference_t<_Ty> declval() noexcept
     {
-        static_assert(_Always_false_t<_Ty>::value, "Calling declval is ill-formed, see N4892 [declval]/2.");
+        static_assert(_STRUCT14VALUE(_Always_false, _Ty), "Calling declval is ill-formed, see N4892 [declval]/2.");
     }
 
     template <class _Ty>
@@ -397,16 +397,8 @@ namespace std
         static constexpr bool value = true;
     };
     // 300
-    // 359
-    template <class _Ty>
-    struct is_enum : bool_constant<__is_enum(_Ty)>
-    {
-    }; // determine whether _Ty is an enumerated type
+// 572 故意放在前面，因为要被is_function使用
 #if _HAS_CXX14
-    template <class _Ty>
-    _INLINE_VAR constexpr bool is_enum_v = __is_enum(_Ty);
-    // 365
-    // 435
     template <class>
     _INLINE_VAR constexpr bool is_const_v = false; // determine whether type argument is const qualified
 
@@ -423,8 +415,8 @@ namespace std
     {
         static constexpr bool value = true;
     };
-// 444
-// 453
+// 581
+// 590 故意放在前面，因为要被is_convertible使用
 #if _HAS_CXX14
     template <class _Ty>
     _INLINE_VAR constexpr bool is_function_v = // only function types and reference types can't be const qualified
@@ -434,10 +426,266 @@ namespace std
     struct is_function : bool_constant<!is_const<const _Ty>::value && !is_reference<_Ty>::value>
     {
     };
-// 460
-// VC not well implemented, switch to LLVM, which relies on is_function
-#include <__type_traits/is_convertible.h>
-    // 513
+    // 597
+    // 321
+    //  VC not well implemented, switch to LLVM, which relies on is_function
+#include "__type_traits/is_convertible.h"
+
+    template <class _Ty>
+    struct is_enum : bool_constant<__is_enum(_Ty)>
+    {
+    }; // determine whether _Ty is an enumerated type
+#if _HAS_CXX14
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_enum_v = __is_enum(_Ty);
+#endif
+// 361
+// 375
+#define _EMIT_CDECL(FUNC, OPT1, OPT2, OPT3) FUNC(__cdecl, OPT1, OPT2, OPT3)
+
+#ifdef _M_CEE
+#define _EMIT_CLRCALL(FUNC, OPT1, OPT2, OPT3) FUNC(__clrcall, OPT1, OPT2, OPT3)
+#else // ^^^ defined(_M_CEE) / !defined(_M_CEE) vvv
+#define _EMIT_CLRCALL(FUNC, OPT1, OPT2, OPT3)
+#endif // ^^^ !defined(_M_CEE) ^^^
+
+#if defined(_M_IX86) && !defined(_M_CEE)
+#define _EMIT_FASTCALL(FUNC, OPT1, OPT2, OPT3) FUNC(__fastcall, OPT1, OPT2, OPT3)
+
+#else // defined(_M_IX86) && !defined(_M_CEE)
+#define _EMIT_FASTCALL(FUNC, OPT1, OPT2, OPT3)
+#endif // defined(_M_IX86) && !defined(_M_CEE)
+
+#ifdef _M_IX86
+#define _EMIT_STDCALL(FUNC, OPT1, OPT2, OPT3) FUNC(__stdcall, OPT1, OPT2, OPT3)
+#define _EMIT_THISCALL(FUNC, OPT1, OPT2, OPT3) FUNC(__thiscall, OPT1, OPT2, OPT3)
+#else // ^^^ defined(_M_IX86) / !defined(_M_IX86) vvv
+#define _EMIT_STDCALL(FUNC, OPT1, OPT2, OPT3)
+#define _EMIT_THISCALL(FUNC, OPT1, OPT2, OPT3)
+#endif // ^^^ !defined(_M_IX86) ^^^
+
+#if ((defined(_M_IX86) && _M_IX86_FP >= 2) || defined(_M_X64)) && !defined(_M_CEE)
+#define _EMIT_VECTORCALL(FUNC, OPT1, OPT2, OPT3) FUNC(__vectorcall, OPT1, OPT2, OPT3)
+
+#else // defined(_M_IX86) && _M_IX86_FP >= 2 etc.
+#define _EMIT_VECTORCALL(FUNC, OPT1, OPT2, OPT3)
+#endif // defined(_M_IX86) && _M_IX86_FP >= 2 etc.
+
+#define _NON_MEMBER_CALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT) \
+    _EMIT_CDECL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)          \
+    _EMIT_CLRCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)        \
+    _EMIT_FASTCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)       \
+    _EMIT_STDCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)        \
+    _EMIT_VECTORCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)
+
+#define _NON_MEMBER_CALL_CV(FUNC, REF_OPT, NOEXCEPT_OPT)    \
+    _NON_MEMBER_CALL(FUNC, , REF_OPT, NOEXCEPT_OPT)         \
+    _NON_MEMBER_CALL(FUNC, const, REF_OPT, NOEXCEPT_OPT)    \
+    _NON_MEMBER_CALL(FUNC, volatile, REF_OPT, NOEXCEPT_OPT) \
+    _NON_MEMBER_CALL(FUNC, const volatile, REF_OPT, NOEXCEPT_OPT)
+
+#define _NON_MEMBER_CALL_CV_REF(FUNC, NOEXCEPT_OPT) \
+    _NON_MEMBER_CALL_CV(FUNC, , NOEXCEPT_OPT)       \
+    _NON_MEMBER_CALL_CV(FUNC, &, NOEXCEPT_OPT)      \
+    _NON_MEMBER_CALL_CV(FUNC, &&, NOEXCEPT_OPT)
+
+#ifdef __cpp_noexcept_function_type
+#define _NON_MEMBER_CALL_CV_REF_NOEXCEPT(FUNC) \
+    _NON_MEMBER_CALL_CV_REF(FUNC, )            \
+    _NON_MEMBER_CALL_CV_REF(FUNC, noexcept)
+#else // ^^^ defined(__cpp_noexcept_function_type) / !defined(__cpp_noexcept_function_type) vvv
+#define _NON_MEMBER_CALL_CV_REF_NOEXCEPT(FUNC) _NON_MEMBER_CALL_CV_REF(FUNC, )
+#endif // ^^^ !defined(__cpp_noexcept_function_type) ^^^
+
+#define _MEMBER_CALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT) \
+    _EMIT_CDECL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)      \
+    _EMIT_CLRCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)    \
+    _EMIT_FASTCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)   \
+    _EMIT_STDCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)    \
+    _EMIT_THISCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)   \
+    _EMIT_VECTORCALL(FUNC, CV_OPT, REF_OPT, NOEXCEPT_OPT)
+
+#define _MEMBER_CALL_CV(FUNC, REF_OPT, NOEXCEPT_OPT)    \
+    _MEMBER_CALL(FUNC, , REF_OPT, NOEXCEPT_OPT)         \
+    _MEMBER_CALL(FUNC, const, REF_OPT, NOEXCEPT_OPT)    \
+    _MEMBER_CALL(FUNC, volatile, REF_OPT, NOEXCEPT_OPT) \
+    _MEMBER_CALL(FUNC, const volatile, REF_OPT, NOEXCEPT_OPT)
+
+#define _MEMBER_CALL_CV_REF(FUNC, NOEXCEPT_OPT) \
+    _MEMBER_CALL_CV(FUNC, , NOEXCEPT_OPT)       \
+    _MEMBER_CALL_CV(FUNC, &, NOEXCEPT_OPT)      \
+    _MEMBER_CALL_CV(FUNC, &&, NOEXCEPT_OPT)
+
+#ifdef __cpp_noexcept_function_type
+#define _MEMBER_CALL_CV_REF_NOEXCEPT(FUNC) \
+    _MEMBER_CALL_CV_REF(FUNC, )            \
+    _MEMBER_CALL_CV_REF(FUNC, noexcept)
+#else // ^^^ defined(__cpp_noexcept_function_type) / !defined(__cpp_noexcept_function_type) vvv
+#define _MEMBER_CALL_CV_REF_NOEXCEPT(FUNC) _MEMBER_CALL_CV_REF(FUNC, )
+#endif // ^^^ !defined(__cpp_noexcept_function_type) ^^^
+
+#ifdef __cpp_noexcept_function_type
+#define _CLASS_DEFINE_CV_REF_NOEXCEPT(CLASS) \
+    CLASS(_EMPTY_ARGUMENT)                   \
+    CLASS(const)                             \
+    CLASS(volatile)                          \
+    CLASS(const volatile)                    \
+    CLASS(&)                                 \
+    CLASS(const &)                           \
+    CLASS(volatile &)                        \
+    CLASS(const volatile &)                  \
+    CLASS(&&)                                \
+    CLASS(const &&)                          \
+    CLASS(volatile &&)                       \
+    CLASS(const volatile &&)                 \
+    CLASS(noexcept)                          \
+    CLASS(const noexcept)                    \
+    CLASS(volatile noexcept)                 \
+    CLASS(const volatile noexcept)           \
+    CLASS(& noexcept)                        \
+    CLASS(const & noexcept)                  \
+    CLASS(volatile & noexcept)               \
+    CLASS(const volatile & noexcept)         \
+    CLASS(&& noexcept)                       \
+    CLASS(const && noexcept)                 \
+    CLASS(volatile && noexcept)              \
+    CLASS(const volatile && noexcept)
+#else // ^^^ defined(__cpp_noexcept_function_type) / !defined(__cpp_noexcept_function_type) vvv
+#define _CLASS_DEFINE_CV_REF_NOEXCEPT(CLASS) \
+    CLASS(_EMPTY_ARGUMENT)                   \
+    CLASS(const)                             \
+    CLASS(volatile)                          \
+    CLASS(const volatile)                    \
+    CLASS(&)                                 \
+    CLASS(const &)                           \
+    CLASS(volatile &)                        \
+    CLASS(const volatile &)                  \
+    CLASS(&&)                                \
+    CLASS(const &&)                          \
+    CLASS(volatile &&)                       \
+    CLASS(const volatile &&)
+#endif // ^^^ !defined(__cpp_noexcept_function_type) ^^^
+
+    template <class... _Types>
+    struct _Arg_types
+    {
+    }; // provide argument_type, etc. when sizeof...(_Types) is 1 or 2
+
+    template <class _Ty1>
+    struct _Arg_types<_Ty1>
+    {
+        using _ARGUMENT_TYPE_NAME _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS = _Ty1;
+    };
+
+    template <class _Ty1, class _Ty2>
+    struct _Arg_types<_Ty1, _Ty2>
+    {
+        using _FIRST_ARGUMENT_TYPE_NAME _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS = _Ty1;
+        using _SECOND_ARGUMENT_TYPE_NAME _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS = _Ty2;
+    };
+
+    template <class _Ty>
+    struct _Is_memfunptr
+    {                                  // base class for member function pointer predicates
+        using _Bool_type = false_type; // NB: members are user-visible via _Weak_types
+    };
+
+#define _IS_MEMFUNPTR(CALL_OPT, CV_OPT, REF_OPT, NOEXCEPT_OPT)                                               \
+    template <class _Ret, class _Arg0, class... _Types>                                                      \
+    struct _Is_memfunptr<_Ret (/*Arduino不支持：CALL_OPT*/ _Arg0::*)(_Types...) CV_OPT REF_OPT NOEXCEPT_OPT> \
+        : _Arg_types<CV_OPT _Arg0 *, _Types...>                                                              \
+    {                                                                                                        \
+        using _Bool_type = true_type;                                                                        \
+        using _RESULT_TYPE_NAME _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS = _Ret;                                    \
+        using _Class_type = _Arg0;                                                                           \
+        using _Guide_type = enable_if<!_STRUCT14VALUE_V(is_same, int REF_OPT, int &&), _Ret(_Types...)>;     \
+    };
+
+    _MEMBER_CALL_CV_REF_NOEXCEPT(_IS_MEMFUNPTR)
+#undef _IS_MEMFUNPTR
+
+#define _IS_MEMFUNPTR_ELLIPSIS(CV_REF_NOEXCEPT_OPT)                       \
+    template <class _Ret, class _Arg0, class... _Types>                   \
+    struct _Is_memfunptr<_Ret (_Arg0::*)(_Types..., ...)                  \
+                             CV_REF_NOEXCEPT_OPT>                         \
+    { /* no calling conventions for ellipsis */                           \
+        using _Bool_type = true_type;                                     \
+        using _RESULT_TYPE_NAME _CXX17_DEPRECATE_ADAPTOR_TYPEDEFS = _Ret; \
+        using _Class_type = _Arg0;                                        \
+        using _Guide_type = enable_if<false>;                             \
+    };
+
+    _CLASS_DEFINE_CV_REF_NOEXCEPT(_IS_MEMFUNPTR_ELLIPSIS)
+#undef _IS_MEMFUNPTR_ELLIPSIS
+
+#if _HAS_CXX23 && !defined(__clang__) // TRANSITION, DevCom-10107077, Clang has not implemented Deducing this
+#define _IS_MEMFUNPTR_EXPLICIT_THIS_GUIDES(CALL_OPT, CV_OPT, REF_OPT, NOEXCEPT_OPT) \
+    template <class _Ret, class _Self, class... _Args>                              \
+    struct _Is_memfunptr<_Ret(CALL_OPT *)(_Self, _Args...) NOEXCEPT_OPT>            \
+    {                                                                               \
+        using _Bool_type = false_type;                                              \
+        using _Guide_type = _Identity<_Ret(_Args...)>;                              \
+    };
+
+    _NON_MEMBER_CALL(_IS_MEMFUNPTR_EXPLICIT_THIS_GUIDES, , , )
+#ifdef __cpp_noexcept_function_type
+    _NON_MEMBER_CALL(_IS_MEMFUNPTR_EXPLICIT_THIS_GUIDES, , , noexcept)
+#endif // defined(__cpp_noexcept_function_type)
+
+#undef _IS_MEMFUNPTR_EXPLICIT_THIS_GUIDES
+#endif // _HAS_CXX23 && !defined(__clang__)
+#if _HAS_CXX14
+#ifdef __clang__
+    _EXPORT_STD template <class _Ty>
+    _INLINE_VAR constexpr bool is_member_function_pointer_v = __is_member_function_pointer(_Ty);
+#else  // ^^^ Clang / Other vvv
+    _EXPORT_STD template <class _Ty>
+    _INLINE_VAR constexpr bool is_member_function_pointer_v = _Is_memfunptr<remove_cv_t<_Ty>>::_Bool_type::value;
+#endif // ^^^ Other ^^^
+
+    _EXPORT_STD template <class _Ty>
+    struct is_member_function_pointer : bool_constant<is_member_function_pointer_v<_Ty>>
+    {
+    };
+#else
+    _EXPORT_STD template <class _Ty>
+    struct is_member_function_pointer : _Is_memfunptr<remove_cv_t<_Ty>>::_Bool_type
+    {
+    };
+#endif
+    // 572
+    //  604
+    template <class>
+    struct _Is_member_object_pointer
+    {
+        static constexpr bool value = false;
+    };
+    template <class _Ty1, class _Ty2>
+    struct _Is_member_object_pointer<_Ty1 _Ty2::*>
+    {
+        static constexpr bool value = !_STRUCT14VALUE_V(is_function, _Ty1);
+        using _Class_type = _Ty2;
+    };
+#if _HAS_CXX14
+#ifdef __clang__
+    _EXPORT_STD template <class _Ty>
+    _INLINE_VAR constexpr bool is_member_object_pointer_v = __is_member_object_pointer(_Ty);
+#else  // ^^^ Clang / Other vvv
+    _EXPORT_STD template <class _Ty>
+    _INLINE_VAR constexpr bool is_member_object_pointer_v = _Is_member_object_pointer<remove_cv_t<_Ty>>::value;
+#endif // ^^^ Other ^^^
+    _EXPORT_STD template <class _Ty>
+    struct is_member_object_pointer : bool_constant<is_member_object_pointer_v<_Ty>>
+    {
+    };
+#else
+    _EXPORT_STD template <class _Ty>
+    struct is_member_object_pointer : _Is_member_object_pointer<remove_cv_t<_Ty>>
+    {
+    };
+#endif
+    // 626
+    // 650
     template <class _Ty>
     struct is_empty : bool_constant<__is_empty(_Ty)>
     {
@@ -446,8 +694,8 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_empty_v = __is_empty(_Ty);
 #endif
-    // 519
-    // 531
+    // 656
+    // 668
     template <class _Ty>
     struct is_final : bool_constant<__is_final(_Ty)>
     {
@@ -456,25 +704,27 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_final_v = __is_final(_Ty);
 #endif
-// 537
-// 617
-// VC not well implemented, switch to boost implementation
-#include <__type_traits/is_default_constructible.hpp>
-#if _HAS_CXX14
-    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_default_constructible
-    template <class _Ty>
-    _INLINE_VAR constexpr bool is_default_constructible_v = is_default_constructible<_Ty>::value;
-#endif
+    // 674
+    // 749
 // VC not well implemented, switch to boost implementation based on boost is_default_constructible
-#include <__type_traits/is_constructible.hpp>
+#include "__type_traits/is_constructible.hpp"
 #if _HAS_CXX14
     // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
     template <class _Ty, class... _Args>
     _INLINE_VAR constexpr bool is_constructible_v = is_constructible<_Ty, _Args...>::value;
 #endif
-    // 625
-    // 637
-    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
+    // 757
+    //  765
+//  VC not well implemented, switch to boost implementation
+#include "__type_traits/is_default_constructible.hpp"
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_default_constructible
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_default_constructible_v = is_default_constructible<_Ty>::value;
+#endif
+    // 773
+    //  785
+    //  VC not well implemented, switch to EbolaChan's personal implementation based on boost is_constructible
     template <class _Ty>
     struct is_move_constructible : is_constructible<_Ty, _Ty>
     {
@@ -486,14 +736,14 @@ namespace std
     _INLINE_VAR constexpr bool is_move_constructible_v = is_constructible_v<_Ty, _Ty>;
 #endif
 // VC not well implemented, switch to boost implementation
-#include <__type_traits/is_assignable.hpp>
+#include "__type_traits/is_assignable.hpp"
 #if _HAS_CXX14
     // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_assignable
     template <class _To, class _From>
     _INLINE_VAR constexpr bool is_assignable_v = is_assignable<_To, _From>::value;
 #endif
-    // 651
-    // 686
+    // 799
+    // 834
     // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_assignable
     template <class _Ty>
     struct is_move_assignable : is_assignable<add_lvalue_reference_t<_Ty>, _Ty>
@@ -505,47 +755,7 @@ namespace std
     template <class _Ty>
     _INLINE_VAR constexpr bool is_move_assignable_v = is_assignable_v<add_lvalue_reference_t<_Ty>, _Ty>;
 #endif
-// 694
-// 786
-// VC not well implemented, switch to LLVM implementation
-#include <__type_traits/is_nothrow_constructible.h>
-    // 794
-    // 805
-    // VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible
-    template <class _Ty>
-    struct is_nothrow_default_constructible : is_nothrow_constructible<_Ty>
-    {
-        // determine whether value-initialization of _Ty is both valid and not potentially-throwing
-    };
-#if _HAS_CXX14
-    // VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible_v
-    template <class _Ty>
-    _INLINE_VAR constexpr bool is_nothrow_default_constructible_v = is_nothrow_constructible_v<_Ty>;
-#endif
-// VC not well implemented, switch to LLVM implementation
-#include <__type_traits/is_nothrow_move_constructible.h>
-
-    // Can't be implemented without compiler builtins. Fallback to is_assginable as an approximate.
-    template <class _To, class _From>
-    struct is_nothrow_assignable : is_assignable<_To, _From>
-    {
-        // determine whether assignment of _From to _To is both valid and not potentially-throwing
-    };
-#if _HAS_CXX14
-    // Can't be implemented without compiler builtins. Fallback to is_assginable_v as an approximate.
-    template <class _To, class _From>
-    _INLINE_VAR constexpr bool is_nothrow_assignable_v = is_assignable_v<_To, _From>;
-#endif
-// 829
-// 839
-// VC not well implemented, switch to boost implementation
-#include <__type_traits/is_nothrow_move_assignable.hpp>
-#if _HAS_CXX14
-    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_nothrow_move_assignable
-    template <class _Ty>
-    _INLINE_VAR constexpr bool is_nothrow_move_assignable_v = is_nothrow_move_assignable<_Ty>::value;
-#endif
-// 847
+    // 842
 // 883
 #if _HAS_CXX14
     template <class _Ty>
@@ -569,7 +779,47 @@ namespace std
         using _Apply = _Ty2;
     };
     // 898
+    // 934
+// VC not well implemented, switch to LLVM implementation
+#include "__type_traits/is_nothrow_constructible.h"
     // 942
+    // 953
+    // VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible
+    template <class _Ty>
+    struct is_nothrow_default_constructible : is_nothrow_constructible<_Ty>
+    {
+        // determine whether value-initialization of _Ty is both valid and not potentially-throwing
+    };
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on LLVM is_nothrow_constructible_v
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_nothrow_default_constructible_v = is_nothrow_constructible_v<_Ty>;
+#endif
+// VC not well implemented, switch to LLVM implementation
+#include "__type_traits/is_nothrow_move_constructible.h"
+
+    // Can't be implemented without compiler builtins. Fallback to is_assginable as an approximate.
+    template <class _To, class _From>
+    struct is_nothrow_assignable : is_assignable<_To, _From>
+    {
+        // determine whether assignment of _From to _To is both valid and not potentially-throwing
+    };
+#if _HAS_CXX14
+    // Can't be implemented without compiler builtins. Fallback to is_assginable_v as an approximate.
+    template <class _To, class _From>
+    _INLINE_VAR constexpr bool is_nothrow_assignable_v = is_assignable_v<_To, _From>;
+#endif
+    // 983
+    // 987
+// VC not well implemented, switch to boost implementation
+#include "__type_traits/is_nothrow_move_assignable.hpp"
+#if _HAS_CXX14
+    // VC not well implemented, switch to EbolaChan's personal implementation based on boost is_nothrow_move_assignable
+    template <class _Ty>
+    _INLINE_VAR constexpr bool is_nothrow_move_assignable_v = is_nothrow_move_assignable<_Ty>::value;
+#endif
+    // 995
+    // 1090
     template <size_t>
     struct _Make_unsigned2; // Choose make_unsigned strategy by type size
 
@@ -625,8 +875,8 @@ namespace std
     { // makes _Val unsigned
         return static_cast<make_unsigned_t<_Rep>>(_Val);
     }
-// 992
-// 1130
+// 1140
+// 1276
 #if _HAS_CXX14
     template <class _Ty, unsigned int _Ix = 0>
     _INLINE_VAR constexpr size_t extent_v = 0; // determine extent of dimension _Ix of array _Ty
@@ -760,8 +1010,10 @@ namespace std
     struct common_type<_Ty1, _Ty2, _Rest...> : _Common_type3<void, _Ty1, _Ty2, _Rest...>
     {
     };
-// 1366
-// 1369
+
+    template <class _Ty>
+    _Ty _Returns_exactly() noexcept; // not defined
+
 #if _HAS_CXX20
     _EXPORT_STD template <class, class, template <class> class, template <class> class>
     struct basic_common_reference
@@ -1010,8 +1262,309 @@ namespace std
         static_assert(!is_lvalue_reference<_Ty>::value, "bad forward call");
         return static_cast<_Ty &&>(_Arg);
     }
-    // 1571
-    // 1947
+
+    _EXPORT_STD template <class _Ty>
+    _NODISCARD _MSVC_INTRINSIC constexpr remove_reference_t<_Ty> &&move(_Ty &&_Arg) noexcept
+    {
+        return static_cast<remove_reference_t<_Ty> &&>(_Arg);
+    }
+    // 1576
+#pragma warning(push)
+#pragma warning(disable : 5215) // '%s' a function parameter with a volatile qualified type is deprecated in C++20
+#pragma warning(disable : 5216) // '%s' a volatile qualified return type is deprecated in C++20
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-volatile"
+#endif // defined(__clang__)
+
+    template <class _Ty>
+    _NODISCARD _Ty _Fake_copy_init(_Ty) noexcept;
+    // _Fake_copy_init<T>(E):
+    // (1) has type T [decay_t<decltype((E))> if T is deduced],
+    // (2) is well-formed if and only if E is implicitly convertible to T and T is destructible, and
+    // (3) is non-throwing if and only if both conversion from decltype((E)) to T and destruction of T are non-throwing.
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif // defined(__clang__)
+
+#pragma warning(pop)
+
+    _EXPORT_STD template <class _Ty>
+    class reference_wrapper;
+
+    // std::invoke isn't constexpr in C++17, and normally implementers are forbidden from "strengthening" constexpr
+    // (N4950 [constexpr.functions]/1), yet both std::apply and std::visit are required to be constexpr and have
+    // invoke-like behavior. As a result, we've chosen to apply the part of P1065R2 resolving LWG-2894 as a defect report.
+
+    enum class _Invoker_strategy
+    {
+        _Functor,
+        _Pmf_object,
+        _Pmf_refwrap,
+        _Pmf_pointer,
+        _Pmd_object,
+        _Pmd_refwrap,
+        _Pmd_pointer
+    };
+
+    struct _Invoker_functor
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Functor;
+
+        template <class _Callable, class... _Types>
+        static constexpr auto _Call(_Callable &&_Obj, _Types &&..._Args) noexcept(
+            noexcept(static_cast<_Callable &&>(_Obj)(static_cast<_Types &&>(_Args)...)))
+            -> decltype(static_cast<_Callable &&>(_Obj)(static_cast<_Types &&>(_Args)...))
+        {
+            return static_cast<_Callable &&>(_Obj)(static_cast<_Types &&>(_Args)...);
+        }
+    };
+
+    struct _Invoker_pmf_object
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Pmf_object;
+
+        template <class _Decayed, class _Ty1, class... _Types2>
+        static constexpr auto _Call(_Decayed _Pmf, _Ty1 &&_Arg1, _Types2 &&..._Args2) noexcept(
+            noexcept((static_cast<_Ty1 &&>(_Arg1).*_Pmf)(static_cast<_Types2 &&>(_Args2)...)))
+            -> decltype((static_cast<_Ty1 &&>(_Arg1).*_Pmf)(static_cast<_Types2 &&>(_Args2)...))
+        {
+            return (static_cast<_Ty1 &&>(_Arg1).*_Pmf)(static_cast<_Types2 &&>(_Args2)...);
+        }
+    };
+
+    struct _Invoker_pmf_refwrap
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Pmf_refwrap;
+
+        template <class _Decayed, class _Refwrap, class... _Types2>
+        static constexpr auto _Call(_Decayed _Pmf, _Refwrap _Rw, _Types2 &&..._Args2) noexcept(
+            noexcept((_Rw.get().*_Pmf)(static_cast<_Types2 &&>(_Args2)...)))
+            -> decltype((_Rw.get().*_Pmf)(static_cast<_Types2 &&>(_Args2)...))
+        {
+            return (_Rw.get().*_Pmf)(static_cast<_Types2 &&>(_Args2)...);
+        }
+    };
+
+    struct _Invoker_pmf_pointer
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Pmf_pointer;
+
+        template <class _Decayed, class _Ty1, class... _Types2>
+        static constexpr auto _Call(_Decayed _Pmf, _Ty1 &&_Arg1, _Types2 &&..._Args2) noexcept(
+            noexcept(((*static_cast<_Ty1 &&>(_Arg1)).*_Pmf)(static_cast<_Types2 &&>(_Args2)...)))
+            -> decltype(((*static_cast<_Ty1 &&>(_Arg1)).*_Pmf)(static_cast<_Types2 &&>(_Args2)...))
+        {
+            return ((*static_cast<_Ty1 &&>(_Arg1)).*_Pmf)(static_cast<_Types2 &&>(_Args2)...);
+        }
+    };
+
+    struct _Invoker_pmd_object
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Pmd_object;
+
+        template <class _Decayed, class _Ty1>
+        static constexpr auto _Call(_Decayed _Pmd, _Ty1 &&_Arg1) noexcept -> decltype(static_cast<_Ty1 &&>(_Arg1).*_Pmd)
+        {
+            return static_cast<_Ty1 &&>(_Arg1).*_Pmd;
+        }
+    };
+
+    struct _Invoker_pmd_refwrap
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Pmd_refwrap;
+
+        template <class _Decayed, class _Refwrap>
+        static constexpr auto _Call(_Decayed _Pmd, _Refwrap _Rw) noexcept -> decltype(_Rw.get().*_Pmd)
+        {
+            return _Rw.get().*_Pmd;
+        }
+    };
+
+    struct _Invoker_pmd_pointer
+    {
+        static constexpr _Invoker_strategy _Strategy = _Invoker_strategy::_Pmd_pointer;
+
+        template <class _Decayed, class _Ty1>
+        static constexpr auto _Call(_Decayed _Pmd, _Ty1 &&_Arg1) noexcept(noexcept((*static_cast<_Ty1 &&>(_Arg1)).*_Pmd))
+            -> decltype((*static_cast<_Ty1 &&>(_Arg1)).*_Pmd)
+        {
+            return (*static_cast<_Ty1 &&>(_Arg1)).*_Pmd;
+        }
+    };
+
+    template <class _Callable, class _Ty1, class _Removed_cvref = _Remove_cvref_t<_Callable>,
+              bool _Is_pmf = _STRUCT14VALUE_V(is_member_function_pointer, _Removed_cvref),
+              bool _Is_pmd = _STRUCT14VALUE_V(is_member_object_pointer, _Removed_cvref)>
+    struct _Invoker1;
+
+    template <class _Callable, class _Ty1, class _Removed_cvref>
+    struct _Invoker1<_Callable, _Ty1, _Removed_cvref, true, false>
+        : conditional_t<_STRUCT14VALUE_V(is_same, typename _Is_memfunptr<_Removed_cvref>::_Class_type, _Remove_cvref_t<_Ty1>) || _STRUCT14VALUE_V(is_base_of, typename _Is_memfunptr<_Removed_cvref>::_Class_type, _Remove_cvref_t<_Ty1>),
+                        _Invoker_pmf_object,
+                        conditional_t<_STRUCT14VALUE_V(_Is_specialization, _Remove_cvref_t<_Ty1>, reference_wrapper), _Invoker_pmf_refwrap,
+                                      _Invoker_pmf_pointer>>
+    {
+    }; // pointer to member function
+
+    template <class _Callable, class _Ty1, class _Removed_cvref>
+    struct _Invoker1<_Callable, _Ty1, _Removed_cvref, false, true>
+        : conditional_t<
+              _STRUCT14VALUE_V(is_same, typename _Is_member_object_pointer<_Removed_cvref>::_Class_type, _Remove_cvref_t<_Ty1>) || _STRUCT14VALUE_V(is_base_of, typename _Is_member_object_pointer<_Removed_cvref>::_Class_type, _Remove_cvref_t<_Ty1>),
+              _Invoker_pmd_object,
+              conditional_t<_STRUCT14VALUE_V(_Is_specialization, _Remove_cvref_t<_Ty1>, reference_wrapper), _Invoker_pmd_refwrap,
+                            _Invoker_pmd_pointer>>
+    {
+    }; // pointer to member data
+
+    template <class _Callable, class _Ty1, class _Removed_cvref>
+    struct _Invoker1<_Callable, _Ty1, _Removed_cvref, false, false> : _Invoker_functor
+    {
+    };
+
+    _EXPORT_STD template <class _Callable>
+    _CONSTEXPR17 auto invoke(_Callable &&_Obj) noexcept(noexcept(static_cast<_Callable &&>(_Obj)()))
+        -> decltype(static_cast<_Callable &&>(_Obj)())
+    {
+        return static_cast<_Callable &&>(_Obj)();
+    }
+
+    _EXPORT_STD template <class _Callable, class _Ty1, class... _Types2>
+    _CONSTEXPR17 auto invoke(_Callable &&_Obj, _Ty1 &&_Arg1, _Types2 &&..._Args2) noexcept(
+        noexcept(_Invoker1<_Callable, _Ty1>::_Call(
+            static_cast<_Callable &&>(_Obj), static_cast<_Ty1 &&>(_Arg1), static_cast<_Types2 &&>(_Args2)...)))
+        -> decltype(_Invoker1<_Callable, _Ty1>::_Call(
+            static_cast<_Callable &&>(_Obj), static_cast<_Ty1 &&>(_Arg1), static_cast<_Types2 &&>(_Args2)...))
+    {
+        if _CONSTEXPR14 ()
+            (_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Functor)
+            {
+                return static_cast<_Callable &&>(_Obj)(static_cast<_Ty1 &&>(_Arg1), static_cast<_Types2 &&>(_Args2)...);
+            }
+        else if _CONSTEXPR14 ()
+            (_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Pmf_object)
+            {
+                return (static_cast<_Ty1 &&>(_Arg1).*_Obj)(static_cast<_Types2 &&>(_Args2)...);
+            }
+        else if _CONSTEXPR14 ()
+            (_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Pmf_refwrap)
+            {
+                return (_Arg1.get().*_Obj)(static_cast<_Types2 &&>(_Args2)...);
+            }
+        else if _CONSTEXPR14 ()
+            (_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Pmf_pointer)
+            {
+                return ((*static_cast<_Ty1 &&>(_Arg1)).*_Obj)(static_cast<_Types2 &&>(_Args2)...);
+            }
+        else if _CONSTEXPR14 ()
+            (_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Pmd_object)
+            {
+                return static_cast<_Ty1 &&>(_Arg1).*_Obj;
+            }
+        else if _CONSTEXPR14 ()
+            (_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Pmd_refwrap)
+            {
+                return _Arg1.get().*_Obj;
+            }
+        else
+        {
+            _STL_INTERNAL_STATIC_ASSERT(_Invoker1<_Callable, _Ty1>::_Strategy == _Invoker_strategy::_Pmd_pointer);
+            return (*static_cast<_Ty1 &&>(_Arg1)).*_Obj;
+        }
+    }
+    // 1757
+    // 1786
+    template <class _From, class _To, class = void>
+    struct _Invoke_convertible : false_type
+    {
+    };
+
+    template <class _From, class _To>
+    struct _Invoke_convertible<_From, _To, void_t<decltype(_STD _Fake_copy_init<_To>(_STD _Returns_exactly<_From>()))>>
+        : true_type
+    {
+    };
+
+    template <class _From, class _To>
+    struct _Invoke_nothrow_convertible
+        : bool_constant<noexcept(_STD _Fake_copy_init<_To>(_STD _Returns_exactly<_From>()))>
+    {
+    };
+
+    template <class _Result, bool _Nothrow>
+    struct _Invoke_traits_common
+    {
+        using type = _Result;
+        using _Is_invocable = true_type;
+        using _Is_nothrow_invocable = bool_constant<_Nothrow>;
+        template <class _Rx>
+        using _Is_invocable_r = bool_constant<_STRUCT14VALUE_V(disjunction, is_void<_Rx>, _Invoke_convertible<type, _Rx>)>;
+        template <class _Rx>
+        using _Is_nothrow_invocable_r = bool_constant<_STRUCT14VALUE_V(conjunction, _Is_nothrow_invocable, disjunction<is_void<_Rx>, conjunction<_Invoke_convertible<type, _Rx>, _Invoke_nothrow_convertible<type, _Rx>>>)>;
+    };
+
+    template <class _Void, class _Callable>
+    struct _Invoke_traits_zero
+    {
+        // selected when _Callable isn't callable with zero _Args
+        using _Is_invocable = false_type;
+        using _Is_nothrow_invocable = false_type;
+        template <class _Rx>
+        using _Is_invocable_r = false_type;
+        template <class _Rx>
+        using _Is_nothrow_invocable_r = false_type;
+    };
+
+    template <class _Callable>
+    using _Decltype_invoke_zero = decltype(_STD declval<_Callable>()());
+
+    template <class _Callable>
+    struct _Invoke_traits_zero<void_t<_Decltype_invoke_zero<_Callable>>, _Callable>
+        : _Invoke_traits_common<_Decltype_invoke_zero<_Callable>, noexcept(_STD declval<_Callable>()())>
+    {
+    };
+
+    template <class _Void, class... _Types>
+    struct _Invoke_traits_nonzero
+    {
+        // selected when _Callable isn't callable with nonzero _Args
+        using _Is_invocable = false_type;
+        using _Is_nothrow_invocable = false_type;
+        template <class _Rx>
+        using _Is_invocable_r = false_type;
+        template <class _Rx>
+        using _Is_nothrow_invocable_r = false_type;
+    };
+
+    template <class _Callable, class _Ty1, class... _Types2>
+    using _Decltype_invoke_nonzero = decltype(_Invoker1<_Callable, _Ty1>::_Call(
+        _STD declval<_Callable>(), _STD declval<_Ty1>(), _STD declval<_Types2>()...));
+
+    template <class _Callable, class _Ty1, class... _Types2>
+    struct _Invoke_traits_nonzero<void_t<_Decltype_invoke_nonzero<_Callable, _Ty1, _Types2...>>, _Callable, _Ty1,
+                                  _Types2...> : _Invoke_traits_common<_Decltype_invoke_nonzero<_Callable, _Ty1, _Types2...>,
+                                                                      noexcept(_Invoker1<_Callable, _Ty1>::_Call(
+                                                                          _STD declval<_Callable>(), _STD declval<_Ty1>(), _STD declval<_Types2>()...))>
+    {
+    };
+
+    template <class _Callable, class... _Args>
+    using _Select_invoke_traits = conditional_t<sizeof...(_Args) == 0, _Invoke_traits_zero<void, _Callable>,
+                                                _Invoke_traits_nonzero<void, _Callable, _Args...>>;
+    // 1853
+    //  1878
+    template <class _Rx, class _Callable, class... _Args>
+    using _Is_invocable_r_ = typename _Select_invoke_traits<_Callable, _Args...>::template _Is_invocable_r<_Rx>;
+
+    template <class _Rx, class _Callable, class... _Args>
+    struct _Is_invocable_r : _Is_invocable_r_<_Rx, _Callable, _Args...>
+    {
+        // determines whether _Callable is callable with _Args and return type _Rx
+    };
+    // 1886
+    //   1947
     template <class _Ty>
     struct _Is_swappable;
 

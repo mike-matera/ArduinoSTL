@@ -15,425 +15,1135 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
 #ifndef __STD_HEADER_FUNCTIONAL
 #define __STD_HEADER_FUNCTIONAL 1
 
-#include <basic_definitions>
+#include "typeinfo"
+#include "xmemory"
+#include "yvals.h"
 
 #pragma GCC visibility push(default)
 
-namespace std{
+namespace std
+{
 
-	template <class Arg, class Result> struct unary_function;
-	template <class Arg1, class Arg2, class Result> struct binary_function;
-
-	template <class T> struct plus;
-	template <class T> struct minus;
-	template <class T> struct multiplies;
-	template <class T> struct divides;
-	template <class T> struct modulus;
-	template <class T> struct negate;
-
-	template <class T> struct equal_to;
-	template <class T> struct not_equal_to;
-	template <class T> struct greater;
-	template <class T> struct less;
-	template <class T> struct greater_equal;
-	template <class T> struct less_equal;
-
-	template <class T> struct logical_and;
-	template <class T> struct logical_or;
-	template <class T> struct logical_not;
-
-	template <class Predicate> struct unary_negate;
-	template <class Predicate> unary_negate<Predicate>  not1(const Predicate&);
-	template <class Predicate> struct binary_negate;
-	template <class Predicate> binary_negate<Predicate> not2(const Predicate&);
-
-
-	template <class Operation> class binder1st;
-	template <class Operation, class T> binder1st<Operation> bind1st(const Operation&, const T&);
-	template <class Operation> class binder2nd;
-	template <class Operation, class T> binder2nd<Operation> bind2nd(const Operation&, const T&);
-
-	template <class Arg, class Result> class pointer_to_unary_function;
-	template <class Arg, class Result> pointer_to_unary_function<Arg,Result> ptr_fun(Result (*)(Arg));
-	template <class Arg1, class Arg2, class Result> class pointer_to_binary_function;
+	template <class Arg, class Result>
+	struct unary_function;
 	template <class Arg1, class Arg2, class Result>
-		pointer_to_binary_function<Arg1,Arg2,Result> ptr_fun(Result (*)(Arg1,Arg2));
+	struct binary_function;
 
-	template<class S, class T> class mem_fun_t;
-	template<class S, class T, class A> class mem_fun1_t;
-	template<class S, class T> class const_mem_fun_t;
-	template<class S, class T, class A> class const_mem_fun1_t;
-	template<class S, class T> mem_fun_t<S,T> mem_fun(S (T::*f)());
-	template<class S, class T, class A> mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A));
-	template<class S, class T> class mem_fun_ref_t;
-	template<class S, class T, class A> class mem_fun1_ref_t;
-	template<class S, class T> mem_fun_ref_t<S,T> mem_fun_ref(S (T::*f)());
-	template<class S, class T, class A> mem_fun1_ref_t<S,T,A> mem_fun1_ref(S (T::*f)(A));
+	template <class T>
+	struct plus;
+	template <class T>
+	struct minus;
+	template <class T>
+	struct multiplies;
+	template <class T>
+	struct divides;
+	template <class T>
+	struct modulus;
+	template <class T>
+	struct negate;
 
-	//Implementation
+	template <class T>
+	struct equal_to;
+	template <class T>
+	struct not_equal_to;
+	template <class T>
+	struct greater;
+	template <class T>
+	struct less;
+	template <class T>
+	struct greater_equal;
+	template <class T>
+	struct less_equal;
 
-	template <class Arg, class Result> struct _UCXXEXPORT unary_function{
+	template <class T>
+	struct logical_and;
+	template <class T>
+	struct logical_or;
+	template <class T>
+	struct logical_not;
+
+	template <class Predicate>
+	struct unary_negate;
+	template <class Predicate>
+	unary_negate<Predicate> not1(const Predicate &);
+	template <class Predicate>
+	struct binary_negate;
+	template <class Predicate>
+	binary_negate<Predicate> not2(const Predicate &);
+
+	template <class Operation>
+	class binder1st;
+	template <class Operation, class T>
+	binder1st<Operation> bind1st(const Operation &, const T &);
+	template <class Operation>
+	class binder2nd;
+	template <class Operation, class T>
+	binder2nd<Operation> bind2nd(const Operation &, const T &);
+
+	template <class Arg, class Result>
+	class pointer_to_unary_function;
+	template <class Arg, class Result>
+	pointer_to_unary_function<Arg, Result> ptr_fun(Result (*)(Arg));
+	template <class Arg1, class Arg2, class Result>
+	class pointer_to_binary_function;
+	template <class Arg1, class Arg2, class Result>
+	pointer_to_binary_function<Arg1, Arg2, Result> ptr_fun(Result (*)(Arg1, Arg2));
+
+	template <class S, class T>
+	class mem_fun_t;
+	template <class S, class T, class A>
+	class mem_fun1_t;
+	template <class S, class T>
+	class const_mem_fun_t;
+	template <class S, class T, class A>
+	class const_mem_fun1_t;
+	template <class S, class T>
+	mem_fun_t<S, T> mem_fun(S (T::*f)());
+	template <class S, class T, class A>
+	mem_fun1_t<S, T, A> mem_fun(S (T::*f)(A));
+	template <class S, class T>
+	class mem_fun_ref_t;
+	template <class S, class T, class A>
+	class mem_fun1_ref_t;
+	template <class S, class T>
+	mem_fun_ref_t<S, T> mem_fun_ref(S (T::*f)());
+	template <class S, class T, class A>
+	mem_fun1_ref_t<S, T, A> mem_fun1_ref(S (T::*f)(A));
+
+	// Implementation
+
+	template <class Arg, class Result>
+	struct _UCXXEXPORT unary_function
+	{
 		typedef Arg argument_type;
 		typedef Result result_type;
 	};
 
-
-	template <class Arg1, class Arg2, class Result> struct _UCXXEXPORT binary_function{
-		typedef Arg1   first_argument_type;
-		typedef Arg2   second_argument_type;
+	template <class Arg1, class Arg2, class Result>
+	struct _UCXXEXPORT binary_function
+	{
+		typedef Arg1 first_argument_type;
+		typedef Arg2 second_argument_type;
 		typedef Result result_type;
 	};
 
-	template <class T> struct _UCXXEXPORT plus : binary_function<T,T,T>{
-		T operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT plus : binary_function<T, T, T>
+	{
+		T operator()(const T &x, const T &y) const
+		{
 			return x + y;
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT minus : binary_function<T,T,T>{
-		T operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT minus : binary_function<T, T, T>
+	{
+		T operator()(const T &x, const T &y) const
+		{
 			return x - y;
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT multiplies : binary_function<T,T,T>{
-		T operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT multiplies : binary_function<T, T, T>
+	{
+		T operator()(const T &x, const T &y) const
+		{
 			return x * y;
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT divides : binary_function<T,T,T>{
-		T operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT divides : binary_function<T, T, T>
+	{
+		T operator()(const T &x, const T &y) const
+		{
 			return x / y;
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT modulus : binary_function<T,T,T>{
-		T operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT modulus : binary_function<T, T, T>
+	{
+		T operator()(const T &x, const T &y) const
+		{
 			return x % y;
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT negate : unary_function<T,T>{
-		T operator()(const T& x) const{
+	template <class T>
+	struct _UCXXEXPORT negate : unary_function<T, T>
+	{
+		T operator()(const T &x) const
+		{
 			return -x;
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT equal_to : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT equal_to : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const
+		{
 			return (x == y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT not_equal_to : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT not_equal_to : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const
+		{
 			return (x != y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT greater : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
+	template <class T>
+	struct _UCXXEXPORT greater : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const _UCXX_NOTHROW
+		{
 			return (x > y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT less : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
+	template <class T>
+	struct _UCXXEXPORT less : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const _UCXX_NOTHROW
+		{
 			return (x < y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT greater_equal : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
+	template <class T>
+	struct _UCXXEXPORT greater_equal : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const _UCXX_NOTHROW
+		{
 			return (x >= y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT less_equal : binary_function<T,T,bool>{
-		bool operator()(const T& x, const T& y) const _UCXX_NOTHROW {
+	template <class T>
+	struct _UCXXEXPORT less_equal : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const _UCXX_NOTHROW
+		{
 			return (x <= y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT logical_and : binary_function<T,T,bool> {
-		bool operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT logical_and : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const
+		{
 			return (x && y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT logical_or : binary_function<T,T,bool> {
-		bool operator()(const T& x, const T& y) const{
+	template <class T>
+	struct _UCXXEXPORT logical_or : binary_function<T, T, bool>
+	{
+		bool operator()(const T &x, const T &y) const
+		{
 			return (x || y);
 		}
 	};
 
-	template <class T> struct _UCXXEXPORT logical_not : unary_function<T,bool> {
-		bool operator()(const T& x) const{
+	template <class T>
+	struct _UCXXEXPORT logical_not : unary_function<T, bool>
+	{
+		bool operator()(const T &x) const
+		{
 			return !x;
 		}
 	};
 
-	template <class Predicate> class _UCXXEXPORT unary_negate
-		: public unary_function<typename Predicate::argument_type,bool>
+	template <class Predicate>
+	class _UCXXEXPORT unary_negate
+		: public unary_function<typename Predicate::argument_type, bool>
 	{
 	public:
-		explicit unary_negate(const Predicate& pred) : p(pred) {  }
-		bool operator()(const typename Predicate::argument_type& x) const{
+		explicit unary_negate(const Predicate &pred) : p(pred) {}
+		bool operator()(const typename Predicate::argument_type &x) const
+		{
 			return !p(x);
 		}
+
 	private:
 		Predicate p;
 	};
 
-
-	template <class Predicate> _UCXXEXPORT unary_negate<Predicate> not1(const Predicate& pred){
+	template <class Predicate>
+	_UCXXEXPORT unary_negate<Predicate> not1(const Predicate &pred)
+	{
 		return unary_negate<Predicate>(pred);
 	}
 
-
-	template <class Predicate> class _UCXXEXPORT binary_negate : public
-		binary_function<typename Predicate::first_argument_type,
-			typename Predicate::second_argument_type, bool>
+	template <class Predicate>
+	class _UCXXEXPORT binary_negate : public binary_function<typename Predicate::first_argument_type,
+															 typename Predicate::second_argument_type, bool>
 	{
 	public:
-		explicit binary_negate(const Predicate& pred) : p(pred) {  }
-		bool operator()(const typename Predicate::first_argument_type& x,
-			const typename Predicate::second_argument_type& y) const
+		explicit binary_negate(const Predicate &pred) : p(pred) {}
+		bool operator()(const typename Predicate::first_argument_type &x,
+						const typename Predicate::second_argument_type &y) const
 		{
 			return !p(x, y);
 		}
+
 	private:
 		Predicate p;
 	};
 
-
-	template <class Predicate> _UCXXEXPORT binary_negate<Predicate> not2(const Predicate& pred){
+	template <class Predicate>
+	_UCXXEXPORT binary_negate<Predicate> not2(const Predicate &pred)
+	{
 		return binary_negate<Predicate>(pred);
 	}
 
-
-	template <class Operation> class _UCXXEXPORT binder1st
+	template <class Operation>
+	class _UCXXEXPORT binder1st
 		: public unary_function<typename Operation::second_argument_type,
-			typename Operation::result_type>
+								typename Operation::result_type>
 	{
 	protected:
-		Operation                      op;
+		Operation op;
 		typename Operation::first_argument_type value;
+
 	public:
-		binder1st(const Operation& x, const typename Operation::first_argument_type& y) : op(x), value(y){  }
-		typename Operation::result_type operator()(const typename Operation::second_argument_type& x) const{
-			return op(value,x);
+		binder1st(const Operation &x, const typename Operation::first_argument_type &y) : op(x), value(y) {}
+		typename Operation::result_type operator()(const typename Operation::second_argument_type &x) const
+		{
+			return op(value, x);
 		}
 	};
 
-
-	template <class Operation, class T> _UCXXEXPORT binder1st<Operation> bind1st(const Operation& op, const T& x){
+	template <class Operation, class T>
+	_UCXXEXPORT binder1st<Operation> bind1st(const Operation &op, const T &x)
+	{
 		return binder1st<Operation>(op, typename Operation::first_argument_type(x));
 	}
 
-
-	template <class Operation> class _UCXXEXPORT binder2nd
+	template <class Operation>
+	class _UCXXEXPORT binder2nd
 		: public unary_function<typename Operation::first_argument_type,
-			typename Operation::result_type>
+								typename Operation::result_type>
 	{
 	protected:
-		Operation                       op;
+		Operation op;
 		typename Operation::second_argument_type value;
+
 	public:
-		binder2nd(const Operation& x, const typename Operation::second_argument_type& y) : op(x), value(y) {  }
-		typename Operation::result_type operator()(const typename Operation::first_argument_type& x) const{
-			return op(x,value);
+		binder2nd(const Operation &x, const typename Operation::second_argument_type &y) : op(x), value(y) {}
+		typename Operation::result_type operator()(const typename Operation::first_argument_type &x) const
+		{
+			return op(x, value);
 		}
 	};
 
-
-	template <class Operation, class T> _UCXXEXPORT
-		binder2nd<Operation> bind2nd(const Operation& op, const T& x)
+	template <class Operation, class T>
+	_UCXXEXPORT
+		binder2nd<Operation>
+		bind2nd(const Operation &op, const T &x)
 	{
 		return binder2nd<Operation>(op, typename Operation::second_argument_type(x));
 	}
 
-
-	template <class Arg, class Result> class _UCXXEXPORT
+	template <class Arg, class Result>
+	class _UCXXEXPORT
 		pointer_to_unary_function : public unary_function<Arg, Result>
 	{
 	protected:
 		Result (*func)(Arg);
+
 	public:
-		explicit pointer_to_unary_function(Result (*f)(Arg)) : func(f) {  }
-		Result operator()(Arg x) const{
+		explicit pointer_to_unary_function(Result (*f)(Arg)) : func(f) {}
+		Result operator()(Arg x) const
+		{
 			return func(x);
 		}
 	};
 
-
-	template <class Arg, class Result> _UCXXEXPORT pointer_to_unary_function<Arg, Result> ptr_fun(Result (*f)(Arg)){
+	template <class Arg, class Result>
+	_UCXXEXPORT pointer_to_unary_function<Arg, Result> ptr_fun(Result (*f)(Arg))
+	{
 		return pointer_to_unary_function<Arg, Result>(f);
 	}
 
-
-	template <class Arg1, class Arg2, class Result>	class _UCXXEXPORT
-		pointer_to_binary_function : public binary_function<Arg1,Arg2,Result>
+	template <class Arg1, class Arg2, class Result>
+	class _UCXXEXPORT
+		pointer_to_binary_function : public binary_function<Arg1, Arg2, Result>
 	{
 	protected:
 		Result (*func)(Arg1, Arg2);
+
 	public:
-		explicit pointer_to_binary_function(Result (*f)(Arg1, Arg2)) : func(f) {  }
-		Result operator()(Arg1 x, Arg2 y) const{
+		explicit pointer_to_binary_function(Result (*f)(Arg1, Arg2)) : func(f) {}
+		Result operator()(Arg1 x, Arg2 y) const
+		{
 			return func(x, y);
 		}
 	};
 
-	template <class Arg1, class Arg2, class Result> _UCXXEXPORT
-		pointer_to_binary_function<Arg1,Arg2,Result> ptr_fun(Result (*f)(Arg1, Arg2))
+	template <class Arg1, class Arg2, class Result>
+	_UCXXEXPORT
+		pointer_to_binary_function<Arg1, Arg2, Result>
+		ptr_fun(Result (*f)(Arg1, Arg2))
 	{
-		return pointer_to_binary_function<Arg1,Arg2,Result>(f);
+		return pointer_to_binary_function<Arg1, Arg2, Result>(f);
 	}
 
-
-	template <class S, class T> class _UCXXEXPORT mem_fun_t
-		: public unary_function<T*, S>
+	template <class S, class T>
+	class _UCXXEXPORT mem_fun_t
+		: public unary_function<T *, S>
 	{
 	public:
-		explicit mem_fun_t(S (T::*p)()) : m(p) {  }
-		S operator()(T* p) const { return (p->*m)(); }
+		explicit mem_fun_t(S (T::*p)()) : m(p) {}
+		S operator()(T *p) const { return (p->*m)(); }
+
 	private:
-		S (T::*m)();
+		S(T::*m)
+		();
 	};
 
-
-	template <class S, class T, class A> class _UCXXEXPORT mem_fun1_t
-		: public binary_function<T*, A, S>
+	template <class S, class T, class A>
+	class _UCXXEXPORT mem_fun1_t
+		: public binary_function<T *, A, S>
 	{
 	public:
-		explicit mem_fun1_t(S (T::*p)(A)) : m(p) {  }
-		S operator()(T* p, A x) const { return (p->*m)(x); }
+		explicit mem_fun1_t(S (T::*p)(A)) : m(p) {}
+		S operator()(T *p, A x) const { return (p->*m)(x); }
+
 	private:
-		S (T::*m)(A);
+		S(T::*m)
+		(A);
 	};
 
-
-	template <class S, class T> class _UCXXEXPORT const_mem_fun_t
-		: public unary_function<const T*, S>
+	template <class S, class T>
+	class _UCXXEXPORT const_mem_fun_t
+		: public unary_function<const T *, S>
 	{
 	public:
-		explicit const_mem_fun_t(S (T::*p)() const) : m(p) {  }
-		S operator()(const T* p) const { return (p->*m)(); }
+		explicit const_mem_fun_t(S (T::*p)() const) : m(p) {}
+		S operator()(const T *p) const { return (p->*m)(); }
+
 	private:
-		S (T::*m)() const;
+		S(T::*m)
+		() const;
 	};
 
-
-	template <class S, class T, class A> class _UCXXEXPORT const_mem_fun1_t
-		: public binary_function<T*, A, S>
+	template <class S, class T, class A>
+	class _UCXXEXPORT const_mem_fun1_t
+		: public binary_function<T *, A, S>
 	{
 	public:
-		explicit const_mem_fun1_t(S (T::*p)(A) const) : m(p) {  }
-		S operator()(const T* p, A x) const { return (p->*m)(x); }
+		explicit const_mem_fun1_t(S (T::*p)(A) const) : m(p) {}
+		S operator()(const T *p, A x) const { return (p->*m)(x); }
+
 	private:
-		S (T::*m)(A) const;
+		S(T::*m)
+		(A) const;
 	};
 
-
-	template<class S, class T> _UCXXEXPORT mem_fun_t<S,T> mem_fun(S (T::*f)()){
+	template <class S, class T>
+	_UCXXEXPORT mem_fun_t<S, T> mem_fun(S (T::*f)())
+	{
 		return mem_fun_t<S, T>(f);
 	}
 
-	template<class S, class T> _UCXXEXPORT const_mem_fun_t<S,T> mem_fun(S (T::*f)() const){
+	template <class S, class T>
+	_UCXXEXPORT const_mem_fun_t<S, T> mem_fun(S (T::*f)() const)
+	{
 		return const_mem_fun_t<S, T>(f);
 	}
 
-	template<class S, class T, class A> _UCXXEXPORT mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A)){
+	template <class S, class T, class A>
+	_UCXXEXPORT mem_fun1_t<S, T, A> mem_fun(S (T::*f)(A))
+	{
 		return mem_fun1_t<S, T, A>(f);
 	}
 
-	template<class S, class T, class A> _UCXXEXPORT const_mem_fun1_t<S,T,A> mem_fun(S (T::*f)(A) const){
+	template <class S, class T, class A>
+	_UCXXEXPORT const_mem_fun1_t<S, T, A> mem_fun(S (T::*f)(A) const)
+	{
 		return const_mem_fun1_t<S, T, A>(f);
 	}
 
-	template <class S, class T> class _UCXXEXPORT mem_fun_ref_t
+	template <class S, class T>
+	class _UCXXEXPORT mem_fun_ref_t
 		: public unary_function<T, S>
 	{
 	public:
-		explicit mem_fun_ref_t(S (T::*p)()) : mf(p) {  }
-		S operator()(T& p) { return (p.*mf)(); }
+		explicit mem_fun_ref_t(S (T::*p)()) : mf(p) {}
+		S operator()(T &p) { return (p.*mf)(); }
+
 	private:
-		S (T::*mf)();
+		S(T::*mf)
+		();
 	};
 
-	template <class S, class T, class A> class _UCXXEXPORT mem_fun1_ref_t
+	template <class S, class T, class A>
+	class _UCXXEXPORT mem_fun1_ref_t
 		: public binary_function<T, A, S>
 	{
 	public:
-		explicit mem_fun1_ref_t(S (T::*p)(A)) : mf(p) {  }
-		S operator()(T& p, A x) { return (p.*mf)(x); }
+		explicit mem_fun1_ref_t(S (T::*p)(A)) : mf(p) {}
+		S operator()(T &p, A x) { return (p.*mf)(x); }
+
 	private:
-		S (T::*mf)(A);
+		S(T::*mf)
+		(A);
 	};
 
-	template<class S, class T> _UCXXEXPORT mem_fun_ref_t<S,T> mem_fun_ref(S (T::*f)()){
-		return mem_fun_ref_t<S,T>(f);
+	template <class S, class T>
+	_UCXXEXPORT mem_fun_ref_t<S, T> mem_fun_ref(S (T::*f)())
+	{
+		return mem_fun_ref_t<S, T>(f);
 	}
 
-	template<class S, class T, class A> _UCXXEXPORT mem_fun1_ref_t<S,T,A> mem_fun1_ref(S (T::*f)(A)){
-		return mem_fun1_ref_t<S,T,A>(f);
+	template <class S, class T, class A>
+	_UCXXEXPORT mem_fun1_ref_t<S, T, A> mem_fun1_ref(S (T::*f)(A))
+	{
+		return mem_fun1_ref_t<S, T, A>(f);
 	}
+	// 652
+	extern "C++" [[noreturn]] _CRTIMP2_PURE void __CLRCALL_PURE_OR_CDECL _Xbad_function_call();
+	// 654
+	//  670
+	template <class _Rx, class... _Types>
+	class /*Arduino不支持：__declspec(novtable)*/ _Func_base
+	{ // abstract base for implementation types
+	public:
+		virtual _Func_base *_Copy(void *) const = 0;
+		virtual _Func_base *_Move(void *) noexcept = 0;
+		virtual _Rx _Do_call(_Types &&...) = 0;
+		virtual const type_info &_Target_type() const noexcept = 0;
+		virtual void _Delete_this(bool) noexcept = 0;
 
+#if _HAS_STATIC_RTTI
+		const void *_Target(const type_info &_Info) const noexcept
+		{
+			return _Target_type() == _Info ? _Get() : nullptr;
+		}
+#endif // _HAS_STATIC_RTTI
 
+		_Func_base() = default;
+		_Func_base(const _Func_base &) = delete;
+		_Func_base &operator=(const _Func_base &) = delete;
+		// dtor non-virtual due to _Delete_this()
+
+	private:
+		virtual const void *_Get() const noexcept = 0;
+	};
+
+	_INLINE_VAR constexpr size_t _Space_size = (_Small_object_num_ptrs - 1) * sizeof(void *);
+#ifdef ARDUINO_ARCH_SAM
+	template <class _Impl> // determine whether _Impl must be dynamically allocated
+	struct _Is_large
+	{
+		static constexpr bool value = sizeof(_Impl) > _Space_size || alignof(_Impl) > alignof(max_align_t) || !_Impl::_Nothrow_move::value;
+	};
+#else
+	template <class _Impl> // determine whether _Impl must be dynamically allocated
+	_INLINE_VAR constexpr bool _Is_large = sizeof(_Impl) > _Space_size || alignof(_Impl) > alignof(max_align_t) || !_Impl::_Nothrow_move::value;
+#endif
+#if _HAS_FUNCTION_ALLOCATOR_SUPPORT
+	template <class _Callable, class _Alloc, class _Rx, class... _Types>
+	class _Func_impl final : public _Func_base<_Rx, _Types...>
+	{
+		// derived class for specific implementation types that use allocators
+	public:
+		using _Mybase = _Func_base<_Rx, _Types...>;
+		using _Myalty = _Rebind_alloc_t<_Alloc, _Func_impl>;
+		using _Myalty_traits = allocator_traits<_Myalty>;
+		using _Nothrow_move = is_nothrow_move_constructible<_Callable>;
+
+		template <class _Other1, class _Other2>
+		_Func_impl(_Other1 &&_Val, _Other2 &&_Ax)
+			: _Mypair(_One_then_variadic_args_t{}, _STD forward<_Other2>(_Ax), _STD forward<_Other1>(_Val)) {}
+
+		// dtor non-virtual due to _Delete_this()
+
+	private:
+		_Mybase *_Copy(void *_Where) const override
+		{
+			auto &_Myax = _Mypair._Get_first();
+			if constexpr (_Is_large<_Func_impl>)
+			{
+				_Myalty _Rebound(_Myax);
+				_Alloc_construct_ptr<_Myalty> _Constructor{_Rebound};
+				_Constructor._Allocate();
+				_Construct_in_place(*_Constructor._Ptr, _Mypair._Myval2, _Myax);
+				return _Constructor._Release();
+			}
+			else
+			{
+				const auto _Ptr = static_cast<_Func_impl *>(_Where);
+				_Construct_in_place(*_Ptr, _Mypair._Myval2, _Myax);
+				return _Ptr;
+			}
+		}
+
+		_Mybase *_Move(void *_Where) noexcept override
+		{
+			if constexpr (_Is_large<_Func_impl>)
+			{
+				return nullptr;
+			}
+			else
+			{
+				const auto _Ptr = static_cast<_Func_impl *>(_Where);
+				_Construct_in_place(*_Ptr, _STD move(_Mypair._Myval2), _STD move(_Mypair._Get_first()));
+				return _Ptr;
+			}
+		}
+
+		_Rx _Do_call(_Types &&..._Args) override
+		{ // call wrapped function
+			if constexpr (is_void_v<_Rx>)
+			{
+				(void)_STD invoke(_Mypair._Myval2, _STD forward<_Types>(_Args)...);
+			}
+			else
+			{
+				return _STD invoke(_Mypair._Myval2, _STD forward<_Types>(_Args)...);
+			}
+		}
+
+#if _HAS_STATIC_RTTI
+		const type_info &_Target_type() const noexcept override
+		{
+			return typeid(_Callable);
+		}
+#else  // ^^^ _HAS_STATIC_RTTI / !_HAS_STATIC_RTTI vvv
+		[[noreturn]] const type_info &_Target_type() const noexcept override
+		{
+			_CSTD abort(); // shouldn't be called, see GH-3888
+		}
+#endif // ^^^ !_HAS_STATIC_RTTI ^^^
+
+		const void *_Get() const noexcept override
+		{
+			return _STD addressof(_Mypair._Myval2);
+		}
+
+		void _Delete_this(bool _Deallocate) noexcept override
+		{ // destroy self
+			_Myalty _Al(_Mypair._Get_first());
+			_Destroy_in_place(*this);
+			if (_Deallocate)
+			{
+				_Deallocate_plain(_Al, this);
+			}
+		}
+
+		_Compressed_pair<_Alloc, _Callable> _Mypair;
+	};
+#endif // _HAS_FUNCTION_ALLOCATOR_SUPPORT
+
+	template <class _Callable, class _Rx, class... _Types>
+	class _Func_impl_no_alloc final : public _Func_base<_Rx, _Types...>
+	{
+		// derived class for specific implementation types that don't use allocators
+	public:
+		using _Mybase = _Func_base<_Rx, _Types...>;
+		using _Nothrow_move = is_nothrow_move_constructible<_Callable>;
+		template <class _Other, enable_if_t<!_STRUCT14VALUE_V(is_same, _Func_impl_no_alloc, decay_t<_Other>), int> = 0>
+		explicit _Func_impl_no_alloc(_Other &&_Val) : _Callee(_STD forward<_Other>(_Val))
+		{
+		}
+
+		// dtor non-virtual due to _Delete_this()
+
+	private:
+		_Mybase *_Copy(void *_Where) const override
+		{
+			if _CONSTEXPR14 ()
+				(_STRUCT14VALUE(_Is_large, _Func_impl_no_alloc))
+				{
+					return _Global_new<_Func_impl_no_alloc>(_Callee);
+				}
+			else
+			{
+				return ::new (_Where) _Func_impl_no_alloc(_Callee);
+			}
+		}
+
+		_Mybase *_Move(void *_Where) noexcept override
+		{
+			if _CONSTEXPR14 ()
+				(_STRUCT14VALUE(_Is_large, _Func_impl_no_alloc))
+				{
+					return nullptr;
+				}
+			else
+			{
+				return ::new (_Where) _Func_impl_no_alloc(_STD move(_Callee));
+			}
+		}
+
+		_Rx _Do_call(_Types &&..._Args) override
+		{ // call wrapped function
+			if _CONSTEXPR14 ()
+				(_STRUCT14VALUE_V(is_void, _Rx))
+				{
+					(void)_STD invoke(_Callee, _STD forward<_Types>(_Args)...);
+				}
+			else
+			{
+				return _STD invoke(_Callee, _STD forward<_Types>(_Args)...);
+			}
+		}
+
+#if _HAS_STATIC_RTTI
+		const type_info &_Target_type() const noexcept override
+		{
+			return typeid(_Callable);
+		}
+#else  // ^^^ _HAS_STATIC_RTTI / !_HAS_STATIC_RTTI vvv
+		[[noreturn]] const type_info &_Target_type() const noexcept override
+		{
+			_CSTD abort(); // shouldn't be called, see GH-3888
+		}
+#endif // ^^^ !_HAS_STATIC_RTTI ^^^
+
+		const void *_Get() const noexcept override
+		{
+			return _STD addressof(_Callee);
+		}
+
+		void _Delete_this(bool _Dealloc) noexcept override
+		{ // destroy self
+			this->~_Func_impl_no_alloc();
+			if (_Dealloc)
+			{
+				_Deallocate<alignof(_Func_impl_no_alloc)>(this, sizeof(_Func_impl_no_alloc));
+			}
+		}
+
+		_Callable _Callee;
+	};
+
+	template <class _Ret, class... _Types>
+	class _Func_class : public _Arg_types<_Types...>
+	{
+	public:
+		using result_type = _Ret;
+
+		using _Ptrt = _Func_base<_Ret, _Types...>;
+
+		_Func_class() noexcept
+		{
+			_Set(nullptr);
+		}
+
+		_Ret operator()(_Types... _Args) const
+		{
+			if (_Empty())
+			{
+				_Xbad_function_call();
+			}
+			const auto _Impl = _Getimpl();
+			return _Impl->_Do_call(_STD forward<_Types>(_Args)...);
+		}
+
+		~_Func_class() noexcept
+		{
+			_Tidy();
+		}
+
+	protected:
+		template <class _Fx, class _Function>
+		using _Enable_if_callable_t = enable_if_t<_STRUCT14VALUE_V(conjunction, negation<is_same<_Remove_cvref_t<_Fx>, _Function>>, _Is_invocable_r<_Ret, decay_t<_Fx> &, _Types...>), int>;
+
+		bool _Empty() const noexcept
+		{
+			return !_Getimpl();
+		}
+
+		void _Reset_copy(const _Func_class &_Right)
+		{ // copy _Right's stored object
+			if (!_Right._Empty())
+			{
+				_Set(_Right._Getimpl()->_Copy(&_Mystorage));
+			}
+		}
+
+		void _Reset_move(_Func_class &&_Right) noexcept
+		{ // move _Right's stored object
+			if (!_Right._Empty())
+			{
+				if (_Right._Local())
+				{ // move and tidy
+					_Set(_Right._Getimpl()->_Move(&_Mystorage));
+					_Right._Tidy();
+				}
+				else
+				{ // steal from _Right
+					_Set(_Right._Getimpl());
+					_Right._Set(nullptr);
+				}
+			}
+		}
+
+		template <class _Fx>
+		void _Reset(_Fx &&_Val)
+		{ // store copy of _Val
+			if (!_Test_callable(_Val))
+			{			// null member pointer/function pointer/std::function
+				return; // already empty
+			}
+
+			using _Impl = _Func_impl_no_alloc<decay_t<_Fx>, _Ret, _Types...>;
+			if _CONSTEXPR14 ()
+				(_STRUCT14VALUE(_Is_large, _Impl))
+				{
+					// dynamically allocate _Val
+					_Set(_Global_new<_Impl>(_STD forward<_Fx>(_Val)));
+				}
+			else
+			{
+				// store _Val in-situ
+				_Set(::new (static_cast<void *>(&_Mystorage)) _Impl(_STD forward<_Fx>(_Val)));
+			}
+		}
+
+#if _HAS_FUNCTION_ALLOCATOR_SUPPORT
+		template <class _Fx, class _Alloc>
+		void _Reset_alloc(_Fx &&_Val, const _Alloc &_Ax)
+		{ // store copy of _Val with allocator
+			if (!_Test_callable(_Val))
+			{			// null member pointer/function pointer/std::function
+				return; // already empty
+			}
+
+			using _Myimpl = _Func_impl<decay_t<_Fx>, _Alloc, _Ret, _Types...>;
+			if constexpr (_Is_large<_Myimpl>)
+			{
+				// dynamically allocate _Val
+				using _Alimpl = _Rebind_alloc_t<_Alloc, _Myimpl>;
+				_Alimpl _Al(_Ax);
+				_Alloc_construct_ptr<_Alimpl> _Constructor{_Al};
+				_Constructor._Allocate();
+				_Construct_in_place(*_Constructor._Ptr, _STD forward<_Fx>(_Val), _Ax);
+				_Set(_Unfancy(_Constructor._Release()));
+			}
+			else
+			{
+				// store _Val in-situ
+				const auto _Ptr = reinterpret_cast<_Myimpl *>(&_Mystorage);
+				_Construct_in_place(*_Ptr, _STD forward<_Fx>(_Val), _Ax);
+				_Set(_Ptr);
+			}
+		}
+#endif // _HAS_FUNCTION_ALLOCATOR_SUPPORT
+
+		void _Tidy() noexcept
+		{
+			if (!_Empty())
+			{ // destroy callable object and maybe delete it
+				_Getimpl()->_Delete_this(!_Local());
+				_Set(nullptr);
+			}
+		}
+
+		void _Swap(_Func_class &_Right) noexcept
+		{ // swap contents with contents of _Right
+			if (!_Local() && !_Right._Local())
+			{ // just swap pointers
+				_Ptrt *_Temp = _Getimpl();
+				_Set(_Right._Getimpl());
+				_Right._Set(_Temp);
+			}
+			else
+			{ // do three-way move
+				_Func_class _Temp;
+				_Temp._Reset_move(_STD move(*this));
+				_Reset_move(_STD move(_Right));
+				_Right._Reset_move(_STD move(_Temp));
+			}
+		}
+
+#if _HAS_STATIC_RTTI
+		const type_info &_Target_type() const noexcept
+		{
+			return _Getimpl() ? _Getimpl()->_Target_type() : typeid(void);
+		}
+
+		const void *_Target(const type_info &_Info) const noexcept
+		{
+			return _Getimpl() ? _Getimpl()->_Target(_Info) : nullptr;
+		}
+#endif // _HAS_STATIC_RTTI
+
+	private:
+		bool _Local() const noexcept
+		{ // test for locally stored copy of object
+			return _Getimpl() == static_cast<const void *>(&_Mystorage);
+		}
+
+		union _Storage
+		{										  // storage for small objects (basic_string is small)
+			max_align_t _Dummy1;				  // for maximum alignment
+			char _Dummy2[_Space_size];			  // to permit aliasing
+			_Ptrt *_Ptrs[_Small_object_num_ptrs]; // _Ptrs[_Small_object_num_ptrs - 1] is reserved
+		};
+
+		_Storage _Mystorage;
+		enum
+		{
+			_EEN_IMPL = _Small_object_num_ptrs - 1
+		}; // helper for expression evaluator
+		_Ptrt *_Getimpl() const noexcept
+		{ // get pointer to object
+			return _Mystorage._Ptrs[_Small_object_num_ptrs - 1];
+		}
+
+		void _Set(_Ptrt *_Ptr) noexcept
+		{ // store pointer to object
+			_Mystorage._Ptrs[_Small_object_num_ptrs - 1] = _Ptr;
+		}
+	};
+
+	template <class _Tx>
+	struct _Get_function_impl
+	{
+		static_assert(_STRUCT14VALUE(_Always_false, _Tx), "std::function only accepts function types as template arguments.");
+	};
+
+#define _GET_FUNCTION_IMPL(CALL_OPT, X1, X2, X3)                            \
+	template <class _Ret, class... _Types>                                  \
+	struct _Get_function_impl<_Ret /*Arduino不支持：CALL_OPT*/ (_Types...)> \
+	{ /* determine type from argument list */                               \
+		using type = _Func_class<_Ret, _Types...>;                          \
+	};
+
+	_NON_MEMBER_CALL(_GET_FUNCTION_IMPL, X1, X2, X3)
+#undef _GET_FUNCTION_IMPL
+
+#ifdef __cpp_noexcept_function_type
+#define _GET_FUNCTION_IMPL_NOEXCEPT(CALL_OPT, X1, X2, X3)                                                         \
+	template <class _Ret, class... _Types>                                                                        \
+	struct _Get_function_impl<_Ret /*Arduino不支持：CALL_OPT*/ (_Types...) noexcept>                              \
+	{                                                                                                             \
+		static_assert(                                                                                            \
+			_Always_false<_Ret>, "std::function does not accept noexcept function types as template arguments."); \
+	};
+	_NON_MEMBER_CALL(_GET_FUNCTION_IMPL_NOEXCEPT, X1, X2, X3)
+#undef _GET_FUNCTION_IMPL_NOEXCEPT
+#endif // defined(__cpp_noexcept_function_type)
+
+	_EXPORT_STD template <class _Fty>
+	class function : public _Get_function_impl<_Fty>::type
+	{ // wrapper for callable objects
+	private:
+		using _Mybase = typename _Get_function_impl<_Fty>::type;
+
+	public:
+		function() noexcept {}
+
+		function(nullptr_t) noexcept {}
+
+		function(const function &_Right)
+		{
+			this->_Reset_copy(_Right);
+		}
+
+		template <class _Fx, typename _Mybase::template _Enable_if_callable_t<_Fx, function> = 0>
+		function(_Fx &&_Func)
+		{
+			this->_Reset(_STD forward<_Fx>(_Func));
+		}
+
+#if _HAS_FUNCTION_ALLOCATOR_SUPPORT
+		template <class _Alloc>
+		function(allocator_arg_t, const _Alloc &) noexcept {}
+
+		template <class _Alloc>
+		function(allocator_arg_t, const _Alloc &, nullptr_t) noexcept {}
+
+		template <class _Alloc>
+		function(allocator_arg_t, const _Alloc &_Ax, const function &_Right)
+		{
+			this->_Reset_alloc(_Right, _Ax);
+		}
+
+		template <class _Fx, class _Alloc, typename _Mybase::template _Enable_if_callable_t<_Fx, function> = 0>
+		function(allocator_arg_t, const _Alloc &_Ax, _Fx &&_Func)
+		{
+			this->_Reset_alloc(_STD forward<_Fx>(_Func), _Ax);
+		}
+#endif // _HAS_FUNCTION_ALLOCATOR_SUPPORT
+
+		function &operator=(const function &_Right)
+		{
+			function(_Right).swap(*this);
+			return *this;
+		}
+
+		function(function &&_Right) noexcept
+		{
+			this->_Reset_move(_STD move(_Right));
+		}
+
+#if _HAS_FUNCTION_ALLOCATOR_SUPPORT
+		template <class _Alloc>
+		function(allocator_arg_t, const _Alloc &_Al, function &&_Right)
+		{
+			this->_Reset_alloc(_STD move(_Right), _Al);
+		}
+#endif // _HAS_FUNCTION_ALLOCATOR_SUPPORT
+
+		function &operator=(function &&_Right) noexcept /* strengthened */
+		{
+			if (this != _STD addressof(_Right))
+			{
+				this->_Tidy();
+				this->_Reset_move(_STD move(_Right));
+			}
+			return *this;
+		}
+
+		template <class _Fx, typename _Mybase::template _Enable_if_callable_t<_Fx, function> = 0>
+		function &operator=(_Fx &&_Func)
+		{
+			function(_STD forward<_Fx>(_Func)).swap(*this);
+			return *this;
+		}
+
+#if _HAS_FUNCTION_ALLOCATOR_SUPPORT
+		template <class _Fx, class _Alloc>
+		void assign(_Fx &&_Func, const _Alloc &_Ax)
+		{
+			function(allocator_arg, _Ax, _STD forward<_Fx>(_Func)).swap(*this);
+		}
+#endif // _HAS_FUNCTION_ALLOCATOR_SUPPORT
+
+		function &operator=(nullptr_t) noexcept
+		{
+			this->_Tidy();
+			return *this;
+		}
+
+		template <class _Fx>
+		function &operator=(reference_wrapper<_Fx> _Func) noexcept
+		{
+			this->_Tidy();
+			this->_Reset(_Func);
+			return *this;
+		}
+
+		void swap(function &_Right) noexcept
+		{
+			this->_Swap(_Right);
+		}
+
+		explicit operator bool() const noexcept
+		{
+			return !this->_Empty();
+		}
+
+#if _HAS_STATIC_RTTI
+		_NODISCARD const type_info &target_type() const noexcept
+		{
+			return this->_Target_type();
+		}
+
+		template <class _Fx>
+		_NODISCARD _Fx *target() noexcept
+		{
+			if constexpr (is_function_v<_Fx>)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return reinterpret_cast<_Fx *>(const_cast<void *>(this->_Target(typeid(_Fx))));
+			}
+		}
+
+		template <class _Fx>
+		_NODISCARD const _Fx *target() const noexcept
+		{
+			if constexpr (is_function_v<_Fx>)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return reinterpret_cast<const _Fx *>(this->_Target(typeid(_Fx)));
+			}
+		}
+#else  // ^^^ _HAS_STATIC_RTTI / !_HAS_STATIC_RTTI vvv
+		const type_info &target_type() const noexcept = delete; // requires static RTTI
+
+		template <class _Fx>
+		_Fx *target() noexcept = delete; // requires static RTTI
+
+		template <class _Fx>
+		const _Fx *target() const noexcept = delete; // requires static RTTI
+#endif // ^^^ !_HAS_STATIC_RTTI ^^^
+	};
+	// 1133
 }
 
+// These are SGI extensions which are checked for by some conformance checks.  They
+//  are *NOT* part of the C++ standard, however
 
-//These are SGI extensions which are checked for by some conformance checks.  They
-// are *NOT* part of the C++ standard, however
-
-template <class Op1, class Op2> class _UCXXEXPORT unary_compose :
-	public std::unary_function<typename Op2::argument_type,
-		typename Op1::result_type>
+template <class Op1, class Op2>
+class _UCXXEXPORT unary_compose : public std::unary_function<typename Op2::argument_type,
+															 typename Op1::result_type>
 {
 protected:
 	Op1 mf1;
 	Op2 mf2;
+
 public:
-	unary_compose(const Op1& x, const Op2& y) : mf1(x), mf2(y) {  }
-	typename Op1::result_type operator()(const typename Op2::argument_type& x) const {
+	unary_compose(const Op1 &x, const Op2 &y) : mf1(x), mf2(y) {}
+	typename Op1::result_type operator()(const typename Op2::argument_type &x) const
+	{
 		return mf1(mf2(x));
 	}
 };
 
-template <class Op1, class Op2> _UCXXEXPORT
-inline unary_compose<Op1, Op2>
-compose1(const Op1& fn1, const Op2& fn2){
+template <class Op1, class Op2>
+_UCXXEXPORT inline unary_compose<Op1, Op2>
+compose1(const Op1 &fn1, const Op2 &fn2)
+{
 	return unary_compose<Op1, Op2>(fn1, fn2);
 }
 
-template <class Op1, class Op2, class Op3> class _UCXXEXPORT binary_compose :
-	public std::unary_function<typename Op2::argument_type, typename Op1::result_type>
+template <class Op1, class Op2, class Op3>
+class _UCXXEXPORT binary_compose : public std::unary_function<typename Op2::argument_type, typename Op1::result_type>
 {
 protected:
 	Op1 mf1;
 	Op2 mf2;
 	Op3 mf3;
+
 public:
-	binary_compose(const Op1 & x, const Op2 & y, const Op3 & z)
-		: mf1(x), mf2(y), mf3(z){  }
-	typename Op1::result_type operator()(const typename Op2::argument_type & x) const {
+	binary_compose(const Op1 &x, const Op2 &y, const Op3 &z)
+		: mf1(x), mf2(y), mf3(z) {}
+	typename Op1::result_type operator()(const typename Op2::argument_type &x) const
+	{
 		return mf1(mf2(x), mf3(x));
 	}
 };
 
-template <class Op1, class Op2, class Op3> inline _UCXXEXPORT binary_compose<Op1, Op2, Op3>
-compose2(const Op1 & fn1, const Op2 & fn2, const Op3 & fn3){
+template <class Op1, class Op2, class Op3>
+inline _UCXXEXPORT binary_compose<Op1, Op2, Op3>
+compose2(const Op1 &fn1, const Op2 &fn2, const Op3 &fn3)
+{
 	return binary_compose<Op1, Op2, Op3>(fn1, fn2, fn3);
 }
 
 #pragma GCC visibility pop
 
 #endif
-
-
-

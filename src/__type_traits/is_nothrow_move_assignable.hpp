@@ -1,7 +1,7 @@
 #pragma once
-#include <static_assert.hpp>
-#include <__type_traits/is_complete.hpp>
-#include <config/detail/suffix.hpp>
+#include "../static_assert.hpp"
+#include "is_complete.hpp"
+#include "../config/detail/suffix.hpp"
 #ifdef BOOST_IS_NOTHROW_MOVE_ASSIGN
 
 template <class T>

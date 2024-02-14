@@ -48,7 +48,7 @@
 #pragma GCC system_header
 
 // #include <bits/c++config.h>
-#include <system_configuration.h>
+#include "system_configuration.h"
 #include <wctype.h>
 
 // Get rid of those macros defined in <wctype.h> in lieu of real functions.

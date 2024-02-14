@@ -19,8 +19,6 @@
 
 #define __UCLIBCXX_COMPILE_IOS__ 1
 
-#include <ios>
-#include <ostream>
 #include <istream>
 #include <cstdio>
 

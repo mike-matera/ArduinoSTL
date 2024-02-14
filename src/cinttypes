@@ -1,1 +1,4 @@
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(cinttypes)
+#endif
 #include <inttypes.h>

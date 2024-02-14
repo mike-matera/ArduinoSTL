@@ -23,7 +23,7 @@
 #warning limits header is nowhere complete or accurate
 
 #pragma GCC visibility push(default)
-#include <yvals_core.h>
+#include "yvals_core.h"
 #include <limits.h>
 #undef min
 #undef max

@@ -1,5 +1,5 @@
 #pragma once
-#include <detail/workaround.hpp>
+#include "../detail/workaround.hpp"
 //
 // We will undef this if the trait isn't fully functional:
 //

@@ -47,6 +47,17 @@
 		"cwctype": "cpp",
 		"cwchar": "cpp",
 		"streambuf": "cpp",
-		"ios": "cpp"
+		"ios": "cpp",
+		"exception": "cpp",
+		"typeinfo": "cpp",
+		"initializer_list": "cpp",
+		"stdexcept": "cpp",
+		"func_exception": "cpp",
+		"string": "cpp",
+		"cstdio": "cpp",
+		"ostream_helpers": "cpp",
+		"locale": "cpp",
+		"cctype": "cpp",
+		"new2": "cpp"
 	}
 }

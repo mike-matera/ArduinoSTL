@@ -1,5 +1,5 @@
 #pragma once
-#include <__type_traits/detail/yes_no_type.hpp>
+#include "detail/yes_no_type.hpp"
 namespace detail
 {
 

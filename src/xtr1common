@@ -1,5 +1,5 @@
 #pragma once
-#include <yvals_core.h>
+#include "yvals_core.h"
 _STD_BEGIN
 // 19
 template <class _Ty, _Ty _Val>

@@ -19,6 +19,9 @@
 #ifndef __STD_HEADER_CLOCALE
 #define __STD_HEADER_CLOCALE 1
 
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(clocale)
+#endif
 #include <locale.h>
 
 namespace std {

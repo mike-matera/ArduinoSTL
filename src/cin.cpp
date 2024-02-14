@@ -1,5 +1,4 @@
 #include <serstream>
-#include <istream>
 _STD_BEGIN
 
 __PURE_APPDOMAIN_GLOBAL static serialbuf fin(Serial);

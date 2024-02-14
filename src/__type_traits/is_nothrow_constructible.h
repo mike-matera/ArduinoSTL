@@ -1,5 +1,5 @@
 #pragma once
-#include <__config>
+#include "../__config"
 #if __has_builtin(__is_nothrow_constructible)
 
 	template <

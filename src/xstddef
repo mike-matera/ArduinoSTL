@@ -1,5 +1,5 @@
 #pragma once
-#include <vcruntime.h>
+#include "vcruntime.h"
 namespace std
 {
 #if _HAS_CXX14
@@ -7,14 +7,15 @@ namespace std
 	template <class>
 	// false value attached to a dependent name (for static_assert)
 	_INLINE_VAR constexpr bool _Always_false = false;
-#endif
+#else
 	// 23
 	template <class>
 	// false value attached to a dependent name (for static_assert)
-	struct _Always_false_t
+	struct _Always_false
 	{
 		static constexpr bool value = false;
 	};
+#endif
 	// 27
 	// 250
 	template <class _Ty>

@@ -18,7 +18,6 @@
 */
 
 #include <stdint.h>
-#include <basic_definitions>
 #include <cstddef>
 #include <ios>
 #include <cctype>

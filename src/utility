@@ -17,8 +17,9 @@
 
 */
 
-#include <basic_definitions>
-#include <type_traits>
+#include "initializer_list"
+#include "type_traits"
+#include "sal.h"
 
 #ifndef __STD_HEADER_UTILITY
 #define __STD_HEADER_UTILITY 1
@@ -105,13 +106,6 @@ namespace std
 	{
 		return pair<T1, T2>(x, y);
 	}
-
-	// Stubb out move for compatibility
-	template <class T>
-	T &move(T &t) noexcept
-	{
-		return t;
-	}
 	// 40
 	_EXPORT_STD template <class _Ty, _Ty... _Vals>
 	struct integer_sequence
@@ -134,8 +128,34 @@ namespace std
 
 	_EXPORT_STD template <size_t _Size>
 	using make_index_sequence = make_integer_sequence<size_t, _Size>;
-	// 60
-	//  757
+// 60
+// 63
+	_EXPORT_STD template <class _Ty, class _Pr>
+	_NODISCARD constexpr const _Ty &(max)(const _Ty &_Left, const _Ty &_Right, _Pr _Pred) noexcept(
+		noexcept(_Pred(_Left, _Right))) /* strengthened */
+	{
+		// return larger of _Left and _Right
+		return _Pred(_Left, _Right) ? _Right : _Left;
+	}
+
+#pragma warning(push)
+#pragma warning(disable : 28285) // (syntax error in SAL annotation, occurs when _Ty is not an integral type)
+	_EXPORT_STD template <class _Ty>
+	_NODISCARD _Post_equal_to_(_Left < _Right ? _Right : _Left) constexpr const _Ty & //
+		(max)(const _Ty &_Left, const _Ty &_Right) noexcept(noexcept(_Left < _Right)) /* strengthened */
+	{
+		// return larger of _Left and _Right
+		return _Left < _Right ? _Right : _Left;
+	}
+#pragma warning(pop)
+
+	_EXPORT_STD template <class _Ty, class _Pr>
+	_NODISCARD constexpr _Ty(max)(initializer_list<_Ty>, _Pr); // implemented in <algorithm>
+
+	_EXPORT_STD template <class _Ty>
+	_NODISCARD constexpr _Ty(max)(initializer_list<_Ty>); // implemented in <algorithm>
+														  // 86
+	//   757
 	template <class _Ty, class _Other = _Ty>
 	_CONSTEXPR20 _Ty exchange(_Ty &_Val, _Other &&_New_val) noexcept(
 		conjunction<is_nothrow_move_constructible<_Ty>, is_nothrow_assignable<_Ty &, _Other>>::value)

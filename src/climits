@@ -20,7 +20,9 @@
 #ifndef __STD_HEADER_CLIMITS
 #define __STD_HEADER_CLIMITS 1
 
-
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(climits)
+#endif
 #include <limits.h>
 
 

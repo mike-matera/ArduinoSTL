@@ -14,18 +14,17 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-#include <cstdlib>
-#include <iterator>
-#include <utility>
-#include <functional>
-#include <xutility>
-#include <yvals.h>
-#include <Arduino.h>
-
 #ifndef __STD_HEADER_ALGORITHM
 #define __STD_HEADER_ALGORITHM 1
 
+#ifdef ARDUINO_ARCH_SAM
+#include CSL_Official(algorithm)
+#endif
+#include "iterator"
+#include "utility"
+#include "functional"
+#include "xutility"
+#include <Arduino.h>
 // Elliminate any previously defined macro
 #undef min
 #undef max
@@ -1771,26 +1770,6 @@ namespace std
 	_UCXXEXPORT const T &min(const T &a, const T &b, Compare comp)
 	{
 		if (comp(b, a) == true)
-		{
-			return b;
-		}
-		return a;
-	}
-
-	template <class T>
-	_UCXXEXPORT const T &max(const T &a, const T &b)
-	{
-		if (a < b)
-		{
-			return b;
-		}
-		return a;
-	}
-
-	template <class T, class Compare>
-	_UCXXEXPORT const T &max(const T &a, const T &b, Compare comp)
-	{
-		if (comp(a, b))
 		{
 			return b;
 		}

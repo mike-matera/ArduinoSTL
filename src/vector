@@ -18,13 +18,9 @@
 
 */
 
-#include <basic_definitions>
-#include <memory>
-#include <iterator>
-#include <func_exception>
-#include <algorithm>
-#include <type_traits>
-#include <initializer_list>
+#include "memory"
+#include "func_exception"
+#include "algorithm"
 
 #ifndef __STD_HEADER_VECTOR
 #define __STD_HEADER_VECTOR

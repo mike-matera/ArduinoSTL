@@ -1,7 +1,7 @@
 #pragma once
-#include <__type_traits/detail/yes_no_type.hpp>
-#include <__type_traits/is_complete.hpp>
-#include <static_assert.hpp>
+#include "detail/yes_no_type.hpp"
+#include "is_complete.hpp"
+#include "../static_assert.hpp"
 namespace detail
 {
 

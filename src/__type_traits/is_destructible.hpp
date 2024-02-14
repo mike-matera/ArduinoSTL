@@ -1,6 +1,8 @@
 #pragma once
-#include <detail/workaround.hpp>
-#include <__type_traits/detail/yes_no_type.hpp>
+#include "../detail/workaround.hpp"
+#include "detail/yes_no_type.hpp"
+#include "is_complete.hpp"
+#include "../static_assert.hpp"
 #if !defined(BOOST_NO_CXX11_DECLTYPE) && !BOOST_WORKAROUND(BOOST_MSVC, < 1800)
 namespace detail
 {

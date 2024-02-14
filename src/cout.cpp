@@ -1,5 +1,4 @@
 #include <serstream>
-#include <ostream>
 _STD_BEGIN
 
 __PURE_APPDOMAIN_GLOBAL static serialbuf fout(Serial);
