@@ -4,9 +4,9 @@ parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)L'aute
 
 Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM et boost. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
 
-Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le mettra en œuvre pour vous en premier.
+Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le implémentera d'abord pour vous.
 
-Prend actuellement en charge les architectures AVR et SAM. Il n'est actuellement pas prévu de prendre en charge ESP32, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
+Prend actuellement en charge les architectures AVR et SAM. Il n'est pas prévu de prendre en charge ESP32 pour le moment, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
 
 Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
 
@@ -15,10 +15,10 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout` 使用串口作为标准输入输出流
+-   `<iostream> cin cout`Utiliser le port série comme flux d'entrée et de sortie standard
 -   `<map>`
 -   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
+-   `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
