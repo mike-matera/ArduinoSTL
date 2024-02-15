@@ -87,7 +87,7 @@ void loop() {
 
 ### 使用軟體序列埠。
 
-放`ARDUINO_DEFAULT_SERAL`到`NULL`。註解掉其他預設值。
+放`ARDUINO_DEFAULT_SERAL`到`NULL`. Comment out the other defaults. 
 
 以下是使用 SofwareSerial 的範例草圖：
 
