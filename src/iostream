@@ -17,9 +17,13 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
+//iostream不能使用ARDUINO_ARCH_SAM版本，有bug，Init函数未定义
 #ifdef ARDUINO_ARCH_AVR
 #include "string_iostream"
-
+#else
+#include "basic_definitions"
+#include "iosfwd"
+#endif
 #pragma GCC visibility push(default)
 
 namespace std
@@ -89,8 +93,3 @@ namespace std
 }
 
 #pragma GCC visibility pop
-
-#else
-#include "Cpp_Standard_Library.h"
-#include CSL_Official(iostream)
-#endif

@@ -40,17 +40,13 @@
  *  and its contents are (mostly) the same as that header, but are all
  *  contained in the namespace @c std.
  */
-
-#if defined(__UCLIBCXX_HAS_WCHAR__) && defined(ARDUINO_ARCH_SAM)
-#ifndef _CPP_CWCTYPE
-#define _CPP_CWCTYPE 1
-
-#pragma GCC system_header
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(cwctype)
-#endif
-// #include <bits/c++config.h>
+#pragma once
+#ifndef ARDUINO_ARCH_AVR
+#include "Cpp_Standard_Library.h"
 #include "system_configuration.h"
+#include CSL_Official(cwctype)
+#ifdef __UCLIBCXX_HAS_WCHAR__
+// #include <bits/c++config.h>
 #include <wctype.h>
 
 // Get rid of those macros defined in <wctype.h> in lieu of real functions.
@@ -101,5 +97,4 @@ namespace std
   using ::wctype;
 }
 #endif //__ULIBCXX_HAS_WCHAR__
-
 #endif

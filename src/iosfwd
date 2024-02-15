@@ -25,6 +25,8 @@
 #include "system_configuration.h"
 #include "Cpp_Standard_Library.h"
 #include CSL_Official(iosfwd)
+#include "serstream"
+#include "istream"
 #endif
 
 #pragma GCC visibility push(default)

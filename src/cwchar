@@ -14,13 +14,11 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(cwchar)
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include <wchar.h>
 #include "basic_definitions"
 
-#ifndef __HEADER_CWCHAR
-#define __HEADER_CWCHAR 1
 
 namespace std
 {
@@ -80,5 +78,7 @@ namespace std
 	using ::wprintf;
 	using ::wscanf;
 }
-#endif
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(cwchar)
 #endif

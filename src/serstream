@@ -41,9 +41,10 @@
  */
 #pragma once
 
-#include "iostream"
 #ifndef ARDUINO_ARCH_AVR
 #include <Stream.h>
+#include "ios"
+#else
 #endif
 namespace std
 {
