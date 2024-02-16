@@ -18,7 +18,7 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 -   `<iostream> cin cout`Utiliser le port série comme flux d'entrée et de sortie standard
 -   `<map>`
 -   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
+-   `<random> mt19937, ArduinoUrng`：`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`

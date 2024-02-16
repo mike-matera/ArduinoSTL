@@ -8,7 +8,7 @@
 
 يدعم حاليًا بنيات AVR وSAM. لا توجد خطط لدعم ESP32 في الوقت الحالي، لأن ESP32 قدم مكتبة قياسية رسميًا، واستخدام مجموعتين من المكتبات القياسية في نفس الوقت سيؤدي إلى العديد من المشكلات التي يصعب التعامل معها.
 
-قبل تضمين أي ملف رأس قياسي لـ C++، يجب عليك أولاً تضمينه`Cpp_Standard_Library.h`. يعد هذا موجهًا إلى Arduino IDE، لإخبار المترجم أنه يجب تضمين هذه المكتبة في عملية التجميع.
+在包含任何C++标准头文件之前，必须先包含`Cpp_Standard_Library.h`. يعد هذا موجهًا إلى Arduino IDE، لإخبار المترجم أنه يجب تضمين هذه المكتبة في عملية التجميع.
 
 # وظائف التوقيع (لا تقتصر على هذا)
 
@@ -79,11 +79,11 @@ void loop() {
 
 ## تغيير المنفذ التسلسلي
 
-يمكنك تغيير ما المنفذ التسلسلي ذلك`cin`,`cout`و`printf()` use. You can use built-in serial ports (e.g. `Serial1`على ليوناردو) أو يمكنك استخدام المنافذ التسلسلية للبرامج التي يتم تنفيذها`Stream`.
+يمكنك تغيير ما المنفذ التسلسلي ذلك`cin`,`cout`و`printf()`يستخدم. يمكنك استخدام المنافذ التسلسلية المضمنة (على سبيل المثال.`Serial1`على ليوناردو) أو يمكنك استخدام المنافذ التسلسلية للبرامج التي يتم تنفيذها`Stream`.
 
 ### باستخدام منفذ مدمج
 
-في`src/ArduinoSTL.cpp`تغيير قيمة`ARDUINOSTL_DEFAULT_SERIAL`. Leave the other defaults uncommented. 
+في`src/ArduinoSTL.cpp`تغيير قيمة`ARDUINOSTL_DEFAULT_SERIAL`. اترك الإعدادات الافتراضية الأخرى دون تعليق.
 
 ### باستخدام منفذ SoftwareSerial.
 
@@ -126,6 +126,6 @@ void setup() {
 
 ## رخصة
 
-The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception: 
+مكتبة uClibc++ مرخصة بموجب LGPL. يعتمد هذا المشروع على LGPL ليكون متوافقًا مع الجزء الأكبر من الكود الذي يستخدمه. ما لم يُذكر خلاف ذلك، فإن كل التعليمات البرمجية مرخصة بموجب LGPL. هناك استثناء واحد:
 
 -   تم ترخيص src/serstream بموجب ترخيص BSD وفقًا لرغبات Andy Brown هنا:[حطب://انديبروون.م.أك/ترمسيندكندشنص/](http://andybrown.me.uk/terms-and-conditions/)

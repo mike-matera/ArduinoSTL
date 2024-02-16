@@ -114,7 +114,7 @@ Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You mu
 
 ## Known Issues
 
-Printing of floats and doubles using `cout`ignores format specifiers.
+Printing of floats and doubles using`cout`ignores format specifiers.
 
 uClibc seems to be fairly complete. Strings and vectors both work, even with the limited amount of heap available to Arduino. The uClibc++ status page can be found here:
 
