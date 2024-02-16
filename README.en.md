@@ -87,7 +87,7 @@ In`src/ArduinoSTL.cpp`change the value of`ARDUINOSTL_DEFAULT_SERIAL`. Leave the 
 
 ### Using a SoftwareSerial port.
 
-Set`ARDUINO_DEFAULT_SERAL`to`NULL`. Comment out the other defaults.
+Set `ARDUINO_DEFAULT_SERAL`to`NULL`. Comment out the other defaults.
 
 Here's an example sketch that uses SofwareSerial:
 
@@ -128,4 +128,4 @@ Always use the latest Arduino IDE. This library uses the Arduino IDE Library Spe
 
 The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception:
 
--   src/serstream is licensed under the BSD license according to Andy Brown's wishes here:<http://andybrown.me.uk/terms-and-conditions/>
+-   src/serstream is licensed under the BSD license according to Andy Brown's wishes here: <http://andybrown.me.uk/terms-and-conditions/>
