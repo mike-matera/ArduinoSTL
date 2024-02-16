@@ -4,7 +4,7 @@ parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)L'aute
 
 Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM et boost. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
 
-Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le implémentera d'abord pour vous.
+Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le mettra en œuvre pour vous en premier.
 
 Prend actuellement en charge les architectures AVR et SAM. Il n'est pas prévu de prendre en charge ESP32 pour le moment, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
 
@@ -120,7 +120,7 @@ uClibc semble être assez complet. Les chaînes et les vecteurs fonctionnent tou
 
 <https://cxx.uclibc.org/status.html>
 
-Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
+Always use the latest Arduino IDE. This library uses the Arduino IDE Library Specification rev.2.1 with features only available on Arduino 1.6.10 and higher. The specification can be found here:
 
 <https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification>
 
