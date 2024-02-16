@@ -79,7 +79,7 @@ void loop() {
 
 ## 更改串口
 
-您可以變更串口`cin`,`cout`和`printf()`使用。您可以使用內建序列埠（例如`Serial1`在 Leonardo 上）或者您可以使用軟體序列埠來實現`Stream`.
+You can change what serial port that `cin`,`cout`和`printf()`使用。您可以使用內建序列埠（例如`Serial1`在 Leonardo 上）或者您可以使用軟體序列埠來實現`Stream`.
 
 ### 使用內建連接埠
 
@@ -87,7 +87,7 @@ void loop() {
 
 ### 使用軟體序列埠。
 
-放`ARDUINO_DEFAULT_SERAL`到`NULL`. Comment out the other defaults. 
+放`ARDUINO_DEFAULT_SERAL`到`NULL`。註解掉其他預設值。
 
 以下是使用 SofwareSerial 的範例草圖：
 
