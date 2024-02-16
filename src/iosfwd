@@ -17,16 +17,12 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-#include <Stream.h>
-#ifdef ARDUINO_ARCH_AVR
-#include "char_traits"
-#include "memory"
-#else
-#include "system_configuration.h"
+//iosfwd只负责声明。在设计上应该避免包含其它头文件（除非你确信不会造成循环包含）。包含iosfwd的文件应该负责包含iosfwd依赖的定义（如果需要）。如果依赖iosfwd中的默认参数，则必须包含iosfwd，定义文件中则不应该包含这些默认参数。
+#ifdef ARDUINO_ARCH_SAM
 #include "Cpp_Standard_Library.h"
 #include CSL_Official(iosfwd)
-#include "serstream"
-#include "istream"
+#include "system_configuration.h"
+#include <Stream.h>
 #endif
 
 #pragma GCC visibility push(default)

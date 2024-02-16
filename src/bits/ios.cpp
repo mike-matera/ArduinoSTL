@@ -16,12 +16,7 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-#ifdef ARDUINO_ARCH_AVR
-#define __UCLIBCXX_COMPILE_IOS__ 1
-
-#include "istream"
-#include "cstdio"
+#include "ios_base.h"
 namespace std
 {
 
@@ -186,4 +181,3 @@ namespace std
 		return retval;
 	}
 }
-#endif

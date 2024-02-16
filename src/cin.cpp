@@ -1,8 +1,11 @@
 #ifdef ARDUINO_ARCH_AVR
-#else
+#endif
+#ifdef ARDUINO_ARCH_SAM
 #include "yvals.h"
 #include "yvals_core.h"
-#include "iosfwd"
+#include "serstream"
+#include "istream"
+#include <Arduino.h>
 #endif
 _STD_BEGIN
 

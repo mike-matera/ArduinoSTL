@@ -23,7 +23,6 @@
 #include CSL_Official(vector)
 #else
 #include "memory"
-#include "func_exception"
 #include "algorithm"
 
 #pragma GCC visibility push(default)

@@ -1,8 +1,7 @@
-#include <Cpp_Standard_Library.h>
+#include <string>
 void setup() {
-  //constexpr auto A = std::_New_alignof_2<int>;
+  std::string a("");
 }
 
 void loop() {
-  //static const std::function<void()>L(setup);
 }

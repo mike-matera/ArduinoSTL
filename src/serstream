@@ -41,14 +41,10 @@
  */
 #pragma once
 
-#ifndef ARDUINO_ARCH_AVR
-#include <Stream.h>
 #include "ios"
-#else
-#endif
+#include "streambuf"
 namespace std
 {
-
 	/*
 	 * basic_serialbuf implements an unbuffered basic_streambuf as a backing buffer
 	 * for the IO classes
@@ -338,4 +334,14 @@ namespace std
 	};
 
 	using ::Stream;
+	typedef basic_serialbuf<char> serialbuf;
+	typedef basic_iserialstream<char> ihserialstream;
+	typedef basic_oserialstream<char> ohserialstream;
+	typedef basic_serstream<char> serstream;
+#ifdef __UCLIBCXX_HAS_WCHAR__
+	typedef basic_serialbuf<wchar_t> wserialbuf;
+	typedef basic_iserialstream<wchar_t> wiserstream;
+	typedef basic_oserialstream<wchar_t> woserstream;
+	typedef basic_serstream<wchar_t> wserstream;
+#endif
 }

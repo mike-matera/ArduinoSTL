@@ -17,17 +17,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-#ifdef ARDUINO_ARCH_AVR
-#include "char_traits"
-#include "vector"
-
-#ifdef __UCLIBCXX_HAS_WCHAR__
-#include "cwchar"
-#include "cwctype"
-#endif
-
+//SAM的string有一堆函数没定义，不予采用
 #pragma GCC visibility push(default)
-
+#include "vector"
+#include "char_traits"
 namespace std
 {
 
@@ -1244,7 +1237,3 @@ namespace std
 }
 
 #pragma GCC visibility pop
-#else
-#include "Cpp_Standard_Library.h"
-#include CSL_Official(string)
-#endif

@@ -64,11 +64,11 @@
 #define __UCLIBCXX_TLS
 #endif
 
-#ifdef ARDUINO_ARCH_AVR
 
 // Testing purposes
 #define __STRING_MAX_UNITS 65535
 
+#ifdef ARDUINO_ARCH_AVR
 namespace std
 {
 	typedef signed long int streamsize;

@@ -15,24 +15,17 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-
-
-#ifndef __HEADER_CHAR_TRAITS
-#define __HEADER_CHAR_TRAITS 1
-#include "basic_definitions"
-#include "string.h"
-#include "exception"
-
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #ifdef __UCLIBCXX_HAS_WCHAR__
 #include "cwchar"
 #include "cwctype"
 #endif
-#ifdef ARDUINO_ARCH_AVR
-#define __need_wint_t
-#include <stddef.h>
-#include "corecrt_wctype.h"
 #endif
+#ifdef ARDUINO_ARCH_SAM
+#include <bits/char_traits.h>
+#endif
+#ifdef ARDUINO_ARCH_AVR
 namespace std
 {
 	/* Inlining all wrapped function calls to shrink the amount of code generated*/
@@ -242,7 +235,5 @@ namespace std
 #endif
 	};
 #endif
-
 }
-
 #endif

@@ -16,7 +16,6 @@
 */
 #pragma once
 #ifdef ARDUINO_ARCH_AVR
-#include <wchar.h>
 #include "basic_definitions"
 
 

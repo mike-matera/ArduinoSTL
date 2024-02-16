@@ -16,20 +16,10 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-// SAM平台的ostream有bug，不能用
 #pragma once
-#ifdef ARDUINO_ARCH_AVR
-#include "streambuf"
-#include "cstdio"
-#include "ostream_helpers"
-#endif
-#ifdef ARDUINO_ARCH_SAM
-#include "basic_definitions"
-#include "streambuf"
-#include "ios"
-#endif
+// SAM的ostream用到了Arduino平台不支持的__try，不予采用
 #pragma GCC visibility push(default)
-
+#include "ostream_helpers"
 namespace std
 {
 	template <class charT, class traits>

@@ -17,16 +17,9 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-#ifdef ARDUINO_ARCH_AVR
-#include <stdint.h>
-#include "cstddef"
-#include "ios"
-#include "cctype"
-#include "string"
-#include <math.h> // for floor()
 
 #pragma GCC visibility push(default)
-
+#include "ios"
 namespace std
 {
 	int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer_size);
@@ -676,5 +669,3 @@ namespace std
 #endif //__UCLIBCXX_HAS_WCHAR__
 }
 #pragma GCC visibility pop
-#else
-#endif

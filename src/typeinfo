@@ -33,7 +33,6 @@
  */
 #pragma once
 #ifdef ARDUINO_ARCH_AVR
-#include "exception"
 #include "yvals_core.h"
 
 extern "C++"
