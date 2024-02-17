@@ -19,7 +19,7 @@
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout endl`使用串口作為標準輸入輸出流
+-   `<iostream> cin cout endl`使用串口作為標準輸入輸出流。但是，用戶仍需手動調用`Serial.begin`，考慮到串口可能未連接或波特率不是9600的情況。
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
 -   `<random>`，`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`，屬於軟體偽隨機產生器，需設定隨機種子。 ESP32架構還額外支持`EspUrng`，是硬體真隨機產生器，不支援設定種子。
