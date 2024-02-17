@@ -19,16 +19,18 @@
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout`使用串口作為標準輸入輸出流
+-   `<iostream> cin cout endl`使用串口作為標準輸入輸出流
 -   `<map>`
--   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`，屬於軟體偽隨機產生器，需設定隨機種子。 ESP32架構還額外支持`EspUrng`，是硬體真隨機產生器，不支援設定種子。
+-   `<memory> unique_ptr make_unique`
+-   `<random>`，`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`，屬於軟體偽隨機產生器，需設定隨機種子。 ESP32架構還額外支持`EspUrng`，是硬體真隨機產生器，不支援設定種子。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
 -   `<vector>`
--   `<xutility> std::begin std::end`
+-   `std::begin std::end`
 -   如果編譯器隨附了某些重名的標準函式庫功能，將優先使用隨附的版本。編譯器可能也隨附了本函式庫未提供的其它標準函式庫功能，那些功能也不會與本函式庫衝突。
+
+安裝後記得查看範例項目！
 
 # 原版README（僅供參考，部分內容已過時）
 
