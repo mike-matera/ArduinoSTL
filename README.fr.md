@@ -4,7 +4,7 @@ parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)L'aute
 
 Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM et boost. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
 
-如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
+Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le mettra en œuvre pour vous en premier.
 
 Architecture actuellement prise en charge :
 
@@ -19,10 +19,10 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout endl`Utiliser le port série comme flux d'entrée et de sortie standard
+-   `<iostream> cin cout endl`Utilisez le port série comme flux d’entrée et de sortie standard. Cependant, les utilisateurs doivent toujours appeler manuellement`Serial.begin`, étant donné que le port série n'est peut-être pas connecté ou que le débit en bauds n'est pas de 9600.
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
--   `<random>`，`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
+-   `<random>`，`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
@@ -86,7 +86,7 @@ void loop() {
 
 ## Changer le port série
 
-Vous pouvez changer le port série utilisé`cin`,`cout`et`printf()` use. You can use built-in serial ports (e.g. `Serial1`sur Leonardo) ou vous pouvez utiliser des ports série logiciels qui implémentent`Stream`.
+Vous pouvez changer le port série utilisé`cin`,`cout`et`printf()`utiliser. Vous pouvez utiliser des ports série intégrés (par ex.`Serial1`sur Leonardo) ou vous pouvez utiliser des ports série logiciels qui implémentent`Stream`.
 
 ### Utilisation d'un port intégré
 
@@ -115,7 +115,7 @@ void setup() {
 }
 ```
 
-## Éviter l'instanciation de`cin`et`cout`
+## Éviter l'instanciation de`cin` and `cout`
 
 Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`et rien ne sera instancié. Vous devez commenter cet indicateur si vous avez l'intention de sélectionner un port série autre que celui par défaut. Il n'y a pas de frais généraux appréciables pour l'utilisation`printf()`vous ne pouvez donc pas actuellement éviter de l'initialiser.
 
@@ -127,7 +127,7 @@ uClibc semble être assez complet. Les chaînes et les vecteurs fonctionnent tou
 
 <https://cxx.uclibc.org/status.html>
 
-Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
+Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
 
 <https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification>
 
