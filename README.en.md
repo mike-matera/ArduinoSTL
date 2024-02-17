@@ -4,7 +4,7 @@ because[Original ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)The autho
 
 This library attempts to implement most of the functions of the C++11~17 Standard Library (STL) on Arduino. In addition to ArduinoSTL, some functions of this library also refer to MSVC, LLVM and boost. Because the interface is based on STL, there is no need to write additional documents. You can refer to any authoritative STL document. Unless otherwise stated, the usage of this library should be the same. If it is different, it should be a bug. You are welcome to submit an issue.
 
-If you need some functions that are in the standard library but are not provided in this library, you are also welcome to submit an Issue, and the author will implement it for you first.
+If you need some functions that are included in the standard library but are not provided in this library, you are welcome to submit an Issue, and the author will implement it for you first.
 
 Currently supported architecture:
 
@@ -19,16 +19,18 @@ Before including any C++ standard header file, you must first include`Cpp_Standa
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout`Use the serial port as the standard input and output stream
+-   `<iostream> cin cout endl`Use the serial port as the standard input and output stream
 -   `<map>`
--   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`is Arduino platform specific`UniformRandomNumberGenerator`,Can be used as`shuffle`, which is a software pseudo-random generator and needs to set a random seed. The ESP32 architecture also additionally supports`EspUrng`, is a hardware true random generator and does not support setting seeds.
+-   `<memory> unique_ptr make_unique`
+-   `<random>`，`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`is Arduino platform specific`UniformRandomNumberGenerator`,Can be used as`shuffle`, which is a software pseudo-random generator and needs to set a random seed. The ESP32 architecture also additionally supports`EspUrng`, is a hardware true random generator and does not support setting seeds.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
 -   `<vector>`
--   `<xutility> std::begin std::end`
+-   `std::begin std::end`
 -   If the compiler comes with some standard library function with the same name, the version that comes with it will take precedence. The compiler may ship with other standard library features that are not provided by this library, and those features do not conflict with this library.
+
+Remember to check out the sample project after installation!
 
 # Original README (for reference only, some contents are outdated)
 
@@ -88,7 +90,7 @@ You can change what serial port that`cin`,`cout`and`printf()`use. You can use bu
 
 ### Using a Built-in Port
 
-In `src/ArduinoSTL.cpp`change the value of`ARDUINOSTL_DEFAULT_SERIAL`. Leave the other defaults uncommented.
+In`src/ArduinoSTL.cpp`change the value of`ARDUINOSTL_DEFAULT_SERIAL`. Leave the other defaults uncommented.
 
 ### Using a SoftwareSerial port.
 
@@ -113,7 +115,7 @@ void setup() {
 }
 ```
 
-## Avoiding Instantiation of `cin`and`cout`
+## Avoiding Instantiation of`cin`and`cout`
 
 Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()`so you cannot currently avoid initializing it.
 
