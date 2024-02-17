@@ -576,6 +576,7 @@ namespace std
         _Compressed_pair<_Dx, pointer> _Mypair;
     };
 #endif
+#ifndef ARDUINO_ARCH_ESP32
     template <class _Ty, class... _Types, enable_if_t<!is_array<_Ty>::value, int> = 0>
     _NODISCARD _CONSTEXPR23 unique_ptr<_Ty> make_unique(_Types &&..._Args)
     { // make a unique_ptr
@@ -591,7 +592,7 @@ namespace std
 
     template <class _Ty, class... _Types, enable_if_t<extent<_Ty>::value != 0, int> = 0>
     void make_unique(_Types &&...) = delete;
-
+#endif
 #if _HAS_CXX20
     template <class _Ty, enable_if_t<!is_array<_Ty>::value, int> = 0>
     _NODISCARD _CONSTEXPR23 unique_ptr<_Ty> make_unique_for_overwrite()

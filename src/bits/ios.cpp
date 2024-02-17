@@ -17,18 +17,27 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #include "ios_base.h"
+#include "../serstream"
+#include "iostream"
+#include <Arduino.h>
 namespace std
 {
-#ifdef ARDUINO_ARCH_AVR
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
+#ifdef ARDUINO_ARCH_AVR
 	_UCXXLOCAL int ios_base::Init::init_cnt = 0; // Needed to ensure the static value is created
-
+#define CSL_IOS_Count init_cnt
+#else
+#ifdef ARDUINO_ARCH_SAM
+	_Atomic_word ios_base::Init::_S_refcount = 0;
+#endif
+#define CSL_IOS_Count _S_refcount
+#endif
 // Create buffers first
 #ifdef __UCLIBCXX_SUPPORT_COUT__
-	_UCXXEXPORT filebuf _cout_filebuf;
+	_UCXXEXPORT serialbuf _cout_filebuf(Serial);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CIN__
-	_UCXXEXPORT filebuf _cin_filebuf;
+	_UCXXEXPORT serialbuf _cin_filebuf(Serial);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 	_UCXXEXPORT filebuf _cerr_filebuf;
@@ -37,10 +46,10 @@ namespace std
 	_UCXXEXPORT filebuf _clog_filebuf;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCOUT__
-	_UCXXEXPORT wfilebuf _wcout_filebuf;
+	_UCXXEXPORT wserialbuf _wcout_filebuf(Serial);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCIN__
-	_UCXXEXPORT wfilebuf _wcin_filebuf;
+	_UCXXEXPORT wserialbuf _wcin_filebuf(Serial);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCERR__
 	_UCXXEXPORT wfilebuf _wcerr_filebuf;
@@ -48,7 +57,7 @@ namespace std
 #ifdef __UCLIBCXX_SUPPORT_WCLOG__
 	_UCXXEXPORT wfilebuf _wclog_filebuf;
 #endif
-
+#ifndef ARDUINO_ARCH_ESP32
 // Then create streams
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	_UCXXEXPORT ostream cout(&_cout_filebuf);
@@ -74,14 +83,15 @@ namespace std
 #ifdef __UCLIBCXX_SUPPORT_WCLOG__
 	_UCXXEXPORT wostream wclog(&_wclog_filebuf);
 #endif
-
+#endif
 	_UCXXEXPORT ios_base::Init::Init()
 	{
-		if (init_cnt == 0)
+#ifdef ARDUINO_ARCH_ESP32
+		if (CSL_IOS_Count == 0)
 		{ // Need to construct cout et al
 #ifdef __UCLIBCXX_SUPPORT_COUT__
-			_cout_filebuf.fp = stdout;
-			_cout_filebuf.openedFor = ios_base::out;
+			cout.~basic_ostream();
+			new (&cout) ostream(&_cout_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CERR__
 			_cerr_filebuf.fp = stderr;
@@ -93,8 +103,8 @@ namespace std
 			_clog_filebuf.openedFor = ios_base::out;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_CIN__
-			_cin_filebuf.fp = stdin;
-			_cin_filebuf.openedFor = ios_base::in;
+			cin.~basic_istream();
+			new (&cin) istream(&_cin_filebuf);
 
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 			cin.tie(&cout);
@@ -102,8 +112,8 @@ namespace std
 
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCOUT__
-			_wcout_filebuf.fp = stdout;
-			_wcout_filebuf.openedFor = ios_base::out;
+			wcout.~basic_ostream();
+			new (&wcout) wostream(&_wcout_filebuf);
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCERR__
 			_wcerr_filebuf.fp = stderr;
@@ -115,27 +125,23 @@ namespace std
 			_wclog_filebuf.openedFor = ios_base::out;
 #endif
 #ifdef __UCLIBCXX_SUPPORT_WCIN__
-			_wcin_filebuf.fp = stdin;
-			_wcin_filebuf.openedFor = ios_base::in;
+			wcin.~basic_istream();
+			new (&wcin) wistream(&_wcin_filebuf);
 
 #ifdef __UCLIBCXX_SUPPORT_WCOUT__
 			wcin.tie(&wcout);
 #endif
-
 #endif
 		}
-		init_cnt++;
+#endif
+		CSL_IOS_Count++;
 	}
-
 	_UCXXEXPORT ios_base::Init::~Init()
 	{
-		--init_cnt;
-		if (init_cnt == 0)
-		{
-		}
+		--CSL_IOS_Count;
 	}
 #endif
-
+#ifdef ARDUINO_ARCH_AVR
 #ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
 
 	template _UCXXEXPORT void basic_ios<char, char_traits<char>>::clear(iostate state);
@@ -185,14 +191,5 @@ namespace std
 	ios_base::~ios_base() {}
 	ios_base::ios_base() {}
 	void ios_base::_M_init() throw() {}
-	_Atomic_word ios_base::Init::_S_refcount;
-	ios_base::Init::Init()
-	{
-		_S_refcount++;
-	}
-	ios_base::Init::~Init()
-	{
-		_S_refcount--;
-	}
 #endif
 }

@@ -108,8 +108,9 @@ namespace std
 	{
 		return pair<T1, T2>(x, y);
 	}
-	// 40
 #endif
+	// 40
+#ifndef ARDUINO_ARCH_ESP32
 	_EXPORT_STD template <class _Ty, _Ty... _Vals>
 	struct integer_sequence
 	{ // sequence of integer parameters
@@ -130,6 +131,7 @@ namespace std
 
 	_EXPORT_STD template <size_t _Size>
 	using make_index_sequence = make_integer_sequence<size_t, _Size>;
+#endif
 	// 60
 #ifdef ARDUINO_ARCH_AVR
 	// 63

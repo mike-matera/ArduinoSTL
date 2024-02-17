@@ -16,16 +16,18 @@
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`
 - `<functional> std::function`
-- `<iostream> cin cout` 使用串口作为标准输入输出流
+- `<iostream> cin cout endl` 使用串口作为标准输入输出流
 - `<map>`
-- `<memory> unique_ptr`
-- `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`，属于软件伪随机生成器，需要设置随机种子。ESP32架构还额外支持`EspUrng`，是硬件真随机生成器，不支持设置种子。
+- `<memory> unique_ptr make_unique`
+- `<random>`，`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`，属于软件伪随机生成器，需要设置随机种子。ESP32架构还额外支持`EspUrng`，是硬件真随机生成器，不支持设置种子。
 - `<ratio>`
 - `<set>`
 - `<type_traits>`
 - `<vector>`
-- `<xutility> std::begin std::end`
+- `std::begin std::end`
 - 如果编译器随附了某些重名的标准库功能，将优先使用随附的版本。编译器可能还随附了本库未提供的其它标准库功能，那些功能也不会与本库冲突。
+
+安装后记得查看示例项目！
 # 原版README（仅供参考，部分内容已过时）
 
 This is an implementation of a C++ standard library packaged as an Arduino library. The library supports teaching my CS-11M class by adding key C++ features into the Arduino environment. 

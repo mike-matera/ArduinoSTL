@@ -208,7 +208,7 @@ namespace std
     {
         static_assert(_STRUCT14VALUE(_Always_false, _Ty), "Calling declval is ill-formed, see N4892 [declval]/2.");
     }
-#endif
+    
     template <class _Ty>
     struct remove_extent
     { // remove array extent
@@ -226,7 +226,7 @@ namespace std
     {
         using type = _Ty;
     };
-
+#endif
     template <class _Ty>
     using remove_extent_t = typename remove_extent<_Ty>::type;
 #ifdef ARDUINO_ARCH_AVR
