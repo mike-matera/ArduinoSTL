@@ -6,7 +6,11 @@
 
 如果你需要某些標準函式庫中應有而本函式庫中尚未提供的功能，也歡迎提交Issue，作者將會優先為你實作。
 
-目前支援AVR和SAM架構。暫時沒有支援ESP32的計劃，因為ESP32官方已經提供了標準庫，同時使用兩套標準庫將產生許多難以處理的問題。
+目前支援架構：
+
+-   AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`為`-std=gnu++17`
+-   SAM，要求C++11
+-   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`
 
 在包含任何C++標準頭檔之前，必須先包含`Cpp_Standard_Library.h`。這是對 Arduino IDE 的提示，告訴編譯器必須將本函式庫納入編譯流程。
 
@@ -18,12 +22,13 @@
 -   `<iostream> cin cout`使用串口作為標準輸入輸出流
 -   `<map>`
 -   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`。
+-   `<random> mt19937, ArduinoUrng`：`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`，屬於軟體偽隨機產生器，需設定隨機種子。 ESP32架構還額外支持`EspUrng`，是硬體真隨機產生器，不支援設定種子。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
 -   `<vector>`
 -   `<xutility> std::begin std::end`
+-   如果編譯器隨附了某些重名的標準函式庫功能，將優先使用隨附的版本。編譯器可能也隨附了本函式庫未提供的其它標準函式庫功能，那些功能也不會與本函式庫衝突。
 
 # 原版README（僅供參考，部分內容已過時）
 
@@ -79,7 +84,7 @@ void loop() {
 
 ## 更改串口
 
-You can change what serial port that `cin`,`cout`和`printf()`使用。您可以使用內建序列埠（例如`Serial1`在 Leonardo 上）或者您可以使用軟體序列埠來實現`Stream`.
+您可以變更串口`cin`,`cout`和`printf()`使用。您可以使用內建序列埠（例如`Serial1`在 Leonardo 上）或者您可以使用軟體序列埠來實現`Stream`.
 
 ### 使用內建連接埠
 
