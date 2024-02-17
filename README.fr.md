@@ -6,7 +6,11 @@ Cette bibliothèque tente d'implémenter la plupart des fonctions de la biblioth
 
 Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le mettra en œuvre pour vous en premier.
 
-Prend actuellement en charge les architectures AVR et SAM. Il n'est pas prévu de prendre en charge ESP32 pour le moment, car ESP32 a officiellement fourni une bibliothèque standard, et l'utilisation simultanée de deux ensembles de bibliothèques standard entraînera de nombreux problèmes difficiles à résoudre.
+Architecture actuellement prise en charge :
+
+-   AVR, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutre`-std=gnu++11`pour`-std=gnu++17`
+-   SAM, nécessite C++11
+-   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`
 
 Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
 
@@ -18,12 +22,13 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 -   `<iostream> cin cout`Utiliser le port série comme flux d'entrée et de sortie standard
 -   `<map>`
 -   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`。
+-   `<random> mt19937, ArduinoUrng`：`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
 -   `<vector>`
 -   `<xutility> std::begin std::end`
+-   Si le compilateur est livré avec une fonction de bibliothèque standard portant le même nom, la version qui l'accompagne aura la priorité. Le compilateur peut être livré avec d'autres fonctionnalités de bibliothèque standard qui ne sont pas fournies par cette bibliothèque, et ces fonctionnalités n'entrent pas en conflit avec cette bibliothèque.
 
 # README original (à titre de référence uniquement, certains contenus sont obsolètes)
 
@@ -120,7 +125,7 @@ uClibc semble être assez complet. Les chaînes et les vecteurs fonctionnent tou
 
 <https://cxx.uclibc.org/status.html>
 
-Always use the latest Arduino IDE. This library uses the Arduino IDE Library Specification rev.2.1 with features only available on Arduino 1.6.10 and higher. The specification can be found here:
+Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
 
 <https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification>
 
