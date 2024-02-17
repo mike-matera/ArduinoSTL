@@ -6,7 +6,11 @@ This library attempts to implement most of the functions of the C++11~17 Standar
 
 If you need some functions that are in the standard library but are not provided in this library, you are also welcome to submit an Issue, and the author will implement it for you first.
 
-Currently supports AVR and SAM architectures. There are no plans to support ESP32 at the moment, because ESP32 has officially provided a standard library, and using two sets of standard libraries at the same time will cause many problems that are difficult to deal with.
+Currently supported architecture:
+
+-   AVR, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutral`-std=gnu++11`for`-std=gnu++17`
+-   SAM, requires C++11
+-   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`for`-std=gnu++17`
 
 Before including any C++ standard header file, you must first include`Cpp_Standard_Library.h`. This is a prompt to the Arduino IDE, telling the compiler that this library must be included in the compilation process.
 
@@ -18,12 +22,13 @@ Before including any C++ standard header file, you must first include`Cpp_Standa
 -   `<iostream> cin cout`Use the serial port as the standard input and output stream
 -   `<map>`
 -   `<memory> unique_ptr`
--   `<random> mt19937, ArduinoUrng`：`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`is Arduino platform specific`UniformRandomNumberGenerator`,Can be used as`shuffle`。
+-   `<random> mt19937, ArduinoUrng`：`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`is Arduino platform specific`UniformRandomNumberGenerator`,Can be used as`shuffle`, which is a software pseudo-random generator and needs to set a random seed. The ESP32 architecture also additionally supports`EspUrng`, is a hardware true random generator and does not support setting seeds.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
 -   `<vector>`
 -   `<xutility> std::begin std::end`
+-   If the compiler comes with some standard library function with the same name, the version that comes with it will take precedence. The compiler may ship with other standard library features that are not provided by this library, and those features do not conflict with this library.
 
 # Original README (for reference only, some contents are outdated)
 
@@ -83,11 +88,11 @@ You can change what serial port that`cin`,`cout`and`printf()`use. You can use bu
 
 ### Using a Built-in Port
 
-In`src/ArduinoSTL.cpp`change the value of`ARDUINOSTL_DEFAULT_SERIAL`. Leave the other defaults uncommented.
+In `src/ArduinoSTL.cpp`change the value of`ARDUINOSTL_DEFAULT_SERIAL`. Leave the other defaults uncommented.
 
 ### Using a SoftwareSerial port.
 
-Set `ARDUINO_DEFAULT_SERAL`to`NULL`. Comment out the other defaults.
+Set`ARDUINO_DEFAULT_SERAL`to`NULL`. Comment out the other defaults.
 
 Here's an example sketch that uses SofwareSerial:
 
@@ -108,7 +113,7 @@ void setup() {
 }
 ```
 
-## Avoiding Instantiation of`cin`and`cout`
+## Avoiding Instantiation of `cin`and`cout`
 
 Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()`so you cannot currently avoid initializing it.
 
@@ -128,4 +133,4 @@ Always use the latest Arduino IDE. This library uses the Arduino IDE Library Spe
 
 The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception:
 
--   src/serstream is licensed under the BSD license according to Andy Brown's wishes here: <http://andybrown.me.uk/terms-and-conditions/>
+-   src/serstream is licensed under the BSD license according to Andy Brown's wishes here:<http://andybrown.me.uk/terms-and-conditions/>
