@@ -1,5 +1,4 @@
 #pragma once
-#include "vcruntime.h"
 #include "Cpp_Standard_Library.h"
 #include CSL_Official(new)
 #if __cplusplus < 201402L

@@ -1,7 +1,5 @@
 #pragma once
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(ratio)
-#endif
+#ifdef ARDUINO_ARCH_AVR
 #include "cstdint"
 #include "type_traits"
 _STD_BEGIN
@@ -165,3 +163,7 @@ _EXPORT_STD using tera = ratio<1000000000000LL, 1>;
 _EXPORT_STD using peta = ratio<1000000000000000LL, 1>;
 _EXPORT_STD using exa = ratio<1000000000000000000LL, 1>;
 _STD_END
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(ratio)
+#endif

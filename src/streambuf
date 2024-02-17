@@ -17,7 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-//SAM的streambuf使用了未定义的locale构造和析构函数，而且无法替换到本库，只能弃用
+#ifdef ARDUINO_ARCH_AVR
 #pragma GCC visibility push(default)
 #include "bits/ios_base.h"
 #include "iosfwd"
@@ -380,3 +380,7 @@ namespace std
 }
 
 #pragma GCC visibility pop
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(streambuf)
+#endif

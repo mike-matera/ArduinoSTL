@@ -1,4 +1,7 @@
-#ifdef ARDUINO_ARCH_SAM
+#pragma once
+#ifndef ARDUINO_ARCH_AVR
+#include "Cpp_Standard_Library.h"
 #include CSL_Official(cinttypes)
-#endif
+#else
 #include <inttypes.h>
+#endif

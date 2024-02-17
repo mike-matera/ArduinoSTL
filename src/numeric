@@ -16,11 +16,8 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-#ifndef __STD_NUMERIC_HEADER
-#define __STD_NUMERIC_HEADER 1
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(numeric)
-#else
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "basic_definitions"
 #include "exception"
 
@@ -176,7 +173,7 @@ namespace std
 }
 
 #pragma GCC visibility pop
-
-#endif
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(numeric)
 #endif

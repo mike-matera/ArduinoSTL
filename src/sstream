@@ -16,12 +16,8 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-#ifndef HEADER_STD_SSTREAM
-#define HEADER_STD_SSTREAM 1
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(sstream)
-#endif
-
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "iostream"
 #include "string"
 
@@ -431,9 +427,9 @@ namespace std
 
 #endif
 #endif
-
-#pragma GCC visibility pop
-
 }
-
+#pragma GCC visibility pop
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(sstream)
 #endif

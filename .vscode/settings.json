@@ -63,6 +63,16 @@
 		"ctime": "cpp",
 		"numeric": "c",
 		"associative_base": "cpp",
-		"stack": "c"
+		"stack": "c",
+		"atomic": "cpp",
+		"clocale": "cpp",
+		"cstdarg": "cpp",
+		"memory_resource": "cpp",
+		"optional": "cpp",
+		"string_view": "cpp",
+		"system_error": "cpp",
+		"fstream": "cpp",
+		"cinttypes": "cpp",
+		"queue": "cpp"
 	}
 }

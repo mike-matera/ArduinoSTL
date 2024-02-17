@@ -1,9 +1,5 @@
 #pragma once
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(random)
-#include "type_traits"
-#include <Arduino.h>
-#else
+#ifdef ARDUINO_ARCH_AVR
 #include "istream"
 #include "xutility"
 namespace std
@@ -418,6 +414,11 @@ namespace std
 														0x9d2c5680, 15, 0xefc60000, 18, 1812433253>;
 	// 5042
 }
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(random)
+#include "type_traits"
+#include <Arduino.h>
 #endif
 namespace std
 {
@@ -425,17 +426,16 @@ namespace std
 	{
 #ifdef ARDUINO_ARCH_AVR
 #define CSL_RANDOM random
-#endif
-#ifdef ARDUINO_ARCH_SAM
+#else
 #define CSL_RANDOM rand
 #endif
 		// UniformRandomBitGenerator要求无符号整数
 		using result_type = make_unsigned_t<decltype(CSL_RANDOM())>;
-		static constexpr result_type (max)()
+		static constexpr result_type(max)()
 		{
-			return (numeric_limits<result_type>::max)();
+			return (numeric_limits<decltype(CSL_RANDOM())>::max)();
 		};
-		static constexpr result_type (min)()
+		static constexpr result_type(min)()
 		{
 			return 0;
 		};
@@ -448,4 +448,24 @@ namespace std
 			randomSeed(S);
 		}
 	};
+#ifdef ARDUINO_ARCH_ESP32
+	// ESP32独享的硬件随机生成器，不支持设置种子
+	struct EspUrng
+	{
+		// UniformRandomBitGenerator要求无符号整数
+		using result_type = make_unsigned_t<decltype(esp_random())>;
+		static constexpr result_type(max)()
+		{
+			return (numeric_limits<decltype(esp_random())>::max)();
+		};
+		static constexpr result_type(min)()
+		{
+			return 0;
+		};
+		result_type operator()() const
+		{
+			return esp_random();
+		}
+	};
+#endif
 }

@@ -14,16 +14,11 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-#ifndef __STD_HEADER_FUNCTIONAL
-#define __STD_HEADER_FUNCTIONAL 1
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(functional)
-#else
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
+#include "yvals.h"
 #include "typeinfo"
 #include "xmemory"
-#include "yvals.h"
-
 #pragma GCC visibility push(default)
 
 namespace std
@@ -517,8 +512,27 @@ namespace std
 	}
 	// 652
 	extern "C++" [[noreturn]] _CRTIMP2_PURE void __CLRCALL_PURE_OR_CDECL _Xbad_function_call();
-	// 654
-	//  670
+
+	_EXPORT_STD template <class _Fty>
+	class function;
+
+	template <class _Ty>
+	_INLINE_VAR constexpr bool _Testable_callable_v =
+		disjunction_v<is_pointer<_Ty>, _Is_specialization<_Ty, function>, is_member_pointer<_Ty>>;
+
+	template <class _Ty>
+	bool _Test_callable(const _Ty &_Arg) noexcept
+	{ // determine whether std::function must store _Arg
+		if constexpr (_Testable_callable_v<_Ty>)
+		{
+			return !!_Arg;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
 	template <class _Rx, class... _Types>
 	class /*Arduino不支持：__declspec(novtable)*/ _Func_base
 	{ // abstract base for implementation types
@@ -1147,7 +1161,7 @@ compose2(const Op1 &fn1, const Op2 &fn2, const Op3 &fn3)
 }
 
 #pragma GCC visibility pop
-
-#endif
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(functional)
 #endif

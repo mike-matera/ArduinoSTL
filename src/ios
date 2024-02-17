@@ -17,7 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-// SAM的ios包含了未定义的locale构造析构，无法通过编译，不予采用
+#ifdef ARDUINO_ARCH_AVR
 #pragma GCC visibility push(default)
 #include "streambuf"
 #include <stdio.h>
@@ -414,3 +414,7 @@ namespace std
 }
 
 #pragma GCC visibility pop
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(ios)
+#endif

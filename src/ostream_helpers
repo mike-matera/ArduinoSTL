@@ -17,7 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-
+#ifdef ARDUINO_ARCH_AVR
 #pragma GCC visibility push(default)
 #include "ios"
 namespace std
@@ -669,3 +669,4 @@ namespace std
 #endif //__UCLIBCXX_HAS_WCHAR__
 }
 #pragma GCC visibility pop
+#endif

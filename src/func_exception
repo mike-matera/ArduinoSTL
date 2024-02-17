@@ -17,10 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-#ifdef ARDUINO_ARCH_AVR
-#include "exception"
-#endif
-#ifdef ARDUINO_ARCH_SAM
+#ifndef ARDUINO_ARCH_AVR
 #include <bits/functexcept.h>
 #endif
 #include "basic_definitions"

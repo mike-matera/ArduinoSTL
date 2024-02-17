@@ -15,11 +15,7 @@
             ],
             "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++.exe",
             "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64",
-            "forcedInclude": [
-                "${workspaceFolder}/src/Cpp_Standard_Library.h"
-            ]
+            "cppStandard": "c++17"
         },
         {
             "name": "sam",
@@ -35,11 +31,40 @@
             ],
             "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++.exe",
             "cStandard": "c11",
-            "cppStandard": "c++11",
-            "intelliSenseMode": "windows-gcc-arm",
-            "forcedInclude": [
-                "${workspaceFolder}/src/Cpp_Standard_Library.h"
-            ]
+            "cppStandard": "c++11"
+        },
+        {
+            "name": "esp32",
+            "includePath": [
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/cores/esp32",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/tools/sdk/esp32s3/include/**",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/tools/sdk/esp32s3/qio_opi/include",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/variants/arduino_nano_nora",
+                "${LOCALAPPDATA}/Arduino15/packages/esp32/tools/xtensa-esp32s3-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32s3-elf/include/c++/8.4.0"
+            ],
+            "defines": [
+                "HAVE_CONFIG_H",
+                "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",
+                "UNITY_INCLUDE_CONFIG_H",
+                "WITH_POSIX",
+                "_GNU_SOURCE",
+                "IDF_VER=\"v4.4.5\"",
+                "ESP_PLATFORM",
+                "_POSIX_READER_WRITER_LOCKS",
+                "ARDUINO_USB_CDC_ON_BOOT=1",
+                "ARDUINO_USB_MODE=0",
+                "ARDUINO_USB_MSC_ON_BOOT=0",
+                "ARDUINO_USB_DFU_ON_BOOT=1",
+                "F_CPU=240000000L",
+                "ARDUINO_NANO_ESP32=1",
+                "ARDUINO_ARCH_ESP32=1",
+                "ARDUINO_BOARD=\"NANO_ESP32\"",
+                "ARDUINO_VARIANT=\"arduino_nano_nora\"",
+                "ARDUINO_PARTITION_app3M_fat9M_fact512k_16MB"
+            ],
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/esp32/tools/xtensa-esp32s3-elf-gcc/esp-2021r2-patch5-8.4.0/bin/xtensa-esp32s3-elf-g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

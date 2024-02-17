@@ -16,21 +16,20 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-#ifndef HEADER_STD_MEMORY
-#define HEADER_STD_MEMORY 1
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(memory)
-#else
-#include "cstdlib"
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "iterator_base"
-#include "cstdio"
 #include "functional"
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(memory)
+#include "xtr1common"
+#endif
 #pragma GCC visibility push(default)
 
 namespace std
 {
-
+#ifdef ARDUINO_ARCH_AVR
     template <class T>
     class allocator;
     // Specialize for void:
@@ -576,7 +575,7 @@ namespace std
 
         _Compressed_pair<_Dx, pointer> _Mypair;
     };
-
+#endif
     template <class _Ty, class... _Types, enable_if_t<!is_array<_Ty>::value, int> = 0>
     _NODISCARD _CONSTEXPR23 unique_ptr<_Ty> make_unique(_Types &&..._Args)
     { // make a unique_ptr
@@ -612,7 +611,7 @@ namespace std
     template <class _Ty, class... _Types, enable_if_t<is_bounded_array<_Ty>::value, int> = 0>
     void make_unique_for_overwrite(_Types &&...) = delete;
 #endif // _HAS_CXX20
-
+#ifdef ARDUINO_ARCH_AVR
     template <class _Ty, class _Dx, enable_if_t<_Is_swappable<_Dx>::value, int> = 0>
     _CONSTEXPR23 void swap(unique_ptr<_Ty, _Dx> &_Left, unique_ptr<_Ty, _Dx> &_Right) noexcept
     {
@@ -748,10 +747,7 @@ _NODISCARD compare_three_way_result_t<typename unique_ptr<_Ty1, _Dx1>::pointer,
     {
         return !(_Right < _Left);
     }
+#endif
 } // namespace std
 
 #pragma GCC visibility pop
-
-#endif
-
-#endif

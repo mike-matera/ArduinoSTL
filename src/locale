@@ -17,7 +17,7 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 #pragma once
-//SAM的locale没有定义构造和析构函数，无法采用
+#ifdef ARDUINO_ARCH_AVR
 #include "basic_definitions"
 #include "string"
 #pragma GCC visibility push(default)
@@ -57,7 +57,6 @@ namespace std
 		{
 			return;
 		}
-
 		const locale &operator=(const locale &) _UCXX_USE_NOEXCEPT
 		{
 			return *this;
@@ -84,3 +83,7 @@ namespace std
 	};
 }
 #pragma GCC visibility pop
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(locale)
+#endif

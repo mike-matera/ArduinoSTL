@@ -17,15 +17,13 @@
 */
 #pragma once
 #ifdef ARDUINO_ARCH_AVR
+#include "basic_definitions"
 #ifdef __UCLIBCXX_HAS_WCHAR__
 #include "cwchar"
 #include "cwctype"
+#include "corecrt_wctype.h"
 #endif
-#endif
-#ifdef ARDUINO_ARCH_SAM
-#include <bits/char_traits.h>
-#endif
-#ifdef ARDUINO_ARCH_AVR
+#include <string.h>
 namespace std
 {
 	/* Inlining all wrapped function calls to shrink the amount of code generated*/
@@ -128,7 +126,6 @@ namespace std
 			return a;
 		}
 	};
-
 #ifdef __UCLIBCXX_HAS_WCHAR__
 	template <>
 	struct _UCXXEXPORT char_traits<wchar_t>
@@ -137,9 +134,7 @@ namespace std
 		typedef wint_t int_type;
 		typedef char_traits_off_type off_type;
 		typedef char_traits_off_type pos_type;
-#ifdef ARDUINO_ARCH_SAM
-		typedef mbstate_t state_type;
-#endif
+		// typedef mbstate_t state_type;
 
 		static void assign(char_type &c, const char_type &d) { c = d; }
 
@@ -161,25 +156,25 @@ namespace std
 			}
 			return false;
 		}
-#ifdef ARDUINO_ARCH_SAM
-		inline static bool eq(const char_type &c1, const char_type &c2)
-		{
-			if (wcsncmp(&c1, &c2, 1) == 0)
-			{
-				return true;
-			}
-			return false;
-		}
+		/*
+				inline static bool eq(const char_type &c1, const char_type &c2)
+				{
+					if (wcsncmp(&c1, &c2, 1) == 0)
+					{
+						return true;
+					}
+					return false;
+				}
 
-		inline static bool lt(const char_type &c1, const char_type &c2)
-		{
-			if (wcsncmp(&c1, &c2, 1) < 0)
-			{
-				return true;
-			}
-			return false;
-		}
-#endif
+				inline static bool lt(const char_type &c1, const char_type &c2)
+				{
+					if (wcsncmp(&c1, &c2, 1) < 0)
+					{
+						return true;
+					}
+					return false;
+				}
+		*/
 		inline static char_type *move(char_type *s1, const char_type *s2, size_t n)
 		{
 			return (char_type *)memmove(s1, s2, n * sizeof(char_type));
@@ -198,17 +193,17 @@ namespace std
 		{
 			return (char_type *)memset(s, a, n); /*FIXME*/
 		}
-#ifdef ARDUINO_ARCH_SAM
-		inline static int compare(const char_type *s1, const char_type *s2, size_t n)
-		{
-			return wcsncmp(s1, s2, n);
-		}
+		/*
+				inline static int compare(const char_type *s1, const char_type *s2, size_t n)
+				{
+					return wcsncmp(s1, s2, n);
+				}
 
-		inline static size_t length(const char_type *s)
-		{
-			return wcslen(s);
-		}
-#endif
+				inline static size_t length(const char_type *s)
+				{
+					return wcslen(s);
+				}
+		*/
 		static const char_type *find(const char_type *s, int n, const char_type &a);
 
 		inline static char_type eos() { return 0; }
@@ -226,14 +221,17 @@ namespace std
 				return i;
 			}
 		}
-#ifdef ARDUINO_ARCH_SAM
-		static state_type get_state(pos_type)
-		{
-			state_type a;
-			return a;
-		}
-#endif
+		/*
+				static state_type get_state(pos_type)
+				{
+					state_type a;
+					return a;
+				}
+		*/
 	};
 #endif
 }
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(bits/char_traits.h)
 #endif

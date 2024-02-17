@@ -19,7 +19,7 @@
 #include "ios_base.h"
 namespace std
 {
-
+#ifdef ARDUINO_ARCH_AVR
 #ifdef __UCLIBCXX_SUPPORT_CDIR__
 	_UCXXLOCAL int ios_base::Init::init_cnt = 0; // Needed to ensure the static value is created
 
@@ -180,4 +180,19 @@ namespace std
 		mLocale = loc;
 		return retval;
 	}
+#endif
+#ifdef ARDUINO_ARCH_SAM
+	ios_base::~ios_base() {}
+	ios_base::ios_base() {}
+	void ios_base::_M_init() throw() {}
+	_Atomic_word ios_base::Init::_S_refcount;
+	ios_base::Init::Init()
+	{
+		_S_refcount++;
+	}
+	ios_base::Init::~Init()
+	{
+		_S_refcount--;
+	}
+#endif
 }

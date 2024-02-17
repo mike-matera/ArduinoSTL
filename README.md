@@ -6,7 +6,10 @@
 
 如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
 
-目前支持AVR和SAM架构。暂时没有支持ESP32的计划，因为ESP32官方已经提供了标准库，同时使用两套标准库将产生很多难以处理的问题。
+目前支持架构：
+- AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`为`-std=gnu++17`
+- SAM，要求C++11
+- ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`为`-std=gnu++17`
 
 在包含任何C++标准头文件之前，必须先包含`Cpp_Standard_Library.h`。这是对 Arduino IDE 的提示，告诉编译器必须要将本库纳入编译流程。
 # 招牌功能（不限于此）
@@ -16,12 +19,13 @@
 - `<iostream> cin cout` 使用串口作为标准输入输出流
 - `<map>`
 - `<memory> unique_ptr`
-- `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`。
+- `<random> mt19937, ArduinoUrng`：`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`，属于软件伪随机生成器，需要设置随机种子。ESP32架构还额外支持`EspUrng`，是硬件真随机生成器，不支持设置种子。
 - `<ratio>`
 - `<set>`
 - `<type_traits>`
 - `<vector>`
 - `<xutility> std::begin std::end`
+- 如果编译器随附了某些重名的标准库功能，将优先使用随附的版本。编译器可能还随附了本库未提供的其它标准库功能，那些功能也不会与本库冲突。
 # 原版README（仅供参考，部分内容已过时）
 
 This is an implementation of a C++ standard library packaged as an Arduino library. The library supports teaching my CS-11M class by adding key C++ features into the Arduino environment. 

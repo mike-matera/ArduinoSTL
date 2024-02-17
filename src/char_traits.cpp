@@ -17,15 +17,10 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-#define __UCLIBCXX_COMPILE_CHAR_TRAITS__ 1
-
-#include <basic_definitions>
-#include <char_traits>
-
+#ifdef ARDUINO_ARCH_AVR
+#include "char_traits"
 namespace std
 {
-
 	_UCXXEXPORT const char_traits<char>::char_type *char_traits<char>::find(const char_type *s, int n, const char_type &a)
 	{
 		for (int i = 0; i < n; i++)
@@ -75,3 +70,4 @@ namespace std
 #endif
 
 }
+#endif

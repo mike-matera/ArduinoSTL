@@ -16,13 +16,10 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-
-#ifndef __STD_HEADER_COMPLEX
-#define __STD_HEADER_COMPLEX 1
-#ifdef ARDUINO_ARCH_SAM
+#pragma once
+#ifndef ARDUINO_ARCH_AVR
 #include CSL_Official(complex)
-#endif
+#else
 #include <ostream>
 
 namespace std {

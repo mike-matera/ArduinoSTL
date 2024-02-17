@@ -16,14 +16,14 @@
 */
 #pragma once
 #ifdef ARDUINO_ARCH_AVR
-#include "basic_definitions"
-
-
+#define __need_wint_t
+#define __need_size_t
+#include <stddef.h>
 namespace std
 {
-	using ::mbstate_t;
+	//using ::mbstate_t;
 	using ::wint_t;
-
+	/*
 	using ::btowc;
 	using ::fgetwc;
 	using ::fgetws;
@@ -76,6 +76,7 @@ namespace std
 	using ::wmemset;
 	using ::wprintf;
 	using ::wscanf;
+	*/
 }
 #else
 #include "Cpp_Standard_Library.h"

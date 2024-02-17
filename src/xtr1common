@@ -1,6 +1,7 @@
 #pragma once
 #include "yvals_core.h"
 _STD_BEGIN
+#ifdef ARDUINO_ARCH_AVR
 // 19
 template <class _Ty, _Ty _Val>
 struct integral_constant
@@ -37,10 +38,10 @@ struct enable_if<true, _Ty>
 { // type is _Ty for _Test
     using type = _Ty;
 };
-
+#endif
 template <bool _Test, class _Ty = void>
 using enable_if_t = typename enable_if<_Test, _Ty>::type;
-
+#ifdef ARDUINO_ARCH_AVR
 template <bool _Test, class _Ty1, class _Ty2>
 struct conditional
 { // Choose _Ty1 if _Test is true, and _Ty2 otherwise
@@ -234,4 +235,5 @@ struct remove_cvref
     using type = remove_cvref_t<_Ty>;
 };
 #endif // _HAS_CXX20
+#endif
 _STD_END

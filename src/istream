@@ -17,7 +17,7 @@
 	USA.
 */
 #pragma once
-//SAM的istream继承自未定义构造析构方法的ios_base，无法通过编译，不予采用。
+#ifdef ARDUINO_ARCH_AVR
 #pragma GCC visibility push(default)
 #include "istream_helpers"
 namespace std
@@ -735,3 +735,7 @@ namespace std
 }
 
 #pragma GCC visibility pop
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(istream)
+#endif

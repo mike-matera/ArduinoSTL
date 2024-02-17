@@ -17,11 +17,8 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-#ifndef __STD_HEADER_VECTOR
-#define __STD_HEADER_VECTOR
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(vector)
-#else
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "memory"
 #include "algorithm"
 
@@ -29,7 +26,6 @@
 
 namespace std
 {
-
 	template <class T, class Allocator = allocator<T>>
 	class vector;
 	template <class T, class Allocator>
@@ -658,11 +654,9 @@ namespace std
 	{
 		x.swap(y);
 	}
-
 }
-
 #pragma GCC visibility pop
-
-#endif
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(vector)
 #endif

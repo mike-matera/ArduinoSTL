@@ -15,21 +15,15 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-#ifndef __STD_HEADER_SET
-#define __STD_HEADER_SET
-#ifdef ARDUINO_ARCH_SAM
-#include CSL_Official(set)
-#endif
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "deque"
 #include "associative_base"
-
 
 #pragma GCC visibility push(default)
 
 namespace std
 {
-
 	template <class Key, class Compare = less<Key>, class Allocator = allocator<Key>>
 	class set;
 	template <class Key, class Compare = less<Key>, class Allocator = allocator<Key>>
@@ -413,9 +407,10 @@ namespace std
 	{
 		x.swap(y);
 	}
-
 }
 
 #pragma GCC visibility pop
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(set)
 #endif

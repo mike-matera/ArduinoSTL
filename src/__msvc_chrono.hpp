@@ -1,7 +1,8 @@
 #pragma once
-#include <limits>
-#include <ratio>
-#include <type_traits>
+#ifdef ARDUINO_ARCH_AVR
+#include "limits"
+#include "ratio"
+#include "type_traits"
 _STD_BEGIN
 namespace chrono
 {
@@ -346,3 +347,4 @@ namespace chrono
 	   // 521
 }
 _STD_END
+#endif

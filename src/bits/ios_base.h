@@ -1,8 +1,6 @@
 #pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "../locale"
-#ifdef ARDUINO_ARCH_SAM
-#include <bits/postypes.h>
-#endif
 namespace std
 {
 	class _UCXXEXPORT ios_base
@@ -160,3 +158,7 @@ namespace std
 #endif
 	};
 }
+#else
+#include "../Cpp_Standard_Library.h"
+#include CSL_Official(bits/ios_base.h)
+#endif
