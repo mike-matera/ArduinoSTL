@@ -2,7 +2,7 @@
 
 parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)L'auteur ne l'a pas mis à jour depuis longtemps (202203~202212).J'ai publié cette branche dans la bibliothèque publique Arduino et l'ai renommée Cpp_Standard_Library pour la distinguer.
 
-Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM et boost. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
+Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM, boost et GCC. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
 
 Si vous avez besoin de certaines fonctions incluses dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous êtes invités à soumettre un problème et l'auteur le mettra en œuvre pour vous en premier.
 
