@@ -1,5 +1,17 @@
 #pragma once
-// 148
+//Arduino平台不适用的调用规约
+#define __thiscall
+#define __cdecl
+// 139
+//  Definitions of calling conventions used code sometimes compiled as managed
+#if defined _M_CEE_PURE || defined MRTDLL
+#define __CLRCALL_OR_CDECL __clrcall
+#define __CLR_OR_THIS_CALL __clrcall
+#else
+#define __CLRCALL_OR_CDECL __cdecl
+#define __CLR_OR_THIS_CALL
+#endif
+
 #ifdef _M_CEE_PURE
 #define __CLRCALL_PURE_OR_CDECL __clrcall
 #elif defined(__cdecl)

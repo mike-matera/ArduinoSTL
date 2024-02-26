@@ -86,6 +86,13 @@ namespace std
 #endif
 	_UCXXEXPORT ios_base::Init::Init()
 	{
+#ifdef ARDUINO_ARCH_SAM
+		static const locale L;
+		cout.imbue(L);
+		cin.imbue(L);
+		wcout.imbue(L);
+		wcin.imbue(L);
+#endif
 #ifdef ARDUINO_ARCH_ESP32
 		if (CSL_IOS_Count == 0)
 		{ // Need to construct cout et al
@@ -190,6 +197,12 @@ namespace std
 #ifdef ARDUINO_ARCH_SAM
 	ios_base::~ios_base() {}
 	ios_base::ios_base() {}
+	locale ios_base::imbue(const locale &loc)
+	{
+		locale retval = _M_ios_locale;
+		_M_ios_locale = loc;
+		return _M_ios_locale;
+	}
 	void ios_base::_M_init() throw() {}
 #endif
 }

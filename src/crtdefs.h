@@ -14,3 +14,13 @@
 #endif
 #endif
 // 27
+// 73
+#ifndef _MRTIMP2
+#if defined CRTDLL2 && defined _CRTBLD
+#define _MRTIMP2 __declspec(dllexport)
+#elif defined MRTDLL && defined _CRTBLD
+#define _MRTIMP2 _MRTIMP
+#else
+#define _MRTIMP2
+#endif
+#endif

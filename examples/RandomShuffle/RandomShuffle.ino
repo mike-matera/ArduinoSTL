@@ -4,6 +4,7 @@
 #include <random>
 #include <utility>
 #include <algorithm>
+
 template<typename T>
 struct MakeArray {};
 template<size_t... V>
@@ -12,15 +13,18 @@ struct MakeArray< std::integer_sequence<size_t, V...>> {
 };
 template<size_t... V>
 size_t MakeArray<std::integer_sequence<size_t, V...>>::value[sizeof...(V)] = { V... };
-auto& Array = MakeArray<std::make_index_sequence<10>>::value;
+size_t (&Array)[10] = MakeArray<std::make_index_sequence<10>>::value;
 void setup() {
   Serial.begin(9600);
   std::cout << "原始数组：";
+  std::cout <<(size_t)1;
+  /*
   for (size_t A : Array)
     std::cout << A;
-  std::cout << std::endl;
+  std::cout << std::endl;*/
 }
 void loop() {
+  /*
 #ifdef ARDUINO_ARCH_ESP32
   //ESP32架构推荐使用硬件随机生成器，不需要设置种子即可得到真随机数
   constexpr std::EspUrng Urng;
@@ -38,4 +42,5 @@ void loop() {
   for (size_t A : Array)
     std::cout << A;
   std::cout << std::endl;
+  */
 }

@@ -2,6 +2,7 @@
 #include "sal.h"
 #include "crtdbg.h"
 #include "crtdefs.h"
+#include "yvals_core.h"
 // 29
 #if defined(MRTDLL) && defined(_CRTBLD)
 // process-global is the default for code built with /clr or /clr:oldSyntax.
@@ -152,7 +153,16 @@
 #define _STL_ASSERT(cond, mesg) _Analysis_assume_(cond)
 #endif // ^^^ !defined(_DEBUG) ^^^
 // 217
-// 269
+// 257
+#ifndef _MRTIMP2_PURE
+#ifdef _M_CEE_PURE
+#define _MRTIMP2_PURE
+#else
+#define _MRTIMP2_PURE _MRTIMP2
+#endif
+#endif // _MRTIMP2_PURE
+// 265
+//  269
 #ifndef _CRTIMP2_PURE
 #ifdef _M_CEE_PURE
 #define _CRTIMP2_PURE
@@ -171,8 +181,16 @@
 #define _CRTIMP2_IMPORT
 #endif
 #endif // _CRTIMP2_IMPORT
-// 295
-// 311
+
+#ifndef _CRTIMP2_PURE_IMPORT
+#ifdef _M_CEE_PURE
+#define _CRTIMP2_PURE_IMPORT
+#else
+#define _CRTIMP2_PURE_IMPORT _CRTIMP2_IMPORT
+#endif
+#endif // _CRTIMP2_PURE_IMPORT
+// 303
+//  311
 #ifndef _CRTDATA2_IMPORT
 #if defined(MRTDLL) && defined(_CRTBLD)
 #define _CRTDATA2_IMPORT
@@ -180,4 +198,122 @@
 #define _CRTDATA2_IMPORT _CRTIMP2_IMPORT
 #endif
 #endif // _CRTDATA2_IMPORT
-	   // 319
+
+#define _LOCK_LOCALE 0
+#define _LOCK_MALLOC 1
+#define _LOCK_STREAM 2
+#define _LOCK_DEBUG 3
+#define _LOCK_AT_THREAD_EXIT 4
+// 325
+// 341
+_STD_BEGIN
+// 343
+//  346
+extern "C++" class _CRTIMP2_PURE_IMPORT _Lockit
+{ // lock while object in existence -- MUST NEST
+public:
+#ifdef _M_CEE_PURE
+	__CLR_OR_THIS_CALL _Lockit() noexcept : _Locktype(0)
+	{
+		_Lockit_ctor(this);
+	}
+
+	explicit __CLR_OR_THIS_CALL _Lockit(int _Kind) noexcept
+	{ // set the lock
+		_Lockit_ctor(this, _Kind);
+	}
+
+	__CLR_OR_THIS_CALL ~_Lockit() noexcept
+	{ // clear the lock
+		_Lockit_dtor(this);
+	}
+
+#else  // ^^^ defined(_M_CEE_PURE) / !defined(_M_CEE_PURE) vvv
+	__thiscall _Lockit() noexcept;
+	explicit __thiscall _Lockit(int) noexcept; // set the lock
+	__thiscall ~_Lockit() noexcept;			   // clear the lock
+#endif // ^^^ !defined(_M_CEE_PURE) ^^^
+
+	static void __cdecl _Lockit_ctor(int) noexcept;
+	static void __cdecl _Lockit_dtor(int) noexcept;
+
+private:
+	static void __cdecl _Lockit_ctor(_Lockit *) noexcept;
+	static void __cdecl _Lockit_ctor(_Lockit *, int) noexcept;
+	static void __cdecl _Lockit_dtor(_Lockit *) noexcept;
+
+public:
+	__CLR_OR_THIS_CALL _Lockit(const _Lockit &) = delete;
+	_Lockit &__CLR_OR_THIS_CALL operator=(const _Lockit &) = delete;
+
+private:
+	int _Locktype;
+};
+// 383
+//   390
+#ifdef _M_CEE
+#ifndef _PREPARE_CONSTRAINED_REGIONS
+#ifdef _M_CEE_PURE
+#define _PREPARE_CONSTRAINED_REGIONS 1
+#else // _M_CEE_PURE
+#define _PREPARE_CONSTRAINED_REGIONS 0
+#endif // _M_CEE_PURE
+#endif // _PREPARE_CONSTRAINED_REGIONS
+
+#if _PREPARE_CONSTRAINED_REGIONS
+#define _BEGIN_LOCK(_Kind)                                                                  \
+	{                                                                                       \
+		bool _MustReleaseLock = false;                                                      \
+		int _LockKind = _Kind;                                                              \
+		System::Runtime::CompilerServices::RuntimeHelpers::PrepareConstrainedRegions();     \
+		try                                                                                 \
+		{                                                                                   \
+			System::Runtime::CompilerServices::RuntimeHelpers::PrepareConstrainedRegions(); \
+			try                                                                             \
+			{                                                                               \
+			}                                                                               \
+			finally                                                                         \
+			{                                                                               \
+				_STD _Lockit::_Lockit_ctor(_LockKind);                                      \
+				_MustReleaseLock = true;                                                    \
+			}
+
+#define _END_LOCK()                                \
+	}                                              \
+	finally                                        \
+	{                                              \
+		if (_MustReleaseLock)                      \
+		{                                          \
+			_STD _Lockit::_Lockit_dtor(_LockKind); \
+		}                                          \
+	}                                              \
+	}
+
+#else // ^^^ _PREPARE_CONSTRAINED_REGIONS / !_PREPARE_CONSTRAINED_REGIONS vvv
+#define _BEGIN_LOCK(_Kind) \
+	{                      \
+		_STD _Lockit _Lock(_Kind);
+
+#define _END_LOCK() }
+
+#endif // ^^^ !_PREPARE_CONSTRAINED_REGIONS ^^^
+
+#define _BEGIN_LOCINFO(_VarName) \
+	_BEGIN_LOCK(_LOCK_LOCALE)    \
+	_Locinfo _VarName;
+
+#define _END_LOCINFO() _END_LOCK()
+
+#else // ^^^ defined(_M_CEE) / !defined(_M_CEE) vvv
+#define _BEGIN_LOCK(_Kind) \
+	{                      \
+		_STD _Lockit _Lock(_Kind);
+
+#define _END_LOCK() }
+// 444
+// 449
+#endif // ^^^ !defined(_M_CEE) ^^^
+	   // 451
+	   // 500
+_STD_END
+// 502
