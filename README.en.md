@@ -2,7 +2,7 @@
 
 because[Original ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)The author has not updated it for a long time (202203~202212). I released this branch to the Arduino public library and renamed it Cpp_Standard_Library to distinguish it.
 
-本库试图在Arduino上实现C++11~17标准库（STL）的大部分功能。除了ArduinoSTL以外，本库部分功能实现还参考了MSVC、LLVM和boost。因为是按照STL做的接口，所以不需要另外撰写文档，你可以参考任何一个权威的STL文档。除非另有说明，否则本库的使用方法应该是一样的，如果不一样那应该就是个bug，欢迎提交Issue。
+This library attempts to implement most of the functions of the C++11~17 Standard Library (STL) on Arduino. In addition to ArduinoSTL, some functions of this library also refer to MSVC, LLVM, boost and GCC. Because the interface is based on STL, there is no need to write additional documents. You can refer to any authoritative STL document. Unless otherwise stated, the usage of this library should be the same. If it is different, it should be a bug. You are welcome to submit an issue.
 
 If you need some functions that are included in the standard library but are not provided in this library, you are welcome to submit an Issue, and the author will implement it for you first.
 
@@ -10,7 +10,7 @@ Currently supported architecture:
 
 -   AVR, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutral`-std=gnu++11`for`-std=gnu++17`
 -   SAM, requires C++11
--   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`for`-std=gnu++17`
+-   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`为`-std=gnu++17`
 
 Before including any C++ standard header file, you must first include`Cpp_Standard_Library.h`. This is a prompt to the Arduino IDE, telling the compiler that this library must be included in the compilation process.
 
@@ -115,9 +115,9 @@ void setup() {
 }
 ```
 
-## Avoiding Instantiation of `cin`and`cout`
+## Avoiding Instantiation of`cin`and`cout`
 
-Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()`so you cannot currently avoid initializing it.
+Comment out`ARDUINOSTL_DEFAULT_CIN_COUT` and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using `printf()`so you cannot currently avoid initializing it.
 
 ## Known Issues
 
