@@ -21,7 +21,7 @@
         {
             "name": "sam",
             "includePath": [
-                "${workspaceFolder}/src",
+                //"${workspaceFolder}/src",
                 "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/**",
                 "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include"
             ],

@@ -73,6 +73,8 @@
 		"system_error": "cpp",
 		"fstream": "cpp",
 		"cinttypes": "cpp",
-		"queue": "cpp"
+		"queue": "cpp",
+		"map": "cpp",
+		"set": "cpp"
 	}
 }
