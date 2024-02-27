@@ -10,7 +10,7 @@ Currently supported architecture:
 
 -   AVR, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutral`-std=gnu++11`for`-std=gnu++17`
 -   SAM, requires C++11
--   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`为`-std=gnu++17`
+-   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`for`-std=gnu++17`
 
 Before including any C++ standard header file, you must first include`Cpp_Standard_Library.h`. This is a prompt to the Arduino IDE, telling the compiler that this library must be included in the compilation process.
 
@@ -59,7 +59,7 @@ void setup() {
 }
 ```
 
-## Using`cin`an`cout`
+## Using `cin`an`cout`
 
 When you include this header file you automatically get cin and cout based on`Serial`. See below for how to specify your own device. Here's an example sketch using`cin`and`cout`.
 
@@ -117,7 +117,7 @@ void setup() {
 
 ## Avoiding Instantiation of`cin`and`cout`
 
-Comment out`ARDUINOSTL_DEFAULT_CIN_COUT` and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using `printf()`so you cannot currently avoid initializing it.
+Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()`so you cannot currently avoid initializing it.
 
 ## Known Issues
 
