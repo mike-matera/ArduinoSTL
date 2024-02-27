@@ -6,10 +6,10 @@ Cette bibliothèque tente d'implémenter la plupart des fonctions de la biblioth
 
 Si vous avez besoin de certaines fonctions incluses dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous êtes invités à soumettre un problème et l'auteur le mettra en œuvre pour vous en premier.
 
-Architecture actuellement prise en charge :
+Les architectures suivantes sont prises en charge mais nécessitent une configuration supplémentaire :
 
 -   AVR, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutre`-std=gnu++11`pour`-std=gnu++17`
--   SAM, nécessite C++11
+-   SAM, nécessite C++11. besoin d'être dans`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutre`-std=gnu++11`ajouter après`-fpermissive`paramètre.
 -   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`
 
 Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
@@ -19,7 +19,7 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout endl`Utilisez le port série comme flux d’entrée et de sortie standard. Cependant, les utilisateurs doivent toujours appeler manuellement`Serial.begin`, étant donné que le port série n'est peut-être pas connecté ou que le débit en bauds n'est pas de 9600.
+-   `<iostream> cin cout endl`Utilisez le port série comme flux d’entrée et de sortie standard. Cependant, les utilisateurs doivent toujours appeler manuellement`Serial.begin`，考虑到串口可能未连接或者波特率不是9600的情况。
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
 -   `<random>`，`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
@@ -61,7 +61,7 @@ void setup() {
 
 ## En utilisant`cin`un`cout`
 
-Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. Voir ci-dessous pour savoir comment spécifier votre propre appareil. Voici un exemple de croquis utilisant`cin`et`cout`.
+Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. Voir ci-dessous pour savoir comment spécifier votre propre appareil. Voici un exemple de croquis utilisant`cin` and `cout`.
 
 ```c++
 #include <ArduinoSTL.h>
@@ -90,7 +90,7 @@ Vous pouvez changer le port série utilisé`cin`,`cout`et`printf()`utiliser. Vou
 
 ### Utilisation d'un port intégré
 
-Dans`src/ArduinoSTL.cpp`changer la valeur de`ARDUINOSTL_DEFAULT_SERIAL`. Laissez les autres valeurs par défaut sans commentaire.
+In `src/ArduinoSTL.cpp`changer la valeur de`ARDUINOSTL_DEFAULT_SERIAL`. Laissez les autres valeurs par défaut sans commentaire.
 
 ### Utilisation d'un port SoftwareSerial.
 
