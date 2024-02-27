@@ -75,6 +75,7 @@
 		"cinttypes": "cpp",
 		"queue": "cpp",
 		"map": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"cerrno": "cpp"
 	}
 }

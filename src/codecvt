@@ -1,0 +1,16 @@
+#pragma once
+#ifndef ARDUINO_ARCH_AVR
+#include "bits/c++config.h"
+namespace std _GLIBCXX_VISIBILITY(default)
+{
+	_GLIBCXX_BEGIN_NAMESPACE_VERSION
+
+	enum codecvt_mode
+	{
+		consume_header = 4,
+		generate_header = 2,
+		little_endian = 1
+	};
+	_GLIBCXX_END_NAMESPACE_VERSION
+} // namespace
+#endif

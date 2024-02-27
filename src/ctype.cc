@@ -1,8 +1,32 @@
 #ifndef ARDUINO_ARCH_AVR
+// Copyright (C) 1997-2023 Free Software Foundation, Inc.
+//
+// This file is part of the GNU ISO C++ Library.  This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
+
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
+
 #include <locale>
-// GCC实现
-namespace std
+#include <cstring>
+
+namespace std _GLIBCXX_VISIBILITY(default)
 {
+	_GLIBCXX_BEGIN_NAMESPACE_VERSION
 	// 44
 	//  Definitions for locale::id of standard facets that are specialized.
 	locale::id ctype<char>::id;
@@ -10,8 +34,17 @@ namespace std
 #ifdef _GLIBCXX_USE_WCHAR_T
 	locale::id ctype<wchar_t>::id;
 #endif
-	// 51
-	// 86
+
+	const size_t ctype<char>::table_size;
+
+	ctype<char>::~ctype()
+	{
+		_S_destroy_c_locale(_M_c_locale_ctype);
+		if (_M_del)
+			delete[] this->table();
+	}
+	// 60
+	//   86
 	void
 	ctype<char>::
 		_M_widen_init() const
@@ -26,6 +59,44 @@ namespace std
 		if (__builtin_memcmp(__tmp, _M_widen, sizeof(_M_widen)))
 			_M_widen_ok = 2;
 	}
-	// 101
-}
+
+#ifdef _GLIBCXX_USE_WCHAR_T
+	ctype<wchar_t>::ctype(size_t __refs)
+		: __ctype_abstract_base<wchar_t>(__refs),
+		  _M_c_locale_ctype(_S_get_c_locale()), _M_narrow_ok(false)
+	{
+		_M_initialize_ctype();
+	}
+
+	ctype<wchar_t>::ctype(__c_locale __cloc, size_t __refs)
+		: __ctype_abstract_base<wchar_t>(__refs),
+		  _M_c_locale_ctype(_S_clone_c_locale(__cloc)), _M_narrow_ok(false)
+	{
+		_M_initialize_ctype();
+	}
+
+	ctype<wchar_t>::~ctype()
+	{
+		_S_destroy_c_locale(_M_c_locale_ctype);
+	}
+
+	ctype_byname<wchar_t>::ctype_byname(const char *__s, size_t __refs)
+		: ctype<wchar_t>(__refs)
+	{
+		if (std::strcmp(__s, "C") != 0 && std::strcmp(__s, "POSIX") != 0)
+		{
+			this->_S_destroy_c_locale(this->_M_c_locale_ctype);
+			this->_S_create_c_locale(this->_M_c_locale_ctype, __s);
+			this->_M_initialize_ctype();
+		}
+	}
+
+	ctype_byname<wchar_t>::~ctype_byname()
+	{
+	}
+
+#endif
+
+	_GLIBCXX_END_NAMESPACE_VERSION
+} // namespace
 #endif
