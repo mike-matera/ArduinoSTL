@@ -6,10 +6,10 @@
 
 如果你需要某些標準函式庫中應有而本函式庫中尚未提供的功能，也歡迎提交Issue，作者將會優先為你實作。
 
-目前支援架構：
+支援以下架構，但需要額外配置：
 
 -   AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`為`-std=gnu++17`
--   SAM，要求C++11
+-   SAM，要求C++11。需要在`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`中的`-std=gnu++11`後追加`-fpermissive`參數。
 -   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`
 
 在包含任何C++標準頭檔之前，必須先包含`Cpp_Standard_Library.h`。這是對 Arduino IDE 的提示，告訴編譯器必須將本函式庫納入編譯流程。
@@ -115,7 +115,7 @@ void setup() {
 }
 ```
 
-## Avoiding Instantiation of `cin`和`cout`
+## 避免實例化`cin`和`cout`
 
 註解掉`ARDUINOSTL_DEFAULT_CIN_COUT`並且什麼都不會被實例化。如果您打算選擇非預設串列端口，則必須註解掉該標誌。使用時沒有明顯的開銷`printf()`所以你目前無法避免初始化它。
 
