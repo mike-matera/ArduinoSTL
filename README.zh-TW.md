@@ -115,7 +115,7 @@ void setup() {
 }
 ```
 
-## 避免實例化`cin`和`cout`
+## Avoiding Instantiation of `cin`和`cout`
 
 註解掉`ARDUINOSTL_DEFAULT_CIN_COUT`並且什麼都不會被實例化。如果您打算選擇非預設串列端口，則必須註解掉該標誌。使用時沒有明顯的開銷`printf()`所以你目前無法避免初始化它。
 
