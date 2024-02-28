@@ -9,20 +9,20 @@ Si vous avez besoin de certaines fonctions incluses dans la bibliothèque standa
 Les architectures suivantes sont prises en charge mais nécessitent une configuration supplémentaire :
 
 -   AVR, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutre`-std=gnu++11`pour`-std=gnu++17`
--   SAM, nécessite C++11. besoin d'être dans`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutre`-std=gnu++11`ajouter après`-fpermissive`paramètre.
--   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`
+-   SAM, nécessite C++11. besoin d'être dans`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutre`compiler.cpp.flags`Ajouter à`-fpermissive`bannière
+-   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`, et en`compiler.cpp.flags`Ajouter à`-fpermissive`bannière
 
-Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
+Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`。这是对 Arduino IDE 的提示，告诉编译器必须要将本库纳入编译流程。
 
 # Fonctions de signature (sans s'y limiter)
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
 -   `<functional> std::function`
--   `<iostream> cin cout endl`Utilisez le port série comme flux d’entrée et de sortie standard. Cependant, les utilisateurs doivent toujours appeler manuellement`Serial.begin`，考虑到串口可能未连接或者波特率不是9600的情况。
+-   `<iostream> cin cout endl`Utilisez le port série comme flux d’entrée et de sortie standard. Cependant, les utilisateurs doivent toujours appeler manuellement`Serial.begin`, étant donné que le port série n'est peut-être pas connecté ou que le débit en bauds n'est pas de 9600.
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
--   `<random>`，`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
+-   `<random>`，`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`，是硬件真随机生成器，不支持设置种子。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
@@ -36,7 +36,7 @@ N'oubliez pas de consulter l'exemple de projet après l'installation !
 
 Il s'agit d'une implémentation d'une bibliothèque standard C++ présentée sous forme de bibliothèque Arduino. La bibliothèque prend en charge l'enseignement de ma classe CS-11M en ajoutant des fonctionnalités clés C++ dans l'environnement Arduino.
 
-La bibliothèque est portée depuis uClibc++ :
+The library is ported from uClibc++:
 
 <http://git.uclibc.org/uClibc++>
 
@@ -61,7 +61,7 @@ void setup() {
 
 ## En utilisant`cin`un`cout`
 
-Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. Voir ci-dessous pour savoir comment spécifier votre propre appareil. Voici un exemple de croquis utilisant`cin` and `cout`.
+Lorsque vous incluez ce fichier d'en-tête, vous obtenez automatiquement cin et cout en fonction de`Serial`. Voir ci-dessous pour savoir comment spécifier votre propre appareil. Voici un exemple de croquis utilisant`cin`et`cout`.
 
 ```c++
 #include <ArduinoSTL.h>
@@ -90,11 +90,11 @@ Vous pouvez changer le port série utilisé`cin`,`cout`et`printf()`utiliser. Vou
 
 ### Utilisation d'un port intégré
 
-In `src/ArduinoSTL.cpp`changer la valeur de`ARDUINOSTL_DEFAULT_SERIAL`. Laissez les autres valeurs par défaut sans commentaire.
+Dans`src/ArduinoSTL.cpp`changer la valeur de`ARDUINOSTL_DEFAULT_SERIAL`. Laissez les autres valeurs par défaut sans commentaire.
 
 ### Utilisation d'un port SoftwareSerial.
 
-Ensemble`ARDUINO_DEFAULT_SERAL`à`NULL`. Commentez les autres valeurs par défaut.
+Set `ARDUINO_DEFAULT_SERAL`à`NULL`. Commentez les autres valeurs par défaut.
 
 Voici un exemple de croquis qui utilise SoftwareSerial :
 
@@ -127,7 +127,7 @@ uClibc semble être assez complet. Les chaînes et les vecteurs fonctionnent tou
 
 <https://cxx.uclibc.org/status.html>
 
-Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
+Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
 
 <https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification>
 
