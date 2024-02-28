@@ -9,8 +9,8 @@
 支援以下架構，但需要額外配置：
 
 -   AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`為`-std=gnu++17`
--   SAM，要求C++11。需要在`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`中的`-std=gnu++11`後追加`-fpermissive`參數。
--   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`
+-   SAM，要求C++11。需要在`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`中的`compiler.cpp.flags`中添加`-fpermissive`旗幟
+-   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`，並在`compiler.cpp.flags`中添加`-fpermissive`旗幟
 
 在包含任何C++標準頭檔之前，必須先包含`Cpp_Standard_Library.h`。這是對 Arduino IDE 的提示，告訴編譯器必須將本函式庫納入編譯流程。
 
