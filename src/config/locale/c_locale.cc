@@ -1,4 +1,4 @@
-#ifndef ARDUINO_ARCH_AVR
+#ifdef ARDUINO_ARCH_SAM
 #include <locale>
 #include <cstring>
 #include <cerrno>

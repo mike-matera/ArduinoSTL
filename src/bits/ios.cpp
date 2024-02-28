@@ -50,7 +50,6 @@ namespace std
 #ifdef __UCLIBCXX_SUPPORT_WCLOG__
 	_UCXXEXPORT wfilebuf _wclog_filebuf;
 #endif
-#ifndef ARDUINO_ARCH_ESP32
 // Then create streams
 #ifdef __UCLIBCXX_SUPPORT_COUT__
 	_UCXXEXPORT ostream cout(&_cout_filebuf);
@@ -77,8 +76,6 @@ namespace std
 	_UCXXEXPORT wostream wclog(&_wclog_filebuf);
 #endif
 #endif
-#endif
-#ifdef ARDUINO_ARCH_AVR
 #ifdef __UCLIBCXX_EXPAND_IOS_CHAR__
 
 	template _UCXXEXPORT void basic_ios<char, char_traits<char>>::clear(iostate state);
@@ -123,6 +120,5 @@ namespace std
 		mLocale = loc;
 		return retval;
 	}
-#endif
 }
 #endif

@@ -1,4 +1,4 @@
-#ifndef ARDUINO_ARCH_AVR
+#ifdef ARDUINO_ARCH_SAM
 #include <locale>
 #include <cstdio>
 namespace std _GLIBCXX_VISIBILITY(default)

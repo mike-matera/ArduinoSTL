@@ -1,4 +1,4 @@
-#ifndef ARDUINO_ARCH_AVR
+#ifdef ARDUINO_ARCH_SAM
 #include <bits/functexcept.h>
 namespace std
 {

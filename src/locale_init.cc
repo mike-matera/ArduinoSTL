@@ -1,4 +1,4 @@
-#ifndef ARDUINO_ARCH_AVR
+#ifdef ARDUINO_ARCH_SAM
 // GCC实现
 #include "bits/locale_facets.h"
 #include <locale>

@@ -1,8 +1,12 @@
-#ifndef ARDUINO_ARCH_AVR
+#ifdef ARDUINO_ARCH_SAM
 #include "bits/ios_base.h"
 namespace std
 {
-	// 75
+	// 71
+	_Atomic_word ios_base::Init::_S_refcount;
+
+	bool ios_base::Init::_S_synced_with_stdio = true;
+
 	ios_base::ios_base() throw()
 		: _M_precision(), _M_width(), _M_flags(), _M_exception(),
 		  _M_streambuf_state(), _M_callbacks(0), _M_word_zero(),

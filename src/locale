@@ -85,5 +85,6 @@ namespace std
 #pragma GCC visibility pop
 #else
 #include "Cpp_Standard_Library.h"
+#include "ext/atomicity.h"
 #include CSL_Official(locale)
 #endif
