@@ -9,8 +9,8 @@
 يتم دعم البنيات التالية ولكنها تتطلب تكوينًا إضافيًا:
 
 -   AVR، يتطلب C++ 17. الحاجة للتغيير`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`حيادي`-std=gnu++11`ل`-std=gnu++17`
--   سام، يتطلب C++ 11. بحاجة إلى أن تكون في`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`حيادي`-std=gnu++11`إلحاق بعد`-fpermissive`معامل.
--   ESP32، يتطلب C++ 17. الحاجة للتغيير`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`الكل فى`-std=gnu++11`ل`-std=gnu++17`
+-   سام، يتطلب C++ 11. بحاجة إلى أن تكون في`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`حيادي`compiler.cpp.flags`اضف الى`-fpermissive`راية
+-   ESP32، يتطلب C++ 17. الحاجة للتغيير`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`الكل فى`-std=gnu++11`ل`-std=gnu++17`، و في`compiler.cpp.flags`اضف الى`-fpermissive`راية
 
 قبل تضمين أي ملف رأس قياسي لـ C++، يجب عليك أولاً تضمينه`Cpp_Standard_Library.h`. يعد هذا موجهًا إلى Arduino IDE، لإخبار المترجم أنه يجب تضمين هذه المكتبة في عملية التجميع.
 
