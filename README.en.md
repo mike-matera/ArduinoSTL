@@ -9,8 +9,8 @@ If you need some functions that are included in the standard library but are not
 The following architectures are supported but require additional configuration:
 
 -   AVR, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutral`-std=gnu++11`for`-std=gnu++17`
--   SAM, requires C++11. need to be in`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutral`-std=gnu++11`append after`-fpermissive`parameter.
--   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`for`-std=gnu++17`
+-   SAM, requires C++11. need to be in`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutral`compiler.cpp.flags`Add in`-fpermissive`banner
+-   ESP32, requires C++17. need to change`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`all in`-std=gnu++11`for`-std=gnu++17`, and in`compiler.cpp.flags`Add in`-fpermissive`banner
 
 Before including any C++ standard header file, you must first include`Cpp_Standard_Library.h`. This is a prompt to the Arduino IDE, telling the compiler that this library must be included in the compilation process.
 
@@ -22,7 +22,7 @@ Before including any C++ standard header file, you must first include`Cpp_Standa
 -   `<iostream> cin cout endl`Use the serial port as the standard input and output stream. However, users still need to manually call`Serial.begin`, considering that the serial port may not be connected or the baud rate is not 9600.
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
--   `<random>`，`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`is Arduino platform specific`UniformRandomNumberGenerator`,Can be used as`shuffle`, which is a software pseudo-random generator and needs to set a random seed. The ESP32 architecture also additionally supports`EspUrng`, is a hardware true random generator and does not support setting seeds.
+-   `<random>`，`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`,Can be used as`shuffle`, which is a software pseudo-random generator and needs to set a random seed. The ESP32 architecture also additionally supports`EspUrng`, is a hardware true random generator and does not support setting seeds.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
@@ -117,7 +117,7 @@ void setup() {
 
 ## Avoiding Instantiation of`cin`and`cout`
 
-Comment out`ARDUINOSTL_DEFAULT_CIN_COUT` and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using `printf()`so you cannot currently avoid initializing it.
+Comment out`ARDUINOSTL_DEFAULT_CIN_COUT`and nothing will be instantiated. You must comment out this flag if you intend to select a non-default serial port. There's no appreciable overhead for using`printf()`so you cannot currently avoid initializing it.
 
 ## Known Issues
 
