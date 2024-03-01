@@ -4,7 +4,7 @@ parce que[ArduinoSTL d'origine](https://github.com/mike-matera/ArduinoSTL)L'aute
 
 Cette bibliothèque tente d'implémenter la plupart des fonctions de la bibliothèque standard C++ 11~17 (STL) sur Arduino. En plus d'ArduinoSTL, certaines fonctions de cette bibliothèque font également référence à MSVC, LLVM, boost et GCC. L'interface étant basée sur STL, il n'est pas nécessaire d'écrire des documents supplémentaires. Vous pouvez vous référer à n'importe quel document STL faisant autorité. Sauf indication contraire, l'utilisation de cette bibliothèque doit être la même. Si elle est différente, cela devrait être un bug. Vous êtes invités à soumettre un problème.
 
-Si vous avez besoin de certaines fonctions incluses dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous êtes invités à soumettre un problème et l'auteur le mettra en œuvre pour vous en premier.
+Si vous avez besoin de certaines fonctions qui se trouvent dans la bibliothèque standard mais qui ne sont pas fournies dans cette bibliothèque, vous pouvez également soumettre un problème, et l'auteur le mettra en œuvre pour vous en premier.
 
 Les architectures suivantes sont prises en charge mais nécessitent une configuration supplémentaire :
 
@@ -12,7 +12,7 @@ Les architectures suivantes sont prises en charge mais nécessitent une configur
 -   SAM, nécessite C++11. besoin d'être dans`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutre`compiler.cpp.flags`Ajouter à`-fpermissive`bannière
 -   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`, et en`compiler.cpp.flags`Ajouter à`-fpermissive`bannière
 
-Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`。这是对 Arduino IDE 的提示，告诉编译器必须要将本库纳入编译流程。
+Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
 
 # Fonctions de signature (sans s'y limiter)
 
@@ -22,7 +22,7 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 -   `<iostream> cin cout endl`Utilisez le port série comme flux d’entrée et de sortie standard. Cependant, les utilisateurs doivent toujours appeler manuellement`Serial.begin`, étant donné que le port série n'est peut-être pas connecté ou que le débit en bauds n'est pas de 9600.
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
--   `<random>`，`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`，是硬件真随机生成器，不支持设置种子。
+-   `<random>`，`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
@@ -36,7 +36,7 @@ N'oubliez pas de consulter l'exemple de projet après l'installation !
 
 Il s'agit d'une implémentation d'une bibliothèque standard C++ présentée sous forme de bibliothèque Arduino. La bibliothèque prend en charge l'enseignement de ma classe CS-11M en ajoutant des fonctionnalités clés C++ dans l'environnement Arduino.
 
-The library is ported from uClibc++:
+La bibliothèque est portée depuis uClibc++ :
 
 <http://git.uclibc.org/uClibc++>
 
@@ -94,7 +94,7 @@ Dans`src/ArduinoSTL.cpp`changer la valeur de`ARDUINOSTL_DEFAULT_SERIAL`. Laissez
 
 ### Utilisation d'un port SoftwareSerial.
 
-Set `ARDUINO_DEFAULT_SERAL`à`NULL`. Commentez les autres valeurs par défaut.
+Ensemble`ARDUINO_DEFAULT_SERAL`à`NULL`. Commentez les autres valeurs par défaut.
 
 Voici un exemple de croquis qui utilise SoftwareSerial :
 
