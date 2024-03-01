@@ -29,5 +29,36 @@ namespace std
 		}
 	}
 	// 97
+	// 160
+	void
+	ios_base::_M_call_callbacks(event __e) throw()
+	{
+		_Callback_list *__p = _M_callbacks;
+		while (__p)
+		{
+			__try
+			{
+				(*__p->_M_fn)(__e, *this, __p->_M_index);
+			}
+			__catch(...)
+			{
+			}
+			__p = __p->_M_next;
+		}
+	}
+
+	void
+	ios_base::_M_dispose_callbacks(void) throw()
+	{
+		_Callback_list *__p = _M_callbacks;
+		while (__p && __p->_M_remove_reference() == 0)
+		{
+			_Callback_list *__next = __p->_M_next;
+			delete __p;
+			__p = __next;
+		}
+		_M_callbacks = 0;
+	}
+	// 187
 }
 #endif

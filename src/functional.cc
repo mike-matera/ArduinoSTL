@@ -1,4 +1,4 @@
-#ifdef ARDUINO_ARCH_ESP32
+#ifndef ARDUINO_ARCH_AVR
 #include <bits/functexcept.h>
 namespace std _GLIBCXX_VISIBILITY(default)
 {

@@ -58,8 +58,20 @@ namespace std _GLIBCXX_VISIBILITY(default)
 			_M_impl->_M_remove_reference();
 	}
 	// 96
-	// 196
-	// locale::facet
+	// 117
+	const locale &
+	locale::operator=(const locale &__other) throw()
+	{
+		if (__other._M_impl != _S_classic)
+			__other._M_impl->_M_add_reference();
+		if (_M_impl != _S_classic)
+			_M_impl->_M_remove_reference();
+		_M_impl = __other._M_impl;
+		return *this;
+	}
+	// 128
+	//  196
+	//  locale::facet
 	__c_locale locale::facet::_S_c_locale;
 
 	const char locale::facet::_S_c_name[2] = "C";
