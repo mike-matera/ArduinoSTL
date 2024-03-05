@@ -19,7 +19,9 @@
 
 #include "new"
 
-const std::nothrow_t std::nothrow = { };
+#ifndef __AVR_ARCH__
+	const std::nothrow_t std::nothrow = { };
+#endif
 
 //Name selected to be compatable with g++ code
 std::new_handler __new_handler;
