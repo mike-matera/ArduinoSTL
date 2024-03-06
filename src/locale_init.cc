@@ -306,7 +306,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		// NB: Set locale::facets(ref) count to one so that each individual
 		// facet is not destroyed when the locale (and thus locale::_Impl) is
 		// destroyed.
-		_M_init_facet(new (&ctype_c) std::ctype<char>(0, false, 1));
+		_M_init_facet(new (&ctype_c) std::ctype<char>((const ctype_base::mask*)0, false, 1));
 		_M_init_facet(new (&codecvt_c) codecvt<char, char, mbstate_t>(1));
 
 		typedef __numpunct_cache<char> num_cache_c;

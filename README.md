@@ -16,7 +16,7 @@
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`
 - `<functional> std::function`
-- `<iostream> cin cout endl` 使用串口作为标准输入输出流。但是，用户仍需手动调用`Serial.begin`，考虑到串口可能未连接或者波特率不是9600的情况。
+- `<iostream> cin cout endl` 使用`Serial`实现标准输入输出流。但是，使用前仍必须手动`Serial.begin`。不应在`setup`函数之前的全局变量初始化阶段使用`Serial`，因为在`setup`被调用之前无法保证`Serial`已完成初始化，此时使用`Serial`是未定义行为。此外测试发现，对于SAM架构，串口刚完成初始化后可能会发送一些随机字节，这似乎是硬件设计缺陷使然，软件层面无法解决，接收端必须要考虑到这个问题。
 - `<map>`
 - `<memory> unique_ptr make_unique`
 - `<random>`，`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`，属于软件伪随机生成器，需要设置随机种子。ESP32架构还额外支持`EspUrng`，是硬件真随机生成器，不支持设置种子。

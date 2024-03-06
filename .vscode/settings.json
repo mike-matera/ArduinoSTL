@@ -76,6 +76,7 @@
 		"queue": "cpp",
 		"map": "cpp",
 		"set": "cpp",
-		"cerrno": "cpp"
+		"cerrno": "cpp",
+		"codecvt": "cpp"
 	}
 }

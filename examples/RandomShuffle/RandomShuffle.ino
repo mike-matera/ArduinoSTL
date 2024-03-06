@@ -15,7 +15,6 @@ size_t (&Array)[10] = MakeArray<std::make_index_sequence<10>>::value;
 void setup() {
   Serial.begin(9600);
   std::cout << "原始数组：";
-  std::cout <<(size_t)1;
   for (size_t A : Array)
     std::cout << A;
   std::cout << std::endl;
