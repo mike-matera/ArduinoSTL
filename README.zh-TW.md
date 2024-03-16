@@ -10,7 +10,7 @@
 
 -   AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`為`-std=gnu++17`
 -   SAM，要求C++11。需要在`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`中的`compiler.cpp.flags`中添加`-fpermissive`旗幟
--   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`，並在`compiler.cpp.flags`中添加`-fpermissive`旗幟
+-   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`，並在`compiler.cpp.flags`中添加`-fpermissive`旗帜
 
 在包含任何C++標準頭檔之前，必須先包含`Cpp_Standard_Library.h`。這是對 Arduino IDE 的提示，告訴編譯器必須將本函式庫納入編譯流程。
 
@@ -18,11 +18,11 @@
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
--   `<functional> std::function`
+-   `<functional> std::function`非標準行為：呼叫空物件時不做任何事。這是因為標準行為是應當拋出異常，但Arduino不支援異常。如果希望呼叫空物件時不做任何事，則可無需判斷物件是否為空而直接呼叫。
 -   `<iostream> cin cout endl`使用`Serial`實現標準輸入輸出流。但是，使用前仍必須手動`Serial.begin`。不應在`setup`函數之前的全域變數初始化階段使用`Serial`，因為在`setup`被呼叫之前無法保證`Serial`已完成初始化，此時使用`Serial`是未定義行為。另外測試發現，對於SAM架構，串列埠剛完成初始化後可能會傳送一些隨機字節，這似乎是硬體設計缺陷使然，軟體層面無法解決，接收端必須考慮到這個問題。
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
--   `<random>`，`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`，屬於軟體偽隨機產生器，需設定隨機種子。 ESP32架構還額外支持`EspUrng`，是硬件真随机生成器，不支持设置种子。
+-   `<random>`，`mt19937`佔記憶體較多（約5K），謹慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用於`shuffle`，屬於軟體偽隨機產生器，需設定隨機種子。 ESP32架構還額外支持`EspUrng`，是硬體真隨機產生器，不支援設定種子。
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`

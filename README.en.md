@@ -4,7 +4,7 @@ because[Original ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)The autho
 
 This library attempts to implement most of the functions of the C++11~17 Standard Library (STL) on Arduino. In addition to ArduinoSTL, some functions of this library also refer to MSVC, LLVM, boost and GCC. Because the interface is based on STL, there is no need to write additional documents. You can refer to any authoritative STL document. Unless otherwise stated, the usage of this library should be the same. If it is different, it should be a bug. You are welcome to submit an issue.
 
-If you need some functions that are included in the standard library but are not provided in this library, you are welcome to submit an Issue, and the author will implement it for you first.
+If you need some functions that are in the standard library but are not provided in this library, you are also welcome to submit an Issue, and the author will implement it for you first.
 
 The following architectures are supported but require additional configuration:
 
@@ -18,8 +18,8 @@ Before including any C++ standard header file, you must first include`Cpp_Standa
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
--   `<functional> std::function`
--   `<iostream> cin cout endl`use`Serial`Implement standard input and output streams. However, you still have to manually`Serial.begin`. should not be in`setup`Used in the initialization phase of global variables before the function`Serial`,Because`setup`There is no guarantee before being called`Serial`Initialization has been completed, use this time`Serial`is undefined behavior. In addition, the test found that for the SAM architecture, the serial port may send some random bytes just after initialization. This seems to be a hardware design defect that cannot be solved at the software level. The receiving end must take this issue into consideration.
+-   `<functional> std::function`Non-standard behavior: Doing nothing when called on a null object. This is because standard behavior is that an exception should be thrown, but Arduino doesn't support exceptions. If you want to do nothing when calling a null object, you can call it directly without checking whether the object is null.
+-   `<iostream> cin cout endl`use`Serial`Implement standard input and output streams. However, you still have to manually`Serial.begin`. should not be in`setup`Used in the global variable initialization phase before the function`Serial`,Because`setup`There is no guarantee before being called`Serial`Initialization has been completed, use this time`Serial`is undefined behavior. In addition, the test found that for the SAM architecture, the serial port may send some random bytes just after initialization. This seems to be a hardware design flaw that cannot be solved at the software level. The receiving end must take this issue into consideration.
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
 -   `<random>`，`mt19937`It takes up a lot of memory (about 5K), so use it with caution.`ArduinoUrng`is Arduino platform specific`UniformRandomNumberGenerator`,Can be used as`shuffle`, which is a software pseudo-random generator and needs to set a random seed. The ESP32 architecture also additionally supports`EspUrng`, is a hardware true random generator and does not support setting seeds.
