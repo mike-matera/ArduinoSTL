@@ -15,6 +15,7 @@
 # 招牌功能（不限于此）
 - `<algorithm> fill_n shuffle`
 - `<chrono> chrono::duration`
+- `<dynarray>` 曾经有望进入C++标准的废案。虽然最终没能进入，但作为`array`和`vector`的中间类型非常有用。
 - `<functional> std::function` 非标准行为：调用空对象时不做任何事。这是因为标准行为是应当抛出异常，但Arduino不支持异常。如果希望调用空对象时不做任何事，则可无需判断对象是否为空而直接调用。
 - `<iostream> cin cout endl` 使用`Serial`实现标准输入输出流。但是，使用前仍必须手动`Serial.begin`。不应在`setup`函数之前的全局变量初始化阶段使用`Serial`，因为在`setup`被调用之前无法保证`Serial`已完成初始化，此时使用`Serial`是未定义行为。此外测试发现，对于SAM架构，串口刚完成初始化后可能会发送一些随机字节，这似乎是硬件设计缺陷使然，软件层面无法解决，接收端必须要考虑到这个问题。
 - `<map>`
