@@ -14,15 +14,16 @@ Les architectures suivantes sont prises en charge mais nécessitent une configur
 
 Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
 
-# 招牌功能（不限于此）
+# Fonctions de signature (sans s'y limiter)
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
+-   `<dynarray>`On s'attendait autrefois à ce qu'il entre dans le standard C++. Même si je n'ai finalement pas pu entrer, en tant que`array`et`vector`Les types intermédiaires sont très utiles.
 -   `<functional> std::function`Comportement non standard : ne rien faire lorsqu'il est appelé sur un objet nul. En effet, le comportement standard est qu'une exception doit être levée, mais Arduino ne prend pas en charge les exceptions. Si vous ne voulez rien faire lors de l'appel d'un objet nul, vous pouvez l'appeler directement sans vérifier si l'objet est nul.
 -   `<iostream> cin cout endl`utiliser`Serial`Implémentez des flux d’entrée et de sortie standard. Cependant, vous devez toujours manuellement`Serial.begin`. ne devrait pas être dans`setup`Utilisé dans la phase d'initialisation de la variable globale avant la fonction`Serial`,Parce que`setup`Il n'y a aucune garantie avant d'être appelé`Serial`L'initialisation est terminée, utilisez ce temps`Serial`est un comportement indéfini. De plus, le test a révélé que pour l'architecture SAM, le port série peut envoyer des octets aléatoires juste après l'initialisation. Cela semble être un défaut de conception matérielle qui ne peut pas être résolu au niveau logiciel. L'extrémité réceptrice doit prendre ce problème en considération. .
 -   `<map>`
 -   `<memory> unique_ptr make_unique`
--   `<random>`，`mt19937`Il occupe beaucoup de mémoire (environ 5 Ko), utilisez-le donc avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
+-   `<random>`，`mt19937`Il prend beaucoup de mémoire (environ 5K), alors utilisez-le avec prudence.`ArduinoUrng`est-ce spécifique à la plateforme Arduino`UniformRandomNumberGenerator`,Peut être utilisé comme`shuffle`, qui est un générateur pseudo-aléatoire logiciel et doit définir une graine aléatoire. L'architecture ESP32 prend également en charge`EspUrng`, est un véritable générateur aléatoire matériel et ne prend pas en charge la définition de valeurs de départ.
 -   `<ratio>`
 -   `<set>`
 -   `<type_traits>`
@@ -133,6 +134,6 @@ Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécif
 
 ## Licence
 
-La bibliothèque uClibc++ est sous licence LGPL. Ce projet adopte la LGPL pour être compatible avec la majeure partie du code qu'il utilise. Sauf indication contraire, tout le code est sous licence LGPL. Il y a une exception :
+The uClibc++ library is licensed under the LGPL. This project adopts the LGPL to be compatible with the bulk of the code that it uses. Unless otherwise noted all code is licensed under the LGPL. There's one exception: 
 
 -   src/serstream est sous licence BSD selon les souhaits d'Andy Brown ici :<http://andybrown.me.uk/terms-and-conditions/>
