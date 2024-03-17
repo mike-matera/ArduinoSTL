@@ -22,7 +22,6 @@
 #include "iterator"
 #include "functional"
 #include "xutility"
-#include <Arduino.h>
 // Elliminate any previously defined macro
 #undef min
 #undef max

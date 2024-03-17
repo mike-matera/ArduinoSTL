@@ -8,7 +8,7 @@
 #ifdef ARDUINO_ARCH_AVR
 #include "ostream_helpers"
 #include <stdio.h>
-
+#include <Arduino.h>
 namespace std
 {
 	int arduinoPrintFloat(double number, uint8_t digits, char *buffer, size_t buffer_size)
