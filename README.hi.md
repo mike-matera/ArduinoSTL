@@ -124,7 +124,7 @@ void setup() {
 
 फ़्लोट्स और डबल्स का उपयोग करके मुद्रण`cout`प्रारूप विनिर्देशकों को अनदेखा करता है।
 
-uClibc seems to be fairly complete. Strings and vectors both work, even with the limited amount of heap available to Arduino. The uClibc++ status page can be found here: 
+uClibc काफी हद तक पूर्ण प्रतीत होता है। Arduino के पास सीमित मात्रा में हीप उपलब्ध होने पर भी स्ट्रिंग और वेक्टर दोनों काम करते हैं। uClibc++ स्थिति पृष्ठ यहां पाया जा सकता है:
 
 [हत्तपः://क्स्क्स.ुक्लीब्स.ऑर्ग/स्टेटस.हटम्ल](https://cxx.uclibc.org/status.html)
 
