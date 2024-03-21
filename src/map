@@ -15,18 +15,15 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-
-
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "memory"
 #include "utility"
 #include "iterator"
-#include "associative_base"
+#include  "associative_base"
 #include "initializer_list"
 
 
-#ifndef __STD_HEADER_MAP
-#define __STD_HEADER_MAP
 
 #pragma GCC visibility push(default)
 
@@ -263,7 +260,9 @@ protected:
 }
 
 #pragma GCC visibility pop
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(map)
 #endif
 
 	

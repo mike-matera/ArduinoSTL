@@ -1,0 +1,74 @@
+{
+    "configurations": [
+        {
+            "name": "avr",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/mega",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
+            ],
+            "defines": [
+                "F_CPU=16000000L",
+                "ARDUINO_AVR_MEGA2560",
+                "__AVR_ATmega2560__",
+                "ARDUINO_ARCH_AVR=1"
+            ],
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        },
+        {
+            "name": "sam",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/sam/1.6.12/**",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include"
+            ],
+            "defines": [
+                "F_CPU=84000000L",
+                "ARDUINO_SAM_DUE",
+                "ARDUINO_ARCH_SAM=1",
+                "__SAM3X8E__=1"
+            ],
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+        },
+        {
+            "name": "esp32",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/cores/esp32",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/tools/sdk/esp32s3/include/**",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/tools/sdk/esp32s3/qio_opi/include",
+                "${LOCALAPPDATA}/Arduino15/packages/arduino/hardware/esp32/2.0.13/variants/arduino_nano_nora",
+                "${LOCALAPPDATA}/Arduino15/packages/esp32/tools/xtensa-esp32s3-elf-gcc/esp-2021r2-patch5-8.4.0/xtensa-esp32s3-elf/include/c++/8.4.0"
+            ],
+            "defines": [
+                "HAVE_CONFIG_H",
+                "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",
+                "UNITY_INCLUDE_CONFIG_H",
+                "WITH_POSIX",
+                "_GNU_SOURCE",
+                "IDF_VER=\"v4.4.5\"",
+                "ESP_PLATFORM",
+                "_POSIX_READER_WRITER_LOCKS",
+                "ARDUINO_USB_CDC_ON_BOOT=1",
+                "ARDUINO_USB_MODE=0",
+                "ARDUINO_USB_MSC_ON_BOOT=0",
+                "ARDUINO_USB_DFU_ON_BOOT=1",
+                "F_CPU=240000000L",
+                "ARDUINO_NANO_ESP32=1",
+                "ARDUINO_ARCH_ESP32=1",
+                "ARDUINO_BOARD=\"NANO_ESP32\"",
+                "ARDUINO_VARIANT=\"arduino_nano_nora\"",
+                "ARDUINO_PARTITION_app3M_fat9M_fact512k_16MB"
+            ],
+            "compilerPath": "${LOCALAPPDATA}/Arduino15/packages/esp32/tools/xtensa-esp32s3-elf-gcc/esp-2021r2-patch5-8.4.0/bin/xtensa-esp32s3-elf-g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

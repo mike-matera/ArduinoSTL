@@ -1,4 +1,35 @@
-# ArduinoSTL
+[README.en.md](README.en.md)
+
+因[原版ArduinoSTL](https://github.com/mike-matera/ArduinoSTL)作者长期不更新（202203~202212），本人将此分支发布到Arduino公开库，改名为Cpp_Standard_Library以示区分。
+
+本库试图在Arduino上实现C++11~17标准库（STL）的大部分功能。除了ArduinoSTL以外，本库部分功能实现还参考了MSVC、LLVM、boost和GCC。因为是按照STL做的接口，所以不需要另外撰写文档，你可以参考任何一个权威的STL文档。除非另有说明，否则本库的使用方法应该是一样的，如果不一样那应该就是个bug，欢迎提交Issue。
+
+如果你需要某些标准库中应有而本库中尚未提供的功能，也欢迎提交Issue，作者将会优先为你实现。
+
+支持以下架构，但需要额外配置：
+- AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`为`-std=gnu++17`
+- SAM，要求C++11。需要在`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`中的`compiler.cpp.flags`中添加`-fpermissive`旗帜
+- ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`为`-std=gnu++17`，并在`compiler.cpp.flags`中添加`-fpermissive`旗帜
+
+在包含任何C++标准头文件之前，必须先包含`Cpp_Standard_Library.h`。这是对 Arduino IDE 的提示，告诉编译器必须要将本库纳入编译流程。
+# 招牌功能（不限于此）
+- `<algorithm> fill_n shuffle`
+- `<chrono> chrono::duration`
+- `<dynarray>` 曾经有望进入C++标准的废案。虽然最终没能进入，但作为`array`和`vector`的中间类型非常有用。
+- `<functional> std::function` 非标准行为：调用空对象时不做任何事。这是因为标准行为是应当抛出异常，但Arduino不支持异常。如果希望调用空对象时不做任何事，则可无需判断对象是否为空而直接调用。
+- `<iostream> cin cout endl` 使用`Serial`实现标准输入输出流。但是，使用前仍必须手动`Serial.begin`。不应在`setup`函数之前的全局变量初始化阶段使用`Serial`，因为在`setup`被调用之前无法保证`Serial`已完成初始化，此时使用`Serial`是未定义行为。此外测试发现，对于SAM架构，串口刚完成初始化后可能会发送一些随机字节，这似乎是硬件设计缺陷使然，软件层面无法解决，接收端必须要考虑到这个问题。
+- `<map>`
+- `<memory> unique_ptr make_unique`
+- `<random>`，`mt19937`占内存较多（约5K），谨慎使用。`ArduinoUrng`是Arduino平台特定的`UniformRandomNumberGenerator`，可用于`shuffle`，属于软件伪随机生成器，需要设置随机种子。ESP32架构还额外支持`EspUrng`，是硬件真随机生成器，不支持设置种子。
+- `<ratio>`
+- `<set>`
+- `<type_traits>`
+- `<vector>`
+- `std::begin std::end`
+- 如果编译器随附了某些重名的标准库功能，将优先使用随附的版本。编译器可能还随附了本库未提供的其它标准库功能，那些功能也不会与本库冲突。
+
+安装后记得查看示例项目！
+# 原版README（仅供参考，部分内容已过时）
 
 This is an implementation of a C++ standard library packaged as an Arduino library. The library supports teaching my CS-11M class by adding key C++ features into the Arduino environment. 
 

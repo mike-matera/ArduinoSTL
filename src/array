@@ -1,6 +1,5 @@
-#ifndef __ARRAY__
-#define __ARRAY__
-
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
 #include "cstddef"
 #include "initializer_list"
 
@@ -64,5 +63,7 @@ public:
 };
 
 }
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(array)
 #endif

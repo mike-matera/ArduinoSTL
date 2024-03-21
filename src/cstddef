@@ -39,14 +39,15 @@
  *  and its contents are (mostly) the same as that header, but are all
  *  contained in the namespace @c std.
  */
+#pragma once
 
-#ifndef _CPP_CSTDDEF
-#define _CPP_CSTDDEF 1
-
+#ifndef ARDUINO_ARCH_AVR
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(cstddef)
+#else
 #ifdef __GCC__
 #pragma GCC system_header
 #endif
-
 #include <stddef.h>
 
 namespace std 

@@ -1,4 +1,23 @@
-cin	KEYWORD1
-cout	KEYWORD1
-printf	KEYWORD1
-scanf	KEYWORD1
+# Syntax Coloring Map For Cpp_Standard_Library
+
+# data_type			DATA_TYPE
+# reserved_word 	RESERVED_WORD
+# reserved_word_2	RESERVED_WORD_2
+# preprocessor		PREPROCESSOR
+# literal_boolean	LITERAL_BOOLEAN
+# function			KEYWORD2
+# constants			LITERAL1
+
+ArduinoUrng			DATA_TYPE
+integral_constant	DATA_TYPE
+map					DATA_TYPE
+mt19937				DATA_TYPE
+set					DATA_TYPE
+unique_ptr			DATA_TYPE
+vector				DATA_TYPE
+
+fill_n				KEYWORD2
+make_unique			KEYWORD2
+shuffle				KEYWORD2
+
+extent_v			LITERAL1

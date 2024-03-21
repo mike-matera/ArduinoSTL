@@ -1,0 +1,250 @@
+#pragma once
+#include "utility"
+#include "new"
+namespace std
+{
+// 76
+#if _HAS_CXX14
+	template <class _Ty>
+	_INLINE_VAR constexpr size_t _New_alignof = (_STD max)(alignof(_Ty), __STDCPP_DEFAULT_NEW_ALIGNMENT__);
+#else
+	template <class _Ty>
+	struct _New_alignof
+	{
+		static constexpr size_t value = (_STD max)(alignof(_Ty), __STDCPP_DEFAULT_NEW_ALIGNMENT__);
+	};
+#endif
+	struct _Default_allocate_traits
+	{
+		/*Arduino不支持：__declspec(allocator)*/ static
+#ifdef __clang__ // Clang and MSVC implement P0784R7 differently; see GH-1532
+			_CONSTEXPR20
+#endif // defined(__clang__)
+			void *
+			_Allocate(const size_t _Bytes)
+		{
+			return ::operator new(_Bytes);
+		}
+
+#ifdef __cpp_aligned_new
+		/*Arduino不支持：__declspec(allocator)*/ static
+#ifdef __clang__ // Clang and MSVC implement P0784R7 differently; see GH-1532
+			_CONSTEXPR20
+#endif // defined(__clang__)
+			void *
+			_Allocate_aligned(const size_t _Bytes, const size_t _Align)
+		{
+#ifdef __clang__ // Clang and MSVC implement P0784R7 differently; see GH-1532
+#if _HAS_CXX20
+			if (_STD is_constant_evaluated())
+			{
+				return ::operator new(_Bytes);
+			}
+			else
+#endif // _HAS_CXX20
+#endif // defined(__clang__)
+			{
+				return ::operator new(_Bytes, align_val_t{_Align});
+			}
+		}
+#endif // defined(__cpp_aligned_new)
+	};
+	// 108
+// 177
+#ifdef __cpp_aligned_new
+	template <size_t _Align, class _Traits = _Default_allocate_traits,
+			  enable_if_t<(_Align > __STDCPP_DEFAULT_NEW_ALIGNMENT__), int> = 0>
+	/*Arduino不支持：__declspec(allocator)*/ _CONSTEXPR20 void *_Allocate(const size_t _Bytes)
+	{
+		// allocate _Bytes when __cpp_aligned_new && _Align > __STDCPP_DEFAULT_NEW_ALIGNMENT__
+		if (_Bytes == 0)
+		{
+			return nullptr;
+		}
+
+#if _HAS_CXX20 // TRANSITION, GH-1532
+		if (_STD is_constant_evaluated())
+		{
+			return _Traits::_Allocate(_Bytes);
+		}
+		else
+#endif // _HAS_CXX20
+		{
+			size_t _Passed_align = _Align;
+#if defined(_M_IX86) || defined(_M_X64)
+			if (_Bytes >= _Big_allocation_threshold)
+			{
+				// boost the alignment of big allocations to help autovectorization
+				_Passed_align = (_STD max)(_Align, _Big_allocation_alignment);
+			}
+#endif // defined(_M_IX86) || defined(_M_X64)
+			return _Traits::_Allocate_aligned(_Bytes, _Passed_align);
+		}
+	}
+
+	template <size_t _Align, enable_if_t<(_Align > __STDCPP_DEFAULT_NEW_ALIGNMENT__), int> = 0>
+	_CONSTEXPR20 void _Deallocate(void *_Ptr, const size_t _Bytes) noexcept
+	{
+		// deallocate storage allocated by _Allocate when __cpp_aligned_new && _Align > __STDCPP_DEFAULT_NEW_ALIGNMENT__
+#if _HAS_CXX20 // TRANSITION, GH-1532
+		if (_STD is_constant_evaluated())
+		{
+			::operator delete(_Ptr);
+		}
+		else
+#endif // _HAS_CXX20
+		{
+			size_t _Passed_align = _Align;
+#if defined(_M_IX86) || defined(_M_X64)
+			if (_Bytes >= _Big_allocation_threshold)
+			{ // boost the alignment of big allocations to help autovectorization
+				_Passed_align = (_STD max)(_Align, _Big_allocation_alignment);
+			}
+#endif // defined(_M_IX86) || defined(_M_X64)
+			::operator delete(_Ptr, _Bytes, align_val_t{_Passed_align});
+		}
+	}
+
+#define _HAS_ALIGNED_NEW 1
+#else // ^^^ defined(__cpp_aligned_new) / !defined(__cpp_aligned_new) vvv
+#define _HAS_ALIGNED_NEW 0
+#endif // ^^^ !defined(__cpp_aligned_new) ^^^
+
+	template <size_t _Align, class _Traits = _Default_allocate_traits,
+			  enable_if_t<(!_HAS_ALIGNED_NEW || _Align <= __STDCPP_DEFAULT_NEW_ALIGNMENT__), int> = 0>
+	/*Arduino不支持：__declspec(allocator)*/ _CONSTEXPR20 void *_Allocate(const size_t _Bytes)
+	{
+		// allocate _Bytes when !_HAS_ALIGNED_NEW || _Align <= __STDCPP_DEFAULT_NEW_ALIGNMENT__
+#if defined(_M_IX86) || defined(_M_X64)
+#if _HAS_CXX20 // TRANSITION, GH-1532
+		if (!_STD is_constant_evaluated())
+#endif // _HAS_CXX20
+		{
+			if (_Bytes >= _Big_allocation_threshold)
+			{ // boost the alignment of big allocations to help autovectorization
+				return _Allocate_manually_vector_aligned<_Traits>(_Bytes);
+			}
+		}
+#endif // defined(_M_IX86) || defined(_M_X64)
+
+		if (_Bytes != 0)
+		{
+			return _Traits::_Allocate(_Bytes);
+		}
+
+		return nullptr;
+	}
+	template <size_t _Align, enable_if_t<(!_HAS_ALIGNED_NEW || _Align <= __STDCPP_DEFAULT_NEW_ALIGNMENT__), int> = 0>
+	_CONSTEXPR20 void _Deallocate(void *_Ptr, size_t _Bytes) noexcept
+	{
+		// deallocate storage allocated by _Allocate when !_HAS_ALIGNED_NEW || _Align <= __STDCPP_DEFAULT_NEW_ALIGNMENT__
+#if _HAS_CXX20 // TRANSITION, GH-1532
+		if (_STD is_constant_evaluated())
+		{
+			::operator delete(_Ptr);
+		}
+		else
+#endif // _HAS_CXX20
+		{
+#if defined(_M_IX86) || defined(_M_X64)
+			if (_Bytes >= _Big_allocation_threshold)
+			{ // boost the alignment of big allocations to help autovectorization
+				_Adjust_manually_vector_aligned(_Ptr, _Bytes);
+			}
+#endif // defined(_M_IX86) || defined(_M_X64)
+			::operator delete(_Ptr, _Bytes);
+		}
+	}
+#undef _HAS_ALIGNED_NEW
+
+	template <class _Ty, class... _Types>
+	_Ty *_Global_new(_Types &&..._Args)
+	{ // acts as "new" while disallowing user overload selection
+		struct _NODISCARD _Guard_type
+		{
+			void *_Result;
+			~_Guard_type()
+			{
+				if (_Result)
+				{
+					_Deallocate<_New_alignof<_Ty>>(_Result, sizeof(_Ty));
+				}
+			}
+		};
+
+		_Guard_type _Guard{_Allocate<_New_alignof<_Ty>>(sizeof(_Ty))};
+		::new (_Guard._Result) _Ty(_STD forward<_Types>(_Args)...);
+		return static_cast<_Ty *>(_STD exchange(_Guard._Result, nullptr));
+	}
+	// 285
+	//  1356
+	struct _Zero_then_variadic_args_t
+	{
+		explicit _Zero_then_variadic_args_t() = default;
+	}; // tag type for value-initializing first, constructing second from remaining args
+
+	struct _One_then_variadic_args_t
+	{
+		explicit _One_then_variadic_args_t() = default;
+	}; // tag type for constructing first from one arg, constructing second from remaining args
+
+	template <class _Ty1, class _Ty2, bool = is_empty<_Ty1>::value && !is_final<_Ty1>::value>
+	class _Compressed_pair final : private _Ty1
+	{ // store a pair of values, deriving from empty first
+	public:
+		_Ty2 _Myval2;
+
+		using _Mybase = _Ty1; // for visualization
+
+		template <class... _Other2>
+		constexpr explicit _Compressed_pair(_Zero_then_variadic_args_t, _Other2 &&..._Val2) noexcept(
+			conjunction<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
+			: _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		template <class _Other1, class... _Other2>
+		constexpr _Compressed_pair(_One_then_variadic_args_t, _Other1 &&_Val1, _Other2 &&..._Val2) noexcept(
+			conjunction<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
+			: _Ty1(_STD forward<_Other1>(_Val1)), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		_CONSTEXPR14()
+		_Ty1 &_Get_first() noexcept
+		{
+			return *this;
+		}
+
+		constexpr const _Ty1 &_Get_first() const noexcept
+		{
+			return *this;
+		}
+	};
+
+	template <class _Ty1, class _Ty2>
+	class _Compressed_pair<_Ty1, _Ty2, false> final
+	{ // store a pair of values, not deriving from first
+	public:
+		_Ty1 _Myval1;
+		_Ty2 _Myval2;
+
+		template <class... _Other2>
+		constexpr explicit _Compressed_pair(_Zero_then_variadic_args_t, _Other2 &&..._Val2) noexcept(
+			conjunction<is_nothrow_default_constructible<_Ty1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
+			: _Myval1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		template <class _Other1, class... _Other2>
+		constexpr _Compressed_pair(_One_then_variadic_args_t, _Other1 &&_Val1, _Other2 &&..._Val2) noexcept(
+			conjunction<is_nothrow_constructible<_Ty1, _Other1>, is_nothrow_constructible<_Ty2, _Other2...>>::value)
+			: _Myval1(_STD forward<_Other1>(_Val1)), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+		_CONSTEXPR14()
+		_Ty1 &_Get_first() noexcept
+		{
+			return _Myval1;
+		}
+
+		constexpr const _Ty1 &_Get_first() const noexcept
+		{
+			return _Myval1;
+		}
+	};
+	// 1415
+}

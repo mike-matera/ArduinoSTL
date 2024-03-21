@@ -16,12 +16,11 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
+#include <exception>
+#include <ios>
 
-#include "exception"
-#include "ios"
-
-#ifndef __STD_IOMANIP
-#define __STD_IOMANIP 1
 
 #pragma GCC visibility push(default)
 
@@ -165,6 +164,8 @@ template<class Ch, class Tr> _UCXXEXPORT basic_ostream<Ch, Tr>&
 }
 
 #pragma GCC visibility pop
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(iomanip)
 #endif
 

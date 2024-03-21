@@ -14,18 +14,16 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
-#include <wchar.h>
-#include "basic_definitions"
-
-#ifndef __HEADER_CWCHAR
-#define __HEADER_CWCHAR 1
-
-
-namespace std{
-	using ::mbstate_t;
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
+#define __need_wint_t
+#define __need_size_t
+#include <stddef.h>
+namespace std
+{
+	//using ::mbstate_t;
 	using ::wint_t;
-
+	/*
 	using ::btowc;
 	using ::fgetwc;
 	using ::fgetws;
@@ -78,9 +76,9 @@ namespace std{
 	using ::wmemset;
 	using ::wprintf;
 	using ::wscanf;
+	*/
 }
-
-
-
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(cwchar)
 #endif
-

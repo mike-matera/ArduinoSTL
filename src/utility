@@ -16,77 +16,161 @@
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-
-
-#include "basic_definitions"
-
-
-#ifndef __STD_HEADER_UTILITY
-#define __STD_HEADER_UTILITY 1
-
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
+#include "initializer_list"
+#include "type_traits"
+#include "sal.h"
+#else
+#include "Cpp_Standard_Library.h"
+#include CSL_Official(utility)
+#include "yvals_core.h"
+#endif
 #pragma GCC visibility push(default)
 
-namespace std{
-
-	namespace rel_ops {
-		template<class T> inline bool operator!=(const T& x, const T& y){
+namespace std
+{
+#ifdef ARDUINO_ARCH_AVR
+	namespace rel_ops
+	{
+		template <class T>
+		inline bool operator!=(const T &x, const T &y)
+		{
 			return !(x == y);
 		}
 
-		template<class T> inline bool operator> (const T& x, const T& y){
-			return ( y < x);
+		template <class T>
+		inline bool operator>(const T &x, const T &y)
+		{
+			return (y < x);
 		}
 
-		template<class T> inline bool operator<=(const T& x, const T& y){
-			return !( y < x );
+		template <class T>
+		inline bool operator<=(const T &x, const T &y)
+		{
+			return !(y < x);
 		}
 
-		template<class T> inline bool operator>=(const T& x, const T& y){
+		template <class T>
+		inline bool operator>=(const T &x, const T &y)
+		{
 			return !(x < y);
 		}
 	}
 
-	template <class T1, class T2> struct _UCXXEXPORT pair {
+	template <class T1, class T2>
+	struct _UCXXEXPORT pair
+	{
 		typedef T1 first_type;
 		typedef T2 second_type;
 
 		T1 first;
 		T2 second;
-		pair() : first(), second() {  }
-		pair(const T1& x, const T2& y) : first(x), second(y) {  }
-		template<class U, class V> pair(const pair<U, V> &p) : first(p.first), second(p.second) { }
+		pair() : first(), second() {}
+		pair(const T1 &x, const T2 &y) : first(x), second(y) {}
+		template <class U, class V>
+		pair(const pair<U, V> &p) : first(p.first), second(p.second) {}
 	};
-	
-	template <class T1, class T2> bool operator==(const pair<T1,T2>& x, const pair<T1,T2>& y){
+
+	template <class T1, class T2>
+	bool operator==(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		using namespace rel_ops;
-		return (x.first == y.first && x.second==y.second);
+		return (x.first == y.first && x.second == y.second);
 	}
-	template <class T1, class T2> bool operator< (const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator<(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return x.first < y.first || (!(y.first < x.first) && x.second < y.second);
 	}
-	template <class T1, class T2> bool operator!=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator!=(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return !(x == y);
 	}
-	template <class T1, class T2> bool operator> (const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator>(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return y < x;
 	}
-	template <class T1, class T2> bool operator>=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator>=(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return !(x < y);
 	}
-	template <class T1, class T2> bool operator<=(const pair<T1,T2>& x, const pair<T1,T2>& y){
+	template <class T1, class T2>
+	bool operator<=(const pair<T1, T2> &x, const pair<T1, T2> &y)
+	{
 		return !(y < x);
 	}
-	template <class T1, class T2> pair<T1,T2> make_pair(const T1& x, const T2& y){
-		return pair<T1,T2>(x, y);
+	template <class T1, class T2>
+	pair<T1, T2> make_pair(const T1 &x, const T2 &y)
+	{
+		return pair<T1, T2>(x, y);
+	}
+#endif
+	// 40
+#ifndef ARDUINO_ARCH_ESP32
+	_EXPORT_STD template <class _Ty, _Ty... _Vals>
+	struct integer_sequence
+	{ // sequence of integer parameters
+		static_assert(is_integral<_Ty>::value, "integer_sequence<T, I...> requires T to be an integral type.");
+
+		using value_type = _Ty;
+
+		_NODISCARD static constexpr size_t size() noexcept
+		{
+			return sizeof...(_Vals);
+		}
+	};
+	// LLVM实现
+#include "__utility/integer_sequence.h"
+
+	_EXPORT_STD template <size_t... _Vals>
+	using index_sequence = integer_sequence<size_t, _Vals...>;
+
+	_EXPORT_STD template <size_t _Size>
+	using make_index_sequence = make_integer_sequence<size_t, _Size>;
+#endif
+	// 60
+#ifdef ARDUINO_ARCH_AVR
+	// 63
+	_EXPORT_STD template <class _Ty, class _Pr>
+	_NODISCARD constexpr const _Ty &(max)(const _Ty &_Left, const _Ty &_Right, _Pr _Pred) noexcept(
+		noexcept(_Pred(_Left, _Right))) /* strengthened */
+	{
+		// return larger of _Left and _Right
+		return _Pred(_Left, _Right) ? _Right : _Left;
 	}
 
-	// Stubb out move for compatibility
-	template<class T>
-	T& move(T& t) noexcept {
-		return t;
+#pragma warning(push)
+#pragma warning(disable : 28285) // (syntax error in SAL annotation, occurs when _Ty is not an integral type)
+	_EXPORT_STD template <class _Ty>
+	_NODISCARD _Post_equal_to_(_Left < _Right ? _Right : _Left) constexpr const _Ty & //
+		(max)(const _Ty &_Left, const _Ty &_Right) noexcept(noexcept(_Left < _Right)) /* strengthened */
+	{
+		// return larger of _Left and _Right
+		return _Left < _Right ? _Right : _Left;
 	}
+#pragma warning(pop)
+
+	_EXPORT_STD template <class _Ty, class _Pr>
+	_NODISCARD constexpr _Ty(max)(initializer_list<_Ty>, _Pr); // implemented in <algorithm>
+
+	_EXPORT_STD template <class _Ty>
+	_NODISCARD constexpr _Ty(max)(initializer_list<_Ty>); // implemented in <algorithm>
+														  // 86
+	//   757
+	template <class _Ty, class _Other = _Ty>
+	_CONSTEXPR20 _Ty exchange(_Ty &_Val, _Other &&_New_val) noexcept(
+		conjunction<is_nothrow_move_constructible<_Ty>, is_nothrow_assignable<_Ty &, _Other>>::value)
+	{
+		// assign _New_val to _Val, return previous _Val
+		_Ty _Old_val = static_cast<_Ty &&>(_Val);
+		_Val = static_cast<_Other &&>(_New_val);
+		return _Old_val;
+	}
+	// 766
+#endif
 }
-
 #pragma GCC visibility pop
-
-#endif	//__STD_HEADER_UTILITY
