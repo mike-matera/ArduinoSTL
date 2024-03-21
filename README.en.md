@@ -18,7 +18,7 @@ Before including any C++ standard header file, you must first include`Cpp_Standa
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
--   `<dynarray>`It was once expected to enter the C++ standard. Although I was not able to enter in the end, as a`array`and`vector`Intermediate types are very useful.
+-   `<dynarray>`It was once expected to enter the C++ standard's scrapped project. Although I was not able to enter in the end, as a`array`and`vector`Intermediate types are very useful.
 -   `<functional> std::function`Non-standard behavior: Doing nothing when called on a null object. This is because standard behavior is that an exception should be thrown, but Arduino doesn't support exceptions. If you want to do nothing when calling a null object, you can call it directly without checking whether the object is null.
 -   `<iostream> cin cout endl`use`Serial`Implement standard input and output streams. However, you still have to manually`Serial.begin`. should not be in`setup`Used in the global variable initialization phase before the function`Serial`,Because`setup`There is no guarantee before being called`Serial`Initialization has been completed, use this time`Serial`is undefined behavior. In addition, the test found that for the SAM architecture, the serial port may send some random bytes just after initialization. This seems to be a hardware design flaw that cannot be solved at the software level. The receiving end must take this issue into consideration.
 -   `<map>`
