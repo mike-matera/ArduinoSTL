@@ -10,7 +10,7 @@
 
 -   AVR，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`中的`-std=gnu++11`為`-std=gnu++17`
 -   SAM，要求C++11。需要在`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`中的`compiler.cpp.flags`中添加`-fpermissive`旗幟
--   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`，並在`compiler.cpp.flags`中添加`-fpermissive`旗帜
+-   ESP32，要求C++17。需要更改`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`中的所有`-std=gnu++11`為`-std=gnu++17`，並在`compiler.cpp.flags`中添加`-fpermissive`旗幟
 
 在包含任何C++標準頭檔之前，必須先包含`Cpp_Standard_Library.h`。這是對 Arduino IDE 的提示，告訴編譯器必須將本函式庫納入編譯流程。
 
@@ -47,9 +47,9 @@
 
 ## 使用 printf() 和 scanf()
 
-ArduinoSTL 頭檔包含將您選擇的序列埠綁定到的程式碼
-stdio 原語。這會自動發生，但用戶仍然必須調用
-串行.begin()
+The ArduinoSTL header file contains code to bind a serial port of your choice to
+the stdio primitives. This happens automatically but the user must still call
+Serial.begin()
 
 ```c++
 #include <ArduinoSTL.h>
