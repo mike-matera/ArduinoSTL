@@ -225,7 +225,7 @@ using _Const_thru_ref = typename remove_reference<_Ty>::_Const_thru_ref_type;
 template <class _Ty>
 using _Remove_cvref_t _MSVC_KNOWN_SEMANTICS = remove_cv_t<remove_reference_t<_Ty>>;
 
-#if _HAS_CXX20
+#if _HAS_CXX14
 _EXPORT_STD template <class _Ty>
 using remove_cvref_t = _Remove_cvref_t<_Ty>;
 
@@ -234,6 +234,6 @@ struct remove_cvref
 {
     using type = remove_cvref_t<_Ty>;
 };
-#endif // _HAS_CXX20
+#endif
 #endif
 _STD_END
