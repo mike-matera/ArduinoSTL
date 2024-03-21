@@ -10,7 +10,7 @@ Les architectures suivantes sont prises en charge mais nécessitent une configur
 
 -   AVR, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\avr\*.*.*\platform.txt`neutre`-std=gnu++11`pour`-std=gnu++17`
 -   SAM, nécessite C++11. besoin d'être dans`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\sam\*.*.*\platform.txt`neutre`compiler.cpp.flags`Ajouter à`-fpermissive`bannière
--   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`, et en`compiler.cpp.flags`Ajouter à`-fpermissive`bannière
+-   ESP32, nécessite C++17. besoin de changer`%LOCALAPPDATA%\Arduino15\packages\arduino\hardware\esp32\*.*.*\platform.txt`tout en`-std=gnu++11`pour`-std=gnu++17`, et en`compiler.cpp.flags`中添加`-fpermissive`bannière
 
 Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`Cpp_Standard_Library.h`. Il s'agit d'une invite adressée à l'IDE Arduino, indiquant au compilateur que cette bibliothèque doit être incluse dans le processus de compilation.
 
@@ -18,7 +18,7 @@ Avant d'inclure un fichier d'en-tête standard C++, vous devez d'abord inclure`C
 
 -   `<algorithm> fill_n shuffle`
 -   `<chrono> chrono::duration`
--   `<dynarray>`On s'attendait autrefois à ce qu'il entre dans le standard C++. Même si je n'ai finalement pas pu entrer, en tant que`array`et`vector`Les types intermédiaires sont très utiles.
+-   `<dynarray>`On s'attendait autrefois à ce qu'il entre dans le projet abandonné du standard C++. Même si je n'ai finalement pas pu entrer, en tant que`array`et`vector`Les types intermédiaires sont très utiles.
 -   `<functional> std::function`Comportement non standard : ne rien faire lorsqu'il est appelé sur un objet nul. En effet, le comportement standard est qu'une exception doit être levée, mais Arduino ne prend pas en charge les exceptions. Si vous ne voulez rien faire lors de l'appel d'un objet nul, vous pouvez l'appeler directement sans vérifier si l'objet est nul.
 -   `<iostream> cin cout endl`utiliser`Serial`Implémentez des flux d’entrée et de sortie standard. Cependant, vous devez toujours manuellement`Serial.begin`. ne devrait pas être dans`setup`Utilisé dans la phase d'initialisation de la variable globale avant la fonction`Serial`,Parce que`setup`Il n'y a aucune garantie avant d'être appelé`Serial`L'initialisation est terminée, utilisez ce temps`Serial`est un comportement indéfini. De plus, le test a révélé que pour l'architecture SAM, le port série peut envoyer des octets aléatoires juste après l'initialisation. Cela semble être un défaut de conception matérielle qui ne peut pas être résolu au niveau logiciel. L'extrémité réceptrice doit prendre ce problème en considération. .
 -   `<map>`
@@ -128,7 +128,7 @@ uClibc semble être assez complet. Les chaînes et les vecteurs fonctionnent tou
 
 <https://cxx.uclibc.org/status.html>
 
-Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
+Utilisez toujours le dernier IDE Arduino. Cette bibliothèque utilise la spécification de la bibliothèque Arduino IDE rev.2.1 avec des fonctionnalités disponibles uniquement sur Arduino 1.6.10 et versions ultérieures. Le cahier des charges peut être trouvé ici :
 
 <https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification>
 
