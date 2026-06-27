@@ -1,0 +1,89 @@
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
+#include <limits>
+#else
+#include_next <random>
+#endif
+#include <type_traits>
+#include <Arduino.h>
+namespace std
+{
+	// 使用Arduino标准random函数的随机生成器
+	struct ArduinoUrng
+	{
+#ifdef ARDUINO_ARCH_AVR
+#define _CSL_RANDOM random
+#else
+#define _CSL_RANDOM rand
+#endif
+		// UniformRandomBitGenerator要求无符号整数
+		using result_type = make_unsigned_t<decltype(_CSL_RANDOM())>;
+		static constexpr result_type(max)()
+		{
+			return (numeric_limits<decltype(_CSL_RANDOM())>::max)();
+		};
+		static constexpr result_type(min)()
+		{
+			return 0;
+		};
+		result_type operator()() const
+		{
+			return _CSL_RANDOM();
+		}
+		static void seed(uint32_t S)
+		{
+			randomSeed(S);
+		}
+	};
+#ifdef ARDUINO_ARCH_SAM
+	// 基于TRNG的真随机数生成器
+	struct TrueUrng
+	{
+		using result_type = std::remove_cv_t<decltype(TRNG->TRNG_ODATA)>;
+		static constexpr result_type(max)()
+		{
+			return (numeric_limits<result_type>::max)();
+		};
+		static constexpr result_type(min)()
+		{
+			return (numeric_limits<result_type>::min)();
+		};
+		// 第一次调用此方法会自动在PMC中启用ID_TRNG时钟，并设置TRNG_CR中的标志位。如果以后这些设置被其它代码更改，此方法将永不返回。
+		result_type operator()() const
+		{
+			static bool Initialized = []()
+			{
+				pmc_set_writeprotect(0);
+				pmc_enable_periph_clk(ID_TRNG);
+				trng_enable(TRNG);
+				return true;
+			}();
+			while (!(TRNG->TRNG_ISR & TRNG_ISR_DATRDY))
+				;
+			return TRNG->TRNG_ODATA;
+		}
+	};
+#undef min
+#undef max
+#endif
+#ifdef ARDUINO_ARCH_ESP32
+	// 基于esp_random的真随机数生成器
+	struct TrueUrng
+	{
+		// UniformRandomBitGenerator要求无符号整数
+		using result_type = make_unsigned_t<decltype(esp_random())>;
+		static constexpr result_type(max)()
+		{
+			return (numeric_limits<decltype(esp_random())>::max)();
+		};
+		static constexpr result_type(min)()
+		{
+			return 0;
+		};
+		result_type operator()() const
+		{
+			return esp_random();
+		}
+	};
+#endif
+}

@@ -1,70 +1,102 @@
-/*	Copyright (C) 2004 Garrett A. Kajmowicz
+#pragma once
+// The -*- C++ -*- dynamic memory management header.
 
-	This file is part of the uClibc++ Library.
+// Copyright (C) 1994-2024 Free Software Foundation, Inc.
 
-	This library is free software; you can redistribute it and/or
-	modify it under the terms of the GNU Lesser General Public
-	License as published by the Free Software Foundation; either
-	version 2.1 of the License, or (at your option) any later version.
+// This file is part of GCC.
+//
+// GCC is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3, or (at your option)
+// any later version.
+//
+// GCC is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
 
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Lesser General Public License for more details.
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
 
-	You should have received a copy of the GNU Lesser General Public
-	License along with this library; if not, write to the Free Software
-	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/** @file new
+ *  This is a Standard C++ Library header.
+ *
+ *  The header @c new defines several functions to manage dynamic memory and
+ *  handling memory allocation errors; see
+ *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/dynamic_memory.html
+ *  for more.
+ */
 
-#include "basic_definitions"
-#include "exception"
-#include "cstddef"
-
-#ifndef __STD_NEW_OPERATOR
-#define __STD_NEW_OPERATOR 1
-
+#pragma GCC system_header
+#ifdef ARDUINO_ARCH_SAM
+#include <Cpp_Standard_Library.h>
+#include _CSL_Official(new) //SAM不支持include_next<new>，原因不明，因此必须用宏给出绝对路径
+#else
+#include_next <new>
+#endif
+#if __cplusplus < 201402L
+[[gnu::weak]] void operator delete(void *ptr, std::size_t size) noexcept;
+[[gnu::weak]] void operator delete[](void *ptr, std::size_t size) noexcept;
+#endif // __cplusplus >= 201402L
+#ifdef ARDUINO_ARCH_AVR
+#include <bits/c++config.h>
+#include <bits/exception.h>
+#endif
+#ifndef ARDUINO_ARCH_ESP32
 #pragma GCC visibility push(default)
 
-namespace std{
-	class _UCXXEXPORT bad_alloc : public exception {};
+extern "C++"
+{
 
-	struct _UCXXEXPORT nothrow_t {};
-	extern const nothrow_t nothrow;
+  namespace std
+  {
+#ifdef ARDUINO_ARCH_AVR
+    /**
+     *  @brief  Exception possibly thrown by @c new.
+     *  @ingroup exceptions
+     *
+     *  @c bad_alloc (or classes derived from it) is used to report allocation
+     *  errors from the throwing forms of @c new.  */
+    class bad_alloc : public exception
+    {
+    public:
+      bad_alloc() throw() {}
 
-	typedef void (*new_handler)();
-	_UCXXEXPORT new_handler set_new_handler(new_handler new_p) _UCXX_USE_NOEXCEPT;
-}
-
-
-_UCXXEXPORT void* operator new(std::size_t numBytes) _UCXX_THROW(std::bad_alloc);
-_UCXXEXPORT void operator delete(void* ptr) _UCXX_USE_NOEXCEPT;
-#ifdef __cpp_sized_deallocation
-_UCXXEXPORT void operator delete(void* ptr, std::size_t) _UCXX_USE_NOEXCEPT;
+#if __cplusplus >= 201103L
+      bad_alloc(const bad_alloc &) = default;
+      bad_alloc &operator=(const bad_alloc &) = default;
 #endif
 
-_UCXXEXPORT void* operator new[](std::size_t numBytes) _UCXX_THROW(std::bad_alloc);
-_UCXXEXPORT void operator delete[](void * ptr) _UCXX_USE_NOEXCEPT;
-#ifdef __cpp_sized_deallocation
-_UCXXEXPORT void operator delete[](void * ptr, std::size_t) _UCXX_USE_NOEXCEPT;
+      // This declaration is not useless:
+      // http://gcc.gnu.org/onlinedocs/gcc-3.0.2/gcc_6.html#SEC118
+      virtual ~bad_alloc() throw();
+
+      // See comment in eh_exception.cc.
+      virtual const char *what() const throw();
+    };
 #endif
+#if __cplusplus >= 201103L
+    class bad_array_new_length : public bad_alloc
+    {
+    public:
+      bad_array_new_length() throw() {}
 
-#ifndef NO_NOTHROW
-_UCXXEXPORT void* operator new(std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
-_UCXXEXPORT void operator delete(void* ptr, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
+      // This declaration is not useless:
+      // http://gcc.gnu.org/onlinedocs/gcc-3.0.2/gcc_6.html#SEC118
+      virtual ~bad_array_new_length() throw();
 
-_UCXXEXPORT void* operator new[](std::size_t numBytes, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
-_UCXXEXPORT void operator delete[](void* ptr, const std::nothrow_t& ) _UCXX_USE_NOEXCEPT;
+      // See comment in eh_exception.cc.
+      virtual const char *what() const throw();
+    };
 #endif
-
-	/* Placement operators */
-inline void* operator new(std::size_t, void* ptr) _UCXX_USE_NOEXCEPT {return ptr; }
-inline void operator delete(void* , void *) _UCXX_USE_NOEXCEPT { }
-
-inline void* operator new[](std::size_t, void *p) _UCXX_USE_NOEXCEPT { return p; }
-inline void operator delete[](void* , void *) _UCXX_USE_NOEXCEPT {}
+  } // namespace std
+} // extern "C++"
 
 #pragma GCC visibility pop
-
 #endif
-

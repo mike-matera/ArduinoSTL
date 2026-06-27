@@ -1,126 +1,73 @@
-/*      Copyright (C) 2004 Garrett A. Kajmowicz
-	This file is part of the uClibc++ Library.
-	This library is free software; you can redistribute it and/or
-	modify it under the terms of the GNU Lesser General Public
-	License as published by the Free Software Foundation; either
-	version 2.1 of the License, or (at your option) any later version.
+#pragma once
+#ifdef ARDUINO_ARCH_AVR
+// <queue> -*- C++ -*-
 
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-	Lesser General Public License for more details.
+// Copyright (C) 2001-2024 Free Software Foundation, Inc.
+//
+// This file is part of the GNU ISO C++ Library.  This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
 
-	You should have received a copy of the GNU Lesser General Public
-	License along with this library; if not, write to the Free Software
-	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
-#include "basic_definitions"
-#include "deque"
-#include "vector"
-#include "functional"
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
 
-#ifndef __HEADER_STD_QUEUE
-#define __HEADER_STD_QUEUE 1
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
 
-#pragma GCC visibility push(default)
+/*
+ *
+ * Copyright (c) 1994
+ * Hewlett-Packard Company
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  Hewlett-Packard Company makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided "as is" without express or implied warranty.
+ *
+ *
+ * Copyright (c) 1996,1997
+ * Silicon Graphics Computer Systems, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  Silicon Graphics makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided "as is" without express or implied warranty.
+ */
 
-namespace std{
-	
-	template <class T, class Container = deque<T> > class _UCXXEXPORT queue{
-	protected:
-		Container c;
-	public:
-		typedef typename Container::value_type	value_type;
-		typedef typename Container::size_type	size_type;
-		typedef Container			container_type;
+/** @file include/queue
+ *  This is a Standard C++ Library header.
+ */
 
-		explicit queue(const Container& a = Container()) : c(a) {  }
+#ifndef _GLIBCXX_QUEUE
+#define _GLIBCXX_QUEUE 1
 
-		bool empty() const		{ return c.empty(); }
-		size_type size()  const		{ return c.size(); }
-		value_type&       front()	{ return c.front(); }
-		const value_type& front() const	{ return c.front(); }
-		value_type&       back()	{ return c.back(); }
-		const value_type& back() const	{ return c.back(); }
-		void push(const value_type& x)	{ c.push_back(x); }
-		void pop()			{ c.pop_front(); }
-	};
+#pragma GCC system_header
 
+#include <deque>
+#include <vector>
+#include <bits/stl_function.h>
+#include <bits/stl_queue.h>
 
-	template <class T, class Container> _UCXXEXPORT bool
-		operator==(const queue<T, Container>& x, const queue<T, Container>& y)
-	{
-		return (x.c == y.c);
-	}
-	template <class T, class Container> _UCXXEXPORT bool
-		operator< (const queue<T, Container>& x, const queue<T, Container>& y)
-	{
-		return (x.c < y.c);
-	}
-	template <class T, class Container> _UCXXEXPORT bool
-		operator!=(const queue<T, Container>& x, const queue<T, Container>& y)
-	{
-		return (x.c != y.c);
-	}
-	template <class T, class Container> _UCXXEXPORT bool
-		operator> (const queue<T, Container>& x, const queue<T, Container>& y)
-	{
-		return (x.c > y.c);
-	}
-	template <class T, class Container> _UCXXEXPORT bool
-		operator>=(const queue<T, Container>& x, const queue<T, Container>& y)
-	{
-		return (x.c >= y.c);
-	}
-	template <class T, class Container> _UCXXEXPORT bool
-		operator<=(const queue<T, Container>& x, const queue<T, Container>& y)
-	{
-		return (x.c <= y.c);
-	}
+#define __glibcxx_want_adaptor_iterator_pair_constructor
+#include <bits/version.h>
 
-
-	template <class T,
-		class Container = vector<T>,
-		class Compare = less<typename Container::value_type>
-	> class _UCXXEXPORT priority_queue {
-	protected:
-		Container c;
-		Compare comp;
-	public:
-		typedef typename Container::value_type	value_type;
-		typedef typename Container::size_type	size_type;
-		typedef Container			container_type;
-
-		explicit priority_queue(const Compare& x = Compare(), const Container& a = Container())
-			: c(a), comp(x) { make_heap(c.begin(), c.end(), comp) ; }
-		template <class InputIterator> priority_queue(InputIterator first,
-			InputIterator last,
-			const Compare& x = Compare(),
-			const Container& y= Container())
-		:  c(y), comp(c)
-		{ 
-			c.insert(c.end(), first, last);
-			make_heap(c.begin(), c.end(), comp);
-		 }
-
-		bool empty() const       { return c.empty(); }
-		size_type size()  const       { return c.size(); }
-		const value_type& top() const { return c.front(); }
-		void push(const value_type& x){
-			c.push_back(x);
-			push_heap(c.begin(), c.end(), comp);
-		}
-		void pop(){
-			pop_heap(c.begin(), c.end(), comp);
-			c.pop_back();
-		}
-	};
-
-}
-
-#pragma GCC visibility pop
-
+#endif /* _GLIBCXX_QUEUE */
+#else
+#include_next <queue>
 #endif
-
-

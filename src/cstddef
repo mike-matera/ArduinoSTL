@@ -39,20 +39,19 @@
  *  and its contents are (mostly) the same as that header, but are all
  *  contained in the namespace @c std.
  */
+#pragma once
 
-#ifndef _CPP_CSTDDEF
-#define _CPP_CSTDDEF 1
-
+#ifdef ARDUINO_ARCH_AVR
 #ifdef __GCC__
 #pragma GCC system_header
 #endif
-
 #include <stddef.h>
 
-namespace std 
+namespace std
 {
   using ::ptrdiff_t;
   using ::size_t;
 }
-
+#else
+#include_next <cstddef>
 #endif

@@ -16,26 +16,22 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+#pragma once
+#ifndef ARDUINO_ARCH_AVR
+#include <bits/functexcept.h>
+#endif
 #include "basic_definitions"
-#include "exception"
-
-
-#ifndef HEADER_IMPLEMENTATION_FUNC_EXCEPTION
-#define HEADER_IMPLEMENTATION_FUNC_EXCEPTION
-
 #pragma GCC visibility push(default)
 
-namespace std{
-
+namespace std
+{
+#ifdef ARDUINO_ARCH_AVR
 	_UCXXEXPORT void __throw_bad_alloc();
-	_UCXXEXPORT void __throw_out_of_range(const char * message = 0);
-	_UCXXEXPORT void __throw_overflow_error(const char * message = 0);
-	_UCXXEXPORT void __throw_length_error(const char * message = 0);
-	_UCXXEXPORT void __throw_invalid_argument(const char * message = 0);
+#endif
+	_UCXXEXPORT void __throw_out_of_range(const char *message = 0);
+	_UCXXEXPORT void __throw_overflow_error(const char *message = 0);
+	_UCXXEXPORT void __throw_length_error(const char *message = 0);
+	_UCXXEXPORT void __throw_invalid_argument(const char *message = 0);
 }
 
 #pragma GCC visibility pop
-
-#endif
-

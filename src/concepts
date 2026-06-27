@@ -1,0 +1,353 @@
+#pragma once
+#if __cplusplus >= 202002L
+#include_next <concepts>
+#else
+// 这个宏不仅用于将concept实现为变量或函数模板，还标记此名称在GCC中真的是concept，而不是变量模板。所以对于原本就是 constexpr bool 的变量或函数模板，不应该使用这个宏，而应直接使用_CSL_Function17Variable
+#define _CSL_Concept(Name, ...) constexpr bool Name _CSL_Function17Variable(__VA_ARGS__)
+#define _CSL_RemoveComma(...) __VA_ARGS__
+#define _CSL_DelayedExpand(...) _CSL_DelayedExpandImpl(__VA_ARGS__)
+#define _CSL_DelayedExpandImpl(...) __VA_ARGS__
+#ifdef __cpp_variable_templates
+#define _CSL_Struct17Concept(Name, Inline, Value, ...) Inline constexpr bool Name _CSL_RemoveComma(__VA_ARGS__) = Value;
+#else
+// C++11只能用结构体模板进行偏特化
+#define _CSL_Struct17Concept(Name, Inline, Value, ...) \
+	struct Name _CSL_RemoveComma(__VA_ARGS__)          \
+	{                                                  \
+		Inline static constexpr bool value = Value;    \
+	};
+#endif
+// AVR和SAM并不真正支持concepts。C++17实现为 constexpr bool 变量模板，C++11实现为结构体模板中的 static constexpr bool 成员。
+//   <concepts> -*- C++ -*-
+
+// Copyright (C) 2019-2024 Free Software Foundation, Inc.
+//
+// This file is part of the GNU ISO C++ Library.  This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
+
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
+
+/** @file include/concepts
+ *  This is a Standard C++ Library header.
+ *  @ingroup concepts
+ */
+
+#ifndef _GLIBCXX_CONCEPTS
+#define _GLIBCXX_CONCEPTS 1
+
+#ifdef _GLIBCXX_SYSHDR
+#pragma GCC system_header
+#endif
+
+#define __glibcxx_want_all
+#include <bits/version.h>
+
+/**
+ * @defgroup concepts Concepts
+ * @ingroup utilities
+ *
+ * Concepts for checking type requirements.
+ */
+
+#include <type_traits>
+
+namespace std _GLIBCXX_VISIBILITY(default)
+{
+	_GLIBCXX_BEGIN_NAMESPACE_VERSION
+
+	// [concepts.lang], language-related concepts
+
+	namespace __detail
+	{
+		template <typename _Tp, typename _Up>
+		_CSL_Concept(__same_as, is_same_v<_Tp, _Up> _CSL_Parentheses11);
+	} // namespace __detail
+
+	/// [concept.same], concept same_as
+	template <typename _Tp, typename _Up>
+	_CSL_Concept(same_as, __detail::__same_as<_Tp, _Up> _CSL_Parentheses11 &&__detail::__same_as<_Up, _Tp> _CSL_Parentheses11);
+
+	namespace __detail
+	{
+		template <typename _Tp, typename _Up>
+		_CSL_Concept(__different_from, !same_as<remove_cvref_t<_Tp>, remove_cvref_t<_Up>> _CSL_Parentheses11);
+	} // namespace __detail
+
+	/// [concept.derived], concept derived_from
+	template <typename _Derived, typename _Base>
+	_CSL_Concept(derived_from, __is_base_of(_Base, _Derived) && is_convertible_v<const volatile _Derived *, const volatile _Base *> _CSL_Parentheses11);
+
+	template <typename _From, typename _To, typename = _To>
+	struct _CSL_convertible_to : false_type
+	{
+	};
+	template <typename _From, typename _To>
+	struct _CSL_convertible_to<_From, _To, decltype(static_cast<_To>(declval<_From>()))> : is_convertible<_From, _To>
+	{
+	};
+
+	/// [concept.convertible], concept convertible_to
+	template <typename _From, typename _To>
+	_CSL_Concept(convertible_to, _CSL_convertible_to<_From, _To>::value);
+
+	/// [concept.commonref], concept common_reference_with
+	template <typename _Tp, typename _Up>
+	_CSL_Concept(common_reference_with, same_as<common_reference_t<_Tp, _Up>, common_reference_t<_Up, _Tp>> _CSL_Parentheses11 &&convertible_to<_Tp, common_reference_t<_Tp, _Up>> _CSL_Parentheses11 &&convertible_to<_Up, common_reference_t<_Tp, _Up>> _CSL_Parentheses11);
+	// 90
+	//  [concepts.arithmetic], arithmetic concepts
+
+	template <typename _Tp>
+	_CSL_Concept(integral, is_integral_v<_Tp> _CSL_Parentheses11);
+
+	template <typename _Tp>
+	_CSL_Concept(signed_integral, integral<_Tp> _CSL_Parentheses11 &&is_signed_v<_Tp> _CSL_Parentheses11);
+
+	template <typename _Tp>
+	_CSL_Concept(unsigned_integral, integral<_Tp> _CSL_Parentheses11 && !signed_integral<_Tp> _CSL_Parentheses11);
+
+	template <typename _Tp>
+	_CSL_Concept(floating_point, is_floating_point_v<_Tp> _CSL_Parentheses11);
+
+	namespace __detail
+	{
+		template <typename _Tp>
+		using __cref = const remove_reference_t<_Tp> &;
+
+		template <typename _Tp>
+		_CSL_Concept(__class_or_enum, is_class_v<_Tp> _CSL_Parentheses11 || is_union_v<_Tp> _CSL_Parentheses11 || is_enum_v<_Tp> _CSL_Parentheses11);
+
+		template <typename _Tp, typename = void>
+		struct __destructible_impl : false_type
+		{
+		};
+#define __t declval<_Tp &>()
+		template <typename _Tp>
+		struct __destructible_impl<_Tp, void_t<decltype(__t.~_Tp()), enable_if_t<noexcept(__t.~_Tp())>>> : true_type
+		{
+		};
+
+		template <typename _Tp>
+		_CSL_Struct17Concept(__destructible, , __destructible_impl<_Tp>::value);
+		template <typename _Tp>
+		_CSL_Struct17Concept(__destructible, , true, <_Tp &>);
+		template <typename _Tp>
+		_CSL_Struct17Concept(__destructible, , true, <_Tp &&>);
+		template <typename _Tp, size_t _Nm>
+		_CSL_Struct17Concept(__destructible, , __destructible<_Tp> _CSL_Parentheses11, <_Tp[_Nm]>);
+
+	} // namespace __detail
+
+	template <typename _Lhs, typename _Rhs, typename = _Lhs>
+	struct _CSL_assignable_from : false_type
+	{
+	};
+	template <typename _Lhs, typename _Rhs>
+	struct _CSL_assignable_from<_Lhs, _Rhs, decltype(declval<_Lhs>() = static_cast<_Rhs &&>(declval<_Rhs &&>()))>
+	{
+		static constexpr bool value = is_lvalue_reference_v<_Lhs> _CSL_Parentheses11 && common_reference_with<__detail::__cref<_Lhs>, __detail::__cref<_Rhs>> _CSL_Parentheses11;
+	};
+	/// [concept.assignable], concept assignable_from
+	template <typename _Lhs, typename _Rhs>
+	_CSL_Concept(assignable_from, _CSL_assignable_from<_Lhs, _Rhs>::value);
+
+	/// [concept.destructible], concept destructible
+	template <typename _Tp>
+	_CSL_Concept(destructible, _CSL_Struct14Value(__detail::__destructible, _Tp));
+
+	/// [concept.constructible], concept constructible_from
+	template <typename _Tp, typename... _Args>
+	_CSL_Concept(constructible_from, destructible<_Tp> _CSL_Parentheses11 &&is_constructible_v<_Tp, _Args...> _CSL_Parentheses11);
+
+	template <typename _Tp, typename = void>
+	struct _CSL_default_initializable : false_type
+	{
+	};
+	template <typename _Tp>
+	struct _CSL_default_initializable<_Tp, decltype(_Tp{}, (void)::new _Tp)>
+	{
+		static constexpr bool value = constructible_from<_Tp> _CSL_Parentheses11;
+	};
+	/// [concept.defaultinitializable], concept default_initializable
+	template <typename _Tp>
+	_CSL_Concept(default_initializable, _CSL_default_initializable<_Tp>::value);
+
+	/// [concept.moveconstructible], concept move_constructible
+	template <typename _Tp>
+	_CSL_Concept(move_constructible, constructible_from<_Tp, _Tp> _CSL_Parentheses11 &&convertible_to<_Tp, _Tp> _CSL_Parentheses11);
+
+	/// [concept.copyconstructible], concept copy_constructible
+	template <typename _Tp>
+	_CSL_Concept(copy_constructible, move_constructible<_Tp> _CSL_Parentheses11 &&constructible_from<_Tp, _Tp &> _CSL_Parentheses11 &&convertible_to<_Tp &, _Tp> _CSL_Parentheses11 &&constructible_from<_Tp, const _Tp &> _CSL_Parentheses11 &&convertible_to<const _Tp &, _Tp> _CSL_Parentheses11 &&constructible_from<_Tp, const _Tp> _CSL_Parentheses11 &&convertible_to<const _Tp, _Tp> _CSL_Parentheses11);
+
+	//  [concept.swappable], concept swappable
+
+	namespace ranges
+	{
+		/// @cond undocumented
+		namespace __swap
+		{
+			template <typename _Tp>
+			void swap(_Tp &, _Tp &) = delete;
+
+			template <typename _Tp, typename _Up, typename = void>
+			struct _CSL_adl_swap : false_type
+			{
+			};
+			template <typename _Tp, typename _Up>
+			struct _CSL_adl_swap<_Tp, _Up, void_t<decltype(swap(static_cast<_Tp &&>(declval<_Tp &&>()), static_cast<_Up &&>(declval<_Up &&>())))>>
+			{
+				static constexpr bool value = std::__detail::__class_or_enum<remove_reference_t<_Tp>> _CSL_Parentheses11 || std::__detail::__class_or_enum<remove_reference_t<_Up>> _CSL_Parentheses11;
+			};
+			template <typename _Tp, typename _Up>
+			_CSL_Concept(__adl_swap, _CSL_adl_swap<_Tp, _Up>::value);
+			struct _Swap
+			{
+			private:
+				template <typename _Tp, typename _Up>
+				static constexpr enable_if_t<__adl_swap<_Tp, _Up> _CSL_Parentheses11, bool> _S_noexcept()
+				{
+					return noexcept(swap(std::declval<_Tp>(), std::declval<_Up>()));
+				}
+				template <typename _Tp, typename _Up>
+				static constexpr enable_if_t<!__adl_swap<_Tp, _Up> _CSL_Parentheses11, bool> _S_noexcept()
+				{
+					return is_nothrow_move_constructible_v<remove_reference_t<_Tp>> _CSL_Parentheses11 && is_nothrow_move_assignable_v<remove_reference_t<_Tp>> _CSL_Parentheses11;
+				}
+
+			public:
+#undef __t
+				template <typename _Tp, typename _Up>
+				_GLIBCXX17_CONSTEXPR enable_if_t<__adl_swap<_Tp, _Up> _CSL_Parentheses11>
+				operator()(_Tp &&__t, _Up &&__u) const
+					noexcept(_S_noexcept<_Tp, _Up>())
+				{
+					swap(static_cast<_Tp &&>(__t), static_cast<_Up &&>(__u));
+				}
+				template <typename _Tp, typename _Up>
+				_GLIBCXX17_CONSTEXPR enable_if_t<!__adl_swap<_Tp, _Up> _CSL_Parentheses11 && same_as<_Tp, _Up> _CSL_Parentheses11 && is_lvalue_reference_v<_Tp> _CSL_Parentheses11 && move_constructible<remove_reference_t<_Tp>> _CSL_Parentheses11 && assignable_from<_Tp, remove_reference_t<_Tp>> _CSL_Parentheses11>
+				operator()(_Tp &&__t, _Up &&__u) const
+					noexcept(_S_noexcept<_Tp, _Up>())
+				{
+					auto __tmp = static_cast<remove_reference_t<_Tp> &&>(__t);
+					__t = static_cast<remove_reference_t<_Tp> &&>(__u);
+					__u = static_cast<remove_reference_t<_Tp> &&>(__tmp);
+				}
+
+				template <typename _Tp, typename _Up, size_t _Num>
+				constexpr void_t<decltype(declval<const _Swap &>()(declval<_Tp &>(), declval<_Up &>()))>
+				operator()(_Tp (&__e1)[_Num], _Up (&__e2)[_Num]) const
+					noexcept(noexcept(std::declval<const _Swap &>()(*__e1, *__e2)))
+				{
+					for (size_t __n = 0; __n < _Num; ++__n)
+						(*this)(__e1[__n], __e2[__n]);
+				}
+			};
+		} // namespace __swap
+		/// @endcond
+
+		inline namespace _Cpo
+		{
+			_GLIBCXX17_INLINE constexpr __swap::_Swap swap{};
+		}
+	} // namespace ranges
+
+	template <typename _Tp, typename = void>
+	struct _CSL_swappable : false_type
+	{
+	};
+	template <typename _Tp>
+	struct _CSL_swappable<_Tp, void_t<decltype(ranges::swap(declval<_Tp &>(), declval<_Tp &>()))>> : true_type
+	{
+	};
+	template <typename _Tp>
+	_CSL_Concept(swappable, _CSL_swappable<_Tp>::value);
+	// 260
+	// 269
+	//  [concepts.object], Object concepts
+
+	template <typename _Tp>
+	_CSL_Concept(movable, is_object_v<_Tp> _CSL_Parentheses11 &&move_constructible<_Tp> _CSL_Parentheses11 &&assignable_from<_Tp &, _Tp> _CSL_Parentheses11 &&swappable<_Tp> _CSL_Parentheses11);
+
+	template <typename _Tp>
+	_CSL_Concept(copyable, copy_constructible<_Tp> _CSL_Parentheses11 &&movable<_Tp> _CSL_Parentheses11 &&assignable_from<_Tp &, _Tp &> _CSL_Parentheses11 &&assignable_from<_Tp &, const _Tp &> _CSL_Parentheses11 &&assignable_from<_Tp &, const _Tp> _CSL_Parentheses11);
+
+	template <typename _Tp>
+	_CSL_Concept(semiregular, copyable<_Tp> _CSL_Parentheses11 &&default_initializable<_Tp> _CSL_Parentheses11);
+
+	// [concepts.compare], comparison concepts
+
+	// [concept.booleantestable], Boolean testability
+	namespace __detail
+	{
+		template <typename _Tp>
+		_CSL_Concept(__boolean_testable_impl, convertible_to<_Tp, bool> _CSL_Parentheses11);
+
+#define __t declval<_Tp &&>()
+		template <typename _Tp>
+		_CSL_Concept(__boolean_testable, __boolean_testable_impl<_Tp> _CSL_Parentheses11 &&__boolean_testable_impl<decltype(!static_cast<_Tp &&>(__t))> _CSL_Parentheses11);
+	} // namespace __detail
+
+	// [concept.equalitycomparable], concept equality_comparable
+
+	namespace __detail
+	{
+#define __t declval<__detail::__cref<_Tp>>()
+#define __u declval<__detail::__cref<_Up>>()
+		template <typename _Tp, typename _Up>
+		_CSL_Concept(__weakly_eq_cmp_with, __boolean_testable<decltype(__t == __u)> _CSL_Parentheses11 &&__boolean_testable<decltype(__t != __u)> _CSL_Parentheses11 &&__boolean_testable<decltype(__u == __t)> _CSL_Parentheses11 &&__boolean_testable<decltype(__u != __t)> _CSL_Parentheses11);
+	} // namespace __detail
+
+	template <typename _Tp>
+	_CSL_Concept(equality_comparable, __detail::__weakly_eq_cmp_with<_Tp, _Tp> _CSL_Parentheses11);
+	// 315
+	// 323
+	namespace __detail
+	{
+#define __t declval<const remove_reference_t<_Tp> &>()
+#define __u declval<const remove_reference_t<_Up> &>()
+		template <typename _Tp, typename _Up>
+		_CSL_Concept(__partially_ordered_with, __boolean_testable<decltype(__t < __u)> _CSL_Parentheses11 &&__boolean_testable<decltype(__t > __u)> _CSL_Parentheses11 &&__boolean_testable<decltype(__t <= __u)> _CSL_Parentheses11 &&__boolean_testable<decltype(__t >= __u)> _CSL_Parentheses11 &&__boolean_testable<decltype(__u < __t)> _CSL_Parentheses11 &&__boolean_testable<decltype(__u > __t)> _CSL_Parentheses11 &&__boolean_testable<decltype(__u <= __t)> _CSL_Parentheses11 &&__boolean_testable<decltype(__u >= __t)> _CSL_Parentheses11);
+	} // namespace __detail
+
+	// [concept.totallyordered], concept totally_ordered
+	template <typename _Tp>
+	_CSL_Concept(totally_ordered, equality_comparable<_Tp> _CSL_Parentheses11 &&__detail::__partially_ordered_with<_Tp, _Tp> _CSL_Parentheses11);
+	// 346
+	//   354
+	template <typename _Tp>
+	_CSL_Concept(regular, semiregular<_Tp> _CSL_Parentheses11 &&equality_comparable<_Tp> _CSL_Parentheses11);
+	// 357
+	//  [concepts.callable], callable concepts
+
+	/// [concept.invocable], concept invocable
+	template <typename _Fn, typename... _Args>
+	_CSL_Concept(invocable, is_invocable_v<_Fn, _Args...> _CSL_Parentheses11);
+
+	/// [concept.regularinvocable], concept regular_invocable
+	template <typename _Fn, typename... _Args>
+	_CSL_Concept(regular_invocable, invocable<_Fn, _Args...> _CSL_Parentheses11);
+
+	_GLIBCXX_END_NAMESPACE_VERSION
+} // namespace
+#undef __lhs
+#undef __rhs
+#undef __t
+#undef __u
+
+#endif /* _GLIBCXX_CONCEPTS */
+#endif
